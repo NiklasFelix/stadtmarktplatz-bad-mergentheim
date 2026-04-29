@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stadtmarktplatz Bad Mergentheim – Demo</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Leaflet CSS + JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { 50:'#eef3fb',100:'#d5e2f5',500:'#2563c0',600:'#1a4fa0',700:'#1b4f8a',800:'#173f70',900:'#10305a' },
+            secondary: { 500:'#d4820a',600:'#b06a07' },
+            accent: { 500:'#2d7a3c',600:'#226030' },
+          },
+          fontFamily: { sans: ['Inter','system-ui','sans-serif'] },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .nav-link.active { background: #eef3fb; color: #1b4f8a; }
+    .leaflet-popup-content-wrapper { border-radius: 12px !important; }
+    .leaflet-popup-content { margin: 0 !important; }
+    .fade-in { animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .card-hover:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+    .card-hover { transition: all 0.2s ease; }
+    .role-btn.active { background: #1b4f8a; color: white; border-color: #1b4f8a; }
+  </style>
+</head>
+<body class="bg-stone-50 text-gray-900">
+
+<!-- ========== DATEN ========== -->
+<script>
+const CATEGORIES = [
+  { id:'cat-1', name:'Mode & Bekleidung', icon:'👗', color:'#8b5cf6' },
+  { id:'cat-2', name:'Bücher & Papier', icon:'📚', color:'#2563eb' },
+  { id:'cat-3', name:'Feinkost & Kulinarik', icon:'🧀', color:'#d97706' },
+  { id:'cat-4', name:'Blumen & Pflanzen', icon:'🌸', color:'#ec4899' },
+  { id:'cat-5', name:'Spielzeug & Familie', icon:'🧸', color:'#f59e0b' },
+  { id:'cat-6', name:'Wohnen & Deko', icon:'🏠', color:'#059669' },
+  { id:'cat-7', name:'Regionalprodukte', icon:'🌾', color:'#65a30d' },
+  { id:'cat-8', name:'Schmuck & Accessoires', icon:'💍', color:'#dc2626' },
+];
+
+const MERCHANTS = [
+  {
+    id:'m1', slug:'buchhandlung-lesezeit', name:'Buchhandlung Lesezeit',
+    cats:['cat-2','cat-9'], catName:'Bücher & Papier',
+    short:'Ihr lokales Buchparadies am Marktplatz – mit persönlicher Beratung.',
+    address:'Marktplatz 5, 97980 Bad Mergentheim',
+    phone:'07931 / 52 18 0', email:'info@buchhandlung-lesezeit.de',
+    image:'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=600&q=80',
+    team:'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80',
+    cc:true, featured:true, lat:49.4921, lng:9.7742,
+    opening:'Mo–Fr 09–18 Uhr, Sa 09–15 Uhr',
+    desc:'Die Buchhandlung Lesezeit ist seit über 25 Jahren das literarische Herz von Bad Mergentheim. Auf über 200 m² finden Sie mehr als 20.000 Titel aus allen Genres – von regionalen Heimatbüchern bis zu internationalen Bestsellern.',
+  },
+  {
+    id:'m2', slug:'modehaus-zimmermann', name:'Modehaus Zimmermann',
+    cats:['cat-1'], catName:'Mode & Bekleidung',
+    short:'Mode mit Charakter – zeitlose Damen- und Herrenmode in der Tauberstadt.',
+    address:'Hauptstraße 12, 97980 Bad Mergentheim',
+    phone:'07931 / 48 23 1', email:'info@modehaus-zimmermann.de',
+    image:'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&q=80',
+    team:'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80',
+    cc:true, featured:true, lat:49.4935, lng:9.7751,
+    opening:'Mo–Fr 09–18 Uhr, Sa 09–14 Uhr',
+    desc:'Das Modehaus Zimmermann steht seit drei Generationen für Qualität, Stil und persönliche Beratung in Bad Mergentheim. Sorgfältig ausgewählte Kollektionen etablierter Modemarken.',
+  },
+  {
+    id:'m3', slug:'taubertaler-feinkost', name:'Taubertaler Feinkost',
+    cats:['cat-3','cat-7'], catName:'Feinkost & Regionalprodukte',
+    short:'Regionale Köstlichkeiten aus dem Taubertal – Honig, Weine, Gewürze.',
+    address:'Am Marktplatz 3, 97980 Bad Mergentheim',
+    phone:'07931 / 77 44 2', email:'info@taubertaler-feinkost.de',
+    image:'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=600&q=80',
+    team:'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80',
+    cc:true, featured:true, lat:49.4918, lng:9.7745,
+    opening:'Mo–Fr 09–18 Uhr, Mi 09–13 Uhr, Sa 08–15 Uhr',
+    desc:'Hochwertige regionale Produkte aus dem Taubertal: handgemachte Marmeladen, lokale Honigspezialitäten, ausgewählte Frankenweine und Gewürzmischungen aus eigenem Anbau.',
+  },
+  {
+    id:'m4', slug:'blumenparadies-rose', name:'Blumenparadies Rose',
+    cats:['cat-4'], catName:'Blumen & Pflanzen',
+    short:'Frische Schnittblumen, Sträuße und Zimmerpflanzen – kreativ und farbenfroh.',
+    address:'Burgstraße 8, 97980 Bad Mergentheim',
+    phone:'07931 / 60 38 5', email:'info@blumenparadies-rose.de',
+    image:'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=600&q=80',
+    team:'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&q=80',
+    cc:true, featured:false, lat:49.4928, lng:9.7738,
+    opening:'Mo–Fr 08–18 Uhr, Sa 08–14 Uhr',
+    desc:'Das Blumenparadies Rose ist der farbenfrohste Laden in Bad Mergentheim. Täglich frische Blumen aus nationalen und lokalen Gärtnereien.',
+  },
+  {
+    id:'m5', slug:'spielzeugwelt-koenig', name:'Spielzeugwelt König',
+    cats:['cat-5'], catName:'Spielzeug & Familie',
+    short:'Hochwertige Spielzeuge und Kinderbücher für glückliche Kinderaugen.',
+    address:'Deutschordensstraße 15, 97980 Bad Mergentheim',
+    phone:'07931 / 91 27 6', email:'info@spielzeugwelt-koenig.de',
+    image:'https://images.unsplash.com/photo-1516981442399-a91139e20ff8?w=600&q=80',
+    team:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80',
+    cc:true, featured:false, lat:49.4942, lng:9.7758,
+    opening:'Mo–Fr 09–18 Uhr, Sa 09–14 Uhr',
+    desc:'Seit 1998 der beliebteste Spielzeugladen von Bad Mergentheim. Qualitativ hochwertiges, pädagogisch wertvolles Spielzeug – kein Wegwerfprodukte.',
+  },
+  {
+    id:'m6', slug:'baeckerei-hofmann', name:'Bäckerei & Konditorei Hofmann',
+    cats:['cat-7','cat-3'], catName:'Regionalprodukte & Backwaren',
+    short:'Handwerksgebäck seit 1962 – knusprige Brote und fränkische Spezialitäten.',
+    address:'Marktplatz 1, 97980 Bad Mergentheim',
+    phone:'07931 / 33 47 8', email:'info@baeckerei-hofmann-bm.de',
+    image:'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80',
+    team:null,
+    cc:true, featured:true, lat:49.4924, lng:9.7748,
+    opening:'Mo–Fr 06:30–18 Uhr, Sa 06:30–13:30 Uhr, So 07:30–11 Uhr',
+    desc:'Seit 1962 backen die Hofmanns täglich frisch nach überlieferten Rezepten mit regionalen Zutaten. Das Vollkornbrot „Taubertäler" ist ein Klassiker.',
+  },
+  {
+    id:'m7', slug:'goldschmied-engel', name:'Goldschmied Engel',
+    cats:['cat-8'], catName:'Schmuck & Accessoires',
+    short:'Handgefertigter Schmuck in Gold und Silber – zeitlose Stücke seit 1954.',
+    address:'Kirchstraße 7, 97980 Bad Mergentheim',
+    phone:'07931 / 21 90 4', email:'info@goldschmied-engel.de',
+    image:'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=600&q=80',
+    team:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80',
+    cc:true, featured:false, lat:49.4932, lng:9.7741,
+    opening:'Di–Sa 09:30–18 Uhr, Mi geschlossen',
+    desc:'Einer der ältesten Schmuckbetriebe der Region. Handgefertigter Schmuck aus Gold und Silber, Gravierservice und Reparaturen.',
+  },
+  {
+    id:'m8', slug:'wohntraum-deko', name:'Wohntraum Deko',
+    cats:['cat-6'], catName:'Wohnen & Deko',
+    short:'Wohnaccessoires, handgemachte Keramik und stimmungsvolle Dekoartikel.',
+    address:'Milchlingstraße 4, 97980 Bad Mergentheim',
+    phone:'07931 / 83 55 0', email:'info@wohntraum-deko.de',
+    image:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80',
+    team:null,
+    cc:false, featured:false, lat:49.4910, lng:9.7760,
+    opening:'Di–Fr 10–18 Uhr, Sa 10–14 Uhr',
+    desc:'Liebevoll ausgewählte Wohnaccessoires, handgemachte Keramik aus regionalem Kunsthandwerk, hochwertige Kerzen und saisonale Dekoartikel.',
+  },
+];
+
+const PRODUCTS = [
+  { id:'p1', name:'Taubertal-Geschichten', mid:'m1', price:'18,90 €', avail:'available', img:'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&q=80', desc:'Sagen, Anekdoten und historische Geschichten aus dem Taubertal.', tag:'Empfehlung' },
+  { id:'p2', name:'Bad Mergentheimer Stadtführer', mid:'m1', price:'14,90 €', avail:'available', img:'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&q=80', desc:'Umfassender Stadtführer mit Fotos und Stadtplan.', tag:null },
+  { id:'p3', name:'Sommerkleid „Tauberblüte"', mid:'m2', price:'89 – 119 €', avail:'available', img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80', desc:'Leichtes Sommerkleid aus 100% Viskose mit zartem Blumenprint.', tag:'Empfehlung' },
+  { id:'p4', name:'Ledertasche aus echtem Rindsleder', mid:'m2', price:'149 – 189 €', avail:'available', img:'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80', desc:'Elegante Damenhandtasche aus naturgemilchtem Rindsleder.', tag:null },
+  { id:'p5', name:'Taubertal-Honig (500g)', mid:'m3', price:'8,90 €', avail:'available', img:'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&q=80', desc:'Reiner Wildblütenhonig von heimischen Imkern, kaltgeschleudert.', tag:'Empfehlung' },
+  { id:'p6', name:'Frankenwein-Kassette „Tauberperlen"', mid:'m3', price:'34,90 €', avail:'available', img:'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80', desc:'Drei ausgewählte Weine vom Taubertal als Geschenkkassette.', tag:'Empfehlung' },
+  { id:'p7', name:'Sommerstrauß „Bunt & Fröhlich"', mid:'m4', price:'19,90 – 39,90 €', avail:'available', img:'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=400&q=80', desc:'Frischer Saisonstrauß aus Sonnenblumen, Zinnia und Cosmeen.', tag:null },
+  { id:'p8', name:'Holzeisenbahn-Set „Großes Streckennetz"', mid:'m5', price:'79,90 €', avail:'available', img:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&q=80', desc:'45 Schienenelemente, 2 Lokomotiven, 4 Waggons. Ab 3 Jahren.', tag:'Empfehlung' },
+  { id:'p9', name:'Vollkornbrot „Taubertäler"', mid:'m6', price:'6,80 €', avail:'available', img:'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&q=80', desc:'Kräftiges Sauerteig-Vollkornmischbrot aus regionalen Getreidesorten.', tag:'Empfehlung' },
+  { id:'p10', name:'Fränkischer Mohnkuchen', mid:'m6', price:'16,50 €', avail:'on_request', img:'https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=400&q=80', desc:'Traditioneller fränkischer Mohnkuchen nach Omas Rezept. Vorbestellung!', tag:null },
+  { id:'p11', name:'Silberring „Tauberblüte"', mid:'m7', price:'89 – 139 €', avail:'available', img:'https://images.unsplash.com/photo-1589674781759-c21c37956a44?w=400&q=80', desc:'Fein gearbeiteter Sterling-Silberring mit Rosenquarz, handgefertigt.', tag:'Empfehlung' },
+  { id:'p12', name:'Kerzenset „Taubertalduft"', mid:'m8', price:'39,90 €', avail:'available', img:'https://images.unsplash.com/photo-1603006905003-be475563bc59?w=400&q=80', desc:'Drei handgegossene Sojawachskerzen mit regionalen Düften.', tag:null },
+];
+
+const RESERVATIONS = [
+  { num:'BM-LB7X2A-K9PQ', product:'Taubertal-Honig', merchant:'Taubertaler Feinkost', customer:'Anna Weber', pickup:'03.05.2026, 10:00 Uhr', status:'confirmed' },
+  { num:'BM-MC9Y3B-R4TW', product:'Taubertal-Geschichten', merchant:'Buchhandlung Lesezeit', customer:'Anna Weber', pickup:'05.05.2026, 15:00 Uhr', status:'received' },
+  { num:'BM-NZ4D1C-F8WE', product:'Vollkornbrot „Taubertäler"', merchant:'Bäckerei Hofmann', customer:'Markus Bauer', pickup:'30.04.2026, 08:00 Uhr', status:'ready' },
+  { num:'BM-PK2M5E-H3NS', product:'Holzeisenbahn-Set', merchant:'Spielzeugwelt König', customer:'Claudia Fischer', pickup:'02.05.2026, 14:30 Uhr', status:'confirmed' },
+];
+
+let currentPage = 'home';
+let selectedMerchant = null;
+let selectedCategory = null;
+let currentRole = 'guest';
+let map = null;
+let miniMaps = {};
+let reservationConfirmed = false;
+let favorites = new Set(JSON.parse(localStorage.getItem('stadtmarkt-fav') || '[]'));
+let customerReservations = JSON.parse(localStorage.getItem('stadtmarkt-res') || '[]');
+</script>
+
+<!-- ========== HEADER ========== -->
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <button onclick="showPage('home')" class="flex items-center gap-2.5">
+        <div class="w-9 h-9 bg-primary-700 rounded-xl flex items-center justify-center shadow-sm">
+          <span class="text-white text-lg">🏘</span>
+        </div>
+        <div class="hidden sm:block">
+          <div class="font-bold text-primary-800 text-sm leading-tight">Stadtmarktplatz</div>
+          <div class="text-xs text-gray-500 leading-tight">Bad Mergentheim</div>
+        </div>
+      </button>
+
+      <!-- Nav -->
+      <nav class="hidden md:flex items-center gap-1">
+        <button onclick="showPage('merchants')" id="nav-merchants" class="nav-link flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-gray-50 transition-colors">🏪 Händler</button>
+        <button onclick="showPage('products')" id="nav-products" class="nav-link flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-gray-50 transition-colors">🛍 Produkte</button>
+        <button onclick="showPage('map')" id="nav-map" class="nav-link flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-gray-50 transition-colors">🗺 Karte</button>
+        <button onclick="showPage('favorites')" id="nav-favorites" class="nav-link relative flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-gray-50 transition-colors">♥ Favoriten<span id="fav-badge" class="hidden absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold"></span></button>
+      </nav>
+
+      <!-- Right -->
+      <div class="flex items-center gap-2">
+        <!-- Role switcher -->
+        <div class="relative" id="role-menu-container">
+          <button onclick="toggleRoleMenu()" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary-700 text-white text-sm font-medium hover:bg-primary-800 transition-colors">
+            <span id="role-icon">👤</span>
+            <span id="role-label" class="hidden sm:inline">Anmelden</span>
+            <span class="text-xs opacity-70">▾</span>
+          </button>
+          <div id="role-menu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden">
+            <div class="p-2 space-y-1">
+              <p class="text-xs text-gray-400 px-3 py-1 font-semibold uppercase tracking-wide">Demo-Rolle wählen</p>
+              <button onclick="setRole('guest')" class="role-btn w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50 border border-transparent transition-colors" id="role-guest">
+                👤 Gast (nicht angemeldet)
+              </button>
+              <button onclick="setRole('customer')" class="role-btn w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50 border border-transparent transition-colors" id="role-customer">
+                🛒 Kunde – Anna Weber
+              </button>
+              <button onclick="setRole('merchant')" class="role-btn w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50 border border-transparent transition-colors" id="role-merchant">
+                🏪 Händler – Buchhandlung
+              </button>
+              <button onclick="setRole('admin')" class="role-btn w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50 border border-transparent transition-colors" id="role-admin">
+                🛡 Admin – Wirtschaftsförderung
+              </button>
+            </div>
+            <div class="border-t border-gray-100 p-3">
+              <p class="text-xs text-gray-400 text-center">Demo-System · Keine echten Daten</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile nav toggle -->
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100" id="mob-btn">☰</button>
+      </div>
+    </div>
+
+    <!-- Mobile nav -->
+    <div id="mobile-nav" class="hidden md:hidden border-t border-gray-100 py-2 space-y-1 pb-3">
+      <button onclick="showPage('merchants');toggleMobileMenu()" class="w-full text-left flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">🏪 Händler</button>
+      <button onclick="showPage('products');toggleMobileMenu()" class="w-full text-left flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">🛍 Produkte</button>
+      <button onclick="showPage('map');toggleMobileMenu()" class="w-full text-left flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">🗺 Karte</button>
+      <button onclick="showPage('favorites');toggleMobileMenu()" class="w-full text-left flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">♥ Favoriten</button>
+    </div>
+  </div>
+</header>
+
+<!-- ========== SEITEN ========== -->
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <!-- Hero -->
+  <section class="relative min-h-[580px] flex items-center overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700">
+    <div class="absolute inset-0">
+      <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1920&q=60" class="w-full h-full object-cover opacity-20" />
+    </div>
+    <div class="absolute top-20 right-10 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur text-white/90 text-sm font-medium px-4 py-2 rounded-full mb-6 border border-white/20">
+          📍 Bad Mergentheim – Taubertal
+        </div>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+          Dein lokaler<br><span class="text-yellow-300">Marktplatz</span><br>digital.
+        </h1>
+        <p class="text-lg text-white/80 mb-8 max-w-xl leading-relaxed">
+          Entdecken Sie die besten Händler Bad Mergentheims – auf der Karte, nach Kategorie, mit Produkten und Click & Collect-Reservierung.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <button onclick="showPage('merchants')" class="flex items-center gap-2 bg-white text-primary-800 font-semibold px-6 py-3 rounded-xl hover:bg-gray-50 transition-colors shadow-lg">
+            🏪 Händler entdecken
+          </button>
+          <button onclick="showPage('map')" class="flex items-center gap-2 bg-white/10 backdrop-blur text-white font-semibold px-6 py-3 rounded-xl border border-white/30 hover:bg-white/20 transition-colors">
+            🗺 Karte ansehen
+          </button>
+          <button onclick="showPage('products')" class="flex items-center gap-2 bg-yellow-500 text-white font-semibold px-6 py-3 rounded-xl hover:bg-yellow-600 transition-colors shadow-lg">
+            🛍 Produkte
+          </button>
+        </div>
+        <div class="mt-8 flex items-center gap-3 bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20 w-fit">
+          <span class="text-green-300 text-xl">✓</span>
+          <div>
+            <p class="text-white font-semibold text-sm">Click & Collect verfügbar</p>
+            <p class="text-white/70 text-xs">Online reservieren, vor Ort abholen</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="bg-white border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 py-10">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div><div class="text-3xl font-bold text-gray-900">8+</div><div class="text-sm text-gray-500 mt-1">Lokale Händler</div></div>
+        <div><div class="text-3xl font-bold text-gray-900">24+</div><div class="text-sm text-gray-500 mt-1">Produkte</div></div>
+        <div><div class="text-3xl font-bold text-gray-900">8</div><div class="text-sm text-gray-500 mt-1">Kategorien</div></div>
+        <div><div class="text-3xl font-bold text-gray-900">7</div><div class="text-sm text-gray-500 mt-1">Click & Collect</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="py-16 bg-stone-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900">So funktioniert Click & Collect</h2>
+        <p class="text-gray-500 mt-3 text-lg">Einfach online reservieren und im Laden abholen.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">🔍</div>
+          <div class="text-xs font-bold text-primary-600 mb-1">SCHRITT 1</div>
+          <h3 class="font-semibold mb-2">Händler entdecken</h3>
+          <p class="text-sm text-gray-500">Stöbern in der Liste oder auf der Karte.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
+          <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">🛍</div>
+          <div class="text-xs font-bold text-primary-600 mb-1">SCHRITT 2</div>
+          <h3 class="font-semibold mb-2">Produkt auswählen</h3>
+          <p class="text-sm text-gray-500">Produkt finden und Verfügbarkeit prüfen.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
+          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">📋</div>
+          <div class="text-xs font-bold text-primary-600 mb-1">SCHRITT 3</div>
+          <h3 class="font-semibold mb-2">Reservieren</h3>
+          <p class="text-sm text-gray-500">Formular ausfüllen und Abholzeit wählen.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
+          <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">✅</div>
+          <div class="text-xs font-bold text-primary-600 mb-1">SCHRITT 4</div>
+          <h3 class="font-semibold mb-2">Abholen</h3>
+          <p class="text-sm text-gray-500">Produkt bequem vor Ort abholen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Merchants -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900">Ausgewählte Händler</h2>
+          <p class="text-gray-500 mt-1">Die beliebtesten Geschäfte in Bad Mergentheim</p>
+        </div>
+        <button onclick="showPage('merchants')" class="hidden sm:flex items-center gap-1.5 text-primary-700 font-medium text-sm hover:underline">Alle Händler →</button>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="featured-merchants-grid"></div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="py-16 bg-stone-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-gray-900">Nach Kategorie stöbern</h2>
+        <p class="text-gray-500 mt-2">Finden Sie genau das, was Sie suchen.</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3" id="categories-grid"></div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900">Empfohlene Produkte</h2>
+          <p class="text-gray-500 mt-1">Jetzt reservieren, vor Ort abholen</p>
+        </div>
+        <button onclick="showPage('products')" class="hidden sm:flex items-center gap-1.5 text-primary-700 font-medium text-sm hover:underline">Alle Produkte →</button>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="featured-products-grid"></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-primary-800 py-16">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">Händler in Bad Mergentheim –<br>digital sichtbar werden</h2>
+      <p class="text-primary-200 text-lg mb-8">Sind Sie Händler? Registrieren Sie sich kostenlos.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button onclick="setRole('merchant');showPage('seller')" class="flex items-center justify-center gap-2 bg-yellow-500 text-white font-semibold px-8 py-3 rounded-xl hover:bg-yellow-600 transition-colors">
+          🏪 Händlerbereich ansehen
+        </button>
+        <button onclick="setRole('admin');showPage('admin')" class="flex items-center justify-center gap-2 bg-white/10 text-white font-semibold px-8 py-3 rounded-xl border border-white/20 hover:bg-white/20 transition-colors">
+          🛡 Adminbereich ansehen
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 py-10">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <div class="flex items-center justify-center gap-2.5 mb-4">
+        <div class="w-8 h-8 bg-primary-700 rounded-lg flex items-center justify-center"><span class="text-white">🏘</span></div>
+        <span class="font-bold text-white">Stadtmarktplatz Bad Mergentheim</span>
+      </div>
+      <p class="text-sm">© 2026 – Eine Initiative der Wirtschaftsförderung Bad Mergentheim</p>
+      <p class="text-xs mt-2 text-gray-600">Demo-Version · Karte: © OpenStreetMap-Mitwirkende</p>
+    </div>
+  </footer>
+</div>
+
+<!-- MERCHANTS -->
+<div id="page-merchants" class="page">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold text-gray-900 mb-1">Händler in Bad Mergentheim</h1>
+      <p class="text-gray-500">8 lokale Händler · 7 mit Click & Collect</p>
+    </div>
+    <!-- Search + Filter -->
+    <div class="flex flex-col sm:flex-row gap-3 mb-5">
+      <div class="relative flex-1">
+        <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+        <input type="text" id="merchant-search" oninput="filterMerchants()" placeholder="Händler suchen…" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </div>
+    </div>
+    <!-- Category pills -->
+    <div class="flex flex-wrap gap-2 mb-6" id="cat-filter"></div>
+    <!-- Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="merchants-grid"></div>
+  </div>
+</div>
+
+<!-- MERCHANT PROFILE -->
+<div id="page-merchant-profile" class="page">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" id="merchant-profile-content"></div>
+</div>
+
+<!-- PRODUCTS -->
+<div id="page-products" class="page">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold text-gray-900 mb-1">Alle Produkte</h1>
+      <p class="text-gray-500">24 Produkte aus 8 Händlern</p>
+    </div>
+    <div class="relative mb-5">
+      <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+      <input type="text" id="product-search" oninput="filterProducts()" placeholder="Produkte suchen…" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="products-grid"></div>
+  </div>
+</div>
+
+<!-- MAP -->
+<div id="page-map" class="page">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold text-gray-900 mb-1">Karte: Händler in Bad Mergentheim</h1>
+      <p class="text-gray-500">Alle Händler auf der interaktiven Karte</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2">
+        <div id="leaflet-map" style="height:550px;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;"></div>
+        <p class="text-xs text-gray-400 mt-2">© <a href="https://www.openstreetmap.org/copyright" class="hover:underline">OpenStreetMap-Mitwirkende</a></p>
+      </div>
+      <div class="space-y-3 max-h-[570px] overflow-y-auto" id="map-sidebar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL -->
+<div id="page-product-detail" class="page">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" id="product-detail-content"></div>
+</div>
+
+<!-- FAVORITES -->
+<div id="page-favorites" class="page">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold text-gray-900 mb-1">Meine Favoriten</h1>
+      <p class="text-gray-500" id="fav-subtitle"></p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="favorites-grid"></div>
+  </div>
+</div>
+
+<!-- RESERVATION -->
+<div id="page-reservation" class="page">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div id="reservation-content"></div>
+  </div>
+</div>
+
+<!-- SELLER -->
+<div id="page-seller" class="page">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-12 h-12 rounded-xl overflow-hidden bg-gray-100">
+        <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=100&q=80" class="w-full h-full object-cover" />
+      </div>
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Händler-Dashboard</h1>
+        <p class="text-gray-500 text-sm">Buchhandlung Lesezeit – Klaus Leser</p>
+      </div>
+      <button onclick="showPage('home')" class="ml-auto text-xs text-primary-700 hover:underline">← Zur Website</button>
+    </div>
+
+    <!-- Seller nav -->
+    <div class="flex gap-2 mb-6 overflow-x-auto pb-1">
+      <button onclick="showSellerTab('dashboard')" id="stab-dashboard" class="px-4 py-2 rounded-lg text-sm font-medium bg-primary-700 text-white whitespace-nowrap">📊 Dashboard</button>
+      <button onclick="showSellerTab('reservations')" id="stab-reservations" class="px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:border-gray-300 whitespace-nowrap">📋 Reservierungen</button>
+      <button onclick="showSellerTab('products')" id="stab-products" class="px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:border-gray-300 whitespace-nowrap">📦 Produkte</button>
+      <button onclick="showSellerTab('profile')" id="stab-profile" class="px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:border-gray-300 whitespace-nowrap">👤 Profil</button>
+    </div>
+
+    <!-- Dashboard content -->
+    <div id="seller-dashboard">
+      <!-- KPIs -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="bg-amber-50 rounded-xl p-4 border border-amber-100"><div class="text-amber-600 text-2xl mb-1">⚠️</div><div class="text-2xl font-bold text-gray-900">2</div><div class="text-sm text-gray-600">Neue Anfragen</div></div>
+        <div class="bg-green-50 rounded-xl p-4 border border-green-100"><div class="text-green-600 text-2xl mb-1">✅</div><div class="text-2xl font-bold text-gray-900">1</div><div class="text-sm text-gray-600">Bestätigt</div></div>
+        <div class="bg-blue-50 rounded-xl p-4 border border-blue-100"><div class="text-blue-600 text-2xl mb-1">⏰</div><div class="text-2xl font-bold text-gray-900">1</div><div class="text-sm text-gray-600">Abholbereit</div></div>
+        <div class="bg-primary-50 rounded-xl p-4 border border-primary-100"><div class="text-primary-600 text-2xl mb-1">📦</div><div class="text-2xl font-bold text-gray-900">4</div><div class="text-sm text-gray-600">Akt. Produkte</div></div>
+      </div>
+      <!-- Recent reservations -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+        <h3 class="font-semibold text-gray-900 mb-4">📋 Letzte Reservierungen</h3>
+        <div class="space-y-2" id="seller-res-list"></div>
+      </div>
+    </div>
+
+    <!-- Reservations tab -->
+    <div id="seller-reservations" class="hidden">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Reservierungen verwalten</h2>
+      <div class="space-y-3" id="seller-full-res-list"></div>
+    </div>
+
+    <!-- Products tab -->
+    <div id="seller-products" class="hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-gray-900">Meine Produkte</h2>
+        <button onclick="alert('Produktformular – in der Vollversion komplett implementiert!')" class="flex items-center gap-2 bg-primary-700 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-primary-800">➕ Neues Produkt</button>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 border-b"><tr>
+            <th class="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Produkt</th>
+            <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase hidden md:table-cell">Preis</th>
+            <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Status</th>
+          </tr></thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr><td class="px-5 py-3"><div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=60&q=80" class="w-9 h-9 rounded-lg object-cover" /><div><p class="font-medium">Taubertal-Geschichten</p><p class="text-xs text-gray-400">Bücher & Papier</p></div></div></td><td class="px-4 py-3 hidden md:table-cell">18,90 €</td><td class="px-4 py-3"><span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Verfügbar</span></td></tr>
+            <tr><td class="px-5 py-3"><div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=60&q=80" class="w-9 h-9 rounded-lg object-cover" /><div><p class="font-medium">Stadtführer Bad Mergentheim</p><p class="text-xs text-gray-400">Bücher & Papier</p></div></div></td><td class="px-4 py-3 hidden md:table-cell">14,90 €</td><td class="px-4 py-3"><span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Verfügbar</span></td></tr>
+            <tr><td class="px-5 py-3"><div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=60&q=80" class="w-9 h-9 rounded-lg object-cover" /><div><p class="font-medium">Kochbuch Tauberland</p><p class="text-xs text-gray-400">Bücher & Kulinarik</p></div></div></td><td class="px-4 py-3 hidden md:table-cell">22,00 €</td><td class="px-4 py-3"><span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Verfügbar</span></td></tr>
+            <tr><td class="px-5 py-3"><div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1474978528675-4a50a4508dc3?w=60&q=80" class="w-9 h-9 rounded-lg object-cover" /><div><p class="font-medium">Kinderbuch „Der Kurprinz"</p><p class="text-xs text-gray-400">Bücher & Familie</p></div></div></td><td class="px-4 py-3 hidden md:table-cell">12,90 €</td><td class="px-4 py-3"><span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Verfügbar</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Profile tab -->
+    <div id="seller-profile" class="hidden max-w-2xl">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Mein Händlerprofil</h2>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
+        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Geschäftsname</label><input type="text" value="Buchhandlung Lesezeit" class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Kurzbeschreibung</label><input type="text" value="Ihr lokales Buchparadies am Marktplatz – mit persönlicher Beratung." class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Telefon</label><input type="text" value="07931 / 52 18 0" class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
+        <div class="flex items-center gap-3"><input type="checkbox" checked class="rounded border-gray-300 text-blue-600 w-4 h-4" /><label class="text-sm text-gray-700 font-medium">Click & Collect aktiviert</label></div>
+        <button onclick="alert('Profil gespeichert! ✓')" class="bg-primary-700 text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-800 transition-colors">💾 Profil speichern</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="page-admin" class="page">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-12 h-12 rounded-xl bg-purple-600 flex items-center justify-center text-white text-xl">🛡</div>
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Admin-Dashboard</h1>
+        <p class="text-gray-500 text-sm">Wirtschaftsförderung Bad Mergentheim</p>
+      </div>
+      <button onclick="showPage('home')" class="ml-auto text-xs text-primary-700 hover:underline">← Zur Website</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center"><div class="text-3xl font-bold text-gray-900">8</div><div class="text-sm text-gray-500 mt-1">Händler</div><div class="text-xs text-green-600">8 aktiv</div></div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center"><div class="text-3xl font-bold text-gray-900">24</div><div class="text-sm text-gray-500 mt-1">Produkte</div><div class="text-xs text-green-600">24 aktiv</div></div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center"><div class="text-3xl font-bold text-gray-900">8</div><div class="text-sm text-gray-500 mt-1">Reservierungen</div><div class="text-xs text-amber-600">3 offen</div></div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center"><div class="text-3xl font-bold text-gray-900">8</div><div class="text-sm text-gray-500 mt-1">Kategorien</div><div class="text-xs text-green-600">alle aktiv</div></div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Merchants -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-semibold text-gray-900">🏪 Händler-Übersicht</h3>
+          <button onclick="alert('Neuer Händler – Formular öffnen (Vollversion)')" class="text-xs bg-primary-700 text-white px-3 py-1.5 rounded-lg hover:bg-primary-800">+ Neu</button>
+        </div>
+        <div class="space-y-2" id="admin-merchants-list"></div>
+      </div>
+
+      <!-- Reservations -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+        <h3 class="font-semibold text-gray-900 mb-4">📋 Letzte Reservierungen</h3>
+        <div class="space-y-2">
+          <div class="flex items-center gap-3 p-2.5 rounded-lg"><div class="flex-1"><p class="text-sm font-medium">Anna Weber → Taubertal-Honig</p><p class="text-xs text-gray-400">Taubertaler Feinkost</p></div><span class="bg-primary-100 text-primary-800 text-xs px-2 py-0.5 rounded-full font-medium">Bestätigt</span></div>
+          <div class="flex items-center gap-3 p-2.5 rounded-lg"><div class="flex-1"><p class="text-sm font-medium">Markus Bauer → Vollkornbrot</p><p class="text-xs text-gray-400">Bäckerei Hofmann</p></div><span class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium">Abholbereit</span></div>
+          <div class="flex items-center gap-3 p-2.5 rounded-lg"><div class="flex-1"><p class="text-sm font-medium">Claudia Fischer → Holzeisenbahn</p><p class="text-xs text-gray-400">Spielzeugwelt König</p></div><span class="bg-primary-100 text-primary-800 text-xs px-2 py-0.5 rounded-full font-medium">Bestätigt</span></div>
+          <div class="flex items-center gap-3 p-2.5 rounded-lg"><div class="flex-1"><p class="text-sm font-medium">Stefan Müller → Silberring</p><p class="text-xs text-gray-400">Goldschmied Engel</p></div><span class="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-medium">Eingegangen</span></div>
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+        <h3 class="font-semibold text-gray-900 mb-4">🏷 Kategorien</h3>
+        <div class="grid grid-cols-2 gap-2" id="admin-categories-list"></div>
+      </div>
+
+      <!-- Stats -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+        <h3 class="font-semibold text-gray-900 mb-4">📈 Plattform-Statistik</h3>
+        <div class="space-y-3">
+          <div><div class="flex justify-between text-sm mb-1"><span class="text-gray-600">Händler mit Click & Collect</span><span class="font-semibold">7/8</span></div><div class="h-1.5 bg-gray-100 rounded-full"><div class="h-full bg-primary-500 rounded-full" style="width:87.5%"></div></div></div>
+          <div><div class="flex justify-between text-sm mb-1"><span class="text-gray-600">Featured Händler</span><span class="font-semibold">4/8</span></div><div class="h-1.5 bg-gray-100 rounded-full"><div class="h-full bg-yellow-500 rounded-full" style="width:50%"></div></div></div>
+          <div><div class="flex justify-between text-sm mb-1"><span class="text-gray-600">Aktive Produkte</span><span class="font-semibold">24/24</span></div><div class="h-1.5 bg-gray-100 rounded-full"><div class="h-full bg-green-500 rounded-full" style="width:100%"></div></div></div>
+          <div><div class="flex justify-between text-sm mb-1"><span class="text-gray-600">Abgeschlossene Reserv.</span><span class="font-semibold">2/8</span></div><div class="h-1.5 bg-gray-100 rounded-full"><div class="h-full bg-gray-400 rounded-full" style="width:25%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+// --- Navigation ---
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.classList.add('hidden'); });
+  const el = document.getElementById('page-' + page);
+  if (el) { el.classList.remove('hidden'); el.classList.add('active', 'fade-in'); }
+
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + page);
+  if (navEl) navEl.classList.add('active');
+
+  currentPage = page;
+
+  if (page === 'map') setTimeout(initMap, 100);
+  if (page === 'merchants') renderMerchants();
+  if (page === 'products') renderProducts();
+  if (page === 'favorites') renderFavorites();
+  window.scrollTo(0, 0);
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-nav');
+  menu.classList.toggle('hidden');
+}
+
+// --- Role ---
+function toggleRoleMenu() {
+  document.getElementById('role-menu').classList.toggle('hidden');
+}
+document.addEventListener('click', (e) => {
+  if (!document.getElementById('role-menu-container').contains(e.target)) {
+    document.getElementById('role-menu').classList.add('hidden');
+  }
+});
+
+function setRole(role) {
+  currentRole = role;
+  document.getElementById('role-menu').classList.add('hidden');
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('role-' + role)?.classList.add('active');
+  const icons = { guest:'👤', customer:'🛒', merchant:'🏪', admin:'🛡' };
+  const labels = { guest:'Anmelden', customer:'Anna Weber', merchant:'Buchhandlung', admin:'Admin' };
+  document.getElementById('role-icon').textContent = icons[role];
+  document.getElementById('role-label').textContent = labels[role];
+  if (role === 'merchant') showPage('seller');
+  else if (role === 'admin') showPage('admin');
+}
+
+// --- Render Home ---
+function renderHome() {
+  // Featured merchants (4 with featured:true)
+  const grid = document.getElementById('featured-merchants-grid');
+  if (!grid) return;
+  const featured = MERCHANTS.filter(m => m.featured).slice(0,4);
+  grid.innerHTML = featured.map(m => merchantCardHTML(m)).join('');
+
+  // Categories
+  const catGrid = document.getElementById('categories-grid');
+  if (catGrid) {
+    catGrid.innerHTML = CATEGORIES.map(c => `
+      <button onclick="selectedCategory='${c.id}';showPage('merchants')" class="bg-white rounded-2xl p-4 text-center shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-2 text-2xl group-hover:scale-110 transition-transform" style="background:${c.color}20">${c.icon}</div>
+        <p class="text-sm font-medium text-gray-800 leading-tight">${c.name}</p>
+        <p class="text-xs text-gray-400 mt-1">${MERCHANTS.filter(m=>m.cats.includes(c.id)).length} Händler</p>
+      </button>
+    `).join('');
+  }
+
+  // Featured products
+  const prodGrid = document.getElementById('featured-products-grid');
+  if (prodGrid) {
+    const feat = PRODUCTS.filter(p => p.tag === 'Empfehlung').slice(0,4);
+    prodGrid.innerHTML = feat.map(p => productCardHTML(p)).join('');
+  }
+}
+
+// --- Merchant Card HTML ---
+function merchantCardHTML(m) {
+  return `
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden card-hover">
+      <div class="relative">
+        <div class="aspect-[4/3] overflow-hidden bg-gray-100 cursor-pointer" onclick="showMerchantProfile('${m.id}')">
+          <img src="${m.image}" alt="${m.name}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
+        </div>
+        ${m.cc ? '<div class="absolute top-3 left-3"><span class="bg-white/95 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">✓ Click & Collect</span></div>' : ''}
+      </div>
+      <div class="p-4">
+        <div class="mb-1.5">
+          <span class="text-xs px-2 py-0.5 rounded-full font-medium bg-blue-50 text-blue-600">${m.catName}</span>
+        </div>
+        <h3 class="font-semibold text-gray-900 mb-1 cursor-pointer hover:text-primary-700" onclick="showMerchantProfile('${m.id}')">${m.name}</h3>
+        <p class="text-xs text-gray-500 line-clamp-2 mb-3">${m.short}</p>
+        <p class="text-xs text-gray-400 mb-3">📍 ${m.address}</p>
+        <div class="flex gap-2">
+          <button onclick="showMerchantProfile('${m.id}')" class="flex-1 text-xs font-medium py-2 px-3 rounded-lg border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-700 hover:bg-blue-50 transition-colors">Profil ansehen</button>
+          <button onclick="showPage('products')" class="text-xs font-medium py-2 px-3 rounded-lg bg-primary-700 text-white hover:bg-primary-800 transition-colors">🛍</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// --- Product Card HTML ---
+function productCardHTML(p) {
+  const merchant = MERCHANTS.find(m => m.id === p.mid);
+  const availLabel = { available:'Verfügbar', on_request:'Auf Anfrage', reserved:'Reserviert', unavailable:'Nicht verfügbar' }[p.avail];
+  const availColor = { available:'bg-green-100 text-green-700', on_request:'bg-amber-100 text-amber-700', reserved:'bg-blue-100 text-blue-700', unavailable:'bg-red-100 text-red-700' }[p.avail];
+  const isFav = favorites.has(p.id);
+  return `
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden card-hover">
+      <div class="relative aspect-[4/3] overflow-hidden bg-gray-100 cursor-pointer" onclick="showProductDetail('${p.id}')">
+        <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
+        ${p.tag ? `<div class="absolute top-3 left-3"><span class="bg-yellow-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">${p.tag}</span></div>` : ''}
+        <button onclick="event.stopPropagation();toggleFavorite('${p.id}')" id="fav-btn-${p.id}" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow text-lg hover:scale-110 transition-transform" title="Favorit">${isFav ? '❤️' : '🤍'}</button>
+      </div>
+      <div class="p-4">
+        <h3 class="font-semibold text-gray-900 text-sm mb-1 line-clamp-2 cursor-pointer hover:text-primary-700" onclick="showProductDetail('${p.id}')">${p.name}</h3>
+        <p class="text-xs text-gray-500 line-clamp-2 mb-2">${p.desc}</p>
+        ${merchant ? `<button onclick="showMerchantProfile('${merchant.id}')" class="text-xs text-gray-400 mb-2 hover:text-primary-700 text-left block">🏪 ${merchant.name}</button>` : ''}
+        <div class="flex items-center justify-between mb-3">
+          <span class="font-bold text-gray-900">${p.price}</span>
+          <span class="text-xs px-2 py-0.5 rounded-full font-medium ${availColor}">${availLabel}</span>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="showProductDetail('${p.id}')" class="flex-1 text-xs font-medium py-2 px-3 rounded-lg border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-700 hover:bg-blue-50 transition-colors">Details</button>
+          ${p.avail !== 'unavailable' ? `<button onclick="showReservation('${p.id}')" class="flex-1 text-xs font-semibold py-2 px-3 rounded-lg bg-primary-700 text-white hover:bg-primary-800 transition-colors">Reservieren</button>` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// --- Merchants Page ---
+function renderMerchants() {
+  const search = (document.getElementById('merchant-search')?.value || '').toLowerCase();
+  let filtered = MERCHANTS.filter(m => {
+    if (selectedCategory && !m.cats.includes(selectedCategory)) return false;
+    if (search && !m.name.toLowerCase().includes(search) && !m.catName.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  document.getElementById('merchants-grid').innerHTML = filtered.length
+    ? filtered.map(m => merchantCardHTML(m)).join('')
+    : '<div class="col-span-4 text-center py-16 text-gray-400"><div class="text-4xl mb-3">🔍</div><p class="font-medium">Keine Händler gefunden</p></div>';
+
+  // Category filter
+  const catFilter = document.getElementById('cat-filter');
+  catFilter.innerHTML = `
+    <button onclick="selectedCategory=null;renderMerchants()" class="px-4 py-2 rounded-full text-sm font-medium border ${!selectedCategory ? 'bg-primary-700 text-white border-primary-700' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}">Alle</button>
+  ` + CATEGORIES.map(c => `
+    <button onclick="selectedCategory='${c.id}';renderMerchants()" class="px-4 py-2 rounded-full text-sm font-medium border transition-all ${selectedCategory===c.id ? 'text-white border-transparent' : 'bg-white text-gray-600 border-gray-200'}" style="${selectedCategory===c.id ? 'background:'+c.color+';border-color:'+c.color : ''}">${c.icon} ${c.name}</button>
+  `).join('');
+}
+
+function filterMerchants() { renderMerchants(); }
+
+// --- Products Page ---
+function renderProducts(filter) {
+  const search = (document.getElementById('product-search')?.value || '').toLowerCase();
+  let filtered = PRODUCTS.filter(p => {
+    if (filter && MERCHANTS.find(m=>m.id===p.mid)?.id !== filter) return false;
+    if (search && !p.name.toLowerCase().includes(search) && !p.desc.toLowerCase().includes(search)) return false;
+    return true;
+  });
+  document.getElementById('products-grid').innerHTML = filtered.map(p => productCardHTML(p)).join('');
+}
+
+function filterProducts() { renderProducts(); }
+
+// --- Merchant Profile ---
+function showMerchantProfile(id) {
+  selectedMerchant = MERCHANTS.find(m => m.id === id);
+  if (!selectedMerchant) return;
+  const m = selectedMerchant;
+  const weekdays = ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
+  const mProducts = PRODUCTS.filter(p => p.mid === m.id).slice(0,4);
+
+  document.getElementById('merchant-profile-content').innerHTML = `
+    <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+      <button onclick="showPage('home')" class="hover:text-primary-700">Start</button><span>/</span>
+      <button onclick="showPage('merchants')" class="hover:text-primary-700">Händler</button><span>/</span>
+      <span class="text-gray-800 font-medium">${m.name}</span>
+    </nav>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 space-y-6">
+        <div class="relative rounded-2xl overflow-hidden aspect-video bg-gray-100">
+          <img src="${m.image}" alt="${m.name}" class="w-full h-full object-cover" />
+          ${m.cc ? '<div class="absolute top-4 left-4"><span class="bg-white text-blue-700 font-semibold text-sm px-3 py-1.5 rounded-full shadow-md">✓ Click & Collect</span></div>' : ''}
+        </div>
+        <div>
+          <span class="text-xs bg-blue-50 text-blue-600 px-2.5 py-1 rounded-full font-medium">${m.catName}</span>
+          <h1 class="text-3xl font-bold text-gray-900 mt-2">${m.name}</h1>
+          <p class="text-gray-500 text-sm mt-1">📍 ${m.address}</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <h2 class="font-semibold text-gray-900 mb-3 text-lg">Über ${m.name}</h2>
+          <p class="text-gray-600 leading-relaxed">${m.desc}</p>
+        </div>
+        ${m.team ? `<div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm"><h2 class="font-semibold text-gray-900 mb-4">Das Team</h2><div class="rounded-xl overflow-hidden"><img src="${m.team}" alt="Team" class="w-full h-48 object-cover" /></div></div>` : ''}
+        <div>
+          <h2 class="text-xl font-bold text-gray-900 mb-4">Produkte von ${m.name}</h2>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">${mProducts.map(p => productCardHTML(p)).join('')}</div>
+        </div>
+      </div>
+      <div class="space-y-5">
+        <div class="bg-primary-700 text-white rounded-2xl p-5">
+          ${m.cc ? '<p class="text-green-300 text-xl mb-2">✓</p><h3 class="font-semibold text-lg mb-2">Click & Collect</h3><p class="text-primary-200 text-sm mb-4">Produkte online reservieren, im Laden abholen.</p><button onclick="showPage(\'products\')" class="block text-center bg-white text-primary-800 font-semibold py-2.5 px-4 rounded-lg hover:bg-gray-50 text-sm w-full">Produkte reservieren</button>' : '<h3 class="font-semibold text-lg mb-2">Sortiment ansehen</h3><button onclick="showPage(\'products\')" class="block text-center bg-white text-primary-800 font-semibold py-2.5 px-4 rounded-lg hover:bg-gray-50 text-sm w-full">Produkte ansehen</button>'}
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+          <h3 class="font-semibold text-gray-900 mb-4">Kontakt</h3>
+          <div class="space-y-3">
+            ${m.phone ? `<a href="tel:${m.phone}" class="flex items-center gap-3 text-sm text-gray-600 hover:text-primary-700"><span class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">📞</span>${m.phone}</a>` : ''}
+            ${m.email ? `<a href="mailto:${m.email}" class="flex items-center gap-3 text-sm text-gray-600 hover:text-primary-700"><span class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">✉️</span>${m.email}</a>` : ''}
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+          <h3 class="font-semibold text-gray-900 mb-3">⏰ Öffnungszeiten</h3>
+          <p class="text-sm text-gray-600">${m.opening}</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+          <h3 class="font-semibold text-gray-900 mb-3">📍 Standort</h3>
+          <p class="text-sm text-gray-600 mb-3">${m.address}</p>
+          <div id="mini-map-${m.id}" style="height:160px;border-radius:12px;overflow:hidden;"></div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  showMerchantProfileWithMap(m);
+}
+
+// --- Map ---
+function initMap() {
+  if (map) { map.invalidateSize(); return; }
+  map = L.map('leaflet-map').setView([49.4928, 9.7745], 14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende',
+    maxZoom: 19
+  }).addTo(map);
+
+  MERCHANTS.forEach(m => {
+    const icon = L.divIcon({
+      html: `<div style="width:32px;height:32px;background:#1b4f8a;border:3px solid white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 8px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;"><span style="transform:rotate(45deg);font-size:12px">🏪</span></div>`,
+      iconSize:[32,32], iconAnchor:[16,32], popupAnchor:[0,-32], className:''
+    });
+    const marker = L.marker([m.lat, m.lng], {icon}).addTo(map);
+    marker.bindPopup(`
+      <div style="min-width:180px;font-family:Inter,sans-serif">
+        <img src="${m.image}" style="width:100%;height:100px;object-fit:cover;border-radius:8px;margin-bottom:8px" />
+        <p style="font-size:11px;color:#6b7280;margin-bottom:2px">${m.catName}</p>
+        <strong style="font-size:13px;display:block;margin-bottom:4px">${m.name}</strong>
+        <p style="font-size:11px;color:#6b7280;margin-bottom:8px">📍 ${m.address}</p>
+        ${m.cc ? '<p style="font-size:11px;color:#1b4f8a;font-weight:600;margin-bottom:8px">✓ Click & Collect</p>' : ''}
+        <button onclick="showMerchantProfile('${m.id}')" style="width:100%;padding:6px;background:#1b4f8a;color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer">Profil ansehen →</button>
+      </div>
+    `);
+  });
+
+  // Sidebar
+  const sidebar = document.getElementById('map-sidebar');
+  sidebar.innerHTML = `<p class="text-sm font-medium text-gray-500 px-1 pb-1">🏪 ${MERCHANTS.length} Händler</p>` +
+    MERCHANTS.map(m => `
+      <div onclick="map.flyTo([${m.lat},${m.lng}],16)" class="bg-white rounded-xl border border-gray-200 p-3 cursor-pointer hover:shadow-md hover:border-primary-300 transition-all">
+        <div class="flex gap-3">
+          <img src="${m.image}" class="w-12 h-12 rounded-lg object-cover shrink-0" />
+          <div class="min-w-0">
+            <button onclick="event.stopPropagation();showMerchantProfile('${m.id}')" class="font-semibold text-sm text-gray-900 hover:text-primary-700 text-left leading-tight block">${m.name}</button>
+            <p class="text-xs text-gray-400 mt-0.5 truncate">${m.address.split(',')[0]}</p>
+            ${m.cc ? '<p class="text-xs text-primary-600 font-medium mt-1">✓ Click & Collect</p>' : ''}
+          </div>
+        </div>
+      </div>
+    `).join('');
+}
+
+// --- Reservation ---
+function showReservation(productId) {
+  const p = PRODUCTS.find(pr => pr.id === productId);
+  if (!p) return;
+  const m = MERCHANTS.find(me => me.id === p.mid);
+
+  document.getElementById('reservation-content').innerHTML = `
+    <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+      <button onclick="showPage('products')" class="hover:text-primary-700">Produkte</button><span>/</span>
+      <span class="text-gray-800 font-medium">Reservierung</span>
+    </nav>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-3">
+        <h1 class="text-2xl font-bold text-gray-900 mb-1">Produkt reservieren</h1>
+        <p class="text-gray-500 text-sm mb-6">Kostenlos reservieren, vor Ort bezahlen und abholen.</p>
+        <form onsubmit="submitReservation(event,'${p.id}')" class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Vorname *</label><input type="text" required placeholder="Anna" class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
+            <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Nachname *</label><input type="text" required placeholder="Weber" class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1.5">E-Mail *</label><input type="email" required placeholder="anna.weber@beispiel.de" class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Telefonnummer *</label><input type="tel" required placeholder="07931 / 123 45" class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
+          <div class="grid grid-cols-2 gap-4">
+            <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Abholdatum *</label><input type="date" required min="${new Date().toISOString().split('T')[0]}" class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
+            <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Abholzeit *</label><input type="time" required min="08:00" max="18:30" class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Nachricht (optional)</label><textarea rows="3" placeholder="Besondere Wünsche oder Anmerkungen…" class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea></div>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" required class="mt-1 rounded border-gray-300 w-4 h-4" />
+            <span class="text-sm text-gray-600">Ich habe die <a href="#" class="text-primary-700 hover:underline">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zu. *</span>
+          </label>
+          <button type="submit" class="w-full bg-primary-700 text-white font-semibold py-3 rounded-xl hover:bg-primary-800 transition-colors text-base">✓ Reservierung absenden</button>
+        </form>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm sticky top-4">
+          <h3 class="font-semibold text-gray-900 mb-4">Ihre Reservierung</h3>
+          <div class="aspect-video rounded-xl overflow-hidden bg-gray-100 mb-4"><img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover" /></div>
+          <h4 class="font-semibold text-gray-900">${p.name}</h4>
+          <div class="text-2xl font-bold text-gray-900 mt-1 mb-2">${p.price}</div>
+          <div class="flex items-center gap-2 text-sm text-gray-600 mt-3">
+            <img src="${m?.image}" class="w-8 h-8 rounded-lg object-cover" />
+            <div><p class="font-medium">${m?.name}</p><p class="text-xs text-gray-400">${m?.address}</p></div>
+          </div>
+          <div class="mt-4 p-3 bg-blue-50 rounded-xl">
+            <p class="text-xs text-blue-800 font-medium mb-1">⏰ Wie geht es weiter?</p>
+            <ol class="text-xs text-blue-700 space-y-1 list-decimal ml-4">
+              <li>Händler prüft Verfügbarkeit</li>
+              <li>Sie erhalten eine Bestätigung</li>
+              <li>Abholung zum Wunschtermin</li>
+            </ol>
+          </div>
+          <p class="text-xs text-gray-400 mt-3 flex items-center gap-1">🛡 Kostenlose Reservierung · keine Zahlung</p>
+        </div>
+      </div>
+    </div>
+  `;
+  showPage('reservation');
+}
+
+function submitReservation(e, productId) {
+  e.preventDefault();
+  const form = e.target;
+  const inputs = form.querySelectorAll('input[type=text],input[type=email],input[type=tel],input[type=date],input[type=time]');
+  const p = PRODUCTS.find(pr => pr.id === productId);
+  const m = MERCHANTS.find(me => me.id === p.mid);
+  const num = 'BM-' + Math.random().toString(36).substring(2,7).toUpperCase() + '-' + Math.random().toString(36).substring(2,6).toUpperCase();
+  const dateVal = inputs[4]?.value || '';
+  const timeVal = inputs[5]?.value || '';
+  const pickupStr = dateVal && timeVal ? new Date(dateVal+'T'+timeVal).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}) + ', ' + timeVal + ' Uhr' : 'Termin ausstehend';
+  customerReservations.unshift({ num, product:p.name, merchant:m?.name||'', pickup:pickupStr, status:'received' });
+  localStorage.setItem('stadtmarkt-res', JSON.stringify(customerReservations));
+  RESERVATIONS.unshift({ num, product:p.name, merchant:m?.name||'', customer:'Kunde', pickup:pickupStr, status:'received' });
+  renderSellerReservations();
+
+  document.getElementById('reservation-content').innerHTML = `
+    <div class="max-w-2xl mx-auto py-8 text-center">
+      <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">✅</div>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Reservierung eingegangen!</h1>
+      <p class="text-gray-500 text-lg mb-8">Ihre Anfrage wurde erfolgreich übermittelt.</p>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-6 text-left">
+        <div class="bg-primary-700 px-6 py-5">
+          <p class="text-primary-200 text-xs font-medium mb-1">RESERVIERUNGSNUMMER</p>
+          <p class="text-white font-bold text-2xl tracking-wider">${num}</p>
+        </div>
+        <div class="p-6 space-y-4">
+          <div class="flex gap-4">
+            <img src="${p.img}" class="w-20 h-20 rounded-xl object-cover shrink-0" />
+            <div><h3 class="font-semibold text-gray-900">${p.name}</h3><p class="text-gray-500 text-sm mt-1">${p.price}</p></div>
+          </div>
+          <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+            <p class="font-semibold text-amber-800 text-sm">⏰ Abholzeit ausstehend</p>
+            <p class="text-amber-700 text-xs mt-1">Der Händler wird Ihren Termin bestätigen.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <img src="${m.image}" class="w-10 h-10 rounded-lg object-cover" />
+            <div><p class="font-semibold text-sm">${m.name}</p><p class="text-xs text-gray-400">📍 ${m.address}</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-blue-50 rounded-xl p-5 text-left mb-6">
+        <p class="font-semibold text-blue-900 mb-2">📧 Was passiert als nächstes?</p>
+        <div class="space-y-1 text-sm text-blue-800">
+          <p>📧 Bestätigung wird an Ihre E-Mail gesendet.</p>
+          <p>📞 Händler meldet sich zur Terminbestätigung.</p>
+          <p>🏪 Abholung im Geschäft und Bezahlung vor Ort.</p>
+        </div>
+      </div>
+      <div class="flex gap-3 justify-center">
+        <button onclick="showPage('home')" class="bg-primary-700 text-white font-semibold px-8 py-3 rounded-xl hover:bg-primary-800 transition-colors">🏠 Zur Startseite</button>
+        <button onclick="showPage('merchants')" class="border border-gray-300 text-gray-700 font-medium px-6 py-3 rounded-xl hover:border-gray-400 transition-colors">Weitere Händler</button>
+      </div>
+    </div>
+  `;
+}
+
+// --- Seller ---
+function showSellerTab(tab) {
+  ['dashboard','reservations','products','profile'].forEach(t => {
+    document.getElementById('seller-'+t).classList.add('hidden');
+    document.getElementById('stab-'+t).className = 'px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:border-gray-300 whitespace-nowrap';
+  });
+  document.getElementById('seller-'+tab).classList.remove('hidden');
+  document.getElementById('stab-'+tab).className = 'px-4 py-2 rounded-lg text-sm font-medium bg-primary-700 text-white whitespace-nowrap';
+}
+
+function renderSellerReservations() {
+  const statusColors = { received:'bg-blue-100 text-blue-800', confirmed:'bg-primary-100 text-primary-800', ready:'bg-green-100 text-green-700', completed:'bg-gray-100 text-gray-600', cancelled:'bg-red-100 text-red-700' };
+  const statusLabels = { received:'Eingegangen', confirmed:'Bestätigt', ready:'Abholbereit', completed:'Abgeschlossen', cancelled:'Storniert' };
+  const html = RESERVATIONS.map(r => `
+    <div class="bg-white rounded-xl border border-gray-200 p-4">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <div>
+          <span class="font-semibold text-sm">${r.customer}</span>
+          <span class="text-xs text-gray-400 ml-2 font-mono">${r.num}</span>
+        </div>
+        <span class="text-xs px-2.5 py-1 rounded-full font-medium ${statusColors[r.status]}">${statusLabels[r.status]}</span>
+      </div>
+      <p class="text-sm text-gray-600 mt-1">${r.product} · ${r.merchant}</p>
+      <p class="text-xs text-amber-600 mt-1">⏰ Abholung: ${r.pickup}</p>
+      <div class="flex gap-2 mt-3">
+        ${r.status==='received' ? `<button onclick="updateReservationStatus('${r.num}','confirmed')" class="text-xs bg-primary-700 text-white px-3 py-1.5 rounded-lg hover:bg-primary-800 transition-colors">✓ Bestätigen</button>` : ''}
+        ${r.status==='confirmed' ? `<button onclick="updateReservationStatus('${r.num}','ready')" class="text-xs bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 transition-colors">⏰ Abholbereit setzen</button>` : ''}
+        ${r.status==='ready' ? `<button onclick="updateReservationStatus('${r.num}','completed')" class="text-xs bg-gray-600 text-white px-3 py-1.5 rounded-lg hover:bg-gray-700 transition-colors">✓ Abgeschlossen</button>` : ''}
+        ${!['completed','cancelled'].includes(r.status) ? `<button onclick="if(confirm('Reservierung ${r.num} wirklich stornieren?'))updateReservationStatus('${r.num}','cancelled')" class="text-xs border border-red-200 text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors">✕ Stornieren</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+  const el = document.getElementById('seller-res-list');
+  if (el) el.innerHTML = html;
+  const full = document.getElementById('seller-full-res-list');
+  if (full) full.innerHTML = html;
+}
+
+// --- Admin ---
+function renderAdmin() {
+  const statusColors = { active:'bg-green-100 text-green-700', pending:'bg-amber-100 text-amber-700', inactive:'bg-gray-100 text-gray-600' };
+  const el = document.getElementById('admin-merchants-list');
+  if (el) el.innerHTML = MERCHANTS.map(m => `
+    <div class="flex items-center gap-3 p-2.5 rounded-lg hover:bg-gray-50">
+      <img src="${m.image}" class="w-9 h-9 rounded-lg object-cover" />
+      <div class="flex-1"><p class="text-sm font-medium text-gray-900">${m.name}</p><p class="text-xs text-gray-400">${m.address.split(',')[0]}</p></div>
+      <span class="text-xs px-2 py-0.5 rounded-full font-medium bg-green-100 text-green-700">Aktiv</span>
+    </div>
+  `).join('');
+
+  const catEl = document.getElementById('admin-categories-list');
+  if (catEl) catEl.innerHTML = CATEGORIES.map(c => `
+    <div class="flex items-center gap-2 p-2.5 rounded-lg bg-gray-50">
+      <span class="w-8 h-8 rounded-lg flex items-center justify-center text-lg" style="background:${c.color}20">${c.icon}</span>
+      <p class="text-xs font-medium text-gray-700 leading-tight">${c.name}</p>
+    </div>
+  `).join('');
+}
+
+// --- Product Detail ---
+function showProductDetail(id) {
+  const p = PRODUCTS.find(pr => pr.id === id);
+  if (!p) return;
+  const merchant = MERCHANTS.find(m => m.id === p.mid);
+  const availLabel = { available:'Verfügbar', on_request:'Auf Anfrage', reserved:'Reserviert', unavailable:'Nicht verfügbar' }[p.avail];
+  const availColor = { available:'bg-green-100 text-green-700', on_request:'bg-amber-100 text-amber-700', reserved:'bg-blue-100 text-blue-700', unavailable:'bg-red-100 text-red-700' }[p.avail];
+  const isFav = favorites.has(p.id);
+
+  document.getElementById('product-detail-content').innerHTML = `
+    <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+      <button onclick="showPage('home')" class="hover:text-primary-700">Start</button><span>/</span>
+      <button onclick="showPage('products')" class="hover:text-primary-700">Produkte</button><span>/</span>
+      <span class="text-gray-800 font-medium">${p.name}</span>
+    </nav>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div>
+        <div class="relative rounded-2xl overflow-hidden aspect-[4/3] bg-gray-100 mb-4">
+          <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover" />
+          ${p.tag ? `<div class="absolute top-4 left-4"><span class="bg-yellow-500 text-white font-semibold text-sm px-3 py-1 rounded-full">${p.tag}</span></div>` : ''}
+        </div>
+      </div>
+      <div class="flex flex-col gap-5">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">${p.name}</h1>
+          <p class="text-gray-600 leading-relaxed">${p.desc}</p>
+        </div>
+        <div class="flex items-center justify-between py-4 border-y border-gray-100">
+          <div>
+            <p class="text-sm text-gray-500 mb-0.5">Preis</p>
+            <p class="text-3xl font-bold text-gray-900">${p.price}</p>
+          </div>
+          <span class="text-sm font-medium px-4 py-2 rounded-full ${availColor}">${availLabel}</span>
+        </div>
+        ${merchant ? `
+        <button onclick="showMerchantProfile('${merchant.id}')" class="flex items-center gap-4 bg-white rounded-2xl border border-gray-100 p-4 shadow-sm hover:shadow-md hover:border-primary-200 transition-all text-left">
+          <img src="${merchant.image}" class="w-14 h-14 rounded-xl object-cover shrink-0" />
+          <div>
+            <p class="text-xs text-gray-400 mb-0.5">Erhältlich bei</p>
+            <p class="font-semibold text-gray-900">${merchant.name}</p>
+            <p class="text-xs text-gray-400">📍 ${merchant.address.split(',')[0]}</p>
+            ${merchant.cc ? '<p class="text-xs text-primary-600 font-medium mt-1">✓ Click & Collect</p>' : ''}
+          </div>
+          <span class="ml-auto text-gray-400">→</span>
+        </button>` : ''}
+        <div class="flex gap-3">
+          ${p.avail !== 'unavailable' ? `<button onclick="showReservation('${p.id}')" class="flex-1 bg-primary-700 text-white font-semibold py-3 rounded-xl hover:bg-primary-800 transition-colors">✓ Jetzt reservieren</button>` : '<div class="flex-1 bg-gray-100 text-gray-400 font-semibold py-3 rounded-xl text-center cursor-not-allowed">Nicht verfügbar</div>'}
+          <button onclick="toggleFavorite('${p.id}');this.textContent=favorites.has('${p.id}')?'❤️':'🤍'" class="w-14 h-14 rounded-xl border border-gray-200 flex items-center justify-center text-2xl hover:border-red-300 hover:bg-red-50 transition-colors">${isFav ? '❤️' : '🤍'}</button>
+        </div>
+        <p class="text-xs text-gray-400 bg-gray-50 rounded-xl p-3">🛡 Kostenlose Reservierung · Bezahlung vor Ort · Keine Anzahlung erforderlich</p>
+      </div>
+    </div>
+  `;
+  showPage('product-detail');
+}
+
+// --- Favorites ---
+function toggleFavorite(id) {
+  if (favorites.has(id)) favorites.delete(id);
+  else favorites.add(id);
+  localStorage.setItem('stadtmarkt-fav', JSON.stringify([...favorites]));
+  updateFavBadge();
+  // Update heart buttons currently visible
+  document.querySelectorAll(`#fav-btn-${id}`).forEach(btn => {
+    btn.textContent = favorites.has(id) ? '❤️' : '🤍';
+  });
+}
+
+function updateFavBadge() {
+  const badge = document.getElementById('fav-badge');
+  const count = favorites.size;
+  if (count > 0) {
+    badge.textContent = count;
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+}
+
+function renderFavorites() {
+  const grid = document.getElementById('favorites-grid');
+  const sub = document.getElementById('fav-subtitle');
+  if (!grid) return;
+  const favProducts = PRODUCTS.filter(p => favorites.has(p.id));
+  sub.textContent = favProducts.length + ' gespeicherte Produkte';
+  if (favProducts.length === 0) {
+    grid.innerHTML = `
+      <div class="col-span-4 text-center py-20 text-gray-400">
+        <div class="text-5xl mb-4">🤍</div>
+        <p class="text-lg font-medium text-gray-500">Noch keine Favoriten</p>
+        <p class="text-sm mt-2">Klicken Sie auf das Herz-Symbol bei einem Produkt.</p>
+        <button onclick="showPage('products')" class="mt-4 bg-primary-700 text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-800">Produkte entdecken</button>
+      </div>`;
+  } else {
+    grid.innerHTML = favProducts.map(p => productCardHTML(p)).join('');
+  }
+}
+
+// --- Reservation Status Update ---
+function updateReservationStatus(num, newStatus) {
+  const res = RESERVATIONS.find(r => r.num === num);
+  if (res) res.status = newStatus;
+  renderSellerReservations();
+  const statusLabel = { received:'Eingegangen', confirmed:'Bestätigt ✓', ready:'Abholbereit ✓', completed:'Abgeschlossen ✓', cancelled:'Storniert' }[newStatus];
+  showToast('Status aktualisiert: ' + statusLabel);
+}
+
+// --- Toast ---
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-5 py-3 rounded-xl shadow-xl text-sm font-medium z-50 fade-in';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2800);
+}
+
+// --- Map fix: prevent re-initializing destroyed maps ---
+function showMerchantProfileWithMap(m) {
+  showPage('merchant-profile');
+  setTimeout(() => {
+    const mapId = `mini-map-${m.id}`;
+    if (miniMaps[mapId]) { try { miniMaps[mapId].remove(); } catch(e){} }
+    miniMaps[mapId] = L.map(mapId, { zoomControl:false, dragging:false, scrollWheelZoom:false }).setView([m.lat, m.lng], 16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap' }).addTo(miniMaps[mapId]);
+    L.marker([m.lat, m.lng]).addTo(miniMaps[mapId]).bindPopup(m.name).openPopup();
+  }, 100);
+}
+
+// --- Init ---
+renderHome();
+renderSellerReservations();
+renderAdmin();
+renderMerchants();
+renderProducts();
+updateFavBadge();
+
+// Close role menu on outside click handled above
+</script>
+</body>
+</html>
