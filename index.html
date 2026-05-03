@@ -49,14 +49,14 @@
 <!-- ========== DATEN ========== -->
 <script>
 const CATEGORIES = [
-  { id:'cat-1', name:'Mode & Bekleidung', icon:'👗', color:'#8b5cf6' },
-  { id:'cat-2', name:'Bücher & Papier', icon:'📚', color:'#2563eb' },
-  { id:'cat-3', name:'Feinkost & Kulinarik', icon:'🧀', color:'#d97706' },
-  { id:'cat-4', name:'Blumen & Pflanzen', icon:'🌸', color:'#ec4899' },
-  { id:'cat-5', name:'Spielzeug & Familie', icon:'🧸', color:'#f59e0b' },
-  { id:'cat-6', name:'Wohnen & Deko', icon:'🏠', color:'#059669' },
-  { id:'cat-7', name:'Regionalprodukte', icon:'🌾', color:'#65a30d' },
-  { id:'cat-8', name:'Schmuck & Accessoires', icon:'💍', color:'#dc2626' },
+  { id:'cat-1', name:'Mode & Bekleidung', icon:'shirt', color:'#8b5cf6' },
+  { id:'cat-2', name:'Bücher & Papier', icon:'book-open', color:'#2563eb' },
+  { id:'cat-3', name:'Feinkost & Kulinarik', icon:'utensils-crossed', color:'#d97706' },
+  { id:'cat-4', name:'Blumen & Pflanzen', icon:'leaf', color:'#ec4899' },
+  { id:'cat-5', name:'Spielzeug & Familie', icon:'baby', color:'#f59e0b' },
+  { id:'cat-6', name:'Wohnen & Deko', icon:'home', color:'#059669' },
+  { id:'cat-7', name:'Regionalprodukte', icon:'wheat', color:'#65a30d' },
+  { id:'cat-8', name:'Schmuck & Accessoires', icon:'gem', color:'#dc2626' },
 ];
 
 const MERCHANTS = [
@@ -75,7 +75,7 @@ const MERCHANTS = [
   {
     id:'m2', slug:'modehaus-zimmermann', name:'Modehaus Zimmermann',
     cats:['cat-1'], catName:'Mode & Bekleidung',
-    short:'Mode mit Charakter – zeitlose Damen- und Herrenmode in der Tauberstadt.',
+    short:'Mode mit Charakter – zeitlose Damen- und Herrenmode in Bad Mergentheim.',
     address:'Hauptstraße 12, 97980 Bad Mergentheim',
     phone:'07931 / 48 23 1', email:'info@modehaus-zimmermann.de',
     image:'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&q=80',
@@ -85,16 +85,16 @@ const MERCHANTS = [
     desc:'Das Modehaus Zimmermann steht seit drei Generationen für Qualität, Stil und persönliche Beratung in Bad Mergentheim. Sorgfältig ausgewählte Kollektionen etablierter Modemarken.',
   },
   {
-    id:'m3', slug:'taubertaler-feinkost', name:'Taubertaler Feinkost',
+    id:'m3', slug:'mergentheimer-feinkost', name:'Mergentheimer Feinkost',
     cats:['cat-3','cat-7'], catName:'Feinkost & Regionalprodukte',
-    short:'Regionale Köstlichkeiten aus dem Taubertal – Honig, Weine, Gewürze.',
+    short:'Regionale Köstlichkeiten aus Bad Mergentheim – Honig, Weine, Gewürze.',
     address:'Am Marktplatz 3, 97980 Bad Mergentheim',
-    phone:'07931 / 77 44 2', email:'info@taubertaler-feinkost.de',
+    phone:'07931 / 77 44 2', email:'info@mergentheimer-feinkost.de',
     image:'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=600&q=80',
     team:'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80',
     cc:true, featured:true, lat:49.4918, lng:9.7745,
     opening:'Mo–Fr 09–18 Uhr, Mi 09–13 Uhr, Sa 08–15 Uhr',
-    desc:'Hochwertige regionale Produkte aus dem Taubertal: handgemachte Marmeladen, lokale Honigspezialitäten, ausgewählte Frankenweine und Gewürzmischungen aus eigenem Anbau.',
+    desc:'Hochwertige regionale Produkte aus Bad Mergentheim und der Region: handgemachte Marmeladen, lokale Honigspezialitäten, ausgewählte Frankenweine und Gewürzmischungen aus eigenem Anbau.',
   },
   {
     id:'m4', slug:'blumenparadies-rose', name:'Blumenparadies Rose',
@@ -130,7 +130,7 @@ const MERCHANTS = [
     team:null,
     cc:true, featured:true, lat:49.4924, lng:9.7748,
     opening:'Mo–Fr 06:30–18 Uhr, Sa 06:30–13:30 Uhr, So 07:30–11 Uhr',
-    desc:'Seit 1962 backen die Hofmanns täglich frisch nach überlieferten Rezepten mit regionalen Zutaten. Das Vollkornbrot „Taubertäler" ist ein Klassiker.',
+    desc:'Seit 1962 backen die Hofmanns täglich frisch nach überlieferten Rezepten mit regionalen Zutaten. Das Vollkornbrot „Mergentheimer" ist ein Klassiker.',
   },
   {
     id:'m7', slug:'goldschmied-engel', name:'Goldschmied Engel',
@@ -159,24 +159,24 @@ const MERCHANTS = [
 ];
 
 const PRODUCTS = [
-  { id:'p1', name:'Taubertal-Geschichten', mid:'m1', price:'18,90 €', avail:'available', img:'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&q=80', desc:'Sagen, Anekdoten und historische Geschichten aus dem Taubertal.', tag:'Empfehlung' },
+  { id:'p1', name:'Geschichten aus Bad Mergentheim', mid:'m1', price:'18,90 €', avail:'available', img:'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&q=80', desc:'Sagen, Anekdoten und historische Geschichten aus Bad Mergentheim und der Region.', tag:'Empfehlung' },
   { id:'p2', name:'Bad Mergentheimer Stadtführer', mid:'m1', price:'14,90 €', avail:'available', img:'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&q=80', desc:'Umfassender Stadtführer mit Fotos und Stadtplan.', tag:null },
-  { id:'p3', name:'Sommerkleid „Tauberblüte"', mid:'m2', price:'89 – 119 €', avail:'available', img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80', desc:'Leichtes Sommerkleid aus 100% Viskose mit zartem Blumenprint.', tag:'Empfehlung' },
+  { id:'p3', name:'Sommerkleid „Sommerblüte"', mid:'m2', price:'89 – 119 €', avail:'available', img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80', desc:'Leichtes Sommerkleid aus 100% Viskose mit zartem Blumenprint. Größen 36–46.', tag:'Empfehlung' },
   { id:'p4', name:'Ledertasche aus echtem Rindsleder', mid:'m2', price:'149 – 189 €', avail:'available', img:'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80', desc:'Elegante Damenhandtasche aus naturgemilchtem Rindsleder.', tag:null },
-  { id:'p5', name:'Taubertal-Honig (500g)', mid:'m3', price:'8,90 €', avail:'available', img:'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&q=80', desc:'Reiner Wildblütenhonig von heimischen Imkern, kaltgeschleudert.', tag:'Empfehlung' },
-  { id:'p6', name:'Frankenwein-Kassette „Tauberperlen"', mid:'m3', price:'34,90 €', avail:'available', img:'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80', desc:'Drei ausgewählte Weine vom Taubertal als Geschenkkassette.', tag:'Empfehlung' },
+  { id:'p5', name:'Bad Mergentheimer Honig (500g)', mid:'m3', price:'8,90 €', avail:'available', img:'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&q=80', desc:'Reiner Wildblütenhonig von heimischen Imkern aus Bad Mergentheim, kaltgeschleudert.', tag:'Empfehlung' },
+  { id:'p6', name:'Frankenwein-Kassette „Weinperlen"', mid:'m3', price:'34,90 €', avail:'available', img:'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80', desc:'Drei ausgewählte Weine aus Bad Mergentheim und der Region als Geschenkkassette.', tag:'Empfehlung' },
   { id:'p7', name:'Sommerstrauß „Bunt & Fröhlich"', mid:'m4', price:'19,90 – 39,90 €', avail:'available', img:'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=400&q=80', desc:'Frischer Saisonstrauß aus Sonnenblumen, Zinnia und Cosmeen.', tag:null },
   { id:'p8', name:'Holzeisenbahn-Set „Großes Streckennetz"', mid:'m5', price:'79,90 €', avail:'available', img:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&q=80', desc:'45 Schienenelemente, 2 Lokomotiven, 4 Waggons. Ab 3 Jahren.', tag:'Empfehlung' },
-  { id:'p9', name:'Vollkornbrot „Taubertäler"', mid:'m6', price:'6,80 €', avail:'available', img:'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&q=80', desc:'Kräftiges Sauerteig-Vollkornmischbrot aus regionalen Getreidesorten.', tag:'Empfehlung' },
+  { id:'p9', name:'Vollkornbrot „Mergentheimer"', mid:'m6', price:'6,80 €', avail:'available', img:'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&q=80', desc:'Kräftiges Sauerteig-Vollkornmischbrot aus regionalen Getreidesorten.', tag:'Empfehlung' },
   { id:'p10', name:'Fränkischer Mohnkuchen', mid:'m6', price:'16,50 €', avail:'on_request', img:'https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=400&q=80', desc:'Traditioneller fränkischer Mohnkuchen nach Omas Rezept. Vorbestellung!', tag:null },
-  { id:'p11', name:'Silberring „Tauberblüte"', mid:'m7', price:'89 – 139 €', avail:'available', img:'https://images.unsplash.com/photo-1589674781759-c21c37956a44?w=400&q=80', desc:'Fein gearbeiteter Sterling-Silberring mit Rosenquarz, handgefertigt.', tag:'Empfehlung' },
-  { id:'p12', name:'Kerzenset „Taubertalduft"', mid:'m8', price:'39,90 €', avail:'available', img:'https://images.unsplash.com/photo-1603006905003-be475563bc59?w=400&q=80', desc:'Drei handgegossene Sojawachskerzen mit regionalen Düften.', tag:null },
+  { id:'p11', name:'Silberring „Rosenblüte"', mid:'m7', price:'89 – 139 €', avail:'available', img:'https://images.unsplash.com/photo-1589674781759-c21c37956a44?w=400&q=80', desc:'Fein gearbeiteter Sterling-Silberring mit Rosenquarz, handgefertigt.', tag:'Empfehlung' },
+  { id:'p12', name:'Kerzenset „Regionalduft"', mid:'m8', price:'39,90 €', avail:'available', img:'https://images.unsplash.com/photo-1603006905003-be475563bc59?w=400&q=80', desc:'Drei handgegossene Sojawachskerzen mit regionalen Düften.', tag:null },
 ];
 
 const RESERVATIONS = [
-  { num:'BM-LB7X2A-K9PQ', product:'Taubertal-Honig', merchant:'Taubertaler Feinkost', customer:'Anna Weber', pickup:'03.05.2026, 10:00 Uhr', status:'confirmed' },
-  { num:'BM-MC9Y3B-R4TW', product:'Taubertal-Geschichten', merchant:'Buchhandlung Lesezeit', customer:'Anna Weber', pickup:'05.05.2026, 15:00 Uhr', status:'received' },
-  { num:'BM-NZ4D1C-F8WE', product:'Vollkornbrot „Taubertäler"', merchant:'Bäckerei Hofmann', customer:'Markus Bauer', pickup:'30.04.2026, 08:00 Uhr', status:'ready' },
+  { num:'BM-LB7X2A-K9PQ', product:'Bad Mergentheimer Honig', merchant:'Mergentheimer Feinkost', customer:'Anna Weber', pickup:'03.05.2026, 10:00 Uhr', status:'confirmed' },
+  { num:'BM-MC9Y3B-R4TW', product:'Geschichten aus Bad Mergentheim', merchant:'Buchhandlung Lesezeit', customer:'Anna Weber', pickup:'05.05.2026, 15:00 Uhr', status:'received' },
+  { num:'BM-NZ4D1C-F8WE', product:'Vollkornbrot „Mergentheimer"', merchant:'Bäckerei Hofmann', customer:'Markus Bauer', pickup:'30.04.2026, 08:00 Uhr', status:'ready' },
   { num:'BM-PK2M5E-H3NS', product:'Holzeisenbahn-Set', merchant:'Spielzeugwelt König', customer:'Claudia Fischer', pickup:'02.05.2026, 14:30 Uhr', status:'confirmed' },
 ];
 
@@ -198,7 +198,7 @@ let customerReservations = JSON.parse(localStorage.getItem('stadtmarkt-res') || 
       <!-- Logo -->
       <button onclick="showPage('home')" class="flex items-center gap-2.5">
         <div class="w-9 h-9 bg-primary-700 rounded-xl flex items-center justify-center shadow-sm">
-          <span class="text-white text-lg">🏘</span>
+          <i data-lucide="building-2" class="text-white w-4 h-4" style="color:white;width:18px;height:18px;stroke:white;stroke-width:2"></i>
         </div>
         <div class="hidden sm:block">
           <div class="font-bold text-primary-800 text-sm leading-tight">Stadtmarktplatz</div>
@@ -208,10 +208,10 @@ let customerReservations = JSON.parse(localStorage.getItem('stadtmarkt-res') || 
 
       <!-- Nav -->
       <nav class="hidden md:flex items-center gap-1">
-        <button onclick="showPage('merchants')" id="nav-merchants" class="nav-link flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-gray-50 transition-colors">🏪 Händler</button>
-        <button onclick="showPage('products')" id="nav-products" class="nav-link flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-gray-50 transition-colors">🛍 Produkte</button>
-        <button onclick="showPage('map')" id="nav-map" class="nav-link flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-gray-50 transition-colors">🗺 Karte</button>
-        <button onclick="showPage('favorites')" id="nav-favorites" class="nav-link relative flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-gray-50 transition-colors">♥ Favoriten<span id="fav-badge" class="hidden absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold"></span></button>
+        <button onclick="showPage('merchants')" id="nav-merchants" class="nav-link flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-gray-50 transition-colors"><i data-lucide="store" style="width:15px;height:15px;display:inline"></i> Händler</button>
+        <button onclick="showPage('products')" id="nav-products" class="nav-link flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-gray-50 transition-colors"><i data-lucide="shopping-bag" style="width:15px;height:15px;display:inline"></i> Produkte</button>
+        <button onclick="showPage('map')" id="nav-map" class="nav-link flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-gray-50 transition-colors"><i data-lucide="map-pin" style="width:15px;height:15px;display:inline"></i> Karte</button>
+        <button onclick="showPage('favorites')" id="nav-favorites" class="nav-link relative flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-gray-50 transition-colors"><i data-lucide="heart" style="width:15px;height:15px;display:inline"></i> Favoriten<span id="fav-badge" class="hidden absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold"></span></button>
       </nav>
 
       <!-- Right -->
@@ -273,23 +273,23 @@ let customerReservations = JSON.parse(localStorage.getItem('stadtmarkt-res') || 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
       <div class="max-w-2xl">
         <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur text-white/90 text-sm font-medium px-4 py-2 rounded-full mb-6 border border-white/20">
-          📍 Bad Mergentheim – Taubertal
+          <i data-lucide="map-pin" style="width:14px;height:14px;display:inline;color:#fcd34d"></i> Bad Mergentheim
         </div>
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
           Dein lokaler<br><span class="text-yellow-300">Marktplatz</span><br>digital.
         </h1>
         <p class="text-lg text-white/80 mb-8 max-w-xl leading-relaxed">
-          Entdecken Sie die besten Händler Bad Mergentheims – auf der Karte, nach Kategorie, mit Produkten und Click & Collect-Reservierung.
+          Entdecken sie die Vielfalt unsere Händler in Bad Mergentheim – auf der Karte, nach Kategorie oder konkret nach Produkten. Mit einfacher Click &amp; Collect-Reservierung.
         </p>
         <div class="flex flex-wrap gap-3">
           <button onclick="showPage('merchants')" class="flex items-center gap-2 bg-white text-primary-800 font-semibold px-6 py-3 rounded-xl hover:bg-gray-50 transition-colors shadow-lg">
-            🏪 Händler entdecken
+            <i data-lucide="store" style="width:18px;height:18px;display:inline"></i> Händler entdecken
           </button>
           <button onclick="showPage('map')" class="flex items-center gap-2 bg-white/10 backdrop-blur text-white font-semibold px-6 py-3 rounded-xl border border-white/30 hover:bg-white/20 transition-colors">
-            🗺 Karte ansehen
+            <i data-lucide="map-pin" style="width:18px;height:18px;display:inline;color:white"></i> Karte ansehen
           </button>
           <button onclick="showPage('products')" class="flex items-center gap-2 bg-yellow-500 text-white font-semibold px-6 py-3 rounded-xl hover:bg-yellow-600 transition-colors shadow-lg">
-            🛍 Produkte
+            <i data-lucide="shopping-bag" style="width:18px;height:18px;display:inline;color:white"></i> Produkte
           </button>
         </div>
         <div class="mt-8 flex items-center gap-3 bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20 w-fit">
@@ -324,25 +324,33 @@ let customerReservations = JSON.parse(localStorage.getItem('stadtmarkt-res') || 
       </div>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
-          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">🔍</div>
+          <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="search" style="width:20px;height:20px;color:#1b4f8a"></i>
+          </div>
           <div class="text-xs font-bold text-primary-600 mb-1">SCHRITT 1</div>
           <h3 class="font-semibold mb-2">Händler entdecken</h3>
           <p class="text-sm text-gray-500">Stöbern in der Liste oder auf der Karte.</p>
         </div>
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
-          <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">🛍</div>
+          <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="shopping-bag" style="width:20px;height:20px;color:#1b4f8a"></i>
+          </div>
           <div class="text-xs font-bold text-primary-600 mb-1">SCHRITT 2</div>
           <h3 class="font-semibold mb-2">Produkt auswählen</h3>
           <p class="text-sm text-gray-500">Produkt finden und Verfügbarkeit prüfen.</p>
         </div>
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
-          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">📋</div>
+          <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="clipboard-list" style="width:20px;height:20px;color:#1b4f8a"></i>
+          </div>
           <div class="text-xs font-bold text-primary-600 mb-1">SCHRITT 3</div>
           <h3 class="font-semibold mb-2">Reservieren</h3>
           <p class="text-sm text-gray-500">Formular ausfüllen und Abholzeit wählen.</p>
         </div>
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
-          <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">✅</div>
+          <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="check-circle-2" style="width:20px;height:20px;color:#1b4f8a"></i>
+          </div>
           <div class="text-xs font-bold text-primary-600 mb-1">SCHRITT 4</div>
           <h3 class="font-semibold mb-2">Abholen</h3>
           <p class="text-sm text-gray-500">Produkt bequem vor Ort abholen.</p>
@@ -410,7 +418,7 @@ let customerReservations = JSON.parse(localStorage.getItem('stadtmarkt-res') || 
   <footer class="bg-gray-900 text-gray-400 py-10">
     <div class="max-w-7xl mx-auto px-4 text-center">
       <div class="flex items-center justify-center gap-2.5 mb-4">
-        <div class="w-8 h-8 bg-primary-700 rounded-lg flex items-center justify-center"><span class="text-white">🏘</span></div>
+        <div class="w-8 h-8 bg-primary-700 rounded-lg flex items-center justify-center"><i data-lucide="building-2" style="width:16px;height:16px;color:white;stroke:white"></i></div>
         <span class="font-bold text-white">Stadtmarktplatz Bad Mergentheim</span>
       </div>
       <p class="text-sm">© 2026 – Eine Initiative der Wirtschaftsförderung Bad Mergentheim</p>
@@ -516,10 +524,10 @@ let customerReservations = JSON.parse(localStorage.getItem('stadtmarkt-res') || 
 
     <!-- Seller nav -->
     <div class="flex gap-2 mb-6 overflow-x-auto pb-1">
-      <button onclick="showSellerTab('dashboard')" id="stab-dashboard" class="px-4 py-2 rounded-lg text-sm font-medium bg-primary-700 text-white whitespace-nowrap">📊 Dashboard</button>
-      <button onclick="showSellerTab('reservations')" id="stab-reservations" class="px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:border-gray-300 whitespace-nowrap">📋 Reservierungen</button>
-      <button onclick="showSellerTab('products')" id="stab-products" class="px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:border-gray-300 whitespace-nowrap">📦 Produkte</button>
-      <button onclick="showSellerTab('profile')" id="stab-profile" class="px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:border-gray-300 whitespace-nowrap">👤 Profil</button>
+      <button onclick="showSellerTab('dashboard')" id="stab-dashboard" class="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-primary-700 text-white whitespace-nowrap"><i data-lucide="layout-dashboard" style="width:14px;height:14px;display:inline;color:white"></i> Dashboard</button>
+      <button onclick="showSellerTab('reservations')" id="stab-reservations" class="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:border-gray-300 whitespace-nowrap"><i data-lucide="clipboard-list" style="width:14px;height:14px;display:inline"></i> Reservierungen</button>
+      <button onclick="showSellerTab('products')" id="stab-products" class="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:border-gray-300 whitespace-nowrap"><i data-lucide="package" style="width:14px;height:14px;display:inline"></i> Produkte</button>
+      <button onclick="showSellerTab('profile')" id="stab-profile" class="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:border-gray-300 whitespace-nowrap"><i data-lucide="user" style="width:14px;height:14px;display:inline"></i> Profil</button>
     </div>
 
     <!-- Dashboard content -->
@@ -547,9 +555,99 @@ let customerReservations = JSON.parse(localStorage.getItem('stadtmarkt-res') || 
     <!-- Products tab -->
     <div id="seller-products" class="hidden">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-bold text-gray-900">Meine Produkte</h2>
-        <button onclick="alert('Produktformular – in der Vollversion komplett implementiert!')" class="flex items-center gap-2 bg-primary-700 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-primary-800">➕ Neues Produkt</button>
+        <div>
+          <h2 class="text-xl font-bold text-gray-900">Meine Produkte</h2>
+          <p class="text-sm text-gray-400 mt-0.5" id="product-count-label">4 aktive Produkte</p>
+        </div>
+        <div class="flex gap-2">
+          <button id="btn-new-product" onclick="toggleNewProductForm()" class="flex items-center gap-2 bg-primary-700 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-800 transition-colors">
+            <i data-lucide="plus" style="width:15px;height:15px;display:inline;color:white"></i> Neues Produkt
+          </button>
+        </div>
       </div>
+
+      <!-- Inline Produktformular -->
+      <div id="new-product-form-wrap" class="hidden mb-5">
+        <div class="bg-primary-50/40 border-2 border-primary-200 rounded-2xl p-6">
+          <h3 class="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <i data-lucide="plus-circle" style="width:18px;height:18px;color:#1b4f8a"></i>
+            Neues Produkt anlegen
+          </h3>
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Produktname *</label>
+                <input id="np-name" type="text" placeholder="z. B. Regionaler Honig 500g" class="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Kategorie</label>
+                <select id="np-category" class="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                  <option value="">Kategorie wählen…</option>
+                  <option value="Mode & Bekleidung">Mode & Bekleidung</option>
+                  <option value="Bücher & Papier">Bücher & Papier</option>
+                  <option value="Feinkost & Kulinarik">Feinkost & Kulinarik</option>
+                  <option value="Blumen & Pflanzen">Blumen & Pflanzen</option>
+                  <option value="Spielzeug & Familie">Spielzeug & Familie</option>
+                  <option value="Wohnen & Deko">Wohnen & Deko</option>
+                  <option value="Regionalprodukte">Regionalprodukte</option>
+                  <option value="Schmuck & Accessoires">Schmuck & Accessoires</option>
+                  <option value="Geschenkideen">Geschenkideen</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Beschreibung *</label>
+              <textarea id="np-desc" rows="3" placeholder="Beschreiben Sie Ihr Produkt – Besonderheiten, Herkunft, Qualität…" class="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"></textarea>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Preistyp</label>
+                <select id="np-pricetype" onchange="togglePriceInputs()" class="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                  <option value="fixed">Festpreis</option>
+                  <option value="range">Preisspanne</option>
+                  <option value="on_request">Auf Anfrage</option>
+                </select>
+              </div>
+              <div id="np-price-fixed">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Preis (€)</label>
+                <input id="np-price" type="number" step="0.01" min="0" placeholder="z. B. 12.90" class="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" />
+              </div>
+              <div id="np-price-range" class="hidden">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Von – Bis (€)</label>
+                <div class="flex gap-2">
+                  <input id="np-price-min" type="number" step="0.01" min="0" placeholder="Von" class="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                  <input id="np-price-max" type="number" step="0.01" min="0" placeholder="Bis" class="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Verfügbarkeit</label>
+                <select id="np-avail" class="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                  <option value="available">Verfügbar</option>
+                  <option value="on_request">Auf Anfrage</option>
+                  <option value="unavailable">Nicht verfügbar</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Bild-URL (optional)</label>
+              <input id="np-image" type="url" placeholder="https://beispiel.de/bild.jpg" class="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" />
+            </div>
+            <div class="flex items-center gap-3">
+              <input id="np-cc" type="checkbox" checked class="rounded border-gray-300 text-primary-600 w-4 h-4" />
+              <label for="np-cc" class="text-sm text-gray-700 cursor-pointer">Click &amp; Collect – Reservierung erlauben</label>
+            </div>
+            <div class="flex items-center gap-3 pt-1">
+              <button id="np-save-btn" onclick="saveNewProduct()" class="flex items-center gap-2 bg-primary-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-primary-800 transition-colors">
+                <i data-lucide="save" style="width:15px;height:15px;display:inline;color:white"></i>
+                Produkt anlegen
+              </button>
+              <button onclick="toggleNewProductForm()" class="px-5 py-2.5 rounded-xl border border-gray-300 text-sm text-gray-600 hover:border-gray-400 transition-colors">Abbrechen</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Produkttabelle -->
       <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <table class="w-full text-sm">
           <thead class="bg-gray-50 border-b"><tr>
@@ -557,10 +655,10 @@ let customerReservations = JSON.parse(localStorage.getItem('stadtmarkt-res') || 
             <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase hidden md:table-cell">Preis</th>
             <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Status</th>
           </tr></thead>
-          <tbody class="divide-y divide-gray-100">
-            <tr><td class="px-5 py-3"><div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=60&q=80" class="w-9 h-9 rounded-lg object-cover" /><div><p class="font-medium">Taubertal-Geschichten</p><p class="text-xs text-gray-400">Bücher & Papier</p></div></div></td><td class="px-4 py-3 hidden md:table-cell">18,90 €</td><td class="px-4 py-3"><span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Verfügbar</span></td></tr>
+          <tbody class="divide-y divide-gray-100" id="seller-product-list">
+            <tr><td class="px-5 py-3"><div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=60&q=80" class="w-9 h-9 rounded-lg object-cover" /><div><p class="font-medium">Geschichten aus Bad Mergentheim</p><p class="text-xs text-gray-400">Bücher & Papier</p></div></div></td><td class="px-4 py-3 hidden md:table-cell">18,90 €</td><td class="px-4 py-3"><span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Verfügbar</span></td></tr>
             <tr><td class="px-5 py-3"><div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=60&q=80" class="w-9 h-9 rounded-lg object-cover" /><div><p class="font-medium">Stadtführer Bad Mergentheim</p><p class="text-xs text-gray-400">Bücher & Papier</p></div></div></td><td class="px-4 py-3 hidden md:table-cell">14,90 €</td><td class="px-4 py-3"><span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Verfügbar</span></td></tr>
-            <tr><td class="px-5 py-3"><div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=60&q=80" class="w-9 h-9 rounded-lg object-cover" /><div><p class="font-medium">Kochbuch Tauberland</p><p class="text-xs text-gray-400">Bücher & Kulinarik</p></div></div></td><td class="px-4 py-3 hidden md:table-cell">22,00 €</td><td class="px-4 py-3"><span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Verfügbar</span></td></tr>
+            <tr><td class="px-5 py-3"><div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=60&q=80" class="w-9 h-9 rounded-lg object-cover" /><div><p class="font-medium">Regionale Küche Bad Mergentheim</p><p class="text-xs text-gray-400">Bücher & Kulinarik</p></div></div></td><td class="px-4 py-3 hidden md:table-cell">22,00 €</td><td class="px-4 py-3"><span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Verfügbar</span></td></tr>
             <tr><td class="px-5 py-3"><div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1474978528675-4a50a4508dc3?w=60&q=80" class="w-9 h-9 rounded-lg object-cover" /><div><p class="font-medium">Kinderbuch „Der Kurprinz"</p><p class="text-xs text-gray-400">Bücher & Familie</p></div></div></td><td class="px-4 py-3 hidden md:table-cell">12,90 €</td><td class="px-4 py-3"><span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Verfügbar</span></td></tr>
           </tbody>
         </table>
@@ -569,13 +667,51 @@ let customerReservations = JSON.parse(localStorage.getItem('stadtmarkt-res') || 
 
     <!-- Profile tab -->
     <div id="seller-profile" class="hidden max-w-2xl">
-      <h2 class="text-xl font-bold text-gray-900 mb-4">Mein Händlerprofil</h2>
+      <h2 class="text-xl font-bold text-gray-900 mb-5">Mein Händlerprofil</h2>
+
+      <!-- Profilbild / Logo -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-4">
+        <h3 class="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <i data-lucide="camera" style="width:16px;height:16px;color:#6b7280"></i>
+          Profilbild &amp; Logo
+        </h3>
+        <div class="flex items-center gap-5">
+          <!-- Vorschau -->
+          <div class="relative w-20 h-20 rounded-xl overflow-hidden bg-gray-100 border-2 border-dashed border-gray-300 shrink-0 flex items-center justify-center" id="profile-img-wrap">
+            <img id="profile-img-preview" src="" alt="Logo" class="w-full h-full object-cover hidden" />
+            <div id="profile-img-placeholder" class="flex items-center justify-center w-full h-full">
+              <i data-lucide="camera" style="width:26px;height:26px;color:#d1d5db"></i>
+            </div>
+            <!-- Entfernen-Button -->
+            <button id="profile-img-remove" onclick="removeProfileImage()" class="hidden absolute top-1 right-1 bg-black/50 text-white rounded-full p-0.5 hover:bg-black/70 transition-colors" style="line-height:1">
+              <i data-lucide="x" style="width:10px;height:10px;color:white"></i>
+            </button>
+          </div>
+          <!-- Upload-Bereich -->
+          <div class="flex flex-col gap-2">
+            <button onclick="document.getElementById('logo-file-input').click()" class="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-300 text-sm text-gray-600 hover:border-primary-400 hover:text-primary-700 transition-colors">
+              <i data-lucide="upload" style="width:14px;height:14px;display:inline"></i>
+              Bild hochladen
+            </button>
+            <p class="text-xs text-gray-400">JPG, PNG oder WebP empfohlen</p>
+            <input id="logo-file-input" type="file" accept="image/*" class="hidden" onchange="handleLogoUpload(event)" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Stammdaten -->
       <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
-        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Geschäftsname</label><input type="text" value="Buchhandlung Lesezeit" class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
-        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Kurzbeschreibung</label><input type="text" value="Ihr lokales Buchparadies am Marktplatz – mit persönlicher Beratung." class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
-        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Telefon</label><input type="text" value="07931 / 52 18 0" class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
-        <div class="flex items-center gap-3"><input type="checkbox" checked class="rounded border-gray-300 text-blue-600 w-4 h-4" /><label class="text-sm text-gray-700 font-medium">Click & Collect aktiviert</label></div>
-        <button onclick="alert('Profil gespeichert! ✓')" class="bg-primary-700 text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-800 transition-colors">💾 Profil speichern</button>
+        <h3 class="font-semibold text-gray-900 mb-1">Stammdaten</h3>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Geschäftsname</label><input type="text" value="Buchhandlung Lesezeit" class="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" /></div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Kurzbeschreibung</label><input type="text" value="Ihr lokales Buchparadies am Marktplatz – mit persönlicher Beratung." class="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" /></div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Telefon</label><input type="text" value="07931 / 52 18 0" class="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" /></div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">E-Mail</label><input type="email" value="info@buchhandlung-lesezeit.de" class="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" /></div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Website</label><input type="url" placeholder="https://www.ihr-laden.de" class="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" /></div>
+        <div class="flex items-center gap-3"><input type="checkbox" checked class="rounded border-gray-300 text-primary-600 w-4 h-4" id="cc-toggle" /><label for="cc-toggle" class="text-sm text-gray-700 font-medium cursor-pointer">Click &amp; Collect aktiviert</label></div>
+        <button onclick="saveProfile()" class="flex items-center gap-2 bg-primary-700 text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-800 transition-colors">
+          <i data-lucide="save" style="width:15px;height:15px;display:inline;color:white"></i>
+          Profil speichern
+        </button>
       </div>
     </div>
   </div>
@@ -615,7 +751,7 @@ let customerReservations = JSON.parse(localStorage.getItem('stadtmarkt-res') || 
       <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
         <h3 class="font-semibold text-gray-900 mb-4">📋 Letzte Reservierungen</h3>
         <div class="space-y-2">
-          <div class="flex items-center gap-3 p-2.5 rounded-lg"><div class="flex-1"><p class="text-sm font-medium">Anna Weber → Taubertal-Honig</p><p class="text-xs text-gray-400">Taubertaler Feinkost</p></div><span class="bg-primary-100 text-primary-800 text-xs px-2 py-0.5 rounded-full font-medium">Bestätigt</span></div>
+          <div class="flex items-center gap-3 p-2.5 rounded-lg"><div class="flex-1"><p class="text-sm font-medium">Anna Weber → Bad Mergentheimer Honig</p><p class="text-xs text-gray-400">Mergentheimer Feinkost</p></div><span class="bg-primary-100 text-primary-800 text-xs px-2 py-0.5 rounded-full font-medium">Bestätigt</span></div>
           <div class="flex items-center gap-3 p-2.5 rounded-lg"><div class="flex-1"><p class="text-sm font-medium">Markus Bauer → Vollkornbrot</p><p class="text-xs text-gray-400">Bäckerei Hofmann</p></div><span class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium">Abholbereit</span></div>
           <div class="flex items-center gap-3 p-2.5 rounded-lg"><div class="flex-1"><p class="text-sm font-medium">Claudia Fischer → Holzeisenbahn</p><p class="text-xs text-gray-400">Spielzeugwelt König</p></div><span class="bg-primary-100 text-primary-800 text-xs px-2 py-0.5 rounded-full font-medium">Bestätigt</span></div>
           <div class="flex items-center gap-3 p-2.5 rounded-lg"><div class="flex-1"><p class="text-sm font-medium">Stefan Müller → Silberring</p><p class="text-xs text-gray-400">Goldschmied Engel</p></div><span class="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-medium">Eingegangen</span></div>
@@ -704,11 +840,12 @@ function renderHome() {
   if (catGrid) {
     catGrid.innerHTML = CATEGORIES.map(c => `
       <button onclick="selectedCategory='${c.id}';showPage('merchants')" class="bg-white rounded-2xl p-4 text-center shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group">
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-2 text-2xl group-hover:scale-110 transition-transform" style="background:${c.color}20">${c.icon}</div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform" style="background:${c.color}20"><i data-lucide="${c.icon}" style="width:20px;height:20px;color:${c.color}"></i></div>
         <p class="text-sm font-medium text-gray-800 leading-tight">${c.name}</p>
         <p class="text-xs text-gray-400 mt-1">${MERCHANTS.filter(m=>m.cats.includes(c.id)).length} Händler</p>
       </button>
     `).join('');
+    setTimeout(renderIcons, 10);
   }
 
   // Featured products
@@ -786,15 +923,16 @@ function renderMerchants() {
 
   document.getElementById('merchants-grid').innerHTML = filtered.length
     ? filtered.map(m => merchantCardHTML(m)).join('')
-    : '<div class="col-span-4 text-center py-16 text-gray-400"><div class="text-4xl mb-3">🔍</div><p class="font-medium">Keine Händler gefunden</p></div>';
+    : '<div class="col-span-4 text-center py-16 text-gray-400"><div class="text-4xl mb-3"><i data-lucide=\'search\' style=\'width:40px;height:40px;margin:0 auto\'></i></div><p class="font-medium">Keine Händler gefunden</p></div>';
 
   // Category filter
   const catFilter = document.getElementById('cat-filter');
   catFilter.innerHTML = `
     <button onclick="selectedCategory=null;renderMerchants()" class="px-4 py-2 rounded-full text-sm font-medium border ${!selectedCategory ? 'bg-primary-700 text-white border-primary-700' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}">Alle</button>
   ` + CATEGORIES.map(c => `
-    <button onclick="selectedCategory='${c.id}';renderMerchants()" class="px-4 py-2 rounded-full text-sm font-medium border transition-all ${selectedCategory===c.id ? 'text-white border-transparent' : 'bg-white text-gray-600 border-gray-200'}" style="${selectedCategory===c.id ? 'background:'+c.color+';border-color:'+c.color : ''}">${c.icon} ${c.name}</button>
+    <button onclick="selectedCategory='${c.id}';renderMerchants()" class="px-4 py-2 rounded-full text-sm font-medium border transition-all flex items-center gap-1.5 ${selectedCategory===c.id ? 'text-white border-transparent' : 'bg-white text-gray-600 border-gray-200'}" style="${selectedCategory===c.id ? 'background:'+c.color+';border-color:'+c.color : ''}"><i data-lucide="${c.icon}" style="width:13px;height:13px;display:inline;${selectedCategory===c.id ? 'color:white' : 'color:'+c.color}"></i> ${c.name}</button>
   `).join('');
+  setTimeout(renderIcons, 10);
 }
 
 function filterMerchants() { renderMerchants(); }
@@ -1038,10 +1176,11 @@ function submitReservation(e, productId) {
 function showSellerTab(tab) {
   ['dashboard','reservations','products','profile'].forEach(t => {
     document.getElementById('seller-'+t).classList.add('hidden');
-    document.getElementById('stab-'+t).className = 'px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:border-gray-300 whitespace-nowrap';
+    document.getElementById('stab-'+t).className = 'flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:border-gray-300 whitespace-nowrap';
   });
   document.getElementById('seller-'+tab).classList.remove('hidden');
-  document.getElementById('stab-'+tab).className = 'px-4 py-2 rounded-lg text-sm font-medium bg-primary-700 text-white whitespace-nowrap';
+  document.getElementById('stab-'+tab).className = 'flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-primary-700 text-white whitespace-nowrap';
+  setTimeout(renderIcons, 10);
 }
 
 function renderSellerReservations() {
@@ -1087,7 +1226,7 @@ function renderAdmin() {
   const catEl = document.getElementById('admin-categories-list');
   if (catEl) catEl.innerHTML = CATEGORIES.map(c => `
     <div class="flex items-center gap-2 p-2.5 rounded-lg bg-gray-50">
-      <span class="w-8 h-8 rounded-lg flex items-center justify-center text-lg" style="background:${c.color}20">${c.icon}</span>
+      <span class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:${c.color}20"><i data-lucide="${c.icon}" style="width:15px;height:15px;color:${c.color}"></i></span>
       <p class="text-xs font-medium text-gray-700 leading-tight">${c.name}</p>
     </div>
   `).join('');
@@ -1230,6 +1369,176 @@ renderProducts();
 updateFavBadge();
 
 // Close role menu on outside click handled above
+
+// =============================================
+// NEUES PRODUKT – Inline-Formular
+// =============================================
+let newProductFormOpen = false;
+let sellerProductCount = 4;
+
+function toggleNewProductForm() {
+  newProductFormOpen = !newProductFormOpen;
+  const wrap = document.getElementById('new-product-form-wrap');
+  const btn  = document.getElementById('btn-new-product');
+  if (newProductFormOpen) {
+    wrap.classList.remove('hidden');
+    btn.innerHTML = '<i data-lucide="x" style="width:15px;height:15px;display:inline;color:white"></i> Abbrechen';
+    btn.classList.replace('bg-primary-700','bg-gray-500');
+    btn.classList.replace('hover:bg-primary-800','hover:bg-gray-600');
+    document.getElementById('np-name').focus();
+  } else {
+    wrap.classList.add('hidden');
+    btn.innerHTML = '<i data-lucide="plus" style="width:15px;height:15px;display:inline;color:white"></i> Neues Produkt';
+    btn.classList.replace('bg-gray-500','bg-primary-700');
+    btn.classList.replace('hover:bg-gray-600','hover:bg-primary-800');
+    clearNewProductForm();
+  }
+  setTimeout(renderIcons, 10);
+}
+
+function togglePriceInputs() {
+  const t = document.getElementById('np-pricetype').value;
+  document.getElementById('np-price-fixed').classList.toggle('hidden', t !== 'fixed');
+  document.getElementById('np-price-range').classList.toggle('hidden', t !== 'range');
+}
+
+function clearNewProductForm() {
+  ['np-name','np-desc','np-price','np-price-min','np-price-max','np-image'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  const cat = document.getElementById('np-category');
+  if (cat) cat.selectedIndex = 0;
+  const avail = document.getElementById('np-avail');
+  if (avail) avail.selectedIndex = 0;
+  const cc = document.getElementById('np-cc');
+  if (cc) cc.checked = true;
+}
+
+function saveNewProduct() {
+  const name = document.getElementById('np-name').value.trim();
+  const desc = document.getElementById('np-desc').value.trim();
+  if (!name) { document.getElementById('np-name').focus(); document.getElementById('np-name').style.borderColor='#dc2626'; return; }
+  if (!desc)  { document.getElementById('np-desc').focus(); document.getElementById('np-desc').style.borderColor='#dc2626'; return; }
+
+  const pricetype = document.getElementById('np-pricetype').value;
+  let priceLabel = 'Auf Anfrage';
+  if (pricetype === 'fixed') {
+    const v = parseFloat(document.getElementById('np-price').value);
+    priceLabel = isNaN(v) ? '– €' : v.toFixed(2).replace('.',',') + ' €';
+  } else if (pricetype === 'range') {
+    const mn = parseFloat(document.getElementById('np-price-min').value);
+    const mx = parseFloat(document.getElementById('np-price-max').value);
+    priceLabel = (!isNaN(mn) && !isNaN(mx)) ? mn.toFixed(2).replace('.',',') + ' – ' + mx.toFixed(2).replace('.',',') + ' €' : '– €';
+  }
+
+  const cat    = document.getElementById('np-category').value || '—';
+  const avail  = document.getElementById('np-avail').value;
+  const imgUrl = document.getElementById('np-image').value.trim();
+  const statusBadge = avail === 'available'
+    ? '<span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Verfügbar</span>'
+    : avail === 'on_request'
+    ? '<span class="bg-yellow-100 text-yellow-700 text-xs px-2.5 py-1 rounded-full font-medium">Auf Anfrage</span>'
+    : '<span class="bg-gray-100 text-gray-500 text-xs px-2.5 py-1 rounded-full font-medium">Nicht verfügbar</span>';
+
+  const imgHTML = imgUrl
+    ? `<img src="${imgUrl}" class="w-9 h-9 rounded-lg object-cover" onerror="this.style.display='none'" />`
+    : `<div class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center"><i data-lucide="shopping-bag" style="width:14px;height:14px;color:#9ca3af"></i></div>`;
+
+  const row = document.createElement('tr');
+  row.className = 'fade-in';
+  row.innerHTML = `
+    <td class="px-5 py-3">
+      <div class="flex items-center gap-3">
+        ${imgHTML}
+        <div>
+          <p class="font-medium text-gray-900">${name}</p>
+          <p class="text-xs text-gray-400">${cat}</p>
+        </div>
+      </div>
+    </td>
+    <td class="px-4 py-3 hidden md:table-cell font-medium text-gray-700">${priceLabel}</td>
+    <td class="px-4 py-3">${statusBadge}</td>
+  `;
+
+  document.getElementById('seller-product-list').appendChild(row);
+  sellerProductCount++;
+  document.getElementById('product-count-label').textContent = sellerProductCount + ' aktive Produkte';
+
+  // Btn zurücksetzen
+  const saveBtn = document.getElementById('np-save-btn');
+  saveBtn.innerHTML = '<i data-lucide="check-circle-2" style="width:15px;height:15px;display:inline;color:white"></i> Gespeichert!';
+  saveBtn.classList.replace('bg-primary-700','bg-green-600');
+  saveBtn.disabled = true;
+  setTimeout(() => {
+    toggleNewProductForm();
+    saveBtn.innerHTML = '<i data-lucide="save" style="width:15px;height:15px;display:inline;color:white"></i> Produkt anlegen';
+    saveBtn.classList.replace('bg-green-600','bg-primary-700');
+    saveBtn.disabled = false;
+    setTimeout(renderIcons, 10);
+  }, 900);
+
+  setTimeout(renderIcons, 10);
+  showToast('Produkt „' + name + '" wurde angelegt.');
+}
+
+// =============================================
+// PROFILBILD UPLOAD
+// =============================================
+function handleLogoUpload(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    const img = document.getElementById('profile-img-preview');
+    const placeholder = document.getElementById('profile-img-placeholder');
+    const removeBtn = document.getElementById('profile-img-remove');
+    img.src = ev.target.result;
+    img.classList.remove('hidden');
+    placeholder.classList.add('hidden');
+    removeBtn.classList.remove('hidden');
+    // Auch Header-Avatar aktualisieren
+    const headerImg = document.querySelector('#page-seller .w-12.h-12 img');
+    if (headerImg) headerImg.src = ev.target.result;
+    setTimeout(renderIcons, 10);
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeProfileImage() {
+  const img = document.getElementById('profile-img-preview');
+  const placeholder = document.getElementById('profile-img-placeholder');
+  const removeBtn = document.getElementById('profile-img-remove');
+  img.src = '';
+  img.classList.add('hidden');
+  placeholder.classList.remove('hidden');
+  removeBtn.classList.add('hidden');
+  document.getElementById('logo-file-input').value = '';
+  setTimeout(renderIcons, 10);
+}
+
+function saveProfile() {
+  const btn = document.querySelector('#seller-profile button[onclick="saveProfile()"]');
+  const orig = btn.innerHTML;
+  btn.innerHTML = '<i data-lucide="check-circle-2" style="width:15px;height:15px;display:inline;color:white"></i> Gespeichert!';
+  btn.classList.replace('bg-primary-700','bg-green-600');
+  setTimeout(() => {
+    btn.innerHTML = orig;
+    btn.classList.replace('bg-green-600','bg-primary-700');
+    setTimeout(renderIcons, 10);
+  }, 2500);
+  showToast('Profil gespeichert.');
+  setTimeout(renderIcons, 10);
+}
+
+// --- Lucide icon rendering ---
+function renderIcons() {
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+document.addEventListener('DOMContentLoaded', renderIcons);
+// Re-render after dynamic page changes
+const _origShowPage = showPage;
+window.showPage = function(p) { _origShowPage(p); setTimeout(renderIcons, 50); };
 </script>
 </body>
 </html>
