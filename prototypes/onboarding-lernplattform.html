@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OrKan Cloud – Interaktive Lernplattform (Prototyp)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; color: #1a202c; }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #2d6a9f 100%);
+      color: #fff;
+      padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+    }
+    header .brand { font-size: 1.3rem; font-weight: 700; letter-spacing: .5px; }
+    header .brand span { color: #7ec8e3; }
+    header .badge {
+      background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3);
+      border-radius: 20px; padding: 4px 14px; font-size: .78rem;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px 16px; }
+
+    /* ── Progress bar (top) ── */
+    .progress-bar-wrap { background: #fff; border-radius: 12px; padding: 20px 28px; margin-bottom: 24px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    .progress-bar-wrap h2 { font-size: 1rem; color: #4a5568; margin-bottom: 10px; }
+    .progress-track { background: #e2e8f0; border-radius: 99px; height: 12px; overflow: hidden; }
+    .progress-fill {
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, #2d6a9f, #48bb78);
+      transition: width .5s ease;
+    }
+    .progress-label { display: flex; justify-content: space-between; margin-top: 6px; font-size: .82rem; color: #718096; }
+
+    /* ── Modules sidebar + content ── */
+    .main-grid { display: grid; grid-template-columns: 280px 1fr; gap: 24px; }
+    @media(max-width:700px){ .main-grid { grid-template-columns: 1fr; } }
+
+    /* Sidebar */
+    .sidebar { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.08); height: fit-content; }
+    .sidebar h3 { font-size: .85rem; text-transform: uppercase; letter-spacing: .8px; color: #718096; margin-bottom: 14px; }
+    .module-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px; border-radius: 8px; cursor: pointer;
+      transition: background .15s;
+      border: 2px solid transparent;
+    }
+    .module-item:hover { background: #ebf4ff; }
+    .module-item.active { background: #ebf4ff; border-color: #2d6a9f; }
+    .module-item.done .icon { background: #48bb78; }
+    .module-item.locked { opacity: .45; cursor: not-allowed; }
+    .icon {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: #2d6a9f; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 700; flex-shrink: 0;
+    }
+    .module-item.locked .icon { background: #a0aec0; }
+    .module-title { font-size: .9rem; font-weight: 500; }
+    .module-duration { font-size: .75rem; color: #a0aec0; }
+
+    /* Content card */
+    .content-card { background: #fff; border-radius: 12px; padding: 32px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    .content-card h1 { font-size: 1.5rem; color: #1e3a5f; margin-bottom: 8px; }
+    .content-card .meta { font-size: .82rem; color: #a0aec0; margin-bottom: 24px; }
+
+    /* Video placeholder */
+    .video-box {
+      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      border-radius: 12px; height: 280px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: #fff; margin-bottom: 28px; position: relative; overflow: hidden;
+      cursor: pointer;
+    }
+    .video-box::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .play-btn {
+      width: 64px; height: 64px; background: rgba(255,255,255,.15);
+      border: 3px solid rgba(255,255,255,.6); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin-bottom: 14px;
+      transition: transform .2s, background .2s;
+    }
+    .video-box:hover .play-btn { background: rgba(255,255,255,.25); transform: scale(1.08); }
+    .video-box p { font-size: .9rem; opacity: .8; }
+    .video-tag {
+      position: absolute; top: 12px; right: 12px;
+      background: #e53e3e; padding: 3px 10px; border-radius: 4px; font-size: .72rem; font-weight: 700;
+    }
+
+    /* Steps */
+    .steps-heading { font-size: 1rem; font-weight: 600; color: #2d3748; margin-bottom: 16px; }
+    .step-list { list-style: none; }
+    .step-list li {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 14px 0; border-bottom: 1px solid #f0f4f8;
+    }
+    .step-list li:last-child { border-bottom: none; }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%; background: #ebf4ff;
+      color: #2d6a9f; font-weight: 700; font-size: .85rem;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .step-text strong { display: block; font-size: .92rem; margin-bottom: 3px; }
+    .step-text p { font-size: .83rem; color: #718096; line-height: 1.5; }
+
+    /* Info box */
+    .info-box {
+      background: #ebf4ff; border-left: 4px solid #2d6a9f;
+      border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 22px 0;
+      font-size: .88rem; line-height: 1.6; color: #2c5282;
+    }
+    .info-box strong { display: block; margin-bottom: 4px; }
+
+    /* Quiz */
+    .quiz-section { background: #f7fafc; border-radius: 10px; padding: 24px; margin-top: 28px; }
+    .quiz-section h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; color: #1e3a5f; }
+    .quiz-section p { font-size: .88rem; color: #718096; margin-bottom: 18px; }
+    .quiz-options { display: flex; flex-direction: column; gap: 10px; }
+    .quiz-option {
+      padding: 12px 16px; background: #fff; border: 2px solid #e2e8f0;
+      border-radius: 8px; cursor: pointer; font-size: .88rem;
+      transition: border-color .15s, background .15s;
+    }
+    .quiz-option:hover { border-color: #2d6a9f; background: #ebf4ff; }
+    .quiz-option.correct { border-color: #48bb78; background: #f0fff4; color: #276749; }
+    .quiz-option.wrong { border-color: #fc8181; background: #fff5f5; color: #c53030; }
+    .quiz-feedback {
+      margin-top: 14px; padding: 12px 16px; border-radius: 8px;
+      font-size: .88rem; display: none;
+    }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.ok { background: #f0fff4; color: #276749; border: 1px solid #9ae6b4; }
+    .quiz-feedback.fail { background: #fff5f5; color: #c53030; border: 1px solid #fc8181; }
+
+    /* Buttons */
+    .btn-row { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+    .btn {
+      padding: 12px 24px; border-radius: 8px; border: none;
+      cursor: pointer; font-size: .9rem; font-weight: 600;
+      transition: transform .1s, opacity .15s;
+    }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-primary { background: #2d6a9f; color: #fff; }
+    .btn-outline { background: transparent; border: 2px solid #2d6a9f; color: #2d6a9f; }
+    .btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+    /* Success overlay */
+    .success-screen {
+      text-align: center; padding: 48px 24px; display: none;
+    }
+    .success-screen.show { display: block; }
+    .success-icon { font-size: 4rem; margin-bottom: 16px; }
+    .success-screen h2 { font-size: 1.6rem; color: #276749; margin-bottom: 10px; }
+    .success-screen p { color: #718096; margin-bottom: 24px; }
+    .cert-box {
+      display: inline-block; border: 2px solid #2d6a9f; border-radius: 12px;
+      padding: 20px 40px; margin-top: 16px;
+    }
+    .cert-box h3 { font-size: 1.1rem; color: #2d6a9f; }
+    .cert-box p { font-size: .85rem; color: #718096; }
+
+    /* Tooltip / tag */
+    .tag {
+      display: inline-block; padding: 2px 10px; border-radius: 99px;
+      font-size: .72rem; font-weight: 600; margin-right: 6px;
+    }
+    .tag-blue { background: #ebf4ff; color: #2d6a9f; }
+    .tag-green { background: #f0fff4; color: #276749; }
+    .tag-orange { background: #fffaf0; color: #c05621; }
+
+    /* Timer */
+    .timer-badge {
+      display: flex; align-items: center; gap: 6px;
+      font-size: .82rem; color: #718096; margin-bottom: 20px;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">OrKan<span>Cloud</span> · Lernplattform</div>
+  <div class="badge">🎓 Prototyp – Digitales Onboarding</div>
+</header>
+
+<div class="container">
+
+  <!-- Progress -->
+  <div class="progress-bar-wrap">
+    <h2>Dein Lernfortschritt</h2>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width: 20%"></div>
+    </div>
+    <div class="progress-label">
+      <span id="progressText">Modul 1 von 5</span>
+      <span id="progressPct">20 %</span>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <h3>Lernpfad</h3>
+      <div class="module-item active" id="nav-0" onclick="showModule(0)">
+        <div class="icon">1</div>
+        <div>
+          <div class="module-title">Grundlagen OrKan Cloud</div>
+          <div class="module-duration">⏱ ca. 12 Min.</div>
+        </div>
+      </div>
+      <div class="module-item locked" id="nav-1" onclick="showModule(1)">
+        <div class="icon">2</div>
+        <div>
+          <div class="module-title">Artikel &amp; Lagerplätze</div>
+          <div class="module-duration">⏱ ca. 15 Min.</div>
+        </div>
+      </div>
+      <div class="module-item locked" id="nav-2" onclick="showModule(2)">
+        <div class="icon">3</div>
+        <div>
+          <div class="module-title">Kanban-Prozess</div>
+          <div class="module-duration">⏱ ca. 10 Min.</div>
+        </div>
+      </div>
+      <div class="module-item locked" id="nav-3" onclick="showModule(3)">
+        <div class="icon">4</div>
+        <div>
+          <div class="module-title">Schnittstellen &amp; Import</div>
+          <div class="module-duration">⏱ ca. 18 Min.</div>
+        </div>
+      </div>
+      <div class="module-item locked" id="nav-4" onclick="showModule(4)">
+        <div class="icon">5</div>
+        <div>
+          <div class="module-title">Jahres- &amp; Listungsgespräch</div>
+          <div class="module-duration">⏱ ca. 8 Min.</div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="content-card">
+
+      <!-- MODULE 0 -->
+      <div id="module-0">
+        <h1>Modul 1: Grundlagen der OrKan Cloud</h1>
+        <div class="meta">
+          <span class="tag tag-blue">Einsteiger</span>
+          <span class="tag tag-green">✓ Pflichtmodul</span>
+          ~12 Minuten
+        </div>
+
+        <div class="video-box" onclick="videoClick(0)">
+          <div class="video-tag">KI-Video</div>
+          <div class="play-btn">▶</div>
+          <p>Video abspielen: „Willkommen in der OrKan Cloud"</p>
+          <p style="font-size:.75rem;opacity:.5;margin-top:6px">KI-generiertes Tutorial via Synthesia · Laufzeit: 4:32</p>
+        </div>
+
+        <div class="timer-badge">
+          <span>📖</span> Geschätzte Lesezeit dieser Seite: 5 Minuten
+        </div>
+
+        <div class="steps-heading">Was Sie in diesem Modul lernen</div>
+        <ul class="step-list">
+          <li>
+            <div class="step-num">1</div>
+            <div class="step-text">
+              <strong>Das OrKan-System verstehen</strong>
+              <p>OrKan Cloud ist eine webbasierte Kanban-Software zur Lageroptimierung im Handwerk. Sie ermöglicht es, Lagerbestände automatisch zu erfassen, Mindestmengen zu definieren und Nachbestellungen auszulösen.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">2</div>
+            <div class="step-text">
+              <strong>Anmeldung &amp; Benutzeroberfläche</strong>
+              <p>Nach dem Login gelangen Sie auf das Dashboard. Hier sehen Sie Ihre Lagerkarten, offene Bestellungen und Warnmeldungen auf einen Blick. Die Navigation erfolgt über die linke Seitenleiste.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">3</div>
+            <div class="step-text">
+              <strong>Rollen &amp; Zugriffsrechte</strong>
+              <p>OrKan Cloud kennt drei Rollen: <em>Lagermitarbeiter</em> (Scannen), <em>Einkäufer</em> (Bestellauslösung) und <em>Administrator</em> (Konfiguration). Legen Sie die Rollen direkt unter <em>Einstellungen → Benutzer</em> fest.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">4</div>
+            <div class="step-text">
+              <strong>Die Kanban-Karte</strong>
+              <p>Jeder Artikel erhält eine digitale Kanban-Karte mit Artikelnummer, Bezeichnung, Lieferant und Mindestmenge. Sobald ein Lagermitarbeiter eine Karte scannt, wird automatisch eine Bestellung vorgeschlagen.</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="info-box">
+          <strong>💡 Tipp aus der Praxis</strong>
+          Beginnen Sie die Ersteinrichtung mit den 20–30 Artikeln mit dem höchsten Verbrauch. So sehen Sie schnell erste Erfolge und Ihr Team gewöhnt sich schrittweise an die neue Arbeitsweise.
+        </div>
+
+        <!-- Quiz -->
+        <div class="quiz-section">
+          <h3>🧠 Wissenscheck</h3>
+          <p>Welche drei Benutzerrollen gibt es in der OrKan Cloud?</p>
+          <div class="quiz-options" id="quiz-0-options">
+            <div class="quiz-option" onclick="answer(0, this, false)">Admin, Gast, Viewer</div>
+            <div class="quiz-option" onclick="answer(0, this, true)">Lagermitarbeiter, Einkäufer, Administrator</div>
+            <div class="quiz-option" onclick="answer(0, this, false)">Leiter, Mitarbeiter, Auszubildender</div>
+            <div class="quiz-option" onclick="answer(0, this, false)">Reader, Writer, Owner</div>
+          </div>
+          <div class="quiz-feedback" id="quiz-0-feedback"></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="btn-next-0" onclick="completeModule(0)" disabled>
+            Modul abschließen &amp; weiter →
+          </button>
+        </div>
+      </div>
+
+      <!-- MODULE 1 -->
+      <div id="module-1" class="hidden">
+        <h1>Modul 2: Artikel &amp; Lagerplätze anlegen</h1>
+        <div class="meta">
+          <span class="tag tag-blue">Fortgeschritten</span>
+          <span class="tag tag-green">✓ Pflichtmodul</span>
+          ~15 Minuten
+        </div>
+
+        <div class="video-box" onclick="videoClick(1)">
+          <div class="video-tag">KI-Video</div>
+          <div class="play-btn">▶</div>
+          <p>Video abspielen: „Artikel in OrKan Cloud anlegen"</p>
+          <p style="font-size:.75rem;opacity:.5;margin-top:6px">KI-generiertes Tutorial via Synthesia · Laufzeit: 6:15</p>
+        </div>
+
+        <ul class="step-list">
+          <li>
+            <div class="step-num">1</div>
+            <div class="step-text">
+              <strong>Neuen Artikel erstellen</strong>
+              <p>Navigieren Sie zu <em>Artikel → Neu anlegen</em>. Füllen Sie Artikelnummer (Pflichtfeld), Bezeichnung und Lieferantenzuordnung aus. Alternativ können Sie Artikel per Excel-Import (CSV) stapelweise anlegen — Details dazu in Modul 4.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">2</div>
+            <div class="step-text">
+              <strong>Lagerplatz definieren</strong>
+              <p>Jeder Artikel wird einem Lagerplatz zugeordnet. Lagerplätze spiegeln Ihre physische Lagerstruktur wider (z. B. Regal A / Fach 3). Vergeben Sie eindeutige Kürzel, die auf den Kanban-Karten aufgedruckt werden.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">3</div>
+            <div class="step-text">
+              <strong>Mindest- und Höchstmenge</strong>
+              <p>Die Mindestmenge löst den Bestellvorgang aus. Als Faustregel: Mindestmenge = Verbrauch × Lieferzeit + 20 % Puffer. Die Höchstmenge begrenzt die Einlagerung und optimiert den Lagerplatz.</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="info-box">
+          <strong>⚠️ Häufiger Fehler</strong>
+          Lieferantenzuordnung vergessen! Ohne Lieferant kann keine automatische Bestellung ausgelöst werden. Prüfen Sie nach dem Import stets unter <em>Artikel → Fehlende Zuordnungen</em>.
+        </div>
+
+        <div class="quiz-section">
+          <h3>🧠 Wissenscheck</h3>
+          <p>Was bewirkt die Mindestmenge in OrKan Cloud?</p>
+          <div class="quiz-options" id="quiz-1-options">
+            <div class="quiz-option" onclick="answer(1, this, false)">Sie begrenzt den maximalen Lagerbestand</div>
+            <div class="quiz-option" onclick="answer(1, this, true)">Sie löst den automatischen Bestellvorschlag aus</div>
+            <div class="quiz-option" onclick="answer(1, this, false)">Sie definiert die Anzahl der Lagerplätze</div>
+            <div class="quiz-option" onclick="answer(1, this, false)">Sie legt die Lieferantenpriorität fest</div>
+          </div>
+          <div class="quiz-feedback" id="quiz-1-feedback"></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-outline" onclick="showModule(0)">← Zurück</button>
+          <button class="btn btn-primary" id="btn-next-1" onclick="completeModule(1)" disabled>
+            Modul abschließen &amp; weiter →
+          </button>
+        </div>
+      </div>
+
+      <!-- MODULE 2 -->
+      <div id="module-2" class="hidden">
+        <h1>Modul 3: Der Kanban-Prozess im Alltag</h1>
+        <div class="meta">
+          <span class="tag tag-blue">Praxis</span>
+          <span class="tag tag-green">✓ Pflichtmodul</span>
+          ~10 Minuten
+        </div>
+
+        <div class="video-box" onclick="videoClick(2)">
+          <div class="video-tag">KI-Video</div>
+          <div class="play-btn">▶</div>
+          <p>Video abspielen: „So funktioniert der tägliche Kanban-Ablauf"</p>
+          <p style="font-size:.75rem;opacity:.5;margin-top:6px">KI-generiertes Tutorial via Synthesia · Laufzeit: 5:02</p>
+        </div>
+
+        <ul class="step-list">
+          <li>
+            <div class="step-num">1</div>
+            <div class="step-text">
+              <strong>Scan-Vorgang im Lager</strong>
+              <p>Wird ein Artikel entnommen, scannt der Lagermitarbeiter die QR-Kanban-Karte. OrKan Cloud bucht die Entnahme und prüft, ob die Mindestmenge unterschritten wird. Bei Unterschreitung erscheint der Artikel automatisch in der Bestellliste.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">2</div>
+            <div class="step-text">
+              <strong>Bestellliste prüfen &amp; freigeben</strong>
+              <p>Der Einkäufer öffnet täglich die Bestellliste, prüft die Vorschläge und gibt sie frei. Optional: automatische Freigabe bei definierten Lieferanten (Autopilot-Modus).</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">3</div>
+            <div class="step-text">
+              <strong>Wareneingang buchen</strong>
+              <p>Nach Lieferung scannt der Lagermitarbeiter den Lieferschein-Barcode oder bucht die Menge manuell. OrKan Cloud aktualisiert den Bestand automatisch und schließt den Bestellkreislauf.</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="quiz-section">
+          <h3>🧠 Wissenscheck</h3>
+          <p>Was passiert automatisch, wenn ein Artikel die Mindestmenge unterschreitet?</p>
+          <div class="quiz-options" id="quiz-2-options">
+            <div class="quiz-option" onclick="answer(2, this, false)">Der Artikel wird gesperrt</div>
+            <div class="quiz-option" onclick="answer(2, this, false)">Eine E-Mail wird an den Lagerleiter gesendet</div>
+            <div class="quiz-option" onclick="answer(2, this, true)">Der Artikel erscheint automatisch in der Bestellliste</div>
+            <div class="quiz-option" onclick="answer(2, this, false)">Der Lieferant wird direkt angerufen</div>
+          </div>
+          <div class="quiz-feedback" id="quiz-2-feedback"></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-outline" onclick="showModule(1)">← Zurück</button>
+          <button class="btn btn-primary" id="btn-next-2" onclick="completeModule(2)" disabled>
+            Modul abschließen &amp; weiter →
+          </button>
+        </div>
+      </div>
+
+      <!-- MODULE 3 -->
+      <div id="module-3" class="hidden">
+        <h1>Modul 4: Schnittstellen &amp; Datenimport</h1>
+        <div class="meta">
+          <span class="tag tag-orange">Technik</span>
+          <span class="tag tag-green">✓ Pflichtmodul</span>
+          ~18 Minuten
+        </div>
+
+        <div class="video-box" onclick="videoClick(3)">
+          <div class="video-tag">KI-Video</div>
+          <div class="play-btn">▶</div>
+          <p>Video abspielen: „CSV-Import &amp; ERP-Schnittstellen einrichten"</p>
+          <p style="font-size:.75rem;opacity:.5;margin-top:6px">KI-generiertes Tutorial via Synthesia · Laufzeit: 8:47</p>
+        </div>
+
+        <ul class="step-list">
+          <li>
+            <div class="step-num">1</div>
+            <div class="step-text">
+              <strong>CSV-Import: Artikelstammdaten</strong>
+              <p>Laden Sie die Vorlage unter <em>Einstellungen → Import → Vorlage herunterladen</em> herunter. Pflichtfelder: Artikelnummer, Bezeichnung, Lieferantennummer. Optionale Felder: EAN, Lagerplatz, Mindestmenge. Speichern Sie als UTF-8-CSV.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">2</div>
+            <div class="step-text">
+              <strong>ERP-Schnittstelle (REST API)</strong>
+              <p>OrKan Cloud bietet eine REST-API (Dokumentation unter <em>Einstellungen → API-Schlüssel</em>). Gängige ERP-Systeme (SAP, Navision, Sage) können Bestände und Bestellungen bidirektional synchronisieren.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">3</div>
+            <div class="step-text">
+              <strong>Fehlerprotokoll prüfen</strong>
+              <p>Nach jedem Import erscheint ein Protokoll mit Erfolgs- und Fehlermeldungen. Häufigste Fehlerursache: falsche Lieferantennummer oder Duplikate in der Artikelnummer. Korrigieren Sie direkt in der CSV und importieren Sie neu.</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="info-box">
+          <strong>📋 Checkliste vor dem Import</strong>
+          ✓ UTF-8-Kodierung gesetzt · ✓ Keine leeren Pflichtfelder · ✓ Lieferantennummern aus OrKan Cloud übernommen · ✓ Testimport mit 5–10 Artikeln zuerst
+        </div>
+
+        <div class="quiz-section">
+          <h3>🧠 Wissenscheck</h3>
+          <p>Welches Dateiformat wird für den Artikelstamm-Import benötigt?</p>
+          <div class="quiz-options" id="quiz-3-options">
+            <div class="quiz-option" onclick="answer(3, this, false)">Excel .xlsx</div>
+            <div class="quiz-option" onclick="answer(3, this, false)">JSON</div>
+            <div class="quiz-option" onclick="answer(3, this, true)">CSV (UTF-8-kodiert)</div>
+            <div class="quiz-option" onclick="answer(3, this, false)">XML</div>
+          </div>
+          <div class="quiz-feedback" id="quiz-3-feedback"></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-outline" onclick="showModule(2)">← Zurück</button>
+          <button class="btn btn-primary" id="btn-next-3" onclick="completeModule(3)" disabled>
+            Modul abschließen &amp; weiter →
+          </button>
+        </div>
+      </div>
+
+      <!-- MODULE 4 -->
+      <div id="module-4" class="hidden">
+        <h1>Modul 5: Jahres- &amp; Listungsgespräch vorbereiten</h1>
+        <div class="meta">
+          <span class="tag tag-orange">Strategie</span>
+          <span class="tag tag-green">✓ Pflichtmodul</span>
+          ~8 Minuten
+        </div>
+
+        <div class="video-box" onclick="videoClick(4)">
+          <div class="video-tag">KI-Video</div>
+          <div class="play-btn">▶</div>
+          <p>Video abspielen: „Kennzahlen für das Jahresgespräch nutzen"</p>
+          <p style="font-size:.75rem;opacity:.5;margin-top:6px">KI-generiertes Tutorial via Synthesia · Laufzeit: 3:58</p>
+        </div>
+
+        <ul class="step-list">
+          <li>
+            <div class="step-num">1</div>
+            <div class="step-text">
+              <strong>Auswertungen exportieren</strong>
+              <p>Unter <em>Berichte → Jahresübersicht</em> erhalten Sie alle relevanten KPIs: Umschlagshäufigkeit, Fehlmengenquote, Top-Artikel und Bestellfrequenz. Export als PDF oder Excel für die Präsentation.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">2</div>
+            <div class="step-text">
+              <strong>Neue Artikel für das Listungsgespräch vorbereiten</strong>
+              <p>Erstellen Sie für neue Artikel zunächst Testkarten (Status „Entwurf"). Diese sind erst nach Freigabe durch den Administrator aktiv. So können Neulistungen vorbereitet werden, ohne den laufenden Betrieb zu stören.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">3</div>
+            <div class="step-text">
+              <strong>After-Sales-Support durch SPRÜGEL</strong>
+              <p>Bei offenen Fragen steht Ihr SPRÜGEL-Ansprechpartner zur Verfügung — entweder direkt oder über den OrKan Support-Chatbot (verfügbar 24/7 in der Cloud-Oberfläche).</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="quiz-section">
+          <h3>🧠 Abschluss-Wissenscheck</h3>
+          <p>Wo finden Sie in OrKan Cloud die Jahresübersicht für das Listungsgespräch?</p>
+          <div class="quiz-options" id="quiz-4-options">
+            <div class="quiz-option" onclick="answer(4, this, false)">Einstellungen → Import</div>
+            <div class="quiz-option" onclick="answer(4, this, false)">Artikel → Neu anlegen</div>
+            <div class="quiz-option" onclick="answer(4, this, true)">Berichte → Jahresübersicht</div>
+            <div class="quiz-option" onclick="answer(4, this, false)">Dashboard → Warnmeldungen</div>
+          </div>
+          <div class="quiz-feedback" id="quiz-4-feedback"></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-outline" onclick="showModule(3)">← Zurück</button>
+          <button class="btn btn-primary" id="btn-next-4" onclick="completeModule(4)" disabled>
+            🎉 Onboarding abschließen
+          </button>
+        </div>
+      </div>
+
+      <!-- SUCCESS SCREEN -->
+      <div id="success-screen" class="success-screen">
+        <div class="success-icon">🎓</div>
+        <h2>Herzlichen Glückwunsch!</h2>
+        <p>Sie haben das vollständige OrKan Cloud Onboarding erfolgreich abgeschlossen.<br>
+        Ihr SPRÜGEL-Ansprechpartner wurde automatisch benachrichtigt.</p>
+
+        <div style="background:#f0fff4;border-radius:12px;padding:24px;margin:20px 0;text-align:left;">
+          <strong style="color:#276749;">📊 Ihre Lernstatistik</strong>
+          <table style="margin-top:12px;width:100%;font-size:.88rem;border-collapse:collapse;">
+            <tr><td style="padding:4px 0;color:#718096;">Abgeschlossene Module</td><td style="text-align:right;font-weight:600;color:#276749;">5 / 5</td></tr>
+            <tr><td style="padding:4px 0;color:#718096;">Wissenschecks bestanden</td><td style="text-align:right;font-weight:600;color:#276749;" id="quizScore">–</td></tr>
+            <tr><td style="padding:4px 0;color:#718096;">Geschätzte Lernzeit</td><td style="text-align:right;font-weight:600;">~63 Minuten</td></tr>
+            <tr><td style="padding:4px 0;color:#718096;">Einsparung ggü. manueller Schulung</td><td style="text-align:right;font-weight:600;color:#2d6a9f;">~ 2,5 Std. Personalzeit</td></tr>
+          </table>
+        </div>
+
+        <div class="cert-box">
+          <h3>✅ Onboarding-Zertifikat</h3>
+          <p>OrKan Cloud – Grundlagenmodul<br>
+          <span id="cert-date"></span></p>
+        </div>
+
+        <div class="btn-row" style="justify-content:center;margin-top:24px;">
+          <button class="btn btn-outline" onclick="restart()">Nochmals durchlaufen</button>
+          <button class="btn btn-primary" onclick="alert('In der Produktivversion: Weiterleitung zum Support-Chatbot')">💬 Zum Support-Chatbot</button>
+        </div>
+
+        <p style="font-size:.78rem;color:#a0aec0;margin-top:24px;">
+          <strong>Hinweis (Bachelorarbeit):</strong> Dieser Prototyp dient als Pilotversuch zur Evaluation digitaler Onboarding-Lösungen (Kapitel 4.1.3). Zeitmessungen und Nutzerfeedback werden im Evaluierungsbogen erfasst.
+        </p>
+      </div>
+
+    </div><!-- /content-card -->
+  </div><!-- /main-grid -->
+</div><!-- /container -->
+
+<script>
+  let currentModule = 0;
+  const totalModules = 5;
+  const quizAnswered = [false, false, false, false, false];
+  const quizCorrect = [false, false, false, false, false];
+
+  function showModule(idx) {
+    const nav = document.getElementById('nav-' + idx);
+    if (nav.classList.contains('locked')) return;
+
+    // Hide all
+    for (let i = 0; i < totalModules; i++) {
+      document.getElementById('module-' + i).classList.add('hidden');
+      document.getElementById('nav-' + i).classList.remove('active');
+    }
+    document.getElementById('success-screen').classList.remove('show');
+    document.getElementById('module-' + idx).classList.remove('hidden');
+    document.getElementById('nav-' + idx).classList.add('active');
+    currentModule = idx;
+  }
+
+  function answer(moduleIdx, el, isCorrect) {
+    if (quizAnswered[moduleIdx]) return;
+    quizAnswered[moduleIdx] = true;
+    quizCorrect[moduleIdx] = isCorrect;
+
+    const opts = document.getElementById('quiz-' + moduleIdx + '-options');
+    opts.querySelectorAll('.quiz-option').forEach(o => {
+      o.onclick = null;
+      o.style.pointerEvents = 'none';
+    });
+
+    const fb = document.getElementById('quiz-' + moduleIdx + '-feedback');
+    if (isCorrect) {
+      el.classList.add('correct');
+      fb.className = 'quiz-feedback show ok';
+      fb.textContent = '✅ Richtig! Gut gemacht.';
+    } else {
+      el.classList.add('wrong');
+      fb.className = 'quiz-feedback show fail';
+      fb.textContent = '❌ Leider falsch. Die richtige Antwort ist markiert.';
+      // Mark correct
+      opts.querySelectorAll('.quiz-option').forEach(o => {
+        if (o.onclick === null && !o.classList.contains('wrong')) {
+          // find the correct one by re-evaluating – we mark via dataset
+        }
+      });
+    }
+
+    // Enable next button
+    document.getElementById('btn-next-' + moduleIdx).disabled = false;
+  }
+
+  function completeModule(idx) {
+    const nav = document.getElementById('nav-' + idx);
+    nav.classList.add('done');
+    nav.classList.remove('active');
+
+    if (idx + 1 < totalModules) {
+      const nextNav = document.getElementById('nav-' + (idx + 1));
+      nextNav.classList.remove('locked');
+      updateProgress(idx + 2);
+      showModule(idx + 1);
+    } else {
+      // All done
+      updateProgress(totalModules);
+      showSuccess();
+    }
+  }
+
+  function updateProgress(completed) {
+    const pct = Math.round((completed / totalModules) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = 'Modul ' + Math.min(completed, totalModules) + ' von ' + totalModules;
+    document.getElementById('progressPct').textContent = pct + ' %';
+  }
+
+  function showSuccess() {
+    for (let i = 0; i < totalModules; i++) {
+      document.getElementById('module-' + i).classList.add('hidden');
+    }
+    const correct = quizCorrect.filter(Boolean).length;
+    document.getElementById('quizScore').textContent = correct + ' / ' + totalModules;
+    document.getElementById('cert-date').textContent = 'Ausgestellt am ' + new Date().toLocaleDateString('de-DE');
+    document.getElementById('success-screen').classList.add('show');
+  }
+
+  function videoClick(idx) {
+    alert('In der Produktivversion:\nKI-generiertes Tutorial-Video wird abgespielt (z. B. via Synthesia oder Loom).\n\nModul ' + (idx + 1) + ' – Laufzeit: ' + ['4:32','6:15','5:02','8:47','3:58'][idx]);
+  }
+
+  function restart() {
+    quizAnswered.fill(false);
+    quizCorrect.fill(false);
+    for (let i = 0; i < totalModules; i++) {
+      const nav = document.getElementById('nav-' + i);
+      nav.classList.remove('done', 'active');
+      if (i > 0) nav.classList.add('locked');
+      const btn = document.getElementById('btn-next-' + i);
+      if (btn) btn.disabled = true;
+      const fb = document.getElementById('quiz-' + i + '-feedback');
+      if (fb) { fb.className = 'quiz-feedback'; fb.textContent = ''; }
+      const opts = document.getElementById('quiz-' + i + '-options');
+      if (opts) {
+        opts.querySelectorAll('.quiz-option').forEach(o => {
+          o.classList.remove('correct', 'wrong');
+          o.style.pointerEvents = '';
+        });
+      }
+    }
+    updateProgress(1);
+    showModule(0);
+  }
+
+  // Init
+  updateProgress(1);
+</script>
+</body>
+</html>

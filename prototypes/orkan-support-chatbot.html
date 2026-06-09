@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OrKan Support-Chatbot (Prototyp)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; color: #1a202c; height: 100vh; display: flex; flex-direction: column; }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #2d6a9f 100%);
+      color: #fff; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+    }
+    .brand { font-size: 1.2rem; font-weight: 700; }
+    .brand span { color: #7ec8e3; }
+    .status { display: flex; align-items: center; gap: 8px; font-size: .82rem; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: #48bb78; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    /* ── Main layout ── */
+    .layout { display: flex; flex: 1; overflow: hidden; max-width: 1200px; margin: 0 auto; width: 100%; padding: 20px 16px; gap: 20px; }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 260px; flex-shrink: 0;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    @media(max-width:700px){ .sidebar { display: none; } }
+
+    .info-card { background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    .info-card h3 { font-size: .82rem; text-transform: uppercase; letter-spacing: .7px; color: #718096; margin-bottom: 12px; }
+    .quick-btn {
+      width: 100%; text-align: left; background: #f7fafc;
+      border: 1px solid #e2e8f0; border-radius: 8px;
+      padding: 10px 12px; font-size: .83rem; cursor: pointer;
+      margin-bottom: 8px; transition: background .15s, border-color .15s;
+      color: #2d3748;
+    }
+    .quick-btn:hover { background: #ebf4ff; border-color: #2d6a9f; color: #2d6a9f; }
+    .quick-btn:last-child { margin-bottom: 0; }
+
+    .stat-row { display: flex; justify-content: space-between; font-size: .83rem; padding: 5px 0; border-bottom: 1px solid #f0f4f8; }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-val { font-weight: 700; color: #2d6a9f; }
+
+    /* ── Chat window ── */
+    .chat-wrap { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+    .chat-window {
+      flex: 1; background: #fff; border-radius: 12px;
+      padding: 24px; overflow-y: auto;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      display: flex; flex-direction: column; gap: 16px;
+    }
+
+    /* Messages */
+    .msg { display: flex; gap: 10px; max-width: 80%; animation: fadeIn .2s ease; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+    .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+    .msg.bot { align-self: flex-start; }
+
+    .avatar {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .avatar.bot-av { background: linear-gradient(135deg, #1e3a5f, #2d6a9f); color: #fff; font-size: .85rem; font-weight: 700; }
+    .avatar.user-av { background: #e2e8f0; }
+
+    .bubble {
+      padding: 12px 16px; border-radius: 16px; font-size: .88rem; line-height: 1.6;
+    }
+    .msg.bot .bubble {
+      background: #f7fafc; border-top-left-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+    .msg.user .bubble {
+      background: #2d6a9f; color: #fff; border-top-right-radius: 4px;
+    }
+    .bubble ul { margin: 8px 0 4px 18px; }
+    .bubble li { margin-bottom: 4px; }
+    .bubble code { background: #e2e8f0; padding: 1px 5px; border-radius: 4px; font-size: .82rem; }
+    .msg.user .bubble code { background: rgba(255,255,255,.2); }
+
+    .msg-time { font-size: .7rem; color: #a0aec0; margin-top: 4px; text-align: right; }
+    .msg.bot .msg-time { text-align: left; }
+
+    /* Suggestions */
+    .suggestions {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: -4px; padding-bottom: 4px;
+    }
+    .sug-btn {
+      background: #ebf4ff; border: 1px solid #bee3f8; color: #2c5282;
+      border-radius: 20px; padding: 6px 14px; font-size: .8rem; cursor: pointer;
+      transition: background .15s;
+    }
+    .sug-btn:hover { background: #bee3f8; }
+
+    /* Typing indicator */
+    .typing { display: none; align-self: flex-start; gap: 10px; }
+    .typing.show { display: flex; }
+    .dots { display: flex; gap: 4px; align-items: center; padding: 12px 16px; background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 16px; border-top-left-radius: 4px; }
+    .dot-anim { width: 7px; height: 7px; border-radius: 50%; background: #a0aec0; animation: bounce .8s infinite; }
+    .dot-anim:nth-child(2) { animation-delay: .15s; }
+    .dot-anim:nth-child(3) { animation-delay: .3s; }
+    @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
+
+    /* Input area */
+    .input-area {
+      margin-top: 12px; display: flex; gap: 10px; align-items: flex-end;
+    }
+    .input-wrap { flex: 1; position: relative; }
+    textarea {
+      width: 100%; resize: none; border: 2px solid #e2e8f0; border-radius: 12px;
+      padding: 12px 16px; font-size: .9rem; font-family: inherit;
+      outline: none; line-height: 1.5; max-height: 120px; overflow-y: auto;
+      transition: border-color .15s;
+    }
+    textarea:focus { border-color: #2d6a9f; }
+    .send-btn {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: #2d6a9f; color: #fff; border: none;
+      cursor: pointer; font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s, transform .1s;
+      flex-shrink: 0;
+    }
+    .send-btn:hover { background: #1e3a5f; transform: scale(1.05); }
+    .send-btn:disabled { background: #a0aec0; cursor: not-allowed; transform: none; }
+
+    .input-hint { font-size: .72rem; color: #a0aec0; margin-top: 6px; text-align: center; }
+
+    /* Escalation badge */
+    .escalation-badge {
+      background: #fffaf0; border: 1px solid #fbd38d; border-radius: 8px;
+      padding: 10px 14px; font-size: .82rem; color: #c05621; margin-top: 8px;
+    }
+    .escalation-badge a { color: #2d6a9f; text-decoration: underline; cursor: pointer; }
+
+    /* Feedback row */
+    .feedback-row {
+      display: flex; gap: 8px; margin-top: 8px; align-items: center;
+    }
+    .feedback-row span { font-size: .75rem; color: #a0aec0; }
+    .fb-btn { background: none; border: 1px solid #e2e8f0; border-radius: 20px; padding: 3px 10px; font-size: .78rem; cursor: pointer; transition: background .15s; }
+    .fb-btn:hover { background: #f0fff4; border-color: #48bb78; }
+    .fb-btn.active { background: #f0fff4; border-color: #48bb78; color: #276749; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">OrKan<span>Support</span> · KI-Chatbot</div>
+  <div class="status">
+    <div class="dot"></div>
+    <span>Prototyp · Pilot-Evaluierung</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="info-card">
+      <h3>Schnellfragen</h3>
+      <button class="quick-btn" onclick="quickAsk('Wie importiere ich Artikel per CSV?')">📥 CSV-Import Artikel</button>
+      <button class="quick-btn" onclick="quickAsk('Was bedeutet Mindestmenge?')">📦 Mindestmenge erklären</button>
+      <button class="quick-btn" onclick="quickAsk('Wie richte ich die ERP-Schnittstelle ein?')">🔗 ERP-Schnittstelle</button>
+      <button class="quick-btn" onclick="quickAsk('Welche Benutzerrollen gibt es?')">👤 Benutzerrollen</button>
+      <button class="quick-btn" onclick="quickAsk('Warum wird kein Bestellvorschlag ausgelöst?')">⚠️ Bestellvorschlag fehlt</button>
+      <button class="quick-btn" onclick="quickAsk('Wie exportiere ich Berichte?')">📊 Berichte exportieren</button>
+    </div>
+
+    <div class="info-card">
+      <h3>Pilot-Statistik</h3>
+      <div class="stat-row"><span>Fragen beantwortet</span><span class="stat-val" id="statAnswered">0</span></div>
+      <div class="stat-row"><span>Ø Antwortzeit</span><span class="stat-val">~1,4 s</span></div>
+      <div class="stat-row"><span>Eskalationen</span><span class="stat-val" id="statEscalations">0</span></div>
+      <div class="stat-row"><span>Positive Bewertungen</span><span class="stat-val" id="statPositive">0</span></div>
+    </div>
+
+    <div class="info-card" style="font-size:.8rem;color:#718096;line-height:1.6;">
+      <h3>Hinweis</h3>
+      Dieser KI-Chatbot-Prototyp dient als Pilotversuch im Rahmen einer Bachelorarbeit (Kap. 4.2.3). Antworten basieren auf einer OrKan-Wissensdatenbank. Komplexe Anfragen werden an SPRÜGEL-Mitarbeiter eskaliert.
+    </div>
+  </div>
+
+  <!-- Chat -->
+  <div class="chat-wrap">
+    <div class="chat-window" id="chatWindow">
+
+      <!-- Welcome message -->
+      <div class="msg bot">
+        <div class="avatar bot-av">OK</div>
+        <div>
+          <div class="bubble">
+            👋 Hallo! Ich bin der <strong>OrKan Support-Assistent</strong> – Ihr KI-gestützter Helfer rund um die OrKan Cloud.<br><br>
+            Ich beantworte wiederkehrende Fragen zu Software-Funktionen, Schnittstellen und Importprozessen – rund um die Uhr, ohne Wartezeit.<br><br>
+            Wie kann ich Ihnen heute helfen?
+          </div>
+          <div class="suggestions">
+            <button class="sug-btn" onclick="quickAsk('Was kann der Chatbot?')">Was kann ich dich fragen?</button>
+            <button class="sug-btn" onclick="quickAsk('Wie importiere ich Artikel per CSV?')">CSV-Import</button>
+            <button class="sug-btn" onclick="quickAsk('Warum wird kein Bestellvorschlag ausgelöst?')">Bestellvorschlag fehlt</button>
+          </div>
+          <div class="msg-time" id="welcome-time"></div>
+        </div>
+      </div>
+
+    </div><!-- /chat-window -->
+
+    <!-- Typing indicator (outside scroll) -->
+    <div class="typing" id="typing">
+      <div class="avatar bot-av" style="margin-top:4px">OK</div>
+      <div class="dots">
+        <div class="dot-anim"></div>
+        <div class="dot-anim"></div>
+        <div class="dot-anim"></div>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="input-area">
+      <div class="input-wrap">
+        <textarea id="userInput" rows="1" placeholder="Ihre Frage an den OrKan-Support..." onkeydown="keyHandler(event)" oninput="autoResize(this)"></textarea>
+      </div>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+    </div>
+    <div class="input-hint">Enter zum Senden · Shift+Enter für neue Zeile · Dieser Chatbot ist ein Prototyp für Forschungszwecke</div>
+  </div>
+
+</div>
+
+<script>
+  // ── Stats ──
+  let statsAnswered = 0, statsEscalations = 0, statsPositive = 0;
+
+  // ── Knowledge base ──
+  const KB = [
+    {
+      patterns: ['csv', 'import', 'artikel importier', 'importprozess', 'stammdaten import'],
+      answer: `<strong>CSV-Import von Artikelstammdaten</strong><br><br>
+So importieren Sie Artikel in OrKan Cloud:<br>
+<ul>
+  <li>Navigieren Sie zu <code>Einstellungen → Import → Vorlage herunterladen</code></li>
+  <li>Füllen Sie die Pflichtfelder aus: <strong>Artikelnummer, Bezeichnung, Lieferantennummer</strong></li>
+  <li>Speichern Sie die Datei im Format <strong>CSV (UTF-8-kodiert)</strong></li>
+  <li>Laden Sie die Datei unter <code>Einstellungen → Import → Datei hochladen</code> hoch</li>
+  <li>Prüfen Sie das Fehlerprotokoll nach dem Import</li>
+</ul>
+<br>💡 <em>Tipp: Führen Sie zuerst einen Testimport mit 5–10 Artikeln durch, bevor Sie alle Stammdaten importieren.</em>`,
+      suggestions: ['Was sind häufige CSV-Importfehler?', 'Wie richte ich die ERP-Schnittstelle ein?', 'Welche Pflichtfelder gibt es beim Import?']
+    },
+    {
+      patterns: ['pflichtfeld', 'pflicht feld', 'welche felder'],
+      answer: `<strong>Pflichtfelder beim CSV-Import</strong><br><br>
+Folgende Felder sind beim Artikelimport <strong>verpflichtend</strong>:<br>
+<ul>
+  <li><strong>Artikelnummer</strong> – muss eindeutig sein</li>
+  <li><strong>Bezeichnung</strong> – Freitext, max. 100 Zeichen</li>
+  <li><strong>Lieferantennummer</strong> – muss in OrKan Cloud bereits angelegt sein</li>
+</ul>
+Optionale Felder: EAN-Code, Lagerplatz, Mindestmenge, Höchstmenge, Einheit.`,
+      suggestions: ['Wie importiere ich Artikel per CSV?', 'Was sind häufige CSV-Importfehler?']
+    },
+    {
+      patterns: ['fehler', 'importfehler', 'fehlerprotokoll', 'fehlermeldung import', 'import klappt nicht'],
+      answer: `<strong>Häufige CSV-Importfehler &amp; Lösungen</strong><br><br>
+<ul>
+  <li>❌ <strong>Falsche Kodierung</strong> → Speichern Sie als UTF-8 (nicht ANSI). In Excel: Datei → Speichern unter → CSV UTF-8</li>
+  <li>❌ <strong>Unbekannte Lieferantennummer</strong> → Lieferant muss vorab unter <code>Stammdaten → Lieferanten</code> angelegt sein</li>
+  <li>❌ <strong>Doppelte Artikelnummer</strong> → Jede Artikelnummer darf nur einmal vorkommen</li>
+  <li>❌ <strong>Leere Pflichtfelder</strong> → Artikelnummer, Bezeichnung und Lieferantennummer dürfen nicht leer sein</li>
+</ul>
+Das Fehlerprotokoll finden Sie nach dem Import direkt auf der Import-Seite zum Download.`,
+      suggestions: ['Wie importiere ich Artikel per CSV?', 'Welche Pflichtfelder gibt es beim Import?']
+    },
+    {
+      patterns: ['mindestmenge', 'mindest menge', 'bestellpunkt', 'reorder'],
+      answer: `<strong>Mindestmenge in OrKan Cloud</strong><br><br>
+Die <strong>Mindestmenge</strong> ist der Schwellenwert, ab dem OrKan Cloud automatisch einen <strong>Bestellvorschlag</strong> erzeugt.<br><br>
+<strong>Empfohlene Formel:</strong><br>
+<code>Mindestmenge = Tagesverbrauch × Lieferzeit (Tage) + 20 % Sicherheitspuffer</code><br><br>
+<strong>Beispiel:</strong> Tagesverbrauch 5 Stück, Lieferzeit 3 Tage → Mindestmenge = 5 × 3 × 1,2 = <strong>18 Stück</strong><br><br>
+Sie pflegen die Mindestmenge unter <code>Artikel → Artikel bearbeiten → Lagerparameter</code>.`,
+      suggestions: ['Warum wird kein Bestellvorschlag ausgelöst?', 'Was ist die Höchstmenge?']
+    },
+    {
+      patterns: ['höchstmenge', 'maxmenge', 'maximum'],
+      answer: `<strong>Höchstmenge in OrKan Cloud</strong><br><br>
+Die <strong>Höchstmenge</strong> definiert, wie viel maximal eingelagert werden soll. Sie begrenzt die Bestellmenge und verhindert Überbestände.<br><br>
+<strong>Beispiel:</strong> Höchstmenge = 50 Stück, aktueller Bestand = 8 → Bestellmenge = 50 − 8 = 42 Stück<br><br>
+Tipp: Stellen Sie die Höchstmenge auf ca. 4–6 Wochen Reichweite ein.`,
+      suggestions: ['Was bedeutet Mindestmenge?', 'Warum wird kein Bestellvorschlag ausgelöst?']
+    },
+    {
+      patterns: ['bestellvorschlag', 'bestellung wird nicht', 'kein bestellvorschlag', 'warum keine bestellung'],
+      answer: `<strong>Bestellvorschlag wird nicht ausgelöst – Ursachen</strong><br><br>
+Häufigste Gründe, warum kein Bestellvorschlag erscheint:<br>
+<ul>
+  <li>🔸 <strong>Mindestmenge nicht gesetzt</strong> → Prüfen unter <code>Artikel → Artikel bearbeiten</code></li>
+  <li>🔸 <strong>Kein Lieferant zugeordnet</strong> → Ohne Lieferant kein Vorschlag möglich</li>
+  <li>🔸 <strong>Artikel deaktiviert</strong> → Status prüfen unter <code>Artikel → Status</code></li>
+  <li>🔸 <strong>Bestand wurde manuell überschrieben</strong> → Bestandskorrektur prüfen</li>
+  <li>🔸 <strong>Autopilot deaktiviert</strong> → Unter <code>Einstellungen → Bestellregeln</code> prüfen</li>
+</ul>
+Wenn das Problem weiterhin besteht, wenden Sie sich an Ihren SPRÜGEL-Ansprechpartner.`,
+      suggestions: ['Was bedeutet Mindestmenge?', 'Wie ordne ich einen Lieferanten zu?']
+    },
+    {
+      patterns: ['lieferant zuordnen', 'lieferant', 'lieferantennummer', 'lieferant anlegen'],
+      answer: `<strong>Lieferant in OrKan Cloud anlegen &amp; zuordnen</strong><br><br>
+<strong>Lieferant anlegen:</strong><br>
+<code>Stammdaten → Lieferanten → Neu anlegen</code><br>
+Pflichtfelder: Name, Lieferantennummer (intern), optional: E-Mail für automatische Bestellmails.<br><br>
+<strong>Lieferant einem Artikel zuordnen:</strong><br>
+<code>Artikel → Artikel auswählen → Bearbeiten → Lieferant auswählen</code><br><br>
+Ein Artikel kann mehreren Lieferanten zugeordnet werden (Hauptlieferant + Alternativlieferanten).`,
+      suggestions: ['Warum wird kein Bestellvorschlag ausgelöst?', 'Wie importiere ich Artikel per CSV?']
+    },
+    {
+      patterns: ['erp', 'schnittstelle', 'api', 'sap', 'navision', 'sage', 'integration', 'synchronis'],
+      answer: `<strong>ERP-Schnittstelle / REST-API</strong><br><br>
+OrKan Cloud bietet eine vollständige <strong>REST-API</strong> zur Integration in ERP-Systeme (SAP, Microsoft Navision, Sage u. a.).<br><br>
+<strong>Setup:</strong><br>
+<ul>
+  <li>API-Schlüssel generieren: <code>Einstellungen → API-Schlüssel → Neu erstellen</code></li>
+  <li>Dokumentation: im selben Bereich unter „API-Dokumentation öffnen"</li>
+  <li>Authentifizierung: Bearer-Token im HTTP-Header</li>
+</ul>
+<strong>Verfügbare Endpunkte:</strong> Artikelstamm, Bestände, Bestellungen, Lieferanten.<br><br>
+Für die Einrichtung einer bidirektionalen ERP-Synchronisation empfehlen wir den SPRÜGEL-Support.`,
+      suggestions: ['Wie importiere ich Artikel per CSV?', 'Wie exportiere ich Berichte?']
+    },
+    {
+      patterns: ['benutzerroll', 'rollen', 'zugriffsrecht', 'user', 'benutzer anlegen', 'welche rollen'],
+      answer: `<strong>Benutzerrollen in OrKan Cloud</strong><br><br>
+OrKan Cloud kennt drei Rollen:<br>
+<ul>
+  <li>👷 <strong>Lagermitarbeiter</strong> – kann Kanban-Karten scannen und Entnahmen buchen</li>
+  <li>🛒 <strong>Einkäufer</strong> – kann Bestellvorschläge prüfen und freigeben</li>
+  <li>⚙️ <strong>Administrator</strong> – vollständiger Zugriff inkl. Konfiguration und Benutzerverwaltung</li>
+</ul>
+Benutzer anlegen: <code>Einstellungen → Benutzer → Einladen</code><br>
+Rollen können jederzeit geändert werden.`,
+      suggestions: ['Wie richte ich die ERP-Schnittstelle ein?', 'Wie exportiere ich Berichte?']
+    },
+    {
+      patterns: ['bericht', 'export', 'auswertung', 'statistik', 'report', 'jahresübersicht', 'kpi'],
+      answer: `<strong>Berichte &amp; Auswertungen exportieren</strong><br><br>
+Alle Berichte finden Sie unter <code>Berichte</code> in der Navigation:<br>
+<ul>
+  <li>📊 <strong>Jahresübersicht</strong> – Umschlagshäufigkeit, Fehlmengenquote, Top-Artikel</li>
+  <li>📋 <strong>Bestellhistorie</strong> – alle Bestellungen nach Zeitraum filterbar</li>
+  <li>📦 <strong>Lagerbestandsbericht</strong> – aktueller Stand aller Artikel</li>
+  <li>⚠️ <strong>Fehlmengenanalyse</strong> – Artikel, die Mindestmenge unterschritten haben</li>
+</ul>
+Export als <strong>PDF</strong> oder <strong>Excel</strong> möglich. Für das Jahresgespräch empfehlen wir die Jahresübersicht als PDF.`,
+      suggestions: ['Was kann ich dich fragen?', 'Wie richte ich die ERP-Schnittstelle ein?']
+    },
+    {
+      patterns: ['scan', 'qr', 'barcode', 'kanban karte scannen', 'scanner'],
+      answer: `<strong>Kanban-Karten scannen</strong><br><br>
+Jede Kanban-Karte enthält einen <strong>QR-Code</strong> mit der Artikel-ID.<br><br>
+<strong>So buchen Sie eine Entnahme:</strong><br>
+<ul>
+  <li>OrKan Cloud App öffnen (iOS / Android)</li>
+  <li>Scan-Modus aktivieren (Kamera-Symbol)</li>
+  <li>QR-Code der Kanban-Karte scannen</li>
+  <li>Entnahmemenge bestätigen (Standard: 1 Stück)</li>
+</ul>
+Alternativ: Entnahme manuell in der Web-Oberfläche unter <code>Lager → Entnahme buchen</code>.`,
+      suggestions: ['Warum wird kein Bestellvorschlag ausgelöst?', 'Was bedeutet Mindestmenge?']
+    },
+    {
+      patterns: ['passwort', 'login', 'anmeldung', 'einloggen', 'passwort vergessen', 'zugang'],
+      answer: `<strong>Anmeldung &amp; Passwort</strong><br><br>
+<ul>
+  <li><strong>Passwort vergessen:</strong> Auf der Login-Seite „Passwort zurücksetzen" klicken → E-Mail eingeben → Link kommt innerhalb weniger Minuten</li>
+  <li><strong>Erster Login:</strong> Sie erhalten eine Einladungs-E-Mail mit einem temporären Link (gültig 48 h)</li>
+  <li><strong>Kein Zugang erhalten?</strong> → Wenden Sie sich an Ihren Administrator oder Ihren SPRÜGEL-Ansprechpartner</li>
+</ul>`,
+      suggestions: ['Welche Benutzerrollen gibt es?', 'Wie richte ich die ERP-Schnittstelle ein?']
+    },
+    {
+      patterns: ['was kann', 'was kannst', 'hilfe', 'was fragst', 'welche fragen', 'themen'],
+      answer: `<strong>Womit kann ich Ihnen helfen?</strong><br><br>
+Ich beantworte wiederkehrende Fragen rund um OrKan Cloud, zum Beispiel:<br>
+<ul>
+  <li>📥 <strong>Import &amp; Export</strong> (CSV, ERP-Schnittstelle, API)</li>
+  <li>📦 <strong>Artikel &amp; Lagerparameter</strong> (Mindestmenge, Lagerplätze, Lieferanten)</li>
+  <li>🔄 <strong>Kanban-Prozess</strong> (Scannen, Bestellvorschläge, Wareneingang)</li>
+  <li>👤 <strong>Benutzer &amp; Rollen</strong> (Anlegen, Zugriffsrechte)</li>
+  <li>📊 <strong>Berichte &amp; KPIs</strong> (Auswertungen, Jahresübersicht)</li>
+  <li>🔗 <strong>Schnittstellen</strong> (SAP, Navision, Sage, REST-API)</li>
+</ul>
+Bei komplexen oder individuellen Fragen eskaliere ich automatisch an Ihren SPRÜGEL-Ansprechpartner.`,
+      suggestions: ['Wie importiere ich Artikel per CSV?', 'Warum wird kein Bestellvorschlag ausgelöst?', 'Welche Benutzerrollen gibt es?']
+    },
+    {
+      patterns: ['wareneingang', 'lieferung buchen', 'eingang buchen'],
+      answer: `<strong>Wareneingang buchen</strong><br><br>
+Wenn eine Bestellung eintrifft, buchen Sie den Wareneingang in drei Schritten:<br>
+<ul>
+  <li>Navigieren Sie zu <code>Bestellungen → Offene Bestellungen</code></li>
+  <li>Wählen Sie die eingegangene Bestellung aus</li>
+  <li>Klicken Sie auf <strong>„Wareneingang buchen"</strong> und bestätigen Sie die Menge</li>
+</ul>
+Alternativ: Lieferschein-Barcode scannen (sofern Lieferant Barcode verwendet).<br><br>
+Nach der Buchung erhöht OrKan Cloud den Lagerbestand automatisch und schließt den Bestellkreislauf.`,
+      suggestions: ['Warum wird kein Bestellvorschlag ausgelöst?', 'Wie exportiere ich Berichte?']
+    }
+  ];
+
+  const FALLBACK = {
+    answer: `Zu dieser spezifischen Frage habe ich leider keine gespeicherte Antwort in meiner Wissensdatenbank.<br><br>
+Ich empfehle Ihnen:<br>
+<ul>
+  <li>📞 <strong>SPRÜGEL-Support anrufen:</strong> Ihr persönlicher Ansprechpartner hilft weiter</li>
+  <li>📧 <strong>E-Mail senden</strong> mit Stichwort „OrKan Support" im Betreff</li>
+  <li>📖 <strong>Onboarding-Lernplattform</strong> aufrufen – dort finden Sie alle Grundlagen strukturiert aufbereitet</li>
+</ul>
+Diese Anfrage wurde als <em>Eskalation</em> protokolliert und hilft uns, die Wissensdatenbank zu erweitern.`,
+    escalate: true,
+    suggestions: ['Was kann ich dich fragen?', 'Wie importiere ich Artikel per CSV?']
+  };
+
+  // ── State ──
+  let isTyping = false;
+  document.getElementById('welcome-time').textContent = now();
+
+  function now() {
+    return new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function findAnswer(text) {
+    const lower = text.toLowerCase();
+    for (const entry of KB) {
+      if (entry.patterns.some(p => lower.includes(p))) return entry;
+    }
+    return FALLBACK;
+  }
+
+  function addMessage(html, role, suggestions, feedback, escalate) {
+    const window = document.getElementById('chatWindow');
+    const div = document.createElement('div');
+    div.className = 'msg ' + role;
+
+    const av = document.createElement('div');
+    av.className = 'avatar ' + (role === 'bot' ? 'bot-av' : 'user-av');
+    av.textContent = role === 'bot' ? 'OK' : '👤';
+
+    const inner = document.createElement('div');
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.innerHTML = html;
+    inner.appendChild(bubble);
+
+    if (suggestions && suggestions.length) {
+      const sugg = document.createElement('div');
+      sugg.className = 'suggestions';
+      suggestions.forEach(s => {
+        const b = document.createElement('button');
+        b.className = 'sug-btn';
+        b.textContent = s;
+        b.onclick = () => quickAsk(s);
+        sugg.appendChild(b);
+      });
+      inner.appendChild(sugg);
+    }
+
+    if (escalate) {
+      const esc = document.createElement('div');
+      esc.className = 'escalation-badge';
+      esc.innerHTML = '⚠️ Diese Frage wurde an Ihren <a onclick="alert(\'In der Produktivversion: Ticket wird erstellt und SPRÜGEL-Mitarbeiter benachrichtigt.\')">SPRÜGEL-Ansprechpartner</a> eskaliert.';
+      inner.appendChild(esc);
+      statsEscalations++;
+      document.getElementById('statEscalations').textContent = statsEscalations;
+    }
+
+    if (feedback && role === 'bot') {
+      const fbRow = document.createElement('div');
+      fbRow.className = 'feedback-row';
+      fbRow.innerHTML = '<span>War diese Antwort hilfreich?</span>';
+      const yes = document.createElement('button');
+      yes.className = 'fb-btn';
+      yes.textContent = '👍 Ja';
+      yes.onclick = function() {
+        if (!this.classList.contains('active')) {
+          this.classList.add('active');
+          statsPositive++;
+          document.getElementById('statPositive').textContent = statsPositive;
+        }
+      };
+      const no = document.createElement('button');
+      no.className = 'fb-btn';
+      no.textContent = '👎 Nein';
+      no.onclick = () => alert('Danke für Ihr Feedback! Wir werden die Antwort verbessern.');
+      fbRow.appendChild(yes);
+      fbRow.appendChild(no);
+      inner.appendChild(fbRow);
+    }
+
+    const time = document.createElement('div');
+    time.className = 'msg-time';
+    time.textContent = now();
+    inner.appendChild(time);
+
+    div.appendChild(av);
+    div.appendChild(inner);
+    window.appendChild(div);
+    window.scrollTop = window.scrollHeight;
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('userInput');
+    const text = input.value.trim();
+    if (!text || isTyping) return;
+    input.value = '';
+    autoResize(input);
+
+    addMessage(text, 'user');
+
+    isTyping = true;
+    document.getElementById('sendBtn').disabled = true;
+    document.getElementById('typing').classList.add('show');
+
+    const delay = 800 + Math.random() * 800;
+    setTimeout(() => {
+      document.getElementById('typing').classList.remove('show');
+      isTyping = false;
+      document.getElementById('sendBtn').disabled = false;
+
+      const result = findAnswer(text);
+      statsAnswered++;
+      document.getElementById('statAnswered').textContent = statsAnswered;
+      addMessage(result.answer, 'bot', result.suggestions, true, result.escalate);
+    }, delay);
+  }
+
+  function quickAsk(text) {
+    document.getElementById('userInput').value = text;
+    sendMessage();
+  }
+
+  function keyHandler(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  }
+
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  }
+</script>
+</body>
+</html>
