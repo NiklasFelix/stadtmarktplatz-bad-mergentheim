@@ -31,6 +31,7 @@ import { AdminMerchantsPage } from './pages/admin/AdminMerchantsPage'
 import { AdminMerchantFormPage } from './pages/admin/AdminMerchantFormPage'
 import { AdminCategoriesPage } from './pages/admin/AdminCategoriesPage'
 import { AdminContentPage } from './pages/admin/AdminContentPage'
+import { AdminArticleSplitterPage } from './pages/admin/AdminArticleSplitterPage'
 
 function PublicLayout() {
   return (
@@ -94,6 +95,7 @@ export default function App() {
         <Route path="haendler/:id/bearbeiten" element={<AdminMerchantFormPage />} />
         <Route path="kategorien" element={<AdminCategoriesPage />} />
         <Route path="inhalte" element={<AdminContentPage />} />
+        <Route path="artikel-aufteilung" element={<AdminArticleSplitterPage />} />
       </Route>
     </Routes>
   )

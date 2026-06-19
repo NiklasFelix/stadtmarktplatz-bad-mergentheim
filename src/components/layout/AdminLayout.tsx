@@ -1,6 +1,6 @@
 import { Outlet, NavLink, Link } from 'react-router-dom'
 import {
-  LayoutDashboard, Store, Tag, FileText, ArrowLeft, Menu, Shield
+  LayoutDashboard, Store, Tag, FileText, ArrowLeft, Menu, Shield, SplitSquareHorizontal
 } from 'lucide-react'
 import { useState } from 'react'
 import { clsx } from 'clsx'
@@ -11,6 +11,7 @@ const navItems = [
   { to: '/admin/haendler', label: 'Händler', icon: <Store size={18} /> },
   { to: '/admin/kategorien', label: 'Kategorien', icon: <Tag size={18} /> },
   { to: '/admin/inhalte', label: 'Startseite', icon: <FileText size={18} /> },
+  { to: '/admin/artikel-aufteilung', label: 'Artikel-Aufteilung', icon: <SplitSquareHorizontal size={18} /> },
 ]
 
 export function AdminLayout() {
