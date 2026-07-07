@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Artikel-Aufteilung – Stadtmarktplatz Bad Mergentheim</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<!-- SheetJS (Excel lesen/schreiben) -->
+<script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: { 50:'#eef3fb',100:'#d5e2f5',200:'#adc5eb',300:'#7fa3df',400:'#4f7ed1',500:'#2563c0',600:'#1a4fa0',700:'#1b4f8a',800:'#173f70',900:'#10305a' },
+          secondary: { 50:'#fef8ec',100:'#fdecc8',200:'#fbd58e',300:'#f9bd54',400:'#f7a420',500:'#d4820a',600:'#b06a07',700:'#8c5305',800:'#683e04',900:'#452902' },
+          accent: { 50:'#eaf5ed',100:'#c6e5cc',200:'#8dcc9d',300:'#55b36e',400:'#339950',500:'#2d7a3c',600:'#226030',700:'#174823',800:'#0d3017',900:'#04180a' },
+        },
+        fontFamily: { sans: ['Inter','system-ui','sans-serif'] },
+      }
+    }
+  }
+</script>
+
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .card { background:#fff; border-radius:0.75rem; box-shadow:0 2px 8px rgba(0,0,0,0.07); border:1px solid #f1f1f1; overflow:hidden; }
+  .badge { display:inline-flex; align-items:center; gap:4px; padding:2px 10px; border-radius:9999px; font-size:11px; font-weight:500; white-space:nowrap; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:500; border-radius:0.5rem; transition:all .15s; padding:0.625rem 1.25rem; font-size:0.875rem; }
+  .btn:disabled { opacity:.5; cursor:not-allowed; }
+  .btn-primary { background:#1b4f8a; color:#fff; }
+  .btn-primary:hover:not(:disabled) { background:#173f70; }
+  .btn-outline { border:1px solid #1b4f8a; color:#1b4f8a; background:#fff; }
+  .btn-outline:hover:not(:disabled) { background:#eef3fb; }
+  .cell-input { width:100%; border-radius:0.375rem; border:1px solid #e5e7eb; padding:0.25rem 0.5rem; font-size:0.875rem; background:#fff; }
+  .cell-input:focus { outline:none; box-shadow:0 0 0 2px #4f7ed1; border-color:transparent; }
+  .cell-input.over { border-color:#fca5a5; }
+  .cell-input.over:focus { box-shadow:0 0 0 2px #f87171; }
+  .spin { animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body class="bg-stone-50 text-gray-900">
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+  <div class="mb-2 flex items-center gap-2">
+    <div class="w-8 h-8 bg-primary-700 rounded-lg flex items-center justify-center shrink-0">
+      <i data-lucide="building-2" style="width:16px;height:16px;color:#fff;stroke:#fff"></i>
+    </div>
+    <span class="text-sm text-gray-400">Stadtmarktplatz Bad Mergentheim · internes Werkzeug</span>
+  </div>
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Artikel-Aufteilung</h1>
+    <p class="text-gray-500 mt-1">
+      Lange Artikelbeschreibungen automatisch in Bezeichnung 1/2/3 aufteilen (max. <span id="maxlen-label">25</span> Zeichen je Feld).
+      Läuft komplett lokal im Browser – es werden keine Daten irgendwohin hochgeladen.
+    </p>
+  </div>
+
+  <div id="errorBox" class="hidden flex items-start gap-2 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 mb-6 text-sm">
+    <i data-lucide="alert-triangle" style="width:16px;height:16px;flex-shrink:0;margin-top:2px"></i>
+    <p id="errorText"></p>
+  </div>
+
+  <!-- Referenzdatenbanken -->
+  <div class="mb-6">
+    <p class="text-sm font-semibold text-gray-700 mb-2">1. Referenz-Datenbanken (optional, einmalig)</p>
+    <p class="text-xs text-gray-400 mb-3">
+      Spalten: A = Artikelnummer, B = Bezeichnung lang, C/D/E = Bezeichnung 1/2/3. Bereits bekannte
+      Artikelnummern werden 1:1 aus der Referenz übernommen statt automatisch erkannt. Bleibt im Browser
+      gespeichert, muss also nicht bei jedem Lauf neu hochgeladen werden.
+    </p>
+    <div class="flex flex-wrap gap-4">
+      <div id="refSlot1" class="card p-4 flex-1 min-w-[260px]"></div>
+      <div id="refSlot2" class="card p-4 flex-1 min-w-[260px]"></div>
+    </div>
+  </div>
+
+  <!-- Hauptliste -->
+  <div class="card p-5 mb-6">
+    <p class="text-sm font-semibold text-gray-700 mb-2">2. Neue Artikelliste hochladen</p>
+    <p class="text-xs text-gray-400 mb-4">Spalte A = Artikelnummer, Spalte B = lange Artikelbeschreibung.</p>
+    <div id="mainUpload" class="flex flex-wrap items-center gap-3"></div>
+  </div>
+
+  <!-- Ergebnis -->
+  <div id="resultsArea"></div>
+
+</div>
+
+<script>
+// ===================== Splitting-Logik (regelbasiert, ohne KI-API) =====================
+
+const MAX_FIELD_LENGTH = 25;
+const REF1_STORAGE_KEY = 'artikel-splitter:referenz-1';
+const REF2_STORAGE_KEY = 'artikel-splitter:referenz-2';
+
+const UNIT_WORDS = [
+  'mm', 'cm', 'dm', 'm', 'km', 'ml', 'cl', 'l', 'kg', 'g', 'mg', 't',
+  'v', 'w', 'a', 'hz', 'kw', 'bar', 'pn', 'dn', 'nw', 'sw', 'ig', 'ag', 'zoll',
+];
+
+const MATERIAL_WORDS = [
+  'verzinkt', 'edelstahl', 'messing', 'kunststoff', 'pvc', 'stahl', 'alu', 'aluminium',
+  'inox', 'v2a', 'v4a', 'gelb', 'blau', 'rot', 'schwarz', 'weiss', 'weiß', 'transparent',
+  'guss', 'bronze', 'kupfer', 'gummi', 'silikon', 'chrom', 'verchromt', 'lackiert',
+  'c-stahl', 'cstahl', 'feuerverzinkt', 'rostfrei', 'beschichtet',
+];
+
+const ABBREVIATIONS = [
+  [/Edelstahl/gi, 'Edelst.'],
+  [/Aluminium/gi, 'Alu'],
+  [/verzinkt/gi, 'verz.'],
+  [/Kunststoff/gi, 'Kunstst.'],
+  [/Schrauben/gi, 'Schr.'],
+  [/Schraube/gi, 'Schr.'],
+  [/Dichtung/gi, 'Dicht.'],
+  [/Verschraubung/gi, 'Verschr.'],
+  [/Übergang/gi, 'Überg.'],
+  [/feuerverzinkt/gi, 'fverz.'],
+  [/rostfrei/gi, 'rostfr.'],
+  [/beschichtet/gi, 'besch.'],
+  [/lackiert/gi, 'lack.'],
+];
+
+function normalizeArticleNumber(value) {
+  return String(value == null ? '' : value).trim().toUpperCase();
+}
+
+function stripPunct(token) {
+  return token.replace(/[.,;:]+$/g, '');
+}
+
+function isUnitWordToken(token) {
+  return UNIT_WORDS.includes(stripPunct(token).toLowerCase());
+}
+
+function isDimensionToken(token) {
+  const t = token.trim();
+  if (!/\d/.test(t)) return false;
+  if (/^[\d.,]+$/.test(t)) return true;
+  if (/^(dn|pn|nw|sw|g|m|r)\d/i.test(t)) return true;
+  if (/[×x*]/i.test(t) && /\d/.test(t)) return true;
+  if (/^\d+[.,]?\d*\/\d+/.test(t)) return true;
+  if (/\d+["']$/.test(t)) return true;
+  if (/^[øØ]\d/.test(t)) return true;
+  if (/\d(mm|cm|dm|km|ml|cl|kg|mg|hz|kw|bar|v|w|a)\b/i.test(t)) return true;
+  if (/°/.test(t)) return true;
+  if (/%/.test(t)) return true;
+  return false;
+}
+
+function isDimensionRelated(tokens, i) {
+  const tok = tokens[i];
+  if (isDimensionToken(tok)) return true;
+  if (/^[x×*]$/i.test(tok)) {
+    const prev = tokens[i - 1];
+    const next = tokens[i + 1];
+    if ((prev && isDimensionToken(prev)) || (next && isDimensionToken(next))) return true;
+  }
+  if (isUnitWordToken(tok)) {
+    const prev = tokens[i - 1];
+    const next = tokens[i + 1];
+    if (prev && isDimensionToken(prev)) return true;
+    if (next && isDimensionToken(next)) return true;
+  }
+  return false;
+}
+
+function findDimensionRun(tokens) {
+  let bestStart = -1;
+  let bestLen = 0;
+  let i = 0;
+  while (i < tokens.length) {
+    if (isDimensionRelated(tokens, i)) {
+      let j = i;
+      while (j < tokens.length && isDimensionRelated(tokens, j)) j++;
+      if (j - i > bestLen) {
+        bestLen = j - i;
+        bestStart = i;
+      }
+      i = j;
+    } else {
+      i++;
+    }
+  }
+  if (bestStart === -1) return null;
+  return { start: bestStart, end: bestStart + bestLen };
+}
+
+function findTrailingMaterialStart(tokens) {
+  let i = tokens.length;
+  while (i > 0) {
+    const t = stripPunct(tokens[i - 1]).toLowerCase();
+    if (MATERIAL_WORDS.includes(t)) {
+      i--;
+    } else {
+      break;
+    }
+  }
+  return i === tokens.length ? tokens.length : i;
+}
+
+function fitField(text, maxLen) {
+  maxLen = maxLen || MAX_FIELD_LENGTH;
+  if (text.length <= maxLen) return { value: text, overflow: '', abbreviated: false };
+  let abbreviated = text;
+  for (const [pattern, replacement] of ABBREVIATIONS) {
+    abbreviated = abbreviated.replace(pattern, replacement);
+  }
+  if (abbreviated.length <= maxLen) return { value: abbreviated, overflow: '', abbreviated: true };
+  const cut = abbreviated.slice(0, maxLen);
+  const lastSpace = cut.lastIndexOf(' ');
+  const splitAt = lastSpace > maxLen * 0.5 ? lastSpace : maxLen;
+  return {
+    value: abbreviated.slice(0, splitAt).trim(),
+    overflow: abbreviated.slice(splitAt).trim(),
+    abbreviated: true,
+  };
+}
+
+function splitDescription(description) {
+  const raw = (description == null ? '' : description).trim();
+  const tokens = raw.split(/\s+/).filter(Boolean);
+
+  let nameTokens, dimTokens, restTokens;
+
+  const run = findDimensionRun(tokens);
+  if (run) {
+    nameTokens = tokens.slice(0, run.start);
+    dimTokens = tokens.slice(run.start, run.end);
+    restTokens = tokens.slice(run.end);
+  } else {
+    const materialStart = findTrailingMaterialStart(tokens);
+    nameTokens = tokens.slice(0, materialStart);
+    dimTokens = [];
+    restTokens = tokens.slice(materialStart);
+  }
+
+  if (nameTokens.length === 0 && dimTokens.length > 1) {
+    nameTokens = [dimTokens[0]];
+    dimTokens = dimTokens.slice(1);
+  }
+
+  const einheitUnklar =
+    dimTokens.length > 0 && dimTokens.every((t) => /^[\d.,×x*/"'\-]+$/i.test(t));
+
+  const f1 = fitField(nameTokens.join(' '));
+  const f2 = fitField([f1.overflow, dimTokens.join(' ')].filter(Boolean).join(' '));
+  const f3 = fitField([f2.overflow, restTokens.join(' ')].filter(Boolean).join(' '));
+
+  return {
+    bezeichnung1: f1.value,
+    bezeichnung2: f2.value,
+    bezeichnung3: f3.value,
+    einheitUnklar,
+    gekuerzt: f1.abbreviated || f2.abbreviated || f3.abbreviated,
+    verlust: f3.overflow.length > 0,
+  };
+}
+
+function processRow(artikelnummer, beschreibung, ref1, ref2) {
+  const key = normalizeArticleNumber(artikelnummer);
+  const hit1 = ref1 ? ref1.get(key) : undefined;
+  const hit2 = !hit1 && ref2 ? ref2.get(key) : undefined;
+  const hit = hit1 || hit2;
+
+  if (hit) {
+    return {
+      artikelnummer,
+      beschreibungLang: beschreibung,
+      bezeichnung1: hit.bezeichnung1,
+      bezeichnung2: hit.bezeichnung2,
+      bezeichnung3: hit.bezeichnung3,
+      quelle: hit1 ? 'referenz1' : 'referenz2',
+      einheitUnklar: false,
+      gekuerzt: false,
+      verlust: false,
+    };
+  }
+
+  const split = splitDescription(beschreibung);
+  return {
+    artikelnummer,
+    beschreibungLang: beschreibung,
+    bezeichnung1: split.bezeichnung1,
+    bezeichnung2: split.bezeichnung2,
+    bezeichnung3: split.bezeichnung3,
+    quelle: 'automatisch',
+    einheitUnklar: split.einheitUnklar,
+    gekuerzt: split.gekuerzt,
+    verlust: split.verlust,
+  };
+}
+
+function saveReferenceMapToStorage(storageKey, map, meta) {
+  localStorage.setItem(storageKey, JSON.stringify({ meta, entries: Array.from(map.entries()) }));
+}
+
+function loadReferenceMapFromStorage(storageKey) {
+  const raw = localStorage.getItem(storageKey);
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    return { map: new Map(parsed.entries), meta: parsed.meta };
+  } catch {
+    return null;
+  }
+}
+
+function clearReferenceMapStorage(storageKey) {
+  localStorage.removeItem(storageKey);
+}
+
+// ===================== Excel-Ein/Ausgabe (SheetJS) =====================
+
+function cellAt(row, index) {
+  const value = row[index];
+  return value == null ? '' : String(value).trim();
+}
+
+function looksLikeHeaderRow(a, b) {
+  const al = a.toLowerCase();
+  const bl = b.toLowerCase();
+  return (
+    al.includes('artikelnummer') ||
+    al.includes('artikel-nr') ||
+    al === 'nr' ||
+    bl.includes('bezeichnung') ||
+    bl.includes('beschreibung')
+  );
+}
+
+function readSheetRows(file) {
+  return file.arrayBuffer().then((buffer) => {
+    const workbook = XLSX.read(buffer, { type: 'array' });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    if (!sheet) throw new Error('Die Datei enthält kein lesbares Tabellenblatt.');
+    return XLSX.utils.sheet_to_json(sheet, { header: 1, raw: false, defval: '' });
+  });
+}
+
+function readMainList(file) {
+  return readSheetRows(file).then((rows) => {
+    const result = [];
+    rows.forEach((row, index) => {
+      const artikelnummer = cellAt(row, 0);
+      const beschreibung = cellAt(row, 1);
+      if (!artikelnummer && !beschreibung) return;
+      if (index === 0 && looksLikeHeaderRow(artikelnummer, beschreibung)) return;
+      result.push({ artikelnummer, beschreibung });
+    });
+    return result;
+  });
+}
+
+function readReferenceFile(file) {
+  return readSheetRows(file).then((rows) => {
+    const map = new Map();
+    rows.forEach((row, index) => {
+      const artikelnummer = cellAt(row, 0);
+      const beschreibungLang = cellAt(row, 1);
+      if (!artikelnummer) return;
+      if (index === 0 && looksLikeHeaderRow(artikelnummer, beschreibungLang)) return;
+      map.set(normalizeArticleNumber(artikelnummer), {
+        artikelnummer,
+        bezeichnung1: cellAt(row, 2),
+        bezeichnung2: cellAt(row, 3),
+        bezeichnung3: cellAt(row, 4),
+      });
+    });
+    return map;
+  });
+}
+
+function exportResults(rows, filename) {
+  const header = ['Artikelnummer', 'Bezeichnung lang', 'Bezeichnung 1', 'Bezeichnung 2', 'Bezeichnung 3'];
+  const data = rows.map((r) => [r.artikelnummer, r.beschreibungLang, r.bezeichnung1, r.bezeichnung2, r.bezeichnung3]);
+  const sheet = XLSX.utils.aoa_to_sheet([header, ...data]);
+  sheet['!cols'] = [{ wch: 14 }, { wch: 42 }, { wch: 25 }, { wch: 25 }, { wch: 25 }];
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, sheet, 'Artikel');
+  XLSX.writeFile(workbook, filename);
+}
+
+// ===================== UI-State & Rendering (vanilla JS) =====================
+
+const EMPTY_REF = { map: null, fileName: '', count: 0 };
+
+const state = {
+  ref1: { ...EMPTY_REF },
+  ref2: { ...EMPTY_REF },
+  mainRows: [],
+  mainFileName: '',
+  results: [],
+  processing: false,
+};
+
+function escapeHtml(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
+}
+
+function showError(message) {
+  const box = document.getElementById('errorBox');
+  const text = document.getElementById('errorText');
+  if (!message) {
+    box.classList.add('hidden');
+    text.textContent = '';
+    return;
+  }
+  text.textContent = message;
+  box.classList.remove('hidden');
+}
+
+function refreshIcons() {
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function renderRefSlot(containerId, slot, title, hint, onUpload, onClear) {
+  const el = document.getElementById(containerId);
+  if (slot.map) {
+    el.innerHTML = `
+      <div class="flex items-center gap-2 mb-1">
+        <i data-lucide="database" style="width:16px;height:16px;color:#1b4f8a"></i>
+        <p class="font-semibold text-gray-900 text-sm">${escapeHtml(title)}</p>
+      </div>
+      <p class="text-xs text-gray-400 mb-3">${escapeHtml(hint)}</p>
+      <div class="flex items-center justify-between gap-2 bg-accent-50 border border-accent-200 rounded-lg px-3 py-2">
+        <div class="flex items-center gap-2 min-w-0">
+          <i data-lucide="check-circle-2" style="width:16px;height:16px;color:#2d7a3c;flex-shrink:0"></i>
+          <div class="min-w-0">
+            <p class="text-xs font-medium text-gray-800 truncate">${escapeHtml(slot.fileName)}</p>
+            <p class="text-xs text-gray-500">${slot.count.toLocaleString('de-DE')} Artikel geladen</p>
+          </div>
+        </div>
+        <button data-action="clear" class="p-1 rounded text-gray-400 hover:text-red-600 hover:bg-red-50 shrink-0">
+          <i data-lucide="x" style="width:14px;height:14px"></i>
+        </button>
+      </div>
+    `;
+    el.querySelector('[data-action="clear"]').addEventListener('click', onClear);
+  } else {
+    el.innerHTML = `
+      <div class="flex items-center gap-2 mb-1">
+        <i data-lucide="database" style="width:16px;height:16px;color:#1b4f8a"></i>
+        <p class="font-semibold text-gray-900 text-sm">${escapeHtml(title)}</p>
+      </div>
+      <p class="text-xs text-gray-400 mb-3">${escapeHtml(hint)}</p>
+      <button data-action="pick" class="w-full flex items-center justify-center gap-2 border-2 border-dashed border-gray-200 rounded-lg py-3 text-sm text-gray-500 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-colors">
+        <i data-lucide="upload" style="width:15px;height:15px"></i>
+        Datei auswählen
+      </button>
+      <input type="file" accept=".xlsx,.xls" class="hidden" data-role="file-input" />
+    `;
+    const input = el.querySelector('[data-role="file-input"]');
+    el.querySelector('[data-action="pick"]').addEventListener('click', () => input.click());
+    input.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (file) onUpload(file);
+      e.target.value = '';
+    });
+  }
+  refreshIcons();
+}
+
+function renderRefSlots() {
+  renderRefSlot(
+    'refSlot1', state.ref1, 'Artikel_Datenbank.xlsx', 'Erste Referenzquelle (wird zuerst geprüft)',
+    (file) => handleRefUpload(1, file), () => handleRefClear(1)
+  );
+  renderRefSlot(
+    'refSlot2', state.ref2, 'Artikel_OrKanCloud_Datenbank.xlsx', 'Zweite Referenzquelle (Fallback)',
+    (file) => handleRefUpload(2, file), () => handleRefClear(2)
+  );
+}
+
+async function handleRefUpload(slot, file) {
+  showError('');
+  try {
+    const map = await readReferenceFile(file);
+    const newState = { map, fileName: file.name, count: map.size };
+    const storageKey = slot === 1 ? REF1_STORAGE_KEY : REF2_STORAGE_KEY;
+    if (slot === 1) state.ref1 = newState; else state.ref2 = newState;
+    saveReferenceMapToStorage(storageKey, map, { fileName: file.name, count: map.size });
+    renderRefSlots();
+  } catch (e) {
+    showError(`Referenzdatei konnte nicht gelesen werden: ${e.message}`);
+  }
+}
+
+function handleRefClear(slot) {
+  const storageKey = slot === 1 ? REF1_STORAGE_KEY : REF2_STORAGE_KEY;
+  clearReferenceMapStorage(storageKey);
+  if (slot === 1) state.ref1 = { ...EMPTY_REF }; else state.ref2 = { ...EMPTY_REF };
+  renderRefSlots();
+}
+
+function renderMainUpload() {
+  const el = document.getElementById('mainUpload');
+  el.innerHTML = `
+    <button data-action="pick-main" class="btn btn-outline">
+      <i data-lucide="upload" style="width:16px;height:16px"></i>
+      Excel-Datei wählen
+    </button>
+    <input type="file" accept=".xlsx,.xls" class="hidden" data-role="main-file-input" />
+    ${state.mainFileName ? `
+      <span class="text-sm text-gray-600 flex items-center gap-1.5">
+        <i data-lucide="file-spreadsheet" style="width:15px;height:15px;color:#1b4f8a"></i>
+        ${escapeHtml(state.mainFileName)} · ${state.mainRows.length.toLocaleString('de-DE')} Zeilen
+      </span>
+    ` : ''}
+    ${state.mainRows.length > 0 ? `
+      <button data-action="process" class="btn btn-primary" ${state.processing ? 'disabled' : ''}>
+        <i data-lucide="${state.processing ? 'loader-2' : 'sparkles'}" class="${state.processing ? 'spin' : ''}" style="width:16px;height:16px"></i>
+        Verarbeiten
+      </button>
+    ` : ''}
+  `;
+  const input = el.querySelector('[data-role="main-file-input"]');
+  el.querySelector('[data-action="pick-main"]').addEventListener('click', () => input.click());
+  input.addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) handleMainUpload(file);
+    e.target.value = '';
+  });
+  const processBtn = el.querySelector('[data-action="process"]');
+  if (processBtn) processBtn.addEventListener('click', runProcessing);
+  refreshIcons();
+}
+
+async function handleMainUpload(file) {
+  showError('');
+  state.results = [];
+  try {
+    const rows = await readMainList(file);
+    if (rows.length === 0) {
+      showError('In der Datei wurden keine Artikelzeilen erkannt. Spalte A = Artikelnummer, Spalte B = Beschreibung.');
+      return;
+    }
+    state.mainRows = rows;
+    state.mainFileName = file.name;
+    renderMainUpload();
+    renderResults();
+  } catch (e) {
+    showError(`Datei konnte nicht gelesen werden: ${e.message}`);
+  }
+}
+
+function runProcessing() {
+  state.processing = true;
+  renderMainUpload();
+  renderResults();
+  setTimeout(() => {
+    state.results = state.mainRows.map((r) =>
+      processRow(r.artikelnummer, r.beschreibung, state.ref1.map || undefined, state.ref2.map || undefined)
+    );
+    state.processing = false;
+    renderMainUpload();
+    renderResults();
+  }, 30);
+}
+
+function handleExport() {
+  const base = state.mainFileName.replace(/\.(xlsx|xls)$/i, '') || 'artikelliste';
+  exportResults(state.results, `${base}-aufgeteilt.xlsx`);
+}
+
+function sourceBadge(quelle) {
+  if (quelle === 'referenz1') return `<span class="badge" style="background:#c6e5cc;color:#174823">Referenz 1</span>`;
+  if (quelle === 'referenz2') return `<span class="badge" style="background:#d5e2f5;color:#1b4f8a">Referenz 2</span>`;
+  return `<span class="badge" style="background:#f3f4f6;color:#4b5563">Automatisch</span>`;
+}
+
+function warningTitle(row) {
+  return [
+    row.einheitUnklar && 'Einheit im Original unklar/fehlt – bitte prüfen',
+    row.gekuerzt && 'Feld wurde gekürzt/abgekürzt',
+    row.verlust && 'Text passte nicht vollständig in 3x25 Zeichen',
+  ].filter(Boolean).join(' · ');
+}
+
+function renderResults() {
+  const el = document.getElementById('resultsArea');
+
+  if (state.processing) {
+    el.innerHTML = `
+      <div class="flex items-center justify-center gap-2 text-gray-500 py-12">
+        <i data-lucide="loader-2" class="spin" style="width:18px;height:18px"></i> Verarbeite Artikel…
+      </div>
+    `;
+    refreshIcons();
+    return;
+  }
+
+  if (state.results.length === 0 && state.mainRows.length === 0) {
+    el.innerHTML = `
+      <div class="card flex flex-col items-center justify-center text-center py-16 px-6">
+        <i data-lucide="file-spreadsheet" style="width:40px;height:40px;color:#9ca3af;margin-bottom:12px"></i>
+        <p class="font-semibold text-gray-900">Noch keine Artikelliste hochgeladen</p>
+        <p class="text-gray-500 text-sm mt-1">Lade oben eine Excel-Datei mit Artikelnummer (Spalte A) und Beschreibung (Spalte B) hoch.</p>
+      </div>
+    `;
+    refreshIcons();
+    return;
+  }
+
+  if (state.results.length === 0) {
+    el.innerHTML = '';
+    return;
+  }
+
+  const stats = {
+    total: state.results.length,
+    referenz: state.results.filter((r) => r.quelle !== 'automatisch').length,
+    automatisch: state.results.filter((r) => r.quelle === 'automatisch').length,
+    warnungen: state.results.filter((r) => r.einheitUnklar || r.gekuerzt || r.verlust).length,
+  };
+
+  const rowsHtml = state.results.map((row, i) => {
+    const hasWarning = row.einheitUnklar || row.gekuerzt || row.verlust;
+    const fields = ['bezeichnung1', 'bezeichnung2', 'bezeichnung3'];
+    const cellsHtml = fields.map((field) => {
+      const value = row[field];
+      const over = value.length > MAX_FIELD_LENGTH;
+      return `
+        <td class="px-3 py-1.5 align-top">
+          <input data-index="${i}" data-field="${field}" value="${escapeHtml(value)}" class="cell-input ${over ? 'over' : ''}" />
+          <span data-charcount="${i}-${field}" class="text-[10px] tabular-nums ${over ? 'text-red-500 font-semibold' : 'text-gray-300'}">${value.length}/${MAX_FIELD_LENGTH}</span>
+        </td>
+      `;
+    }).join('');
+    return `
+      <tr class="${hasWarning ? 'bg-amber-50/50' : ''}">
+        <td class="px-3 py-1.5 font-mono text-xs text-gray-600 whitespace-nowrap">${escapeHtml(row.artikelnummer)}</td>
+        <td class="px-3 py-1.5 text-gray-700 align-top">${escapeHtml(row.beschreibungLang)}</td>
+        ${cellsHtml}
+        <td class="px-3 py-1.5 align-top">
+          ${sourceBadge(row.quelle)}
+          ${hasWarning ? `<span class="badge" style="background:#fef3c7;color:#92400e;margin-left:4px" title="${escapeHtml(warningTitle(row))}"><i data-lucide="alert-triangle" style="width:11px;height:11px"></i> Prüfen</span>` : ''}
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+      <div class="flex flex-wrap gap-4 text-sm">
+        <span class="text-gray-600"><strong class="text-gray-900">${stats.total}</strong> Artikel</span>
+        <span class="text-accent-600"><strong>${stats.referenz}</strong> aus Referenz übernommen</span>
+        <span class="text-primary-700"><strong>${stats.automatisch}</strong> automatisch erkannt</span>
+        ${stats.warnungen > 0 ? `<span class="text-amber-600 flex items-center gap-1"><i data-lucide="alert-triangle" style="width:14px;height:14px"></i><strong>${stats.warnungen}</strong> zur Prüfung markiert</span>` : ''}
+      </div>
+      <button data-action="export" class="btn btn-primary">
+        <i data-lucide="download" style="width:16px;height:16px"></i>
+        Als Excel exportieren
+      </button>
+    </div>
+    <div class="card overflow-x-auto">
+      <div class="max-h-[65vh] overflow-y-auto">
+        <table class="w-full text-sm border-collapse">
+          <thead class="sticky top-0 bg-gray-50 z-10">
+            <tr class="text-left text-xs text-gray-500 uppercase tracking-wide">
+              <th class="px-3 py-2.5 font-medium">Artikelnr.</th>
+              <th class="px-3 py-2.5 font-medium min-w-[220px]">Bezeichnung lang</th>
+              <th class="px-3 py-2.5 font-medium min-w-[150px]">Bezeichnung 1</th>
+              <th class="px-3 py-2.5 font-medium min-w-[150px]">Bezeichnung 2</th>
+              <th class="px-3 py-2.5 font-medium min-w-[150px]">Bezeichnung 3</th>
+              <th class="px-3 py-2.5 font-medium">Quelle</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+
+  el.querySelector('[data-action="export"]').addEventListener('click', handleExport);
+
+  // Event-Delegation für editierbare Zellen (kein Re-Render pro Tastendruck, behält Fokus)
+  el.querySelectorAll('tbody').forEach((tbody) => {
+    tbody.addEventListener('input', (e) => {
+      const target = e.target;
+      if (!target.matches('input[data-index][data-field]')) return;
+      const index = Number(target.dataset.index);
+      const field = target.dataset.field;
+      state.results[index][field] = target.value;
+      const over = target.value.length > MAX_FIELD_LENGTH;
+      target.classList.toggle('over', over);
+      const counter = el.querySelector(`[data-charcount="${index}-${field}"]`);
+      if (counter) {
+        counter.textContent = `${target.value.length}/${MAX_FIELD_LENGTH}`;
+        counter.classList.toggle('text-red-500', over);
+        counter.classList.toggle('font-semibold', over);
+        counter.classList.toggle('text-gray-300', !over);
+      }
+    });
+  });
+
+  refreshIcons();
+}
+
+// ===================== Init =====================
+
+function init() {
+  const r1 = loadReferenceMapFromStorage(REF1_STORAGE_KEY);
+  if (r1) state.ref1 = { map: r1.map, fileName: r1.meta.fileName, count: r1.meta.count };
+  const r2 = loadReferenceMapFromStorage(REF2_STORAGE_KEY);
+  if (r2) state.ref2 = { map: r2.map, fileName: r2.meta.fileName, count: r2.meta.count };
+  renderRefSlots();
+  renderMainUpload();
+  renderResults();
+  refreshIcons();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>
