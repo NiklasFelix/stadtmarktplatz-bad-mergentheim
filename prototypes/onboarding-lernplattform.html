@@ -145,6 +145,28 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .reco-card h4{font-size:13.5px;font-weight:700;margin-bottom:6px}
 .reco-card p{font-size:12.5px;color:var(--gray);line-height:1.5}
 
+/* Wissenslücken / adaptive Lernpfade */
+.adaptive-banner{background:linear-gradient(135deg,#FEF3D8,#fdf7e6);border:1px solid #ecd396;border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:16px;margin-bottom:26px}
+.adaptive-banner .ai-banner-icon{background:#a6720f}
+.adaptive-banner .ai-banner-icon svg{color:#FEF3D8}
+.gap-empty{background:rgba(255,255,255,.8);border:1px solid var(--border);border-radius:14px;padding:28px;text-align:center;color:var(--gray);font-size:13.5px}
+.gap-card{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:12px;box-shadow:var(--shadow)}
+.gap-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.gap-topic{font-size:13.5px;font-weight:700}
+.gap-count{font-size:11px;font-weight:700;color:#a6720f;background:#FEF3D8;padding:3px 9px;border-radius:10px}
+.gap-track{background:var(--gray-light);height:6px;border-radius:4px;overflow:hidden;margin-bottom:10px}
+.gap-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#e8a33d,#a6720f);transition:width .8s ease}
+.gap-fill.company{background:linear-gradient(90deg,var(--green),var(--green-dark))}
+.gap-action{font-size:12px;color:var(--gray)}
+.gap-action a{color:var(--green-dark);font-weight:700;cursor:pointer}
+.adaptive-log{background:rgba(255,255,255,.7);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-top:16px}
+.log-item{display:flex;gap:10px;font-size:12px;color:var(--gray);padding:7px 0;border-bottom:1px dashed var(--border)}
+.log-item:last-child{border-bottom:none}
+.log-item .log-dot{width:6px;height:6px;border-radius:50%;background:#e8a33d;margin-top:5px;flex-shrink:0}
+.insight-callout{background:var(--green-light);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:16px 18px;margin-top:24px}
+.insight-callout strong{font-size:12.5px;font-weight:700;display:block;margin-bottom:5px;color:var(--green-dark)}
+.insight-callout p{font-size:13px;line-height:1.55;color:var(--dark-bg)}
+
 /* Roadmap */
 .roadmap-wrap{display:grid;grid-template-columns:1fr 280px;gap:28px}
 .roadmap-line{position:relative;padding-left:34px}
@@ -440,6 +462,10 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
         Lernmodule
       </div>
       <div class="nav-sub" id="moduleSubNav"></div>
+      <div class="nav-item" data-view="gaps" onclick="showView('gaps')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-5 4 3 5-7"/></svg>
+        Wissenslücken-Analyse
+      </div>
       <div class="nav-item" data-view="kb" onclick="showView('kb')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
         Wissensdatenbank
@@ -473,6 +499,9 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 
       <!-- MODULES -->
       <section class="view" id="view-modules"></section>
+
+      <!-- WISSENSLÜCKEN -->
+      <section class="view" id="view-gaps"></section>
 
       <!-- KB -->
       <section class="view" id="view-kb"></section>
@@ -528,9 +557,9 @@ const MODULES = [
     checklist:['Firmendaten im Profil prüfen','Dashboard-Kacheln anordnen','Benachrichtigungen konfigurieren','Erste Navigation durchführen'],
     tip:'Nutzen Sie die Suchleiste oben rechts, um jeden Bereich in unter zwei Sekunden zu erreichen.',
     quiz:[
-      {q:'Was ist die OrKan Cloud?',o:['Ein E-Mail-Dienst','Eine Lagerverwaltungssoftware','Ein Buchhaltungsprogramm','Eine CRM-Lösung'],a:1},
-      {q:'Wo finden Sie die Artikelübersicht?',o:['Einstellungen','Berichte','Stammdaten → Artikel','Dashboard'],a:2},
-      {q:'Was bedeutet das Kanban-Prinzip?',o:['Digitale Buchhaltung','Automatische Bestellauslösung bei Mindestbestand','Jährliche Inventur','Manuelle Lagerverwaltung'],a:1}
+      {q:'Was ist die OrKan Cloud?',o:['Ein E-Mail-Dienst','Eine Lagerverwaltungssoftware','Ein Buchhaltungsprogramm','Eine CRM-Lösung'],a:1,t:'Systemgrundlagen'},
+      {q:'Wo finden Sie die Artikelübersicht?',o:['Einstellungen','Berichte','Stammdaten → Artikel','Dashboard'],a:2,t:'Navigation'},
+      {q:'Was bedeutet das Kanban-Prinzip?',o:['Digitale Buchhaltung','Automatische Bestellauslösung bei Mindestbestand','Jährliche Inventur','Manuelle Lagerverwaltung'],a:1,t:'Kanban-Prinzip'}
     ],
     summary:{ kern:['Die OrKan Cloud bündelt Lagerverwaltung, Einkauf und Auswertung in einer Plattform.','Die Navigation ist rollenbasiert und passt sich dem Nutzerprofil an.','Alle Funktionen sind sowohl am Desktop als auch mobil verfügbar.'],
       funk:['Zentrales Dashboard','Rollenbasierter Zugriff'], hand:['Profil und Firmendaten vollständig ausfüllen','Dashboard individuell anordnen'] }
@@ -552,9 +581,9 @@ const MODULES = [
     checklist:['Artikelnummer und Bezeichnung vergeben','Einheit festlegen','Lagerplatz zuordnen','Mindestmenge hinterlegen'],
     tip:'Verwenden Sie ein einheitliches Nummernschema (z. B. Kategorie-Kürzel + laufende Nummer), das erleichtert spätere Suche und Auswertung erheblich.',
     quiz:[
-      {q:'Was ist ein Pflichtfeld beim Anlegen eines Artikels?',o:['Lieferant','Artikelnummer','Foto','Gewicht'],a:1},
-      {q:'Wie lautet das Format für Lagerplatzkennzeichnung?',o:['Name-Farbe','Zone-Gang-Regal-Fach','Datum-Menge','Lieferant-Artikel'],a:1},
-      {q:'Wie viele Lagerplätze kann ein Artikel haben?',o:['Nur einen','Zwei bis drei','Beliebig viele','Maximal fünf'],a:2}
+      {q:'Was ist ein Pflichtfeld beim Anlegen eines Artikels?',o:['Lieferant','Artikelnummer','Foto','Gewicht'],a:1,t:'Artikel-Pflichtfelder'},
+      {q:'Wie lautet das Format für Lagerplatzkennzeichnung?',o:['Name-Farbe','Zone-Gang-Regal-Fach','Datum-Menge','Lieferant-Artikel'],a:1,t:'Lagerplatzstruktur'},
+      {q:'Wie viele Lagerplätze kann ein Artikel haben?',o:['Nur einen','Zwei bis drei','Beliebig viele','Maximal fünf'],a:2,t:'Mehrfachzuordnung'}
     ],
     summary:{ kern:['Artikelnummer und Bezeichnung sind für jeden Artikel verpflichtend.','Lagerplätze folgen einer klaren Zone-Gang-Regal-Fach-Logik.','Ein Artikel kann mehreren Lagerplätzen zugewiesen werden.'],
       funk:['Artikelstamm','Lagerplatzstruktur'], hand:['Einheitliches Nummernschema festlegen','Lagerstruktur vor dem Import planen'] }
@@ -576,9 +605,9 @@ const MODULES = [
     checklist:['Kanban-Karte für Testartikel erstellen','QR-Code prüfen','Scan-Vorgang simulieren','Bestellvorschlag kontrollieren'],
     tip:'Kanban-Karten sollten laminiert und gut sichtbar am Behälter angebracht werden, um Beschädigung und Fehlscans zu vermeiden.',
     quiz:[
-      {q:'Was löst das Scannen einer leeren Kanban-Karte aus?',o:['Eine Rechnung','Einen Bestellvorschlag','Eine Inventur','Nichts automatisch'],a:1},
-      {q:'Wie viele Behälter umfasst das klassische Kanban-Prinzip?',o:['Eins','Zwei','Drei','Vier'],a:1},
-      {q:'Was enthält eine Kanban-Karte typischerweise?',o:['Nur den Preis','QR-Code mit Artikel- und Lagerplatzdaten','Die Firmenadresse','Nichts, nur Text'],a:1}
+      {q:'Was löst das Scannen einer leeren Kanban-Karte aus?',o:['Eine Rechnung','Einen Bestellvorschlag','Eine Inventur','Nichts automatisch'],a:1,t:'Kanban-Scan-Auslösung'},
+      {q:'Wie viele Behälter umfasst das klassische Kanban-Prinzip?',o:['Eins','Zwei','Drei','Vier'],a:1,t:'Zwei-Behälter-Prinzip'},
+      {q:'Was enthält eine Kanban-Karte typischerweise?',o:['Nur den Preis','QR-Code mit Artikel- und Lagerplatzdaten','Die Firmenadresse','Nichts, nur Text'],a:1,t:'Kanban-Karteninhalt'}
     ],
     summary:{ kern:['Das Zwei-Behälter-Prinzip automatisiert die Nachbestellung.','QR-Codes verknüpfen physischen Bestand mit digitalen Daten.','Scans lösen unmittelbar Bestellvorschläge aus.'],
       funk:['Kanban-Karten','Automatische Auslösung'], hand:['Kanban-Karten für alle C-Teile einführen','Scan-Prozess im Team schulen'] }
@@ -600,9 +629,9 @@ const MODULES = [
     checklist:['Pflichtfelder prüfen (Artikelnummer, Bezeichnung, Einheit)','Zeichensatz auf UTF-8 setzen','Testimport mit 10 Zeilen durchführen','Fehlerzeilen korrigieren'],
     tip:'Führen Sie vor dem Vollimport stets einen Testimport mit wenigen Zeilen durch, um das Format zu validieren.',
     quiz:[
-      {q:'Welcher Zeichensatz wird für CSV-Importe empfohlen?',o:['ASCII','UTF-8','Windows-1252','ISO-8859-15'],a:1},
-      {q:'Was passiert mit fehlerhaften Importzeilen?',o:['Sie werden automatisch gelöscht','Sie werden markiert und können korrigiert werden','Der Import bricht komplett ab','Sie werden ignoriert'],a:1},
-      {q:'Welches System zählt NICHT zu den nativen ERP-Anbindungen?',o:['DATEV','Sage','Lexware','Photoshop'],a:3}
+      {q:'Welcher Zeichensatz wird für CSV-Importe empfohlen?',o:['ASCII','UTF-8','Windows-1252','ISO-8859-15'],a:1,t:'CSV-Zeichensatz'},
+      {q:'Was passiert mit fehlerhaften Importzeilen?',o:['Sie werden automatisch gelöscht','Sie werden markiert und können korrigiert werden','Der Import bricht komplett ab','Sie werden ignoriert'],a:1,t:'Fehlerbehandlung Import'},
+      {q:'Welches System zählt NICHT zu den nativen ERP-Anbindungen?',o:['DATEV','Sage','Lexware','Photoshop'],a:3,t:'ERP-Anbindungen'}
     ],
     summary:{ kern:['CSV-Import ermöglicht schnelle Massenanlage von Artikeldaten.','ERP-Anbindungen synchronisieren Stammdaten automatisiert.','Die REST-API öffnet die Plattform für individuelle Integrationen.'],
       funk:['CSV-Import','ERP-Anbindung'], hand:['Vor Vollimport stets Testimport durchführen','Zeichensatz UTF-8 sicherstellen'] }
@@ -624,9 +653,9 @@ const MODULES = [
     checklist:['Berichtszeitraum wählen','ABC-Analyse aufrufen','Bericht als PDF exportieren','Kennzahlen interpretieren'],
     tip:'Planen Sie feste Termine für die Berichtsprüfung ein – so werden Trends frühzeitig erkannt statt erst im Jahresgespräch.',
     quiz:[
-      {q:'Wofür steht die ABC-Analyse?',o:['Alphabetische Sortierung','Priorisierung nach Wertbeitrag','Eine Buchungsart','Ein Lagerplatzsystem'],a:1},
-      {q:'In welchen Formaten lassen sich Berichte exportieren?',o:['Nur als Bild','Excel und PDF','Nur als Text','Gar nicht'],a:1},
-      {q:'Wofür eignen sich Reports besonders?',o:['Für die Vorbereitung von Listungsgesprächen','Für die Urlaubsplanung','Für die Gehaltsabrechnung','Für nichts Praktisches'],a:0}
+      {q:'Wofür steht die ABC-Analyse?',o:['Alphabetische Sortierung','Priorisierung nach Wertbeitrag','Eine Buchungsart','Ein Lagerplatzsystem'],a:1,t:'ABC-Analyse'},
+      {q:'In welchen Formaten lassen sich Berichte exportieren?',o:['Nur als Bild','Excel und PDF','Nur als Text','Gar nicht'],a:1,t:'Berichts-Export'},
+      {q:'Wofür eignen sich Reports besonders?',o:['Für die Vorbereitung von Listungsgesprächen','Für die Urlaubsplanung','Für die Gehaltsabrechnung','Für nichts Praktisches'],a:0,t:'Berichte in der Praxis'}
     ],
     summary:{ kern:['Berichte liefern datenbasierte Entscheidungsgrundlagen.','Die ABC-Analyse priorisiert Artikel nach Wertbeitrag.','Regelmäßige Auswertung ersetzt manuelle Excel-Analysen.'],
       funk:['KPI-Dashboard','ABC-Analyse'], hand:['Feste Reporting-Termine etablieren','Berichte vor Lieferantengesprächen nutzen'] }
@@ -706,12 +735,25 @@ const ROLE_RECOS = {
   'Lagermitarbeiter':[{tag:'Praxis',t:'Scanner einrichten und kalibrieren',d:'In zehn Minuten startklar für den täglichen Einsatz.'},{tag:'Prozesse',t:'Wareneingang korrekt buchen',d:'Schritt-für-Schritt-Anleitung für die tägliche Erfassung.'},{tag:'Praxis',t:'Kanban-Karten richtig scannen',d:'So läuft der Nachbestellprozess reibungslos.'}]
 };
 
+/* Simulierte unternehmensweite KI-Aggregation aller bisherigen Pilotnutzer.
+   Bildet die in Kapitel 2.3.1 beschriebene Rückkopplung von Wissenslücken
+   in die Produktdokumentation ab. */
+const AGGREGATE_GAPS = [
+  {topic:'ERP-Anbindungen', pct:47, moduleId:4},
+  {topic:'CSV-Zeichensatz', pct:38, moduleId:4},
+  {topic:'Zwei-Behälter-Prinzip', pct:29, moduleId:3},
+  {topic:'Lagerplatzstruktur', pct:24, moduleId:2},
+  {topic:'ABC-Analyse', pct:18, moduleId:5},
+  {topic:'Artikel-Pflichtfelder', pct:11, moduleId:2}
+];
+
 /* ============ STATE ============ */
 let state = {
   name:'', company:'', role:'',
   currentView:'dashboard', currentModule:null, currentTab:'content',
   moduleProgress:{1:{started:false,completed:false,quizScore:null,checklist:[]},2:{started:false,completed:false,quizScore:null,checklist:[]},3:{started:false,completed:false,quizScore:null,checklist:[]},4:{started:false,completed:false,quizScore:null,checklist:[]},5:{started:false,completed:false,quizScore:null,checklist:[]}},
-  totalTime:0, aiOpen:false, quizAnswers:{}, kbFilter:'Alle', kbSearch:'', currentArticle:null, currentBP:null
+  totalTime:0, aiOpen:false, quizAnswers:{}, kbFilter:'Alle', kbSearch:'', currentArticle:null, currentBP:null,
+  weakTopics:{}, adaptiveLog:[]
 };
 
 /* ============ ONBOARDING ============ */
@@ -746,7 +788,7 @@ function startApp(){
 }
 
 /* ============ NAV ============ */
-const VIEW_LABELS = {dashboard:'Dashboard',roadmap:'Mein Lernpfad',modules:'Lernmodule',kb:'Wissensdatenbank',best:'Best Practices',updates:'Update-Center',cert:'Zertifikate'};
+const VIEW_LABELS = {dashboard:'Dashboard',roadmap:'Mein Lernpfad',modules:'Lernmodule',gaps:'Wissenslücken-Analyse',kb:'Wissensdatenbank',best:'Best Practices',updates:'Update-Center',cert:'Zertifikate'};
 function showView(name){
   state.currentView = name;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -779,16 +821,25 @@ function renderDashboard(){
   const avgQuiz = (()=>{ const scores = Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore); if(!scores.length) return '–'; return Math.round(scores.reduce((a,b)=>a+b,0)/scores.length)+'%'; })();
   const phase = done>=4?3:(done>=2?2:1);
   const nextModule = MODULES.find(m=>!state.moduleProgress[m.id].completed) || MODULES[0];
+  const adaptive = getAdaptiveRecommendation();
 
   document.getElementById('view-dashboard').innerHTML = `
     <h1 class="page-title">Guten Tag, ${state.name}.</h1>
     <p class="page-sub">Hier ist Ihr Onboarding-Überblick als ${state.role}.</p>
 
+    ${adaptive ? `
+    <div class="adaptive-banner">
+      <div class="ai-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-5 4 3 5-7"/></svg></div>
+      <div class="ai-banner-text"><strong>Adaptiver Lernpfad — Wissenslücke erkannt</strong><span>Bei „${adaptive.topic}" gab es Unsicherheiten. Ihr Lernpfad wurde angepasst: Modul „${adaptive.module.title}" wird vor dem regulären nächsten Schritt zur Vertiefung empfohlen.</span></div>
+      <button class="ai-banner-btn" onclick="openModule(${adaptive.module.id});switchTab('content')">Vertiefung ansehen</button>
+    </div>
+    ` : `
     <div class="ai-banner">
       <div class="ai-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/><path d="M6 12v1a6 6 0 0 0 12 0v-1M12 19v3"/></svg></div>
       <div class="ai-banner-text"><strong>KI-Empfehlung</strong><span>Setzen Sie fort mit „${nextModule.title}". Basierend auf Ihrer Rolle als ${state.role} ist dies der optimale nächste Schritt.</span></div>
       <button class="ai-banner-btn" onclick="openModule(${nextModule.id})">Jetzt starten</button>
     </div>
+    `}
 
     <div class="stats-row">
       <div class="stat-card"><div class="stat-label">Abgeschlossene Module</div><div class="stat-val">${done}/5</div><div class="stat-sub">${progressPct()}% des Onboardings</div></div>
@@ -854,7 +905,8 @@ function renderRoadmap(){
           <svg width="150" height="150" viewBox="0 0 130 130"><circle class="pr-bg" cx="65" cy="65" r="60"/><circle class="pr-fill" cx="65" cy="65" r="60" style="stroke-dashoffset:${377-377*progressPct()/100}"/></svg>
           <div class="pr-label"><div class="pr-pct">${progressPct()}%</div><div class="pr-sub">ABGESCHLOSSEN</div></div>
         </div>
-        <div class="roadmap-note">Ihr Lernpfad wurde von der KI basierend auf Ihrer Rolle als <strong>${state.role}</strong> personalisiert. Die Reihenfolge berücksichtigt typische Arbeitsabläufe dieser Rolle.</div>
+        <div class="roadmap-note">Ihr Lernpfad wurde von der KI basierend auf Ihrer Rolle als <strong>${state.role}</strong> personalisiert. Die Reihenfolge berücksichtigt typische Arbeitsabläufe dieser Rolle.${state.adaptiveLog.length?` Zusätzlich wurde der Pfad <strong>${state.adaptiveLog.length}×</strong> adaptiv angepasst, nachdem Wissenslücken erkannt wurden — Details siehe „Wissenslücken-Analyse".`:''}</div>
+        ${state.adaptiveLog.length?`<div class="adaptive-log" style="margin-top:14px">${state.adaptiveLog.slice(0,4).map(l=>`<div class="log-item"><span class="log-dot"></span><span>${l.time} — ${l.text}</span></div>`).join('')}</div>`:''}
       </div>
     </div>
   `;
@@ -989,12 +1041,25 @@ function renderQuizResult(m){
   const pct = Math.round(correct/m.quiz.length*100);
   const passed = correct>=2;
   state.moduleProgress[m.id].quizScore = pct;
+  let justLogged = false;
+  if(!answers._logged){
+    answers._logged = true;
+    justLogged = true;
+    const wrongTopics = m.quiz.filter((q,i)=>answers[i]!==q.a).map(q=>q.t);
+    if(wrongTopics.length){
+      wrongTopics.forEach(t=>{ state.weakTopics[t] = (state.weakTopics[t]||0)+1; });
+      state.adaptiveLog.unshift({
+        time: new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}),
+        text: `Wissenslücke erkannt: „${wrongTopics.join('“, „')}“ in Modul „${m.title}“ (${correct}/${m.quiz.length} richtig) — Lernpfad wurde angepasst, Vertiefung wird priorisiert empfohlen.`
+      });
+    }
+  }
   if(passed && !state.moduleProgress[m.id].completed){
     state.moduleProgress[m.id].completed = true;
     state.totalTime += parseInt(m.time);
-    updateSidebarProgress();
     buildModuleSubNav();
   }
+  if(justLogged) updateSidebarProgress();
   return `<div class="quiz-result"><div class="qr-score">${correct}/${m.quiz.length} richtig (${pct}%)</div>
     <p>${passed?'Modul erfolgreich abgeschlossen.':'Mindestens 2 von 3 Antworten müssen korrekt sein. Bitte wiederholen Sie den Wissenscheck.'}</p>
     ${passed?`<button class="btn btn-primary" onclick="switchTab('summary');document.querySelectorAll('.tab-btn')[3].classList.add('active');document.querySelectorAll('.tab-btn')[0].classList.remove('active')">Zur KI-Zusammenfassung</button>`:`<button class="btn btn-outline" onclick="retryQuiz(${m.id})">Erneut versuchen</button>`}
@@ -1114,6 +1179,57 @@ function updateSidebarProgress(){
   renderDashboard();
   renderRoadmap();
   renderCert();
+  renderGaps();
+}
+
+/* ============ ADAPTIVE LERNPFAD / WISSENSLÜCKEN-ERKENNUNG ============ */
+function getAdaptiveRecommendation(){
+  const topics = Object.entries(state.weakTopics).sort((a,b)=>b[1]-a[1]);
+  if(!topics.length) return null;
+  const [topTopic] = topics[0];
+  const module = MODULES.find(m=>m.quiz.some(q=>q.t===topTopic));
+  if(!module) return null;
+  return { topic:topTopic, module };
+}
+function renderGaps(){
+  const el = document.getElementById('view-gaps');
+  if(!el) return;
+  const personal = Object.entries(state.weakTopics).sort((a,b)=>b[1]-a[1]);
+  const maxCount = Math.max(1, ...personal.map(t=>t[1]));
+
+  el.innerHTML = `
+    <h1 class="page-title">Wissenslücken-Analyse</h1>
+    <p class="page-sub">KI-gestützte Erkennung von Wissenslücken — persönlich und unternehmensweit.</p>
+
+    ${personal.length ? `
+      <div class="section-heading">Ihre persönlichen Wissenslücken</div>
+      ${personal.map(([topic,count])=>{
+        const module = MODULES.find(m=>m.quiz.some(q=>q.t===topic));
+        return `<div class="gap-card">
+          <div class="gap-top"><span class="gap-topic">${topic}</span><span class="gap-count">${count}× falsch beantwortet</span></div>
+          <div class="gap-track"><div class="gap-fill" style="width:${Math.round(count/maxCount*100)}%"></div></div>
+          <div class="gap-action">Empfehlung: <a onclick="openModule(${module?module.id:1});switchTab('content')">Inhalt zu „${module?module.title:''}" erneut ansehen</a></div>
+        </div>`;
+      }).join('')}
+    ` : `<div class="gap-empty">Noch keine Wissenslücken erkannt. Sobald Sie einen Wissenscheck nicht vollständig richtig beantworten, analysiert die KI automatisch die betroffenen Themen und passt Ihren Lernpfad an.</div>`}
+
+    <div class="section-heading">Unternehmensweite Wissenslücken (KI-Analyse aller Pilotnutzer)</div>
+    ${AGGREGATE_GAPS.map(g=>`<div class="gap-card">
+      <div class="gap-top"><span class="gap-topic">${g.topic}</span><span class="gap-count">${g.pct}% der Nutzer unsicher</span></div>
+      <div class="gap-track"><div class="gap-fill company" style="width:${g.pct}%"></div></div>
+      <div class="gap-action">Betroffenes Modul: <a onclick="openModule(${g.moduleId});switchTab('content')">${MODULES.find(m=>m.id===g.moduleId).title}</a></div>
+    </div>`).join('')}
+
+    <div class="insight-callout">
+      <strong>Mehrwert für OrKan System</strong>
+      <p>Diese aggregierten Erkenntnisse fließen automatisch in die Produktdokumentation und Content-Pflege zurück: Häufig missverstandene Themen wie „ERP-Anbindungen" oder „CSV-Zeichensatz" markieren konkreten Überarbeitungsbedarf in Lerninhalten und UI-Texten — noch bevor sie zu Supportanfragen führen.</p>
+    </div>
+
+    ${state.adaptiveLog.length ? `
+      <div class="section-heading">Adaptionsverlauf</div>
+      <div class="adaptive-log">${state.adaptiveLog.map(l=>`<div class="log-item"><span class="log-dot"></span><span>${l.time} — ${l.text}</span></div>`).join('')}</div>
+    ` : ''}
+  `;
 }
 
 /* ============ AI PANEL ============ */
@@ -1124,7 +1240,7 @@ function toggleAI(){
 }
 function seedAIMessages(){
   document.getElementById('aiMessages').innerHTML = `<div class="ai-msg bot">Willkommen, ${state.name}. Ich habe Ihren Lernpfad basierend auf Ihrer Rolle als ${state.role} zusammengestellt. Wie kann ich Ihnen helfen?</div>`;
-  document.getElementById('suggChips').innerHTML = ['Wo stehe ich im Onboarding?','Was sollte ich als Nächstes lernen?','Erkläre mir den Kanban-Prozess'].map(s=>`<div class="sugg-chip" onclick="sendAI('${s}')">${s}</div>`).join('');
+  document.getElementById('suggChips').innerHTML = ['Wo stehe ich im Onboarding?','Was sollte ich als Nächstes lernen?','Habe ich Wissenslücken?','Erkläre mir den Kanban-Prozess'].map(s=>`<div class="sugg-chip" onclick="sendAI('${s}')">${s}</div>`).join('');
 }
 function askCoach(mid){
   toggleAI();
@@ -1151,8 +1267,18 @@ function getAIResponse(text){
     return `Sie haben ${done} von 5 Modulen abgeschlossen (${progressPct()}%). Sie befinden sich in Phase ${done>=4?3:(done>=2?2:1)} des Onboardings.`;
   }
   if(t.includes('nächst')||t.includes('weiter')){
+    const adaptive = getAdaptiveRecommendation();
+    if(adaptive) return `Ich habe bei „${adaptive.topic}" eine Wissenslücke erkannt. Ihr Lernpfad wurde adaptiv angepasst: Ich empfehle vorrangig „${adaptive.module.title}" zur Vertiefung, bevor Sie regulär fortfahren.`;
     const next = MODULES.find(m=>!state.moduleProgress[m.id].completed);
     return next ? `Empfehlung: Setzen Sie fort mit „${next.title}" (${next.time}). Dies passt am besten zu Ihrer Rolle als ${state.role}.` : 'Sie haben alle Module abgeschlossen — besuchen Sie den Bereich Zertifikate, um Ihr Zertifikat zu erhalten.';
+  }
+  if(t.includes('wissenslück')||t.includes('lücke')||t.includes('schwäch')){
+    const topics = Object.entries(state.weakTopics).sort((a,b)=>b[1]-a[1]);
+    if(!topics.length) return 'Bisher wurden bei Ihnen keine Wissenslücken erkannt. Sobald ein Wissenscheck nicht vollständig richtig beantwortet wird, analysiere ich automatisch die betroffenen Themen und passe Ihren Lernpfad an — Details finden Sie im Bereich „Wissenslücken-Analyse".';
+    return `Ich habe bei Ihnen folgende Wissenslücken erkannt: ${topics.map(t=>t[0]).join(', ')}. Diese Themen wurden priorisiert in Ihren Lernpfad eingeplant. Zusätzlich fließen unternehmensweit aggregierte Lücken automatisch in die Produktdokumentation von OrKan System zurück.`;
+  }
+  if(t.includes('adapt')||t.includes('anpassung')||t.includes('lernpfad')){
+    return state.adaptiveLog.length ? `Ihr Lernpfad wurde bereits ${state.adaptiveLog.length}× automatisch angepasst, basierend auf erkannten Wissenslücken in Ihren Wissenschecks. Details finden Sie im Bereich „Mein Lernpfad" unter Adaptionsverlauf.` : 'Ihr Lernpfad passt sich automatisch an, sobald ich Wissenslücken in Ihren Wissenschecks erkenne — bislang war das noch nicht nötig, da Sie alle Fragen korrekt beantwortet haben.';
   }
   if(t.includes('kanban')){
     return 'Der Kanban-Prozess basiert auf dem Zwei-Behälter-Prinzip: Ist ein Behälter leer, wird er gescannt und die OrKan Cloud löst automatisch einen Bestellvorschlag aus. Das reduziert manuelle Bestandsprüfungen erheblich.';
