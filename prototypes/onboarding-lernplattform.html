@@ -30,7 +30,12 @@ svg{display:block}
 @keyframes cardIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 .onb-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:28px}
 .onb-texts .logo-name{font-size:20px;font-weight:800;letter-spacing:-.4px}
-.onb-texts .logo-sub{display:block;font-size:10px;font-weight:700;color:var(--green);letter-spacing:4px;margin-top:-2px}
+.onb-texts .logo-lines{display:flex;flex-direction:column;gap:2px;margin:5px 0 4px}
+.onb-texts .logo-lines span{height:2px;background:var(--green)}
+.onb-texts .logo-lines span:nth-child(1){width:100%}
+.onb-texts .logo-lines span:nth-child(2){width:72%;margin-left:10px}
+.onb-texts .logo-lines span:nth-child(3){width:48%;margin-left:20px}
+.onb-texts .logo-sub{display:block;font-size:10px;font-weight:700;color:var(--green);letter-spacing:4px;margin-top:2px;margin-left:20px}
 .onb-card h1{font-size:26px;font-weight:800;letter-spacing:-.6px;text-align:center;margin-bottom:6px}
 .onb-card>p.sub{color:var(--gray);text-align:center;font-size:14px;margin-bottom:32px}
 .field-label{font-size:12px;font-weight:600;letter-spacing:.3px;margin-bottom:6px;display:block}
@@ -390,11 +395,18 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 <div id="onboarding">
   <div class="onb-card">
     <div class="onb-logo">
-      <svg width="46" height="46" viewBox="0 0 100 100" fill="none">
-        <path d="M50 8C72 8 88 24 88 45C88 61 75 72 59 72C48 72 39 64 39 53C39 44 46 37 55 37C61 37 65 41 65 47" stroke="#8EA752" stroke-width="11" stroke-linecap="round" fill="none"/>
-        <path d="M22 48C22 68 35 85 55 92C48 90 34 82 28 68" stroke="#8EA752" stroke-width="11" stroke-linecap="round" fill="none"/>
+      <svg width="52" height="52" viewBox="0 0 200 220" fill="none">
+        <path d="M156.6,27.6 A88.0,88.0 0 1 1 56.0,18.8 L65.0,34.4 A70.0,70.0 0 1 0 145.0,41.4 Z" fill="#8EA752"/>
+        <path d="M122.6,33.0 A66.0,66.0 0 1 1 57.6,44.4 L67.9,56.7 A50.0,50.0 0 1 0 117.1,48.0 Z" fill="#8EA752"/>
+        <path d="M104.0,49.2 A46.0,46.0 0 1 1 60.2,72.0 L71.4,78.5 A33.0,33.0 0 1 0 102.9,62.1 Z" fill="#8EA752"/>
+        <path d="M95.1,67.4 A28.0,28.0 0 1 1 72.4,99.9 L82.3,98.1 A18.0,18.0 0 1 0 96.9,77.3 Z" fill="#8EA752"/>
+        <path d="M62,118 C50,145 55,175 82,198 C98,211 112,220 122,232 C112,214 96,196 88,176 C80,157 78,138 85,120 C80,116 68,113 62,118 Z" fill="#8EA752"/>
       </svg>
-      <div class="onb-texts"><span class="logo-name">OrKan Cloud</span><span class="logo-sub">ENABLEMENT PLATFORM</span></div>
+      <div class="onb-texts">
+        <span class="logo-name">OrKan Cloud</span>
+        <div class="logo-lines"><span></span><span></span><span></span></div>
+        <span class="logo-sub">ENABLEMENT PLATFORM</span>
+      </div>
     </div>
     <h1>Willkommen bei Ihrer Onboarding-Plattform</h1>
     <p class="sub">Strukturierte Einführung in die OrKan Cloud – rollenbasiert und KI-gestützt.</p>
@@ -430,9 +442,12 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 <div id="app">
   <header class="app-header">
     <div class="hdr-logo">
-      <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
-        <path d="M50 8C72 8 88 24 88 45C88 61 75 72 59 72C48 72 39 64 39 53C39 44 46 37 55 37C61 37 65 41 65 47" stroke="#8EA752" stroke-width="11" stroke-linecap="round" fill="none"/>
-        <path d="M22 48C22 68 35 85 55 92C48 90 34 82 28 68" stroke="#8EA752" stroke-width="11" stroke-linecap="round" fill="none"/>
+      <svg width="34" height="34" viewBox="0 0 200 220" fill="none">
+        <path d="M156.6,27.6 A88.0,88.0 0 1 1 56.0,18.8 L65.0,34.4 A70.0,70.0 0 1 0 145.0,41.4 Z" fill="#8EA752"/>
+        <path d="M122.6,33.0 A66.0,66.0 0 1 1 57.6,44.4 L67.9,56.7 A50.0,50.0 0 1 0 117.1,48.0 Z" fill="#8EA752"/>
+        <path d="M104.0,49.2 A46.0,46.0 0 1 1 60.2,72.0 L71.4,78.5 A33.0,33.0 0 1 0 102.9,62.1 Z" fill="#8EA752"/>
+        <path d="M95.1,67.4 A28.0,28.0 0 1 1 72.4,99.9 L82.3,98.1 A18.0,18.0 0 1 0 96.9,77.3 Z" fill="#8EA752"/>
+        <path d="M62,118 C50,145 55,175 82,198 C98,211 112,220 122,232 C112,214 96,196 88,176 C80,157 78,138 85,120 C80,116 68,113 62,118 Z" fill="#8EA752"/>
       </svg>
       <div><span class="logo-name">OrKan Cloud</span><span class="logo-sub">ENABLEMENT</span></div>
     </div>
@@ -1153,7 +1168,7 @@ function renderCert(){
       <h1 class="page-title">Zertifikate</h1>
       <p class="page-sub">Herzlichen Glückwunsch zum Abschluss des Onboardings.</p>
       <div class="certificate" id="certPrint">
-        <div class="cert-logo"><svg width="38" height="38" viewBox="0 0 100 100" fill="none"><path d="M50 8C72 8 88 24 88 45C88 61 75 72 59 72C48 72 39 64 39 53C39 44 46 37 55 37C61 37 65 41 65 47" stroke="#8EA752" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M22 48C22 68 35 85 55 92C48 90 34 82 28 68" stroke="#8EA752" stroke-width="11" stroke-linecap="round" fill="none"/></svg><div><div style="font-weight:800;font-size:15px">OrKan Cloud</div></div></div>
+        <div class="cert-logo"><svg width="40" height="40" viewBox="0 0 200 220" fill="none"><path d="M156.6,27.6 A88.0,88.0 0 1 1 56.0,18.8 L65.0,34.4 A70.0,70.0 0 1 0 145.0,41.4 Z" fill="#8EA752"/><path d="M122.6,33.0 A66.0,66.0 0 1 1 57.6,44.4 L67.9,56.7 A50.0,50.0 0 1 0 117.1,48.0 Z" fill="#8EA752"/><path d="M104.0,49.2 A46.0,46.0 0 1 1 60.2,72.0 L71.4,78.5 A33.0,33.0 0 1 0 102.9,62.1 Z" fill="#8EA752"/><path d="M95.1,67.4 A28.0,28.0 0 1 1 72.4,99.9 L82.3,98.1 A18.0,18.0 0 1 0 96.9,77.3 Z" fill="#8EA752"/><path d="M62,118 C50,145 55,175 82,198 C98,211 112,220 122,232 C112,214 96,196 88,176 C80,157 78,138 85,120 C80,116 68,113 62,118 Z" fill="#8EA752"/></svg><div><div style="font-weight:800;font-size:15px">OrKan Cloud</div></div></div>
         <div class="cert-title">Zertifikat der Absolvierung</div>
         <div class="cert-heading">OrKan Cloud Onboarding</div>
         <div class="cert-name">${state.name}</div>

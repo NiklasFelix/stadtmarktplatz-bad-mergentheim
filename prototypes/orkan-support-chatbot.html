@@ -36,7 +36,12 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .onb-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:32px}
 .onb-icon svg path,.onb-icon svg line{stroke:var(--green)}
 .onb-texts .logo-name{font-size:22px;font-weight:800;color:var(--dark-bg);letter-spacing:-.5px}
-.onb-texts .logo-sub{display:block;font-size:10px;font-weight:700;color:var(--green);letter-spacing:4px;margin-top:-2px}
+.onb-texts .logo-lines{display:flex;flex-direction:column;gap:2px;margin:6px 0 4px}
+.onb-texts .logo-lines span{height:2px;background:var(--green)}
+.onb-texts .logo-lines span:nth-child(1){width:100%}
+.onb-texts .logo-lines span:nth-child(2){width:72%;margin-left:10px}
+.onb-texts .logo-lines span:nth-child(3){width:48%;margin-left:20px}
+.onb-texts .logo-sub{display:block;font-size:10px;font-weight:700;color:var(--green);letter-spacing:4px;margin-top:2px;margin-left:20px}
 .onb-card h1{font-size:26px;font-weight:800;color:var(--dark-bg);letter-spacing:-.5px;margin-bottom:8px}
 .onb-card p{color:var(--gray);font-size:14.5px;line-height:1.6;margin-bottom:32px}
 .onb-fields{display:flex;flex-direction:column;gap:14px;margin-bottom:28px;text-align:left}
@@ -241,13 +246,17 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
   <div class="onb-card">
     <div class="onb-logo">
       <div class="onb-icon">
-        <svg width="46" height="46" viewBox="0 0 100 100" fill="none">
-          <path d="M50 8C72 8 88 24 88 45C88 61 75 72 59 72C48 72 39 64 39 53C39 44 46 37 55 37C61 37 65 41 65 47" stroke="#8EA752" stroke-width="11" stroke-linecap="round" fill="none"/>
-          <path d="M22 48C22 68 35 85 55 92C48 90 34 82 28 68" stroke="#8EA752" stroke-width="11" stroke-linecap="round" fill="none"/>
+        <svg width="52" height="52" viewBox="0 0 200 220" fill="none">
+          <path d="M156.6,27.6 A88.0,88.0 0 1 1 56.0,18.8 L65.0,34.4 A70.0,70.0 0 1 0 145.0,41.4 Z" fill="#8EA752"/>
+          <path d="M122.6,33.0 A66.0,66.0 0 1 1 57.6,44.4 L67.9,56.7 A50.0,50.0 0 1 0 117.1,48.0 Z" fill="#8EA752"/>
+          <path d="M104.0,49.2 A46.0,46.0 0 1 1 60.2,72.0 L71.4,78.5 A33.0,33.0 0 1 0 102.9,62.1 Z" fill="#8EA752"/>
+          <path d="M95.1,67.4 A28.0,28.0 0 1 1 72.4,99.9 L82.3,98.1 A18.0,18.0 0 1 0 96.9,77.3 Z" fill="#8EA752"/>
+          <path d="M62,118 C50,145 55,175 82,198 C98,211 112,220 122,232 C112,214 96,196 88,176 C80,157 78,138 85,120 C80,116 68,113 62,118 Z" fill="#8EA752"/>
         </svg>
       </div>
       <div class="onb-texts">
         <span class="logo-name">OrKan</span>
+        <div class="logo-lines"><span></span><span></span><span></span></div>
         <span class="logo-sub">SYSTEM</span>
       </div>
     </div>
@@ -278,9 +287,12 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
   <!-- HEADER -->
   <header class="app-header">
     <div class="header-logo">
-      <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
-        <path d="M50 8C72 8 88 24 88 45C88 61 75 72 59 72C48 72 39 64 39 53C39 44 46 37 55 37C61 37 65 41 65 47" stroke="#8EA752" stroke-width="11" stroke-linecap="round" fill="none"/>
-        <path d="M22 48C22 68 35 85 55 92C48 90 34 82 28 68" stroke="#8EA752" stroke-width="11" stroke-linecap="round" fill="none"/>
+      <svg width="34" height="34" viewBox="0 0 200 220" fill="none">
+        <path d="M156.6,27.6 A88.0,88.0 0 1 1 56.0,18.8 L65.0,34.4 A70.0,70.0 0 1 0 145.0,41.4 Z" fill="#8EA752"/>
+        <path d="M122.6,33.0 A66.0,66.0 0 1 1 57.6,44.4 L67.9,56.7 A50.0,50.0 0 1 0 117.1,48.0 Z" fill="#8EA752"/>
+        <path d="M104.0,49.2 A46.0,46.0 0 1 1 60.2,72.0 L71.4,78.5 A33.0,33.0 0 1 0 102.9,62.1 Z" fill="#8EA752"/>
+        <path d="M95.1,67.4 A28.0,28.0 0 1 1 72.4,99.9 L82.3,98.1 A18.0,18.0 0 1 0 96.9,77.3 Z" fill="#8EA752"/>
+        <path d="M62,118 C50,145 55,175 82,198 C98,211 112,220 122,232 C112,214 96,196 88,176 C80,157 78,138 85,120 C80,116 68,113 62,118 Z" fill="#8EA752"/>
       </svg>
       <div>
         <div class="logo-name">OrKan</div>
