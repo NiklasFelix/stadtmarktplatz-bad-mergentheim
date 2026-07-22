@@ -557,182 +557,182 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 const MODULES = [
   { id:1, phase:1, title:'Grundlagen OrKan Cloud', time:'12 Min.', diff:1,
     points:[
-      'Die OrKan Cloud ist eine webbasierte Lagerverwaltungssoftware für Handwerksbetriebe.',
-      'Der Navigationsbereich gliedert sich in Dashboard, Lager, Einkauf und Berichte.',
-      'Nach dem ersten Login richten Sie Ihr Nutzerprofil und Ihre Firmendaten ein.',
-      'Alle Daten werden automatisch in Echtzeit zwischen Geräten synchronisiert.'
+      'Die Startseite zeigt Ihren Kalender sowie vier Shortcuts: Artikel, Lieferant, Bestellvorschläge erstellen und Meine Einstellungen.',
+      'Über die drei Striche oben links gelangen Sie jederzeit zurück zum Home-Bereich und zur Hauptnavigation.',
+      'Der Kalender arbeitet mit einem Ampelsystem: Rot markierte Einträge zeigen fällige Bestellungen an.',
+      'Die Lagerverwaltung gliedert sich in Artikel, Lieferant, Standorte, Bestellvorschlag, Bestellungen, Scan, Bestelleingang und Lagerbestand.'
     ],
     features:[
-      {t:'Zentrales Dashboard',d:'Alle wichtigen Kennzahlen auf einen Blick'},
-      {t:'Rollenbasierter Zugriff',d:'Jeder Nutzer sieht nur relevante Bereiche'},
-      {t:'Mobile Nutzung',d:'Vollständig nutzbar auf Tablet und Smartphone'}
+      {t:'Startseite mit Kalender',d:'Fällige Bestellungen auf einen Blick, Ampelsystem zur Priorisierung'},
+      {t:'Vier Schnellzugriffe',d:'Artikel, Lieferant, Bestellvorschläge erstellen, Meine Einstellungen'},
+      {t:'Lagerverwaltung als Hauptbereich',d:'Acht Unterpunkte von Artikel bis Lagerbestand'}
     ],
-    practice:'Ein Lagerleiter meldet sich morgens an und erhält sofort eine Übersicht aller kritischen Bestände sowie offener Aufgaben – ohne Excel-Listen oder Rückfragen.',
-    task:'Melden Sie sich testweise an und erkunden Sie das Dashboard.',
-    checklist:['Firmendaten im Profil prüfen','Dashboard-Kacheln anordnen','Benachrichtigungen konfigurieren','Erste Navigation durchführen'],
-    tip:'Nutzen Sie die Suchleiste oben rechts, um jeden Bereich in unter zwei Sekunden zu erreichen.',
+    practice:'Ein Lagerleiter meldet sich morgens an und sieht auf der Startseite sofort im Kalender, welche Bestellungen heute fällig sind (rot markiert) – ohne eine einzige Excel-Liste zu öffnen.',
+    task:'Melden Sie sich testweise an und erkunden Sie die Startseite mit Kalender und den vier Shortcuts.',
+    checklist:['Kalender öffnen und Ampelsystem prüfen','Die vier Shortcuts einmal anklicken','Über die drei Striche in die Lagerverwaltung wechseln','Die acht Unterpunkte der Lagerverwaltung einmal durchklicken'],
+    tip:'Rot markierte Kalendereinträge haben Priorität – prüfen Sie diese jeden Morgen zuerst, bevor Sie mit anderen Aufgaben starten.',
     quiz:[
-      {q:'Was ist die OrKan Cloud?',o:['Ein E-Mail-Dienst','Eine Lagerverwaltungssoftware','Ein Buchhaltungsprogramm','Eine CRM-Lösung'],a:1,t:'Systemgrundlagen'},
-      {q:'Wo finden Sie die Artikelübersicht?',o:['Einstellungen','Berichte','Stammdaten → Artikel','Dashboard'],a:2,t:'Navigation'},
-      {q:'Was bedeutet das Kanban-Prinzip?',o:['Digitale Buchhaltung','Automatische Bestellauslösung bei Mindestbestand','Jährliche Inventur','Manuelle Lagerverwaltung'],a:1,t:'Kanban-Prinzip'}
+      {q:'Was zeigt ein rot markierter Eintrag im Kalender der OrKan Cloud?',o:['Einen Urlaubstag','Eine fällige Bestellung','Einen neuen Artikel','Eine abgeschlossene Lieferung'],a:1,t:'Systemgrundlagen'},
+      {q:'Wie gelangen Sie zur Hauptnavigation zurück?',o:['Über die drei Striche oben links','Nur über die Browser-Zurück-Taste','Über das Firmenlogo','Gar nicht, Neuanmeldung nötig'],a:0,t:'Navigation'},
+      {q:'Welcher Bereich gehört NICHT zu den acht Unterpunkten der Lagerverwaltung?',o:['Bestellvorschlag','Scan','Lagerbestand','Gehaltsabrechnung'],a:3,t:'Lagerverwaltung-Struktur'}
     ],
-    summary:{ kern:['Die OrKan Cloud bündelt Lagerverwaltung, Einkauf und Auswertung in einer Plattform.','Die Navigation ist rollenbasiert und passt sich dem Nutzerprofil an.','Alle Funktionen sind sowohl am Desktop als auch mobil verfügbar.'],
-      funk:['Zentrales Dashboard','Rollenbasierter Zugriff'], hand:['Profil und Firmendaten vollständig ausfüllen','Dashboard individuell anordnen'] }
+    summary:{ kern:['Die Startseite bündelt Kalender und vier Shortcuts für die häufigsten Aufgaben.','Das Ampelsystem im Kalender priorisiert fällige Bestellungen visuell.','Die Lagerverwaltung ist der zentrale Hauptbereich mit acht klar gegliederten Unterpunkten.'],
+      funk:['Startseite mit Kalender','Lagerverwaltung als Hauptbereich'], hand:['Kalender täglich als ersten Schritt prüfen','Sich mit den acht Unterpunkten der Lagerverwaltung vertraut machen'] }
   },
   { id:2, phase:1, title:'Artikel & Lagerplätze', time:'15 Min.', diff:1,
     points:[
-      'Jeder Artikel benötigt mindestens eine eindeutige Artikelnummer und Bezeichnung.',
-      'Lagerplätze werden hierarchisch nach Zone, Gang, Regal und Fach strukturiert.',
-      'Ein Artikel kann beliebig vielen Lagerplätzen zugeordnet werden.',
-      'Einheiten (Stück, Meter, Kilogramm) werden je Artikel individuell festgelegt.'
+      'Ein Artikel wird mit Artikelgruppe, interner Artikelnummer, Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort angelegt.',
+      'Lager MIN definiert den Sicherheitsbestand, Lager MAX den gewünschten Höchstbestand am Lagerplatz.',
+      'Die Bestellmenge im Bestellvorschlag ergibt sich automatisch aus der Differenz zwischen Lager MAX und Lager MIN.',
+      'Zu jedem Artikel werden Lagereinheit, Lieferant, Lieferanten-Artikelnummer, EK-Preis sowie Menge und VPE hinterlegt.'
     ],
     features:[
-      {t:'Artikelstamm',d:'Zentrale Verwaltung aller Artikeldaten'},
-      {t:'Lagerplatzstruktur',d:'Beliebig tiefe Gliederung von Zonen bis Fächern'},
-      {t:'Mehrfachzuordnung',d:'Artikel an mehreren Standorten führen'}
+      {t:'Vollständiger Artikelstamm',d:'Artikelgruppe, Bezeichnung 1–3, Lager/Gebäude/Lagerort in einer Maske'},
+      {t:'Lager MIN / Lager MAX',d:'Sicherheitsbestand und Höchstbestand steuern die Bestellmenge automatisch'},
+      {t:'Artikel erstellen, kopieren, bearbeiten',d:'Ähnliche Artikel per Kopie statt Neuanlage anlegen'}
     ],
-    practice:'Ein neuer Lagerplatz für Dichtungsringe wird angelegt, mit Mindestmenge versehen und dem passenden Lieferanten zugeordnet – in unter drei Minuten.',
-    task:'Legen Sie einen neuen Artikel mit Lagerplatz an.',
-    checklist:['Artikelnummer und Bezeichnung vergeben','Einheit festlegen','Lagerplatz zuordnen','Mindestmenge hinterlegen'],
-    tip:'Verwenden Sie ein einheitliches Nummernschema (z. B. Kategorie-Kürzel + laufende Nummer), das erleichtert spätere Suche und Auswertung erheblich.',
+    practice:'Für ein Schraubenpäckchen wird Lager MIN = 2 und Lager MAX = 6 hinterlegt. Sobald der Mindestbestand von 2 erreicht ist, schlägt die OrKan Cloud automatisch die Differenz von 4 Päckchen zur Nachbestellung vor.',
+    task:'Legen Sie einen Artikel mit Lager MIN/MAX nach dem Schraubenpäckchen-Beispiel an.',
+    checklist:['Artikelgruppe und interne Artikelnummer vergeben','Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort eintragen','Lager MIN und Lager MAX festlegen (z. B. 2 / 6)','Lieferant, Lieferanten-Artikelnummer und Lagereinheit hinterlegen','Artikelbild per Drag & Drop unter „Dokumente" hinzufügen'],
+    tip:'Nutzen Sie die „Kopieren"-Funktion für ähnliche Artikel (z. B. gleicher Bohrer in anderer Größe) – Beschreibung und Lieferant müssen dann nicht erneut gepflegt werden.',
     quiz:[
-      {q:'Was ist ein Pflichtfeld beim Anlegen eines Artikels?',o:['Lieferant','Artikelnummer','Foto','Gewicht'],a:1,t:'Artikel-Pflichtfelder'},
-      {q:'Wie lautet das Format für Lagerplatzkennzeichnung?',o:['Name-Farbe','Zone-Gang-Regal-Fach','Datum-Menge','Lieferant-Artikel'],a:1,t:'Lagerplatzstruktur'},
-      {q:'Wie viele Lagerplätze kann ein Artikel haben?',o:['Nur einen','Zwei bis drei','Beliebig viele','Maximal fünf'],a:2,t:'Mehrfachzuordnung'}
+      {q:'Wofür steht „Lager MIN" bei einem Artikel?',o:['Der maximale Lagerbestand','Der Sicherheitsbestand, ab dem nachbestellt wird','Der Einkaufspreis','Die kleinste Verpackungseinheit'],a:1,t:'Lager MIN/MAX'},
+      {q:'Bei Lager MIN = 2 und Lager MAX = 6 – wie viele Stück werden im Bestellvorschlag vorgeschlagen?',o:['2','6','4','8'],a:2,t:'Bestellmengen-Berechnung'},
+      {q:'Wozu dient die „Kopieren"-Funktion bei Artikeln?',o:['Zum Löschen mehrerer Artikel','Um ähnliche Artikel ohne erneute Dateneingabe anzulegen','Nur für den Export','Für die Passwortänderung'],a:1,t:'Artikel-Pflichtfelder'}
     ],
-    summary:{ kern:['Artikelnummer und Bezeichnung sind für jeden Artikel verpflichtend.','Lagerplätze folgen einer klaren Zone-Gang-Regal-Fach-Logik.','Ein Artikel kann mehreren Lagerplätzen zugewiesen werden.'],
-      funk:['Artikelstamm','Lagerplatzstruktur'], hand:['Einheitliches Nummernschema festlegen','Lagerstruktur vor dem Import planen'] }
+    summary:{ kern:['Artikel werden mit Artikelgruppe, interner Artikelnummer, Bezeichnung 1–3 sowie Lager/Gebäude/Lagerort angelegt.','Lager MIN und Lager MAX steuern automatisch die vorgeschlagene Bestellmenge (MAX minus MIN).','Ähnliche Artikel lassen sich per Kopierfunktion effizient anlegen statt neu einzugeben.'],
+      funk:['Lager MIN / Lager MAX','Artikel kopieren'], hand:['Lager MIN/MAX realistisch anhand des Verbrauchs festlegen','Bei ähnlichen Artikeln konsequent die Kopierfunktion nutzen'] }
   },
-  { id:3, phase:2, title:'Kanban-Prozess', time:'10 Min.', diff:2,
+  { id:3, phase:2, title:'Zwei-Etiketten-System & Bestellvorschlag', time:'10 Min.', diff:2,
     points:[
-      'Das Zwei-Behälter-Prinzip sorgt für automatische Nachbestellung ohne manuelle Kontrolle.',
-      'Jede Kanban-Karte enthält einen QR-Code mit Artikel- und Lagerplatzinformation.',
-      'Beim Scannen eines leeren Behälters wird automatisch ein Bestellvorschlag ausgelöst.',
-      'Der Prozess reduziert Bestandsprüfungen und verhindert Fehlmengen.'
+      'An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, zur Kennzeichnung des Lagerplatzes) und ein weißes (Bestellauslöser).',
+      'Wird der Mindestbestand erreicht, zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox.',
+      'Abends nimmt ein Lagermitarbeiter die Bestellbox und erfasst die Artikel unter „Bestellvorschlag → Erstellen" – per QR-Code-Scan oder manuell.',
+      'Nach „Bestellungen erstellen" und „Senden" folgt die Zusammenfassung mit Ansprechpartner, Liefertermin, Lieferadresse und Lieferant.'
     ],
     features:[
-      {t:'Kanban-Karten',d:'Drucken und Scannen per App oder Handscanner'},
-      {t:'Automatische Auslösung',d:'Bestellvorschlag ohne manuelles Eingreifen'},
-      {t:'Lückenlose Nachverfolgung',d:'Jeder Scan wird protokolliert'}
+      {t:'Blaues Etikett',d:'Bleibt dauerhaft am Regal – eindeutige Lagerplatzkennzeichnung'},
+      {t:'Weißes Etikett',d:'Wird bei Mindestbestand gezogen und signalisiert laufende Bestellung'},
+      {t:'Bestellvorschlag per Scan',d:'QR-Code scannen oder Artikel manuell erfassen und in den Warenkorb legen'}
     ],
-    practice:'Ein Lagermitarbeiter scannt den leeren Behälter für Schrauben M8 – die OrKan Cloud erstellt automatisch einen Bestellvorschlag an den hinterlegten Lieferanten.',
-    task:'Simulieren Sie den Scan-Vorgang einer Kanban-Karte.',
-    checklist:['Kanban-Karte für Testartikel erstellen','QR-Code prüfen','Scan-Vorgang simulieren','Bestellvorschlag kontrollieren'],
-    tip:'Kanban-Karten sollten laminiert und gut sichtbar am Behälter angebracht werden, um Beschädigung und Fehlscans zu vermeiden.',
+    practice:'Ein Lagermitarbeiter zieht am Nachmittag das weiße Etikett vom leeren Schrauben-Fach und legt es in die Bestellbox. Abends scannt ein Kollege alle Etiketten aus der Box unter „Bestellvorschlag" ein – die Bestellung ist in wenigen Minuten fertig zusammengestellt.',
+    task:'Simulieren Sie den Ablauf vom weißen Etikett bis zum fertigen Bestellvorschlag.',
+    checklist:['Zwei-Etiketten-System am Testregal nachvollziehen (blau vs. weiß)','Weißes Etikett in die Bestellbox legen','Unter „Bestellvorschlag → Erstellen" den Artikel scannen oder manuell erfassen','„Bestellungen erstellen" und Zusammenfassung prüfen (Ansprechpartner, Liefertermin, Lieferadresse)'],
+    tip:'Fehlt am Regal das weiße Etikett, ist der Artikel bereits im Bestellprozess – so weiß jeder Mitarbeiter auf einen Blick, ob schon bestellt wurde, ohne im System nachschauen zu müssen.',
     quiz:[
-      {q:'Was löst das Scannen einer leeren Kanban-Karte aus?',o:['Eine Rechnung','Einen Bestellvorschlag','Eine Inventur','Nichts automatisch'],a:1,t:'Kanban-Scan-Auslösung'},
-      {q:'Wie viele Behälter umfasst das klassische Kanban-Prinzip?',o:['Eins','Zwei','Drei','Vier'],a:1,t:'Zwei-Behälter-Prinzip'},
-      {q:'Was enthält eine Kanban-Karte typischerweise?',o:['Nur den Preis','QR-Code mit Artikel- und Lagerplatzdaten','Die Firmenadresse','Nichts, nur Text'],a:1,t:'Kanban-Karteninhalt'}
+      {q:'Wofür steht das blaue Etikett am Lagerplatz?',o:['Für den Bestellauslöser','Für die dauerhafte Lagerplatzkennzeichnung','Für den Lieferantenpreis','Für die Inventur'],a:1,t:'Zwei-Etiketten-System'},
+      {q:'Was passiert, wenn der Mindestbestand erreicht ist?',o:['Nichts, das System merkt es automatisch','Das weiße Etikett wird gezogen und in die Bestellbox gelegt','Der Artikel wird gelöscht','Der Lieferant wird automatisch gewechselt'],a:1,t:'Bestellauslösung'},
+      {q:'Was folgt nach „Bestellungen erstellen" und „Senden"?',o:['Die Bestellung wird sofort ohne Kontrolle verschickt','Eine Zusammenfassung mit Ansprechpartner, Liefertermin und Lieferadresse','Der Artikel wird automatisch gelöscht','Nichts, der Vorgang ist bereits beendet'],a:1,t:'Bestellvorschlag-Ablauf'}
     ],
-    summary:{ kern:['Das Zwei-Behälter-Prinzip automatisiert die Nachbestellung.','QR-Codes verknüpfen physischen Bestand mit digitalen Daten.','Scans lösen unmittelbar Bestellvorschläge aus.'],
-      funk:['Kanban-Karten','Automatische Auslösung'], hand:['Kanban-Karten für alle C-Teile einführen','Scan-Prozess im Team schulen'] }
+    summary:{ kern:['Das Zwei-Etiketten-System (blau/weiß) macht den Bestellstatus jedes Lagerplatzes ohne Systemzugriff sichtbar.','Das weiße Etikett wandert bei Mindestbestand in die Bestellbox und wird gesammelt eingescannt.','Der Bestellvorschlag fasst alle erfassten Artikel zu einer Bestellung mit vollständigen Lieferdaten zusammen.'],
+      funk:['Zwei-Etiketten-System','Bestellvorschlag per Scan'], hand:['Bestellbox täglich zur festen Uhrzeit leeren','Weißes Etikett nach Wareneingang wieder ans Regal anbringen'] }
   },
-  { id:4, phase:2, title:'Schnittstellen & Datenimport', time:'18 Min.', diff:3,
+  { id:4, phase:2, title:'Artikelimport & Lieferanten-Anbindung', time:'18 Min.', diff:3,
     points:[
-      'CSV-Importe ermöglichen die Massenanlage von Artikeln aus bestehenden Systemen.',
-      'ERP-Anbindungen (DATEV, Sage, Lexware) synchronisieren Stammdaten automatisch.',
-      'Die REST-API erlaubt individuelle Anbindungen an Eigenentwicklungen.',
-      'Fehlerhafte Importzeilen werden markiert und können gezielt korrigiert werden.'
+      'Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei mit den zugehörigen Artikelbildern.',
+      'Beim Import stehen drei Optionen zur Wahl: „Importieren und aktualisieren", „nur importieren" oder „nur aktualisieren".',
+      'Der Abgleich läuft wahlweise über die Lieferanten-Artikelnummer, die EAN-Nummer oder die interne Artikelnummer.',
+      'Die Shop-URL im Lieferantenstamm ist die Grundlage der Anbindung: Die OrKan Cloud greift darüber später direkt auf den Lieferanten-Shop zu.'
     ],
     features:[
-      {t:'CSV-Import',d:'Massenimport mit Fehlerprüfung'},
-      {t:'ERP-Anbindung',d:'Native Integration gängiger Systeme'},
-      {t:'REST-API',d:'Offene Schnittstelle für Eigenentwicklungen'}
+      {t:'Excel + ZIP-Import',d:'Artikeldaten und Bilder werden gemeinsam über Dateiname-Zuordnung importiert'},
+      {t:'Drei Abgleich-Optionen',d:'Lieferanten-Artikelnummer, EAN-Nummer oder interne Artikelnummer'},
+      {t:'Lieferanten-Shop-Anbindung',d:'Shop-URL verknüpft die OrKan Cloud direkt mit dem Bestellshop des Lieferanten'}
     ],
-    practice:'Beim Wechsel von einer Excel-basierten Lagerverwaltung werden 1.200 Artikel per CSV importiert – inklusive automatischer Fehlerprüfung auf doppelte Artikelnummern.',
-    task:'Bereiten Sie eine CSV-Datei für den Import vor.',
-    checklist:['Pflichtfelder prüfen (Artikelnummer, Bezeichnung, Einheit)','Zeichensatz auf UTF-8 setzen','Testimport mit 10 Zeilen durchführen','Fehlerzeilen korrigieren'],
-    tip:'Führen Sie vor dem Vollimport stets einen Testimport mit wenigen Zeilen durch, um das Format zu validieren.',
+    practice:'Beim Wechsel von einer Excel-basierten Lagerverwaltung werden mehrere hundert Artikel per Excel-Import angelegt: Die Artikeldaten liegen in der Excel-Liste, die passenden Produktbilder in einer ZIP-Datei – der Dateiname im Ordner entspricht dabei exakt dem Bildnamen in der Excel-Spalte.',
+    task:'Bereiten Sie eine Excel-Importvorlage inklusive Bilderordner vor.',
+    checklist:['Pflichtfelder der Importvorlage prüfen (Werksnummer, EAN, Bezeichnung 1–3, Lager/Gebäude/Lagerort)','Artikelbilder in einem Ordner sammeln und als ZIP vorbereiten','Bildnamen in der Excel-Spalte exakt dem Dateinamen im Ordner zuordnen','Passende Import-Option wählen (importieren/aktualisieren) und Abgleichfeld festlegen'],
+    tip:'Bei der Lieferantenanlage unbedingt die Shop-URL pflegen – ohne sie kann die OrKan Cloud die Bestellung später nicht automatisch zum Lieferanten-Shop weiterleiten.',
     quiz:[
-      {q:'Welcher Zeichensatz wird für CSV-Importe empfohlen?',o:['ASCII','UTF-8','Windows-1252','ISO-8859-15'],a:1,t:'CSV-Zeichensatz'},
-      {q:'Was passiert mit fehlerhaften Importzeilen?',o:['Sie werden automatisch gelöscht','Sie werden markiert und können korrigiert werden','Der Import bricht komplett ab','Sie werden ignoriert'],a:1,t:'Fehlerbehandlung Import'},
-      {q:'Welches System zählt NICHT zu den nativen ERP-Anbindungen?',o:['DATEV','Sage','Lexware','Photoshop'],a:3,t:'ERP-Anbindungen'}
+      {q:'Was wird zusätzlich zur Excel-Liste beim Artikelimport hochgeladen?',o:['Eine PDF-Datei','Eine ZIP-Datei mit den Artikelbildern','Ein Word-Dokument','Nichts weiter'],a:1,t:'Import-Datenformat'},
+      {q:'Über welches Feld läuft die Anbindung an den Lieferanten-Shop?',o:['Die Postleitzahl','Die Shop-URL im Lieferantenstamm','Den Firmennamen','Das Bestelldatum'],a:1,t:'Lieferanten-Shop-Anbindung'},
+      {q:'Welche Option gibt es NICHT beim Artikelimport?',o:['Importieren und aktualisieren','Nur importieren','Nur aktualisieren','Automatisch übersetzen'],a:3,t:'Import-Optionen'}
     ],
-    summary:{ kern:['CSV-Import ermöglicht schnelle Massenanlage von Artikeldaten.','ERP-Anbindungen synchronisieren Stammdaten automatisiert.','Die REST-API öffnet die Plattform für individuelle Integrationen.'],
-      funk:['CSV-Import','ERP-Anbindung'], hand:['Vor Vollimport stets Testimport durchführen','Zeichensatz UTF-8 sicherstellen'] }
+    summary:{ kern:['Der Artikelimport kombiniert eine Excel-Liste mit einer ZIP-Datei für Bilder über eine Dateinamen-Zuordnung.','Drei Importoptionen und drei Abgleichfelder ermöglichen einen flexiblen, wiederholbaren Importprozess.','Die Shop-URL im Lieferantenstamm ist die technische Grundlage für die spätere automatische Bestellweiterleitung.'],
+      funk:['Excel + ZIP-Import','Lieferanten-Shop-Anbindung'], hand:['Vor dem Vollimport Bildzuordnung an wenigen Testartikeln prüfen','Shop-URL bei jedem neuen Lieferanten sofort hinterlegen'] }
   },
-  { id:5, phase:3, title:'Auswertung & Optimierung', time:'8 Min.', diff:2,
+  { id:5, phase:3, title:'Wareneingang, Lagerbestand & Gebrauchsgut', time:'8 Min.', diff:2,
     points:[
-      'Berichte liefern Kennzahlen zu Umschlagshäufigkeit, Bestandswert und Liefertreue.',
-      'Die ABC-Analyse zeigt, welche Artikel den größten Wertanteil ausmachen.',
-      'Regelmäßige Jahres- und Listungsgespräche werden durch Reports datenbasiert vorbereitet.',
-      'Alle Berichte lassen sich als Excel oder PDF exportieren.'
+      'Beim Bestellabschluss öffnen sich drei Fenster: Wareneingang-Bestätigung, Lieferschein und der Lieferanten-Shop zur finalen Bestellung.',
+      'Unter „Scan / Bestelleingang" sehen Sie, wann Ware angekommen ist – inklusive Bestellnummer und Kommission.',
+      'Der Reiter „Lagerbestand" zeigt je Artikel den aktuellen Bestand sowie den Warenwert auf Basis von Lager MIN und Lager MAX.',
+      'Die Gebrauchsgutverwaltung (Maschinenverwaltung) zeigt, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine führt.'
     ],
     features:[
-      {t:'KPI-Dashboard',d:'Kennzahlen in Echtzeit im Überblick'},
-      {t:'ABC-Analyse',d:'Priorisierung nach Wertbeitrag'},
-      {t:'Report-Export',d:'Excel- und PDF-Export für Meetings'}
+      {t:'Drei-Fenster-Bestellabschluss',d:'Wareneingang, Lieferschein und Lieferanten-Shop in einem Schritt'},
+      {t:'Lagerbestand mit Warenwert',d:'Ist-Bestand je Artikel im Verhältnis zu Lager MIN/MAX'},
+      {t:'Gebrauchsgutverwaltung',d:'Maschinen und Werkzeuge Mitarbeitern oder Fahrzeugen zuordnen'}
     ],
-    practice:'Vor dem jährlichen Listungsgespräch mit einem Lieferanten erstellt der Einkäufer in wenigen Minuten eine Auswertung zu Liefertreue und Mengenabweichungen.',
-    task:'Erstellen Sie einen Bestandsbericht für den letzten Monat.',
-    checklist:['Berichtszeitraum wählen','ABC-Analyse aufrufen','Bericht als PDF exportieren','Kennzahlen interpretieren'],
-    tip:'Planen Sie feste Termine für die Berichtsprüfung ein – so werden Trends frühzeitig erkannt statt erst im Jahresgespräch.',
+    practice:'Nach Abschluss einer Bestellung hakt ein Lagermitarbeiter im Wareneingangs-Fenster die gelieferten Artikel ab, prüft sie gegen den Lieferschein und aktualisiert damit automatisch den Lagerbestand – ganz ohne separate Excel-Erfassung.',
+    task:'Prüfen Sie den Lagerbestand eines Testartikels und ordnen Sie ein Gebrauchsgut einem Mitarbeiter zu.',
+    checklist:['Bestellabschluss mit den drei Fenstern nachvollziehen','Wareneingang für einen Testartikel bestätigen','Lagerbestand und Warenwert eines Artikels prüfen','Ein Gebrauchsgut über „Buchung" einem Mitarbeiter zuordnen'],
+    tip:'Nutzen Sie bei der Gebrauchsgutverwaltung die Funktion „Service und Wartung", um wiederkehrende Prüftermine (z. B. Jahresservice) direkt an der Maschine zu hinterlegen.',
     quiz:[
-      {q:'Wofür steht die ABC-Analyse?',o:['Alphabetische Sortierung','Priorisierung nach Wertbeitrag','Eine Buchungsart','Ein Lagerplatzsystem'],a:1,t:'ABC-Analyse'},
-      {q:'In welchen Formaten lassen sich Berichte exportieren?',o:['Nur als Bild','Excel und PDF','Nur als Text','Gar nicht'],a:1,t:'Berichts-Export'},
-      {q:'Wofür eignen sich Reports besonders?',o:['Für die Vorbereitung von Listungsgesprächen','Für die Urlaubsplanung','Für die Gehaltsabrechnung','Für nichts Praktisches'],a:0,t:'Berichte in der Praxis'}
+      {q:'Welche drei Fenster öffnen sich nach Abschluss einer Bestellung?',o:['Rechnung, Mahnung, Gutschrift','Wareneingang, Lieferschein, Lieferanten-Shop','Kalender, Kontakte, Einstellungen','Nur ein Bestätigungsfenster'],a:1,t:'Bestellabschluss-Fenster'},
+      {q:'Was zeigt der Reiter „Lagerbestand" zusätzlich zum aktuellen Bestand an?',o:['Den Warenwert auf Basis von Lager MIN/MAX','Die Urlaubstage der Mitarbeiter','Das Wetter am Lagerstandort','Nichts weiter'],a:0,t:'Lagerbestand & Warenwert'},
+      {q:'Wofür wird die Gebrauchsgutverwaltung genutzt?',o:['Für die Buchhaltung','Um zu erfassen, welcher Mitarbeiter welche Maschine hat','Für den Artikelimport','Für die Passwortverwaltung'],a:1,t:'Gebrauchsgutverwaltung'}
     ],
-    summary:{ kern:['Berichte liefern datenbasierte Entscheidungsgrundlagen.','Die ABC-Analyse priorisiert Artikel nach Wertbeitrag.','Regelmäßige Auswertung ersetzt manuelle Excel-Analysen.'],
-      funk:['KPI-Dashboard','ABC-Analyse'], hand:['Feste Reporting-Termine etablieren','Berichte vor Lieferantengesprächen nutzen'] }
+    summary:{ kern:['Der Bestellabschluss verbindet Wareneingang, Lieferschein und Lieferanten-Shop in einem durchgängigen Drei-Fenster-Prozess.','Der Lagerbestand zeigt den aktuellen Warenwert stets im Verhältnis zu Lager MIN und Lager MAX.','Die Gebrauchsgutverwaltung schafft Transparenz darüber, wer welche Maschine oder welches Werkzeug aktuell nutzt.'],
+      funk:['Drei-Fenster-Bestellabschluss','Gebrauchsgutverwaltung'], hand:['Wareneingang zeitnah bestätigen, um den Lagerbestand aktuell zu halten','Service- und Wartungstermine für Maschinen konsequent hinterlegen'] }
   }
 ];
 
 const KB_ARTICLES = [
-  {cat:'Grundlagen',title:'Erste Schritte in der OrKan Cloud',desc:'Übersicht über Navigation, Profil und Grundeinstellungen.',body:['Nach dem ersten Login werden Sie durch die wichtigsten Bereiche geführt.','Das Dashboard zeigt Ihnen die für Ihre Rolle relevanten Kennzahlen.','Passen Sie Ihr Profil und Benachrichtigungseinstellungen individuell an.']},
-  {cat:'Grundlagen',title:'Benutzerrollen und Berechtigungen',desc:'Wie Rollen vergeben werden und was sie steuern.',body:['Verfügbare Rollen sind Admin, Lagermitarbeiter, Einkäufer und Lesezugriff.','Rollen bestimmen, welche Bereiche und Aktionen ein Nutzer sieht.','Rollen können jederzeit unter Einstellungen angepasst werden.']},
-  {cat:'Prozesse',title:'Mindestmengen richtig berechnen',desc:'Formel und Praxisbeispiele zur Mindestmengenermittlung.',body:['Die Mindestmenge ergibt sich aus Tagesverbrauch, Lieferzeit und Sicherheitsfaktor.','Eine zu niedrige Mindestmenge führt zu Fehlmengen, eine zu hohe bindet Kapital.','Die KI-Empfehlung schlägt Werte auf Basis historischer Verbrauchsdaten vor.']},
-  {cat:'Prozesse',title:'Bestellvorschläge bearbeiten',desc:'Vom automatischen Vorschlag zur fertigen Bestellung.',body:['Bestellvorschläge werden täglich automatisch generiert.','Sie können einzeln freigegeben oder zu Sammelbestellungen zusammengefasst werden.','Ein direkter E-Mail-Versand an den Lieferanten ist integriert.']},
-  {cat:'Schnittstellen',title:'CSV-Import Schritt für Schritt',desc:'Vorbereitung, Durchführung und Fehlerbehebung.',body:['Bereiten Sie Ihre Datei mit den Pflichtfeldern Artikelnummer, Bezeichnung und Einheit vor.','Nutzen Sie UTF-8 als Zeichensatz, um Sonderzeichenfehler zu vermeiden.','Nach dem Upload werden fehlerhafte Zeilen markiert und lassen sich gezielt korrigieren.']},
-  {cat:'Schnittstellen',title:'ERP-Systeme anbinden',desc:'Unterstützte Systeme und Einrichtung der Synchronisation.',body:['OrKan Cloud unterstützt DATEV, Sage und Lexware nativ.','Die Synchronisation erfolgt bidirektional in konfigurierbaren Intervallen.','Für individuelle Systeme steht eine dokumentierte REST-API bereit.']},
-  {cat:'Verwaltung',title:'Neue Benutzer einladen',desc:'Ablauf der Einladung und Rollenzuweisung.',body:['Unter Einstellungen → Benutzer können neue Mitarbeitende per E-Mail eingeladen werden.','Bei der Einladung wird direkt eine Rolle zugewiesen.','Die Anzahl möglicher Benutzer richtet sich nach dem gebuchten Lizenzmodell.']},
-  {cat:'Verwaltung',title:'Lagerstruktur planen',desc:'Empfehlungen für eine skalierbare Zonen-Gliederung.',body:['Planen Sie die Struktur Zone, Gang, Regal, Fach vor dem ersten Artikelimport.','Eine konsistente Struktur erleichtert spätere Erweiterungen erheblich.','Nutzen Sie sprechende Kürzel statt reiner Zahlenfolgen.']},
-  {cat:'Prozesse',title:'Wareneingang korrekt buchen',desc:'Von der Anlieferung bis zur Bestandsaktualisierung.',body:['Erfassen Sie die Lieferschein-Nummer bei jeder Anlieferung.','Artikel können per Scan oder Suche der Buchung zugeordnet werden.','Abweichungen lassen sich direkt als Reklamation markieren.']},
-  {cat:'Grundlagen',title:'Mobile Nutzung der OrKan Cloud',desc:'Was auf Tablet und Smartphone möglich ist.',body:['Alle zentralen Funktionen stehen auch mobil zur Verfügung.','Scan-Funktionen sind für den mobilen Einsatz optimiert.','Offline-Erfassung wird bei Wiederverbindung automatisch synchronisiert.']}
+  {cat:'Grundlagen',title:'Startseite: Kalender und Shortcuts',desc:'Aufbau der Startseite und das Ampelsystem im Kalender.',body:['Die Startseite zeigt Ihren Kalender sowie vier Shortcuts: Artikel, Lieferant, Bestellvorschläge erstellen und Meine Einstellungen.','Rot markierte Kalendereinträge zeigen fällige Bestellungen, grau markierte folgen dem allgemeinen Ampelsystem.','Über die drei Striche oben links gelangen Sie jederzeit zurück zur Hauptnavigation.']},
+  {cat:'Grundlagen',title:'Aufbau der Lagerverwaltung',desc:'Die acht Unterpunkte im Überblick.',body:['Die Lagerverwaltung gliedert sich in Artikel, Lieferant, Standorte, Bestellvorschlag, Bestellungen, Scan, Bestelleingang und Lagerbestand.','Jeder Unterpunkt deckt einen Schritt im Prozess ab – von der Artikelanlage bis zur Bestandsprüfung.','Die Anordnung der Spalten ist in jedem Bereich frei konfigurierbar.']},
+  {cat:'Prozesse',title:'Lager MIN und Lager MAX richtig setzen',desc:'Wie sich die vorgeschlagene Bestellmenge automatisch berechnet.',body:['Lager MIN ist der Sicherheitsbestand, ab dem nachbestellt werden soll; Lager MAX der gewünschte Höchstbestand.','Die vorgeschlagene Bestellmenge im Bestellvorschlag ergibt sich automatisch aus der Differenz MAX minus MIN.','Beispiel: Bei MIN = 2 und MAX = 6 schlägt die OrKan Cloud 4 Stück zur Nachbestellung vor.']},
+  {cat:'Prozesse',title:'Bestellvorschlag bearbeiten',desc:'Vom Etikett in der Bestellbox zur fertigen Bestellung.',body:['Unter „Bestellvorschlag → Erstellen" werden Artikel per QR-Code-Scan oder manuell erfasst und landen im Warenkorb.','Über „Bestellungen erstellen" und „Senden" gelangen Sie zur Zusammenfassung mit Ansprechpartner, Liefertermin und Lieferadresse.','Nach „Bestellen" öffnen sich drei Fenster: Wareneingang, Lieferschein und der Lieferanten-Shop zur finalen Bestellauslösung.']},
+  {cat:'Schnittstellen',title:'Artikelimport per Excel und ZIP',desc:'Vorbereitung, Durchführung und Bildzuordnung.',body:['Der Import besteht aus einer Excel-Liste mit den Artikeldaten und einer ZIP-Datei mit den zugehörigen Bildern.','Der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen.','Beim Import wählen Sie zwischen „Importieren und aktualisieren", „nur importieren" oder „nur aktualisieren" sowie dem Abgleichfeld (Lieferanten-Artikelnummer, EAN- oder interne Artikelnummer).']},
+  {cat:'Schnittstellen',title:'Lieferanten-Shop anbinden',desc:'Warum die Shop-URL im Lieferantenstamm entscheidend ist.',body:['Die OrKan Cloud ist lieferantenunabhängig – Sie können den Lieferanten für jeden Artikel jederzeit wechseln.','Die Shop-URL im Lieferantenstamm ist die Grundlage dafür, dass die OrKan Cloud später direkt auf den Bestellshop zugreifen kann.','Zusätzlich lassen sich Liefertermine je Lieferant hinterlegen, z. B. „nur freitags".']},
+  {cat:'Verwaltung',title:'Neue Benutzer einladen',desc:'Ablauf der Einladung und Rollenzuweisung.',body:['Unter Einstellungen → Mandantenverwaltung → Benutzer können neue Mitarbeitende angelegt werden.','Zusätzlich lassen sich hier Kontakte und die Sprache verwalten.','Welche Module ein Mandant nutzt, wird zentral unter Einstellungen → Firma verwaltet.']},
+  {cat:'Verwaltung',title:'Etiketten-Templates gestalten (Artikelkarte)',desc:'Eigene Etikettenvorlagen für den Lagerdruck erstellen.',body:['Unter Einstellungen → Lagerverwaltung → Artikelkarte gestalten Sie das Template für Ihre Etiketten frei per Drag & Drop.','Sie wählen selbst, welche Felder (z. B. Artikelnummer, Lagerort, Firmenlogo) auf dem Etikett erscheinen.','Beim Drucken eines Artikels wählen Sie anschließend das passende Template und erhalten eine druckfertige PDF-Datei.']},
+  {cat:'Prozesse',title:'Wareneingang korrekt bestätigen',desc:'Von der Anlieferung bis zur Bestandsaktualisierung.',body:['Nach Bestellabschluss öffnet sich automatisch das Wareneingangs-Fenster mit Artikelbild und Bezeichnung.','Haken Sie gelieferte Artikel ab und gleichen Sie sie mit dem Lieferschein ab.','Der Lagerbestand wird nach Bestätigung automatisch aktualisiert.']},
+  {cat:'Grundlagen',title:'Gebrauchsgutverwaltung (Maschinen)',desc:'Maschinen und Werkzeuge Mitarbeitern zuordnen.',body:['Unter Gebrauchsgut sehen Sie, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine führt.','Über „Buchung" weisen Sie eine Maschine einem Standort oder Mitarbeiter zu, „Reservierungen" planen zukünftige Nutzung.','Service- und Wartungstermine (z. B. Jahresservice) lassen sich direkt an der Maschine hinterlegen.']}
 ];
 
 const BEST_PRACTICES = [
-  {title:'Erstes Lager aufbauen',time:'25',diff:'medium',desc:'Von der leeren Instanz zur einsatzbereiten Lagerstruktur.',
+  {title:'Ersten Artikel vollständig anlegen',time:'12',diff:'easy',desc:'Von der Artikelgruppe bis zum Artikelbild in einem Durchgang.',
    steps:[
-    {t:'Zonen definieren',d:'Legen Sie grobe Bereiche wie Hauptlager oder Außenlager an.'},
-    {t:'Gänge und Regale anlegen',d:'Untergliedern Sie jede Zone in Gänge, Regale und Fächer.'},
-    {t:'Erste Artikel zuordnen',d:'Weisen Sie Testartikel den neuen Lagerplätzen zu.',hint:'Beginnen Sie mit den zehn meistbewegten Artikeln.'},
-    {t:'Mindestmengen hinterlegen',d:'Definieren Sie für jeden Artikel eine sinnvolle Mindestmenge.'},
-    {t:'Struktur prüfen',d:'Kontrollieren Sie die Struktur gemeinsam mit dem Lagerteam.'}
+    {t:'Artikelgruppe und interne Artikelnummer vergeben',d:'Wählen Sie eine passende Artikelgruppe und ein einheitliches Nummernschema.'},
+    {t:'Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort eintragen',d:'Je genauer die Bezeichnung, desto leichter die spätere Suche.'},
+    {t:'Lager MIN und Lager MAX festlegen',d:'Definieren Sie Sicherheitsbestand und Höchstbestand realistisch.',hint:'Bei Unsicherheit lieber leicht großzügiger kalkulieren und nach vier Wochen nachjustieren.'},
+    {t:'Lieferant und EK-Preis hinterlegen',d:'Lieferant, Lieferanten-Artikelnummer und Preis vervollständigen den Artikel.'},
+    {t:'Artikelbild per Drag & Drop hinzufügen',d:'Ein Bild erleichtert die Wiedererkennung am Lagerplatz erheblich.'}
    ]},
-  {title:'Artikel-Stammdaten importieren',time:'20',diff:'medium',desc:'Effizienter Massenimport bestehender Artikeldaten.',
+  {title:'Artikel-Stammdaten per Excel importieren',time:'20',diff:'medium',desc:'Effizienter Massenimport bestehender Artikeldaten inklusive Bildern.',
    steps:[
-    {t:'Vorlage herunterladen',d:'Nutzen Sie die bereitgestellte CSV-Vorlage als Ausgangspunkt.'},
-    {t:'Daten aufbereiten',d:'Übertragen Sie Ihre bestehenden Daten in die Vorlage.',hint:'Prüfen Sie Duplikate vor dem Import.'},
-    {t:'Testimport durchführen',d:'Importieren Sie zunächst zehn Zeilen zur Kontrolle.'},
-    {t:'Vollimport starten',d:'Importieren Sie nach erfolgreicher Prüfung die gesamte Datei.'},
-    {t:'Fehlerzeilen korrigieren',d:'Bearbeiten Sie markierte Zeilen direkt im System.'}
+    {t:'Importvorlage vorbereiten',d:'Nutzen Sie die Excel-Vorlage mit Werksnummer, EAN, Bezeichnung 1–3, Lager/Gebäude/Lagerort.'},
+    {t:'Bilder sammeln und benennen',d:'Speichern Sie Artikelbilder in einem Ordner; der Dateiname muss exakt dem Eintrag in der Excel-Spalte entsprechen.',hint:'Bildname und Excel-Eintrag Zeichen für Zeichen abgleichen, sonst schlägt die Zuordnung fehl.'},
+    {t:'ZIP-Datei erstellen',d:'Packen Sie den Bilderordner als ZIP-Datei für den Upload.'},
+    {t:'Import-Option wählen',d:'Entscheiden Sie zwischen „Importieren und aktualisieren", „nur importieren" oder „nur aktualisieren".'},
+    {t:'Abgleichfeld festlegen und importieren',d:'Wählen Sie Lieferanten-Artikelnummer, EAN oder interne Artikelnummer als Abgleich und starten Sie den Import.'}
    ]},
-  {title:'Mindestmengen berechnen',time:'15',diff:'easy',desc:'Systematische Ermittlung realistischer Meldebestände.',
+  {title:'Lager MIN/MAX realistisch berechnen',time:'15',diff:'easy',desc:'Systematische Ermittlung von Sicherheits- und Höchstbestand.',
    steps:[
-    {t:'Tagesverbrauch ermitteln',d:'Analysieren Sie den durchschnittlichen Verbrauch je Artikel.'},
-    {t:'Lieferzeit erfassen',d:'Hinterlegen Sie die tatsächliche Lieferzeit je Lieferant.'},
-    {t:'Sicherheitsfaktor festlegen',d:'Berücksichtigen Sie Schwankungen mit einem Aufschlag.'},
-    {t:'KI-Empfehlung prüfen',d:'Vergleichen Sie Ihre Werte mit der automatischen Empfehlung.'}
+    {t:'Verbrauch beobachten',d:'Analysieren Sie den tatsächlichen Verbrauch je Artikel über mehrere Wochen.'},
+    {t:'Lager MIN festlegen',d:'Setzen Sie den Sicherheitsbestand so, dass er bis zur Lieferung ausreicht.'},
+    {t:'Lager MAX festlegen',d:'Definieren Sie den gewünschten Höchstbestand am Lagerplatz.'},
+    {t:'Bestellmenge prüfen',d:'Kontrollieren Sie, ob die automatisch vorgeschlagene Menge (MAX minus MIN) sinnvoll ist.'}
    ]},
-  {title:'Scanner einrichten und kalibrieren',time:'10',diff:'easy',desc:'Mobile Erfassung für Wareneingang und Kanban.',
+  {title:'Zwei-Etiketten-System im Team einführen',time:'10',diff:'easy',desc:'Blaues und weißes Etikett korrekt im Lageralltag nutzen.',
    steps:[
-    {t:'App installieren',d:'Installieren Sie die OrKan-App auf dem Firmengerät.'},
-    {t:'Gerät koppeln',d:'Melden Sie sich mit den Zugangsdaten an und koppeln Sie das Gerät.'},
-    {t:'Testscan durchführen',d:'Scannen Sie eine Test-Kanban-Karte zur Kontrolle.',hint:'Bei Problemen Kamerafokus in den Geräteeinstellungen prüfen.'}
+    {t:'Etiketten drucken',d:'Erstellen Sie für jeden Lagerplatz ein blaues (fix) und ein weißes (Bestellauslöser) Etikett über die Artikelkarte.'},
+    {t:'Team einweisen',d:'Erklären Sie, dass das weiße Etikett bei Mindestbestand gezogen und in die Bestellbox gelegt wird.',hint:'Ein fehlendes weißes Etikett am Regal bedeutet: Artikel ist bereits bestellt.'},
+    {t:'Bestellbox-Routine festlegen',d:'Legen Sie eine feste Uhrzeit fest, zu der die Bestellbox geleert und in „Bestellvorschlag" erfasst wird.'}
    ]},
-  {title:'Nachbestellprozess automatisieren',time:'18',diff:'medium',desc:'Vom Scan bis zur automatischen Bestellung.',
+  {title:'Bestellvorschlag bis zum Wareneingang durchführen',time:'18',diff:'medium',desc:'Vom Scan der Etiketten bis zur bestätigten Anlieferung.',
    steps:[
-    {t:'Kanban-Karten drucken',d:'Erstellen und drucken Sie Karten für alle relevanten Artikel.'},
-    {t:'Lieferanten hinterlegen',d:'Weisen Sie jedem Artikel einen Standardlieferanten zu.'},
-    {t:'Automatikregel aktivieren',d:'Aktivieren Sie die automatische Bestellauslösung bei Scan.'},
-    {t:'Prozess testen',d:'Führen Sie einen vollständigen Testdurchlauf mit dem Team durch.'}
+    {t:'Etiketten aus der Bestellbox scannen',d:'Erfassen Sie die Artikel unter „Bestellvorschlag → Erstellen" per QR-Code oder manuell.'},
+    {t:'Bestellung zusammenfassen und senden',d:'Prüfen Sie Ansprechpartner, Liefertermin, Lieferadresse und Lieferant, bevor Sie bestellen.'},
+    {t:'Im Lieferanten-Shop final bestellen',d:'Das dritte der drei Fenster öffnet direkt den Lieferanten-Shop zur Bestellauslösung.'},
+    {t:'Wareneingang bestätigen',d:'Nach Anlieferung Artikel im Wareneingangs-Fenster abhaken und mit dem Lieferschein abgleichen.'}
    ]},
-  {title:'Lagerstruktur optimieren',time:'22',diff:'medium',desc:'Bestehende Strukturen anhand von Kennzahlen verbessern.',
+  {title:'Gebrauchsgutverwaltung für Maschinen einrichten',time:'12',diff:'easy',desc:'Transparenz darüber schaffen, wer welche Maschine nutzt.',
    steps:[
-    {t:'Umschlagshäufigkeit analysieren',d:'Identifizieren Sie besonders häufig bewegte Artikel.'},
-    {t:'Wegzeiten reduzieren',d:'Platzieren Sie A-Artikel näher am Wareneingang.'},
-    {t:'ABC-Analyse nutzen',d:'Priorisieren Sie Optimierungen nach Wertbeitrag.'},
-    {t:'Änderungen dokumentieren',d:'Halten Sie Anpassungen für das Team nachvollziehbar fest.'}
+    {t:'Maschinen anlegen',d:'Erfassen Sie Ihre Maschinen und Werkzeuge im Bereich Gebrauchsgut.'},
+    {t:'Buchung vornehmen',d:'Ordnen Sie jede Maschine einem Mitarbeiter, Standort oder Fahrzeug zu.'},
+    {t:'Service und Wartung hinterlegen',d:'Tragen Sie wiederkehrende Termine wie Jahresservice oder Pressencheck ein.'},
+    {t:'Reservierungen nutzen',d:'Planen Sie künftige Nutzung, um Engpässe im Team zu vermeiden.'}
    ]}
 ];
 
@@ -744,22 +744,22 @@ const UPDATES = [
 ];
 
 const ROLE_RECOS = {
-  'Lagerleiter':[{tag:'Prozesse',t:'Team-Einweisung in den Kanban-Prozess',d:'Leitfaden zur Schulung Ihres Lagerteams in der Zwei-Behälter-Methode.'},{tag:'Best Practice',t:'Lagerstruktur optimieren',d:'Kennzahlenbasierte Anleitung zur Verbesserung bestehender Strukturen.'},{tag:'Bericht',t:'Umschlagshäufigkeit auswerten',d:'Erkennen Sie Optimierungspotenziale anhand von Bewegungsdaten.'}],
-  'Einkäufer':[{tag:'Prozesse',t:'Mindestmengen richtig berechnen',d:'Formel und Praxisbeispiele für realistische Meldebestände.'},{tag:'Best Practice',t:'Nachbestellprozess automatisieren',d:'Vom Scan bis zur automatischen Bestellung in vier Schritten.'},{tag:'Bericht',t:'Lieferanten-Scorecard nutzen',d:'Liefertreue und Mengenabweichung datenbasiert bewerten.'}],
-  'Geschäftsführer':[{tag:'Überblick',t:'KPI-Dashboard verstehen',d:'Alle strategisch relevanten Kennzahlen auf einen Blick.'},{tag:'Bericht',t:'ABC-Analyse für Sortimentsentscheidungen',d:'Priorisieren Sie Investitionsentscheidungen nach Wertbeitrag.'},{tag:'Strategie',t:'Rollout-Fortschritt im Unternehmen verfolgen',d:'Behalten Sie den Onboarding-Fortschritt aller Teammitglieder im Blick.'}],
-  'Lagermitarbeiter':[{tag:'Praxis',t:'Scanner einrichten und kalibrieren',d:'In zehn Minuten startklar für den täglichen Einsatz.'},{tag:'Prozesse',t:'Wareneingang korrekt buchen',d:'Schritt-für-Schritt-Anleitung für die tägliche Erfassung.'},{tag:'Praxis',t:'Kanban-Karten richtig scannen',d:'So läuft der Nachbestellprozess reibungslos.'}]
+  'Lagerleiter':[{tag:'Prozesse',t:'Team-Einweisung ins Zwei-Etiketten-System',d:'Leitfaden zur Schulung Ihres Lagerteams in Blau/Weiß-Etikettenlogik und Bestellbox.'},{tag:'Best Practice',t:'Lager MIN/MAX unternehmensweit kalibrieren',d:'Anleitung zur Überprüfung und Anpassung bestehender Mindest-/Höchstbestände.'},{tag:'Praxis',t:'Gebrauchsgutverwaltung einführen',d:'Maschinen und Werkzeuge Mitarbeitern und Fahrzeugen zuordnen.'}],
+  'Einkäufer':[{tag:'Prozesse',t:'Lager MIN/MAX richtig berechnen',d:'Praxisbeispiele für realistische Mindest- und Höchstbestände.'},{tag:'Best Practice',t:'Lieferanten-Shop-Anbindung einrichten',d:'Shop-URL korrekt pflegen für die automatische Bestellweiterleitung.'},{tag:'Praxis',t:'Artikelimport für neue Lieferanten',d:'Excel- und ZIP-Import Schritt für Schritt.'}],
+  'Geschäftsführer':[{tag:'Überblick',t:'Lagerbestand & Warenwert verstehen',d:'Ist-Bestand und Warenwert je Artikel auf einen Blick.'},{tag:'Strategie',t:'Rollout-Fortschritt im Unternehmen verfolgen',d:'Behalten Sie den Onboarding-Fortschritt aller Teammitglieder im Blick.'},{tag:'Praxis',t:'Module in den Einstellungen verwalten',d:'Übersicht über buchbare Zusatzmodule wie Bestandsführung oder Schlüsselverwaltung.'}],
+  'Lagermitarbeiter':[{tag:'Praxis',t:'Weißes Etikett richtig einsetzen',d:'So läuft der Bestellprozess vom Regal bis zur Bestellbox reibungslos.'},{tag:'Prozesse',t:'Wareneingang korrekt bestätigen',d:'Schritt-für-Schritt-Anleitung für die tägliche Erfassung im Drei-Fenster-Prozess.'},{tag:'Praxis',t:'Artikel per QR-Code scannen',d:'Bestellvorschläge schnell und fehlerfrei erfassen.'}]
 };
 
 /* Simulierte unternehmensweite KI-Aggregation aller bisherigen Pilotnutzer.
    Bildet die in Kapitel 2.3.1 beschriebene Rückkopplung von Wissenslücken
    in die Produktdokumentation ab. */
 const AGGREGATE_GAPS = [
-  {topic:'ERP-Anbindungen', pct:47, moduleId:4},
-  {topic:'CSV-Zeichensatz', pct:38, moduleId:4},
-  {topic:'Zwei-Behälter-Prinzip', pct:29, moduleId:3},
-  {topic:'Lagerplatzstruktur', pct:24, moduleId:2},
-  {topic:'ABC-Analyse', pct:18, moduleId:5},
-  {topic:'Artikel-Pflichtfelder', pct:11, moduleId:2}
+  {topic:'Lieferanten-Shop-Anbindung', pct:47, moduleId:4},
+  {topic:'Import-Datenformat', pct:38, moduleId:4},
+  {topic:'Bestellauslösung', pct:29, moduleId:3},
+  {topic:'Bestellmengen-Berechnung', pct:24, moduleId:2},
+  {topic:'Lagerbestand & Warenwert', pct:18, moduleId:5},
+  {topic:'Lager MIN/MAX', pct:11, moduleId:2}
 ];
 
 /* ============ STATE ============ */
@@ -927,7 +927,7 @@ function renderRoadmap(){
   `;
 }
 function nextStepHint(id){
-  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Artikeln und Lagerplätzen vertraut? Der Kanban-Prozess folgt.',3:'Als Nächstes: Schnittstellen für Ihren Datenbestand einrichten.',4:'Fast geschafft — zum Abschluss folgt die Auswertung Ihrer Daten.'};
+  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Das Zwei-Etiketten-System und der Bestellvorschlag folgen.',3:'Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',4:'Fast geschafft — zum Abschluss folgen Wareneingang, Lagerbestand und Gebrauchsgutverwaltung.'};
   return hints[id]||'';
 }
 
@@ -1255,7 +1255,7 @@ function toggleAI(){
 }
 function seedAIMessages(){
   document.getElementById('aiMessages').innerHTML = `<div class="ai-msg bot">Willkommen, ${state.name}. Ich habe Ihren Lernpfad basierend auf Ihrer Rolle als ${state.role} zusammengestellt. Wie kann ich Ihnen helfen?</div>`;
-  document.getElementById('suggChips').innerHTML = ['Wo stehe ich im Onboarding?','Was sollte ich als Nächstes lernen?','Habe ich Wissenslücken?','Erkläre mir den Kanban-Prozess'].map(s=>`<div class="sugg-chip" onclick="sendAI('${s}')">${s}</div>`).join('');
+  document.getElementById('suggChips').innerHTML = ['Wo stehe ich im Onboarding?','Was sollte ich als Nächstes lernen?','Habe ich Wissenslücken?','Wie funktioniert das Zwei-Etiketten-System?'].map(s=>`<div class="sugg-chip" onclick="sendAI('${s}')">${s}</div>`).join('');
 }
 function askCoach(mid){
   toggleAI();
@@ -1295,17 +1295,23 @@ function getAIResponse(text){
   if(t.includes('adapt')||t.includes('anpassung')||t.includes('lernpfad')){
     return state.adaptiveLog.length ? `Ihr Lernpfad wurde bereits ${state.adaptiveLog.length}× automatisch angepasst, basierend auf erkannten Wissenslücken in Ihren Wissenschecks. Details finden Sie im Bereich „Mein Lernpfad" unter Adaptionsverlauf.` : 'Ihr Lernpfad passt sich automatisch an, sobald ich Wissenslücken in Ihren Wissenschecks erkenne — bislang war das noch nicht nötig, da Sie alle Fragen korrekt beantwortet haben.';
   }
-  if(t.includes('kanban')){
-    return 'Der Kanban-Prozess basiert auf dem Zwei-Behälter-Prinzip: Ist ein Behälter leer, wird er gescannt und die OrKan Cloud löst automatisch einen Bestellvorschlag aus. Das reduziert manuelle Bestandsprüfungen erheblich.';
+  if(t.includes('etikett')||t.includes('kanban')){
+    return 'An jedem Lagerplatz hängen zwei Etiketten: Das blaue bleibt fest am Regal zur Lagerplatzkennzeichnung. Das weiße wird bei Mindestbestand gezogen und in die Bestellbox gelegt — von dort werden die Artikel unter „Bestellvorschlag" gescannt und bestellt.';
   }
-  if(t.includes('mindestmenge')){
-    return 'Die Mindestmenge berechnet sich aus Tagesverbrauch multipliziert mit Lieferzeit, zuzüglich eines Sicherheitsfaktors. Die KI-Empfehlung schlägt automatisch einen Wert auf Basis Ihrer historischen Verbrauchsdaten vor.';
+  if(t.includes('mindestmenge')||t.includes('lager min')||t.includes('lager max')||t.includes(' min')||t.includes(' max')){
+    return 'Lager MIN ist Ihr Sicherheitsbestand, ab dem nachbestellt wird. Lager MAX ist der gewünschte Höchstbestand. Die vorgeschlagene Bestellmenge ergibt sich automatisch aus MAX minus MIN — bei MIN=2 und MAX=6 werden also 4 Stück vorgeschlagen.';
   }
   if(t.includes('zusammenfass')||t.includes('kapitel')){
     return 'Öffnen Sie im aktuellen Modul den Tab „KI-Zusammenfassung" nach Abschluss des Wissenschecks — dort finden Sie Kernaussagen, wichtigste Funktionen und konkrete Handlungsempfehlungen.';
   }
-  if(t.includes('csv')||t.includes('import')){
-    return 'Für den CSV-Import benötigen Sie die Pflichtfelder Artikelnummer, Bezeichnung und Einheit im UTF-8-Format. Details finden Sie in Modul 4 oder in der Wissensdatenbank unter „CSV-Import Schritt für Schritt".';
+  if(t.includes('csv')||t.includes('import')||t.includes('excel')){
+    return 'Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei mit den Artikelbildern — der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen. Details finden Sie in Modul 4 oder in der Wissensdatenbank unter „Artikelimport per Excel und ZIP".';
+  }
+  if(t.includes('shop')||t.includes('lieferant')){
+    return 'Die OrKan Cloud ist lieferantenunabhängig. Entscheidend für die Anbindung ist die Shop-URL im Lieferantenstamm — darüber greift die OrKan Cloud beim Bestellabschluss direkt auf den Bestellshop des Lieferanten zu.';
+  }
+  if(t.includes('gebrauchsgut')||t.includes('maschine')){
+    return 'Über die Gebrauchsgutverwaltung sehen Sie, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine hat. Zusätzlich lassen sich Service- und Wartungstermine sowie Reservierungen direkt an der Maschine hinterlegen.';
   }
   if(t.includes('zertifikat')){
     return done===5 ? 'Herzlichen Glückwunsch — Ihr Zertifikat ist im Bereich „Zertifikate" verfügbar.' : `Noch ${5-done} Module bis zu Ihrem Zertifikat. Sie schaffen das.`;
