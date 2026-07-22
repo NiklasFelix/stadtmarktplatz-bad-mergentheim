@@ -1,0 +1,49 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: preisvergleich
+      POSTGRES_USER: preisvergleich
+      POSTGRES_PASSWORD: preisvergleich
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U preisvergleich"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://preisvergleich:preisvergleich@db:5432/preisvergleich
+      API_KEY: ${API_KEY:-changeme-local-dev-key}
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-mock}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    ports:
+      - "8000:8000"
+
+  # Einmalig ausfuehrbare Werkzeuge (Import, Matching, Beispieldaten). Startet
+  # nicht mit `docker compose up`, sondern gezielt per `docker compose run tools ...`.
+  tools:
+    build: .
+    profiles: ["tools"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://preisvergleich:preisvergleich@db:5432/preisvergleich
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-mock}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    volumes:
+      - ./sample_data:/app/sample_data
+    entrypoint: ["python"]
+
+volumes:
+  db_data:
