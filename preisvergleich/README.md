@@ -4,8 +4,10 @@ Zentrale Datenbank zum Zusammenfuehren von Artikel- und Preisdaten aus mehreren
 OrKan-Cloud-Kunden und Grosshaendler-Preislisten (Excel/PDF), mit Matching ueber
 EAN bzw. semantischer Aehnlichkeit und einer API fuer den Preisvergleich.
 
-Diese API ist ausschliesslich fuer den internen Gebrauch gedacht (ein API-Key,
-kein Mandantenkonzept) - OrKan-Cloud-Kunden haben keinen Zugriff darauf.
+Die API nutzt echte Benutzerkonten mit Rollen (`admin`, `einkauf`, `lager`,
+`management`) statt eines geteilten API-Keys - OrKan-Cloud-Kunden haben
+weiterhin keinen Zugriff, nur internes Personal meldet sich mit eigenem
+Konto an.
 
 ## Architektur
 
@@ -64,16 +66,44 @@ docker compose --profile tools run --rm tools python import/import_pdf.py sample
 docker compose --profile tools run --rm tools python matching/run_matching.py
 ```
 
+## Benutzerkonten anlegen
+
+```bash
+docker compose --profile tools run --rm tools python scripts/seed_users.py
+```
+
+Legt vier Demo-Konten an (Passwoerter danach aendern):
+`admin@spruegel.de` / `einkauf@spruegel.de` / `lager@spruegel.de` / `management@spruegel.de`
+(Passwort jeweils `<rolle>1234`).
+
 ## API
 
-Alle Endpunkte (ausser `/health`) erfordern den Header `X-API-Key: <API_KEY>`.
+Alle Endpunkte (ausser `/health` und `/auth/login`) erfordern den Header
+`Authorization: Bearer <token>` aus `POST /auth/login`. Schreibende Endpunkte
+(anlegen/aendern/loeschen) sind auf die Rollen `admin`/`einkauf` beschraenkt.
 
-- `GET /articles?q=suchbegriff` - Artikel suchen
-- `GET /articles/{id}/offers` - alle aktuellen Angebote, guenstigstes zuerst
-- `GET /articles/{id}/cheapest` - guenstigstes aktuelles Angebot
-- `GET /reviews` - offene, manuell zu pruefende Zuordnungen
-- `POST /reviews/{match_id}/confirm` `{"reviewed_by": "name"}` - Zuordnung bestaetigen, legt Angebot an
-- `POST /reviews/{match_id}/reject` `{"reviewed_by": "name"}` - Zuordnung ablehnen, legt stattdessen neuen Artikel an
+- `POST /auth/login`, `GET /auth/me`, `PUT /auth/me/password`
+- `GET/POST/PUT/DELETE /articles`, `/articles/{id}` - Artikel-CRUD, Suche/Filter
+  (`q`, `warengruppe`, `kategorie`, `supplier_id`, `price_min/max`, `lieferzeit_max`)
+- `POST/PUT/DELETE /articles/{id}/offers[/​{offer_id}]` - Lieferantenangebote pflegen
+- `GET /articles/{id}/price-history` - Preisverlauf
+- `GET/POST/PUT/DELETE /suppliers`, `/customers` - Lieferanten-/Kunden-CRUD
+- `GET /reviews`, `POST /reviews/{id}/confirm|reject` - Dubletten aus dem Import pruefen
+- `POST /import/upload` (multipart: `file`, `source_name`, `source_type`) - echter
+  Excel/CSV-Import inkl. Validierung, Fehlerprotokoll (`import_errors`) und
+  sofortigem Matching; `GET /import/history`
+- `GET /export/articles.csv|xlsx|pdf`, `GET /export/preisvergleich/{id}.pdf` - echte Dateien
+- `GET /ai/duplicates`, `GET /ai/data-quality`, `GET /ai/price-analysis`,
+  `POST /ai/duplicates/merge`, `POST /ai/chat` - alles live aus der DB berechnet
+  (Chat: deterministischer Intent-Router auf echten SQL-Abfragen, kein LLM ohne
+  hinterlegten `OPENAI_API_KEY`)
+- `GET /dashboard/kpis`, `GET /dashboard/activity` - Dashboard-Kennzahlen live
+
+## Frontend
+
+Das Frontend liegt ausserhalb dieses Verzeichnisses als eigenstaendige HTML-Datei
+(Sprügel-Design) und spricht per `fetch()` mit dieser API (`API_BASE` am
+Scriptanfang anpassen, falls die API nicht auf `http://localhost:8000` laeuft).
 
 ## Embeddings: mock vs. openai
 

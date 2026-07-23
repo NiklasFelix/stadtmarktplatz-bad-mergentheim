@@ -13,5 +13,9 @@ OPENAI_EMBEDDING_MODEL = os.environ.get("OPENAI_EMBEDDING_MODEL", "text-embeddin
 SEMANTIC_AUTO_ACCEPT_THRESHOLD = float(os.environ.get("SEMANTIC_AUTO_ACCEPT_THRESHOLD", "0.92"))
 SEMANTIC_REVIEW_THRESHOLD = float(os.environ.get("SEMANTIC_REVIEW_THRESHOLD", "0.80"))
 
-# Interner API-Key fuer die Preisvergleichs-API (kein Mandanten-/Kundenzugriff)
-API_KEY = os.environ.get("API_KEY", "changeme-local-dev-key")
+# JWT-Login fuer Nutzer (admin/einkauf/lager/management)
+JWT_SECRET = os.environ.get("JWT_SECRET", "changeme-local-dev-jwt-secret")
+JWT_ALGORITHM = "HS256"
+JWT_EXPIRES_MINUTES = int(os.environ.get("JWT_EXPIRES_MINUTES", "480"))
+
+UPLOAD_DIR = os.environ.get("UPLOAD_DIR", "/app/uploads")

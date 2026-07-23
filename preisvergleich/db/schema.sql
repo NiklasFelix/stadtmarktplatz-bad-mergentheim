@@ -124,10 +124,105 @@ CREATE TABLE supplier_offers (
 CREATE INDEX idx_supplier_offers_article_current
     ON supplier_offers(canonical_article_id, supplier_id, valid_from DESC);
 
+-- ============================================================
+-- MVP-Erweiterung: Nutzer/Rollen, Kunden-Stammdaten, PIM-Felder,
+-- Angebotsdetails (Lieferzeit/Verfuegbarkeit/Bewertung/Staffelpreise),
+-- Importfehlerprotokoll
+-- ============================================================
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    name TEXT NOT NULL,
+    role TEXT NOT NULL CHECK (role IN ('admin', 'einkauf', 'lager', 'management')),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE customers (
+    id SERIAL PRIMARY KEY,
+    customer_number TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    branche TEXT,
+    standorte INTEGER NOT NULL DEFAULT 1,
+    ansprechpartner TEXT,
+    email TEXT,
+    telefon TEXT,
+    einkaufsvolumen NUMERIC(14, 2),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE SEQUENCE article_number_seq START 100001;
+
+ALTER TABLE canonical_articles
+    ADD COLUMN artikelnummer TEXT UNIQUE DEFAULT ('ART-' || nextval('article_number_seq')),
+    ADD COLUMN herstellernummer TEXT,
+    ADD COLUMN hersteller TEXT,
+    ADD COLUMN warengruppe TEXT,
+    ADD COLUMN kategorie TEXT,
+    ADD COLUMN masse TEXT,
+    ADD COLUMN gewicht TEXT,
+    ADD COLUMN verpackungseinheit TEXT,
+    ADD COLUMN mindestbestellmenge TEXT,
+    ADD COLUMN technische_daten JSONB NOT NULL DEFAULT '{}'::jsonb,
+    ADD COLUMN dokumente JSONB NOT NULL DEFAULT '[]'::jsonb,
+    ADD COLUMN zertifikate JSONB NOT NULL DEFAULT '[]'::jsonb,
+    ADD COLUMN bilder JSONB NOT NULL DEFAULT '[]'::jsonb,
+    ADD COLUMN active BOOLEAN NOT NULL DEFAULT true;
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE INDEX idx_canonical_articles_warengruppe ON canonical_articles(warengruppe);
+CREATE INDEX idx_canonical_articles_name_trgm ON canonical_articles USING gin (canonical_name gin_trgm_ops);
+
+ALTER TABLE suppliers
+    ADD COLUMN ansprechpartner TEXT,
+    ADD COLUMN email TEXT,
+    ADD COLUMN telefon TEXT,
+    ADD COLUMN adresse TEXT,
+    ADD COLUMN lieferbedingungen TEXT,
+    ADD COLUMN lieferzeit_standard TEXT,
+    ADD COLUMN zahlungsbedingungen TEXT,
+    ADD COLUMN liefertreue_pct NUMERIC(5, 2),
+    ADD COLUMN active BOOLEAN NOT NULL DEFAULT true;
+
+ALTER TABLE supplier_offers
+    ADD COLUMN lieferzeit_tage NUMERIC(5, 1),
+    ADD COLUMN verfuegbarkeit TEXT,
+    ADD COLUMN bewertung NUMERIC(2, 1),
+    ADD COLUMN rabatt_pct NUMERIC(5, 2) NOT NULL DEFAULT 0,
+    ADD COLUMN staffelpreise JSONB NOT NULL DEFAULT '[]'::jsonb;
+
+CREATE TABLE import_errors (
+    id BIGSERIAL PRIMARY KEY,
+    batch_id INTEGER NOT NULL REFERENCES import_batches(id),
+    row_number INTEGER,
+    message TEXT NOT NULL,
+    raw_row JSONB,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- generischer Trigger, damit updated_at bei jedem UPDATE automatisch mitgeht
+CREATE OR REPLACE FUNCTION set_updated_at() RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = now();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_canonical_articles_updated_at
+    BEFORE UPDATE ON canonical_articles
+    FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+CREATE TRIGGER trg_customers_updated_at
+    BEFORE UPDATE ON customers
+    FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
 -- Guenstigster aktueller Preis je Artikel: pro (Artikel, Lieferant) der neueste Eintrag,
 -- davon ueber alle Lieferanten das Minimum
 CREATE VIEW current_offers AS
 SELECT DISTINCT ON (canonical_article_id, supplier_id)
+    id AS offer_id,
     canonical_article_id,
     supplier_id,
     source_id,
@@ -135,7 +230,12 @@ SELECT DISTINCT ON (canonical_article_id, supplier_id)
     price,
     currency,
     unit,
-    valid_from
+    valid_from,
+    lieferzeit_tage,
+    verfuegbarkeit,
+    bewertung,
+    rabatt_pct,
+    staffelpreise
 FROM supplier_offers
 WHERE valid_to IS NULL OR valid_to >= CURRENT_DATE
 ORDER BY canonical_article_id, supplier_id, valid_from DESC;

@@ -23,7 +23,7 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql://preisvergleich:preisvergleich@db:5432/preisvergleich
-      API_KEY: ${API_KEY:-changeme-local-dev-key}
+      JWT_SECRET: ${JWT_SECRET:-changeme-local-dev-jwt-secret}
       EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-mock}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
     ports:

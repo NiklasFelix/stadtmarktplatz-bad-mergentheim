@@ -2,9 +2,8 @@ import sys
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
 
-from app.auth import require_api_key
+from app.auth import get_current_user, require_role
 from common.db import get_cursor
 
 # actions.py liegt in preisvergleich/matching/ und ist dort ein flaches Modul
@@ -15,11 +14,7 @@ if str(_MATCHING_DIR) not in sys.path:
     sys.path.insert(0, str(_MATCHING_DIR))
 from actions import confirm_match, reject_match  # noqa: E402
 
-router = APIRouter(prefix="/reviews", tags=["reviews"], dependencies=[Depends(require_api_key)])
-
-
-class ReviewDecision(BaseModel):
-    reviewed_by: str
+router = APIRouter(prefix="/reviews", tags=["reviews"], dependencies=[Depends(get_current_user)])
 
 
 @router.get("")
@@ -39,21 +34,21 @@ def list_needs_review():
         return cur.fetchall()
 
 
-@router.post("/{match_id}/confirm")
-def confirm(match_id: int, decision: ReviewDecision):
+@router.post("/{match_id}/confirm", dependencies=[Depends(require_role("admin", "einkauf"))])
+def confirm(match_id: int, user: dict = Depends(get_current_user)):
     with get_cursor() as cur:
         try:
-            confirm_match(cur, match_id, decision.reviewed_by)
+            confirm_match(cur, match_id, user["name"])
         except ValueError as e:
             raise HTTPException(status_code=404, detail=str(e))
     return {"status": "confirmed", "match_id": match_id}
 
 
-@router.post("/{match_id}/reject")
-def reject(match_id: int, decision: ReviewDecision):
+@router.post("/{match_id}/reject", dependencies=[Depends(require_role("admin", "einkauf"))])
+def reject(match_id: int, user: dict = Depends(get_current_user)):
     with get_cursor() as cur:
         try:
-            reject_match(cur, match_id, decision.reviewed_by)
+            reject_match(cur, match_id, user["name"])
         except ValueError as e:
             raise HTTPException(status_code=404, detail=str(e))
     return {"status": "rejected_and_new_article_created", "match_id": match_id}
