@@ -1,0 +1,15 @@
+psycopg2-binary==2.9.9
+pandas==2.2.2
+openpyxl==3.1.2
+pdfplumber==0.11.4
+python-dotenv==1.0.1
+openai==1.51.0
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+numpy==1.26.4
+fpdf2==2.7.9
+pyjwt==2.9.0
+bcrypt==4.2.0
+python-multipart==0.0.9
+email-validator==2.2.0
