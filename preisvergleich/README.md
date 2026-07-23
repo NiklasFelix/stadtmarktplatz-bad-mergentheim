@@ -72,9 +72,8 @@ docker compose --profile tools run --rm tools python matching/run_matching.py
 docker compose --profile tools run --rm tools python scripts/seed_users.py
 ```
 
-Legt vier Demo-Konten an (Passwoerter danach aendern):
-`admin@spruegel.de` / `einkauf@spruegel.de` / `lager@spruegel.de` / `management@spruegel.de`
-(Passwort jeweils `<rolle>1234`).
+Legt vier Demo-Konten an (Benutzername = Rolle, Passwoerter danach aendern):
+`admin` / `einkauf` / `lager` / `management` (Passwort jeweils `<benutzername>1234`).
 
 ## API
 

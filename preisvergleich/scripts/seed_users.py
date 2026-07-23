@@ -14,25 +14,25 @@ from common.db import get_cursor
 from app.auth import hash_password
 
 USERS = [
-    {"email": "admin@spruegel.de", "name": "Admin", "role": "admin", "password": "admin1234"},
-    {"email": "einkauf@spruegel.de", "name": "Einkauf", "role": "einkauf", "password": "einkauf1234"},
-    {"email": "lager@spruegel.de", "name": "Lager", "role": "lager", "password": "lager1234"},
-    {"email": "management@spruegel.de", "name": "Management", "role": "management", "password": "management1234"},
+    {"username": "admin", "name": "Admin", "role": "admin", "password": "admin1234"},
+    {"username": "einkauf", "name": "Einkauf", "role": "einkauf", "password": "einkauf1234"},
+    {"username": "lager", "name": "Lager", "role": "lager", "password": "lager1234"},
+    {"username": "management", "name": "Management", "role": "management", "password": "management1234"},
 ]
 
 
 def main():
     with get_cursor() as cur:
         for u in USERS:
-            cur.execute("SELECT id FROM users WHERE email = %s", (u["email"],))
+            cur.execute("SELECT id FROM users WHERE username = %s", (u["username"],))
             if cur.fetchone():
-                print(f"existiert bereits: {u['email']}")
+                print(f"existiert bereits: {u['username']}")
                 continue
             cur.execute(
-                "INSERT INTO users (email, password_hash, name, role) VALUES (%s, %s, %s, %s)",
-                (u["email"], hash_password(u["password"]), u["name"], u["role"]),
+                "INSERT INTO users (username, password_hash, name, role) VALUES (%s, %s, %s, %s)",
+                (u["username"], hash_password(u["password"]), u["name"], u["role"]),
             )
-            print(f"angelegt: {u['email']} / Rolle {u['role']} / Passwort {u['password']}")
+            print(f"angelegt: {u['username']} / Rolle {u['role']} / Passwort {u['password']}")
 
 
 if __name__ == "__main__":

@@ -24,7 +24,7 @@ def create_access_token(user: dict) -> str:
     expires = datetime.now(timezone.utc) + timedelta(minutes=JWT_EXPIRES_MINUTES)
     payload = {
         "sub": str(user["id"]),
-        "email": user["email"],
+        "username": user["username"],
         "name": user["name"],
         "role": user["role"],
         "exp": expires,
@@ -41,7 +41,7 @@ def get_current_user(creds: HTTPAuthorizationCredentials = Depends(_bearer)) -> 
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Sitzung abgelaufen, bitte erneut anmelden")
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Ungueltiges Token")
-    return {"id": int(payload["sub"]), "email": payload["email"], "name": payload["name"], "role": payload["role"]}
+    return {"id": int(payload["sub"]), "username": payload["username"], "name": payload["name"], "role": payload["role"]}
 
 
 def require_role(*allowed_roles: str):

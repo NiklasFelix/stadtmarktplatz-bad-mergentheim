@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 from app.auth import create_access_token, get_current_user, hash_password, verify_password
 from common.db import get_cursor
@@ -8,7 +8,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 class LoginRequest(BaseModel):
-    email: EmailStr
+    username: str
     password: str
 
 
@@ -20,14 +20,14 @@ class PasswordChangeRequest(BaseModel):
 @router.post("/login")
 def login(body: LoginRequest):
     with get_cursor() as cur:
-        cur.execute("SELECT * FROM users WHERE email = %s", (body.email,))
+        cur.execute("SELECT * FROM users WHERE username = %s", (body.username,))
         user = cur.fetchone()
     if not user or not verify_password(body.password, user["password_hash"]):
-        raise HTTPException(status_code=401, detail="E-Mail oder Passwort ist falsch")
+        raise HTTPException(status_code=401, detail="Benutzername oder Passwort ist falsch")
     token = create_access_token(user)
     return {
         "access_token": token,
-        "user": {"id": user["id"], "email": user["email"], "name": user["name"], "role": user["role"]},
+        "user": {"id": user["id"], "username": user["username"], "name": user["name"], "role": user["role"]},
     }
 
 
