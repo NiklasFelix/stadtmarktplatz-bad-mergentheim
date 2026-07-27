@@ -443,11 +443,11 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
           <div class="stat-card-badge badge-blue">Heute</div>
         </div>
         <div class="bar-chart" id="topicsChart">
-          <div class="bar-item"><span class="bar-label">CSV-Import</span><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div><span class="bar-val">75%</span></div>
-          <div class="bar-item"><span class="bar-label">ERP/API</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span class="bar-val">62%</span></div>
-          <div class="bar-item"><span class="bar-label">Mindestmenge</span><div class="bar-track"><div class="bar-fill" style="width:54%"></div></div><span class="bar-val">54%</span></div>
-          <div class="bar-item"><span class="bar-label">Login</span><div class="bar-track"><div class="bar-fill" style="width:41%"></div></div><span class="bar-val">41%</span></div>
-          <div class="bar-item"><span class="bar-label">QR-Scan</span><div class="bar-track"><div class="bar-fill" style="width:28%"></div></div><span class="bar-val">28%</span></div>
+          <div class="bar-item"><span class="bar-label">Lager MIN/MAX</span><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div><span class="bar-val">75%</span></div>
+          <div class="bar-item"><span class="bar-label">Artikelimport</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span class="bar-val">62%</span></div>
+          <div class="bar-item"><span class="bar-label">Zwei-Etiketten</span><div class="bar-track"><div class="bar-fill" style="width:54%"></div></div><span class="bar-val">54%</span></div>
+          <div class="bar-item"><span class="bar-label">Lieferanten-Shop</span><div class="bar-track"><div class="bar-fill" style="width:41%"></div></div><span class="bar-val">41%</span></div>
+          <div class="bar-item"><span class="bar-label">Gebrauchsgut</span><div class="bar-track"><div class="bar-fill" style="width:28%"></div></div><span class="bar-val">28%</span></div>
         </div>
       </div>
     </aside>
@@ -463,185 +463,176 @@ let ticketCounter = 1001;
 
 // ─── KNOWLEDGE BASE ───
 const KB = [
-  // CSV-Import
-  { id: 'csv1', cat: 'CSV-Import', keywords: ['csv','import','datei','hochladen','spalte','format'],
-    title: 'CSV-Datei importieren',
-    answer: `<h4>📥 CSV-Import in OrKan Cloud</h4>
-    <p>Gehen Sie zu <strong>Einstellungen → Import/Export → CSV-Import</strong>.</p>
+  // Artikel & Lagerplätze
+  { id: 'art1', cat: 'Artikel & Lagerplätze', keywords: ['artikel anlegen','neuer artikel','artikelgruppe','bezeichnung','artikel erstellen'],
+    title: 'Artikel anlegen',
+    answer: `<h4>📦 Neuen Artikel anlegen</h4>
+    <p>Gehen Sie in der <strong>Lagerverwaltung → Artikel → Erstellen</strong>.</p>
     <ul>
-      <li>Pflichtfelder: <code>Artikelnummer</code>, <code>Bezeichnung</code>, <code>Einheit</code></li>
-      <li>Optionale Felder: Mindestmenge, Lagerplatz, Lieferant</li>
-      <li>Zeichensatz: UTF-8, Trennzeichen: Semikolon oder Komma</li>
-      <li>Maximale Dateigröße: <strong>10 MB</strong> (ca. 50.000 Zeilen)</li>
+      <li>Pflichtfelder: <code>Artikelgruppe</code>, <code>interne Artikelnummer</code>, <code>Bezeichnung 1–3</code></li>
+      <li><strong>Lager und Gebäude</strong> sowie <strong>Lagerort</strong> definieren, wo der Artikel physisch liegt</li>
+      <li><strong>Lager MIN</strong> (Sicherheitsbestand) und <strong>Lager MAX</strong> (Höchstbestand) festlegen</li>
+      <li>Lieferant, Lieferanten-Artikelnummer, EK-Preis, Menge und VPE optional ergänzen</li>
+      <li>Artikelbild per Drag & Drop unter „Dokumente" hinzufügen</li>
     </ul>
-    <p>Nach dem Upload werden Fehlerzeilen rot markiert und können korrigiert werden.</p>` },
-  { id: 'csv2', cat: 'CSV-Import', keywords: ['fehler','csv fehler','codierung','zeichen','encoding','utf'],
-    title: 'CSV-Zeichensatz-Fehler beheben',
-    answer: `<h4>🔧 Zeichensatz-Probleme lösen</h4>
-    <p>Häufigste Ursache: Excel speichert standardmäßig in <strong>ANSI/Windows-1252</strong> statt UTF-8.</p>
+    <p>Über „Kopieren" lassen sich ähnliche Artikel schnell ohne erneute Eingabe anlegen.</p>` },
+  { id: 'art2', cat: 'Artikel & Lagerplätze', keywords: ['lager min','lager max','mindestbestand','maximalbestand','bestellmenge berechnen'],
+    title: 'Lager MIN und Lager MAX richtig setzen',
+    answer: `<h4>📐 Lager MIN / Lager MAX</h4>
     <ul>
-      <li>Excel: Speichern als → „CSV UTF-8 (mit BOM)" wählen</li>
-      <li>LibreOffice: Beim Export → Zeichensatz auf <code>UTF-8</code> stellen</li>
-      <li>Alternativ: Notepad++ → Kodierung → „In UTF-8 umwandeln" → Speichern</li>
-    </ul>` },
-  { id: 'csv3', cat: 'CSV-Import', keywords: ['vorlage','template','csv vorlage','muster','beispiel'],
-    title: 'CSV-Vorlage herunterladen',
-    answer: `<h4>📋 Import-Vorlage</h4>
-    <p>Eine fertige Vorlage finden Sie unter <strong>Einstellungen → Import → Vorlage herunterladen</strong>.</p>
-    <p>Die Vorlage enthält alle Pflicht- und optionalen Felder mit Beispieldaten und Hinweisen in der zweiten Zeile.</p>` },
-
-  // ERP / Schnittstellen
-  { id: 'erp1', cat: 'ERP & API', keywords: ['erp','schnittstelle','api','datev','sage','lexware','anbindung','synchron'],
-    title: 'ERP-Anbindung einrichten',
-    answer: `<h4>🔗 ERP-Schnittstellen</h4>
-    <p>OrKan Cloud unterstützt folgende ERP-Systeme nativ:</p>
-    <ul>
-      <li><strong>DATEV</strong> – über Buchungsdaten-Schnittstelle</li>
-      <li><strong>Sage 50 / 100</strong> – bidirektionale Synchronisation</li>
-      <li><strong>Lexware</strong> – Artikelstamm & Bestellungen</li>
-      <li><strong>REST-API</strong> – für beliebige Eigenentwicklungen</li>
+      <li><strong>Lager MIN</strong>: Sicherheitsbestand, ab dem nachbestellt werden soll</li>
+      <li><strong>Lager MAX</strong>: gewünschter Höchstbestand am Lagerplatz</li>
+      <li>Die vorgeschlagene Bestellmenge ergibt sich automatisch aus <strong>MAX minus MIN</strong></li>
     </ul>
-    <p>Einrichtung: <strong>Einstellungen → Schnittstellen → ERP-Verbindung</strong> → Ihren Anbieter auswählen.</p>` },
-  { id: 'erp2', cat: 'ERP & API', keywords: ['api key','api schlüssel','token','zugangstoken','authentif'],
-    title: 'API-Key generieren',
-    answer: `<h4>🔑 API-Schlüssel erstellen</h4>
-    <p>Unter <strong>Einstellungen → Entwickler → API-Schlüssel → Neu erstellen</strong>.</p>
+    <p>Beispiel: Bei Schraubenpäckchen mit MIN = 2 und MAX = 6 schlägt die OrKan Cloud automatisch <strong>4 Stück</strong> zur Nachbestellung vor.</p>` },
+  { id: 'art3', cat: 'Artikel & Lagerplätze', keywords: ['artikel löschen','artikel kopieren','artikel bearbeiten','artikel suchen'],
+    title: 'Artikel bearbeiten, kopieren oder löschen',
+    answer: `<h4>✏️ Artikel verwalten</h4>
     <ul>
-      <li>Vergeben Sie einen aussagekräftigen Namen (z. B. „ERP-Anbindung Sage")</li>
-      <li>Wählen Sie die benötigten Berechtigungen (Lesen, Schreiben, Admin)</li>
-      <li>Der Schlüssel wird <strong>nur einmalig</strong> angezeigt – sicher aufbewahren!</li>
-    </ul>
-    <p>API-Dokumentation: <code>app.orkan-cloud.de/api/docs</code></p>` },
-
-  // Mindestmenge & Bestellvorschläge
-  { id: 'mm1', cat: 'Mindestmengen', keywords: ['mindestmenge','meldemenge','bestand','nachbestellen','minimum','schwellwert'],
-    title: 'Mindestmenge festlegen',
-    answer: `<h4>📦 Mindestmenge konfigurieren</h4>
-    <p>Öffnen Sie den Artikel → Tab <strong>Lager & Bestellung</strong>.</p>
-    <ul>
-      <li><strong>Mindestmenge</strong>: Bestand, bei dem ein Bestellvorschlag erzeugt wird</li>
-      <li><strong>Formel</strong>: Tagesverbrauch × Lieferzeit × Sicherheitsfaktor</li>
-      <li>Automatische Berechnung: Aktivieren Sie „KI-Empfehlung" für historischen Durchschnitt</li>
-    </ul>
-    <p>Bei Unterschreitung erscheint der Artikel <span style="color:#dc2626">rot</span> im Dashboard.</p>` },
-  { id: 'mm2', cat: 'Mindestmengen', keywords: ['bestellvorschlag','vorschlag','nachbestellung','automatisch bestell'],
-    title: 'Automatische Bestellvorschläge',
-    answer: `<h4>🔄 Bestellvorschläge nutzen</h4>
-    <p>OrKan Cloud generiert täglich automatische Bestellvorschläge unter <strong>Einkauf → Bestellvorschläge</strong>.</p>
-    <ul>
-      <li>Vorschläge basieren auf: Mindestmenge, aktueller Bestand, Lieferzeit</li>
-      <li>Einzeln genehmigen oder Sammelbestellung erstellen</li>
-      <li>Direkter E-Mail-Versand an hinterlegte Lieferanten möglich</li>
+      <li>Auf einen Artikel klicken, um ihn jederzeit zu <strong>bearbeiten</strong></li>
+      <li><strong>Löschen</strong> über das entsprechende Symbol in der Artikelübersicht</li>
+      <li><strong>Kopieren</strong> spart Zeit bei ähnlichen Artikeln (z. B. gleicher Bohrer, andere Größe) – Beschreibung und Lieferant bleiben erhalten</li>
+      <li>Über die Suchleiste lassen sich Artikel jederzeit schnell wiederfinden</li>
     </ul>` },
 
-  // Kanban & Lagerplätze
-  { id: 'kan1', cat: 'Kanban & Lager', keywords: ['kanban','karte','zwei-behälter','scannen','qr','barcode'],
-    title: 'Kanban-Karten erstellen & scannen',
-    answer: `<h4>🗂 Kanban-Karten</h4>
-    <p>Unter <strong>Lager → Kanban → Neue Karte</strong> können Sie Karten für jeden Artikel erstellen.</p>
+  // Import & Lieferanten-Anbindung
+  { id: 'imp1', cat: 'Import & Lieferanten', keywords: ['import','excel','zip','artikel importieren','bilder importieren'],
+    title: 'Artikelimport per Excel und ZIP',
+    answer: `<h4>📥 Artikelimport durchführen</h4>
     <ul>
-      <li>Jede Karte enthält: QR-Code, Artikelname, Mindestmenge, Lagerplatz</li>
-      <li>Scannen per OrKan-App (iOS/Android) löst automatisch Bestellvorschlag aus</li>
-      <li>Drucken: A6-Format für Etikettendrucker oder Standard-Drucker</li>
-    </ul>` },
-  { id: 'kan2', cat: 'Kanban & Lager', keywords: ['lagerplatz','regal','zone','standort','lager'],
-    title: 'Lagerplätze verwalten',
-    answer: `<h4>🏭 Lagerstruktur aufbauen</h4>
-    <p>Erstellen Sie Ihre Lagerstruktur unter <strong>Lager → Lagerplätze → Struktur</strong>:</p>
-    <ul>
-      <li><strong>Zone</strong> (z. B. Hauptlager, Außenlager)</li>
-      <li><strong>Gang</strong> (A, B, C …)</li>
-      <li><strong>Regal / Fach</strong> (A-01-03)</li>
+      <li>Import besteht aus einer <strong>Excel-Liste</strong> (Artikeldaten) plus einer <strong>ZIP-Datei</strong> (Artikelbilder)</li>
+      <li>Der Bildname in der Excel-Spalte muss <strong>exakt</strong> dem Dateinamen im ZIP-Ordner entsprechen</li>
+      <li>Optionen: „Importieren und aktualisieren", „nur importieren" oder „nur aktualisieren"</li>
+      <li>Abgleich über <strong>Lieferanten-Artikelnummer</strong>, <strong>EAN-Nummer</strong> oder <strong>interne Artikelnummer</strong></li>
     </ul>
-    <p>Artikel können per Drag & Drop oder QR-Scan einem Lagerplatz zugeordnet werden.</p>` },
-  { id: 'kan3', cat: 'Kanban & Lager', keywords: ['wareneingang','einbuchen','anlieferung','lieferung','eingang'],
-    title: 'Wareneingang buchen',
+    <p>Die Importvorlage enthält Werksnummer, EAN, Bezeichnung 1–3, Lager/Gebäude/Lagerort sowie Min-/Max-Bestände.</p>` },
+  { id: 'imp2', cat: 'Import & Lieferanten', keywords: ['zeichensatz','fehler import','encoding','sonderzeichen'],
+    title: 'Import-Fehler und Zeichensatz beheben',
+    answer: `<h4>🔧 Häufige Importprobleme</h4>
+    <ul>
+      <li>Bildname und Excel-Eintrag stimmen nicht exakt überein → Zuordnung schlägt fehl</li>
+      <li>Doppelte interne Artikelnummern führen zu Abgleich-Konflikten</li>
+      <li>Empfehlung: Vor dem Vollimport immer einen <strong>Testimport mit wenigen Zeilen</strong> durchführen</li>
+    </ul>` },
+  { id: 'lief1', cat: 'Import & Lieferanten', keywords: ['lieferant','shop-url','lieferanten shop','anbindung','lieferant wechseln'],
+    title: 'Lieferanten-Shop anbinden',
+    answer: `<h4>🔗 Lieferanten-Shop-Anbindung</h4>
+    <p>Die OrKan Cloud ist <strong>lieferantenunabhängig</strong> – Sie können den Lieferanten je Artikel jederzeit wechseln.</p>
+    <ul>
+      <li>Lieferant anlegen unter <strong>Lagerverwaltung → Lieferant → Erstellen</strong></li>
+      <li>Pflichtfelder: Lieferantenname, Land, Kundennummer, Benutzer/Passwort</li>
+      <li>Die <strong>Shop-URL</strong> ist entscheidend: Darüber greift die OrKan Cloud beim Bestellabschluss direkt auf den Lieferanten-Shop zu</li>
+      <li>Gewünschte Liefertermine (z. B. „nur freitags") lassen sich hinterlegen</li>
+    </ul>` },
+
+  // Zwei-Etiketten-System & Bestellvorschlag
+  { id: 'etk1', cat: 'Etiketten & Bestellung', keywords: ['etikett','blaues etikett','weißes etikett','kanban','zwei etiketten'],
+    title: 'Zwei-Etiketten-System (blau/weiß)',
+    answer: `<h4>🏷️ Blaues und weißes Etikett</h4>
+    <ul>
+      <li><strong>Blaues Etikett</strong>: bleibt fest am Regal, dient der eindeutigen Lagerplatzkennzeichnung</li>
+      <li><strong>Weißes Etikett</strong>: wird bei Erreichen des Mindestbestands (Lager MIN) gezogen</li>
+      <li>Das gezogene weiße Etikett wandert in die <strong>Bestellbox</strong></li>
+      <li>Fehlt das weiße Etikett am Regal, ist der Artikel bereits im Bestellprozess</li>
+    </ul>` },
+  { id: 'etk2', cat: 'Etiketten & Bestellung', keywords: ['bestellvorschlag','bestellung erstellen','scannen','warenkorb','qr code'],
+    title: 'Bestellvorschlag erstellen',
+    answer: `<h4>🔄 Vom Etikett zur Bestellung</h4>
+    <ul>
+      <li>Unter <strong>Bestellvorschlag → Erstellen</strong> Etiketten per QR-Code scannen oder Artikel manuell erfassen</li>
+      <li>Erfasste Artikel landen im <strong>Warenkorb</strong></li>
+      <li>Über <strong>„Bestellungen erstellen" → „Senden"</strong> folgt eine Zusammenfassung: Ansprechpartner, Besteller, Liefertermin, Lieferadresse, Lieferant</li>
+      <li>Nach „Bestellen" öffnen sich <strong>drei Fenster</strong>: Wareneingang-Bestätigung, Lieferschein und der Lieferanten-Shop zur finalen Bestellauslösung</li>
+    </ul>` },
+  { id: 'etk3', cat: 'Etiketten & Bestellung', keywords: ['etikett drucken','template','artikelkarte','etikettendrucker'],
+    title: 'Etiketten-Template gestalten',
+    answer: `<h4>🖨️ Eigene Etiketten gestalten</h4>
+    <p>Unter <strong>Einstellungen → Lagerverwaltung → Artikelkarte</strong> gestalten Sie Ihr Etiketten-Template frei per Drag & Drop.</p>
+    <ul>
+      <li>Frei wählbar, welche Felder (Artikelnummer, Lagerort, Firmenlogo …) erscheinen</li>
+      <li>Mehrere Templates parallel möglich</li>
+      <li>Beim Drucken eines Artikels wird das passende Template gewählt → Ausgabe als <strong>PDF</strong> für den Laserdrucker</li>
+    </ul>` },
+
+  // Wareneingang & Lagerbestand
+  { id: 'we1', cat: 'Wareneingang & Bestand', keywords: ['wareneingang','einbuchen','anlieferung','lieferschein'],
+    title: 'Wareneingang bestätigen',
     answer: `<h4>📬 Wareneingang erfassen</h4>
-    <p>Wählen Sie <strong>Lager → Wareneingang → Neue Buchung</strong>:</p>
     <ul>
-      <li>Lieferschein-Nummer eintragen</li>
-      <li>Artikel per QR-Scan oder Suche auswählen</li>
-      <li>Menge eingeben → Bestand wird sofort aktualisiert</li>
-      <li>Abweichungen können direkt als Reklamation markiert werden</li>
+      <li>Nach Bestellabschluss öffnet sich automatisch das Wareneingangs-Fenster mit Artikelbild und Bezeichnung</li>
+      <li>Gelieferte Artikel abhaken und mit dem <strong>Lieferschein</strong> abgleichen</li>
+      <li>Der Lagerbestand wird nach Bestätigung <strong>sofort automatisch aktualisiert</strong></li>
+      <li>Über <strong>Scan/Bestelleingang</strong> sehen Sie zusätzlich Bestellnummer und Kommission</li>
+    </ul>` },
+  { id: 'we2', cat: 'Wareneingang & Bestand', keywords: ['lagerbestand','warenwert','bestand prüfen','ist-bestand'],
+    title: 'Lagerbestand & Warenwert prüfen',
+    answer: `<h4>📊 Lagerbestand im Überblick</h4>
+    <p>Der Reiter <strong>„Lagerbestand"</strong> zeigt je Artikel den aktuellen Ist-Bestand sowie den Warenwert im Verhältnis zu Lager MIN und Lager MAX.</p>
+    <p>Der Reiter <strong>„Bestellung"</strong> liefert zusätzlich eine Übersicht aller getätigten Bestellungen.</p>` },
+
+  // Gebrauchsgutverwaltung
+  { id: 'geb1', cat: 'Gebrauchsgut', keywords: ['maschine','gebrauchsgut','werkzeug','fahrzeug zuordnen','buchung'],
+    title: 'Gebrauchsgutverwaltung (Maschinen)',
+    answer: `<h4>🔧 Maschinen und Werkzeuge verwalten</h4>
+    <ul>
+      <li>Zeigt, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine hat</li>
+      <li>Über <strong>„Buchung"</strong> eine Maschine einem Standort, Mitarbeiter oder Fahrzeug zuordnen</li>
+      <li><strong>„Reservierungen"</strong> für geplante künftige Nutzung anlegen</li>
+      <li><strong>„Service und Wartung"</strong>: wiederkehrende Termine wie Jahresservice oder Pressencheck hinterlegen</li>
     </ul>` },
 
-  // Benutzer & Rollen
-  { id: 'usr1', cat: 'Benutzer & Rollen', keywords: ['benutzer','user','mitarbeiter','anlegen','einladen','zugang','rolle'],
-    title: 'Neuen Benutzer anlegen',
+  // Benutzer & Module
+  { id: 'usr1', cat: 'Benutzer & Module', keywords: ['benutzer','user','mitarbeiter','anlegen','einladen','zugang','rolle','mandant'],
+    title: 'Benutzer anlegen (Mandantenverwaltung)',
     answer: `<h4>👤 Benutzer hinzufügen</h4>
-    <p>Unter <strong>Einstellungen → Benutzer → Einladen</strong>:</p>
+    <p>Unter <strong>Einstellungen → Mandantenverwaltung → Benutzer</strong>:</p>
     <ul>
-      <li>E-Mail-Adresse eingeben → Einladungslink wird versandt</li>
-      <li>Verfügbare Rollen: <strong>Admin</strong>, <strong>Lagermitarbeiter</strong>, <strong>Einkäufer</strong>, <strong>Lesezugriff</strong></li>
+      <li>Neue Mitarbeitende anlegen und Rollen zuweisen</li>
+      <li>Zusätzlich lassen sich hier Kontakte und die Sprache verwalten</li>
       <li>Rollen können jederzeit geändert werden</li>
-      <li>Max. Benutzer je nach Lizenzmodell (Basis: 5, Professional: 25, Enterprise: unbegrenzt)</li>
     </ul>` },
-  { id: 'usr2', cat: 'Benutzer & Rollen', keywords: ['passwort','kennwort','vergessen','reset','login','anmelden','einloggen'],
+  { id: 'usr2', cat: 'Benutzer & Module', keywords: ['module buchen','modul kündigen','firma','rechnungsadresse','zusatzmodul'],
+    title: 'Module buchen und verwalten',
+    answer: `<h4>⚙️ Module verwalten</h4>
+    <p>Unter <strong>Einstellungen → Firma</strong> finden Sie Rechnungsadresse sowie alle buchbaren Module.</p>
+    <ul>
+      <li>Kernbereich: <strong>Lagerverwaltung</strong> (Artikel, Lieferant, Bestellvorschlag …)</li>
+      <li>Häufig zusätzlich genutzt: <strong>Gebrauchsgutverwaltung</strong> (Maschinen)</li>
+      <li>Weitere Module: Bestandsführung, Flaschenverwaltung, App, Schlüsselverwaltung – je nach Bedarf buchbar oder kündbar</li>
+    </ul>` },
+  { id: 'usr3', cat: 'Benutzer & Module', keywords: ['passwort','kennwort','vergessen','reset','login','anmelden','einloggen'],
     title: 'Passwort zurücksetzen',
     answer: `<h4>🔐 Passwort-Reset</h4>
     <p>Auf der Login-Seite auf <strong>„Passwort vergessen"</strong> klicken:</p>
     <ul>
-      <li>E-Mail-Adresse eingeben → Link kommt innerhalb von 2 Minuten</li>
-      <li>Link ist <strong>24 Stunden</strong> gültig</li>
-      <li>Als Admin: <strong>Einstellungen → Benutzer</strong> → Benutzer auswählen → „Passwort zurücksetzen"</li>
-    </ul>
-    <p>Tipp: Aktivieren Sie <strong>Zwei-Faktor-Authentifizierung</strong> für erhöhte Sicherheit.</p>` },
-
-  // Berichte & KPIs
-  { id: 'rep1', cat: 'Berichte & KPIs', keywords: ['bericht','report','kpi','auswertung','statistik','export','excel'],
-    title: 'Berichte erstellen & exportieren',
-    answer: `<h4>📊 Berichte & Auswertungen</h4>
-    <p>Unter <strong>Berichte → Übersicht</strong> finden Sie vorgefertigte Reports:</p>
-    <ul>
-      <li><strong>Lagerbestandsbericht</strong>: Alle Artikel mit aktuellem Bestand</li>
-      <li><strong>Umschlagshäufigkeit</strong>: ABC-Analyse nach Verbrauch</li>
-      <li><strong>Bestellhistorie</strong>: Alle Bestellungen im Zeitraum</li>
-      <li><strong>Lieferanten-Scorecard</strong>: Liefertreue, Mengenabweichung</li>
-    </ul>
-    <p>Export als <strong>Excel, PDF oder CSV</strong> möglich. Geplanter E-Mail-Versand einrichtbar.</p>` },
-
-  // Lieferanten
-  { id: 'lief1', cat: 'Lieferanten', keywords: ['lieferant','lieferanten','kreditor','hersteller','stammlieferant'],
-    title: 'Lieferanten pflegen',
-    answer: `<h4>🚚 Lieferantenverwaltung</h4>
-    <p>Unter <strong>Stammdaten → Lieferanten → Neu</strong> anlegen:</p>
-    <ul>
-      <li>Pflichtfelder: Name, E-Mail, Zahlungsziel</li>
-      <li>Optional: Lieferzeit, Mindestbestellwert, EDI-Anbindung</li>
-      <li>Jedem Artikel können <strong>bis zu 3 Lieferanten</strong> mit individuellen Preisen zugeordnet werden</li>
-      <li>Automatischer Lieferantenwechsel bei Unterschreitung des Bestands möglich</li>
+      <li>E-Mail-Adresse eingeben → Link kommt innerhalb weniger Minuten</li>
+      <li>Als Admin: <strong>Einstellungen → Mandantenverwaltung → Benutzer</strong> → Benutzer auswählen → „Passwort zurücksetzen"</li>
     </ul>` },
 
   // Allgemein / Fallback
   { id: 'gen1', cat: 'Allgemein', keywords: ['preis','kosten','lizenz','paket','tarif','abo'],
     title: 'Lizenzmodelle & Preise',
     answer: `<h4>💰 Lizenzoptionen</h4>
-    <ul>
-      <li><strong>Basis</strong>: bis 500 Artikel, 5 Nutzer, E-Mail-Support</li>
-      <li><strong>Professional</strong>: unbegrenzte Artikel, 25 Nutzer, API-Zugang, Priority-Support</li>
-      <li><strong>Enterprise</strong>: Alles inkl. SLA, Onboarding, dedizierter Ansprechpartner</li>
-    </ul>
+    <p>Der Funktionsumfang richtet sich nach den gebuchten Modulen (z. B. Lagerverwaltung, Gebrauchsgutverwaltung, Bestandsführung).</p>
     <p>Für ein konkretes Angebot wenden Sie sich an <strong>vertrieb@orkan-system.de</strong>.</p>` },
-  { id: 'gen2', cat: 'Allgemein', keywords: ['hilfe','handbuch','dokumentation','anleitung','tutorial','schulung'],
-    title: 'Hilfe & Dokumentation',
-    answer: `<h4>📚 Wissensressourcen</h4>
+  { id: 'gen2', cat: 'Allgemein', keywords: ['hilfe','handbuch','dokumentation','anleitung','tutorial','schulung','startseite','kalender'],
+    title: 'Startseite und Hilfe-Ressourcen',
+    answer: `<h4>🏠 Startseite & Wissensressourcen</h4>
     <ul>
+      <li>Die Startseite zeigt Ihren <strong>Kalender</strong> (Ampelsystem: Rot = Bestellung fällig) sowie vier Shortcuts</li>
+      <li>Über die drei Striche oben links gelangen Sie jederzeit zur Hauptnavigation</li>
       <li><strong>Interaktive Lernplattform</strong>: 5 Module, ca. 60 Min. (empfohlen für Einsteiger)</li>
-      <li><strong>Online-Handbuch</strong>: help.orkan-cloud.de (durchsuchbar)</li>
-      <li><strong>Video-Tutorials</strong>: YouTube-Kanal „OrKan System"</li>
-      <li><strong>Webinare</strong>: Jeden 2. Mittwoch, 10 Uhr, kostenlos</li>
     </ul>` },
 ];
 
 // ─── CATEGORIES ───
 const CATEGORIES = [
-  { name: 'CSV-Import', icon: '📥', ids: ['csv1','csv2','csv3'] },
-  { name: 'ERP & API', icon: '🔗', ids: ['erp1','erp2'] },
-  { name: 'Mindestmengen', icon: '📦', ids: ['mm1','mm2'] },
-  { name: 'Kanban & Lager', icon: '🗂', ids: ['kan1','kan2','kan3'] },
-  { name: 'Benutzer & Rollen', icon: '👤', ids: ['usr1','usr2'] },
-  { name: 'Berichte & KPIs', icon: '📊', ids: ['rep1'] },
-  { name: 'Lieferanten', icon: '🚚', ids: ['lief1'] },
+  { name: 'Artikel & Lagerplätze', icon: '📦', ids: ['art1','art2','art3'] },
+  { name: 'Import & Lieferanten', icon: '📥', ids: ['imp1','imp2','lief1'] },
+  { name: 'Etiketten & Bestellung', icon: '🏷️', ids: ['etk1','etk2','etk3'] },
+  { name: 'Wareneingang & Bestand', icon: '📬', ids: ['we1','we2'] },
+  { name: 'Gebrauchsgut', icon: '🔧', ids: ['geb1'] },
+  { name: 'Benutzer & Module', icon: '👤', ids: ['usr1','usr2','usr3'] },
   { name: 'Allgemein', icon: '💡', ids: ['gen1','gen2'] },
 ];
 
