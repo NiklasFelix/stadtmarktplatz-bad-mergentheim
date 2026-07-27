@@ -53,7 +53,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .onb-btn:active{transform:scale(.98)}
 .onb-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
 .onb-feat{background:var(--green-light);border-radius:10px;padding:12px 14px;text-align:left}
-.onb-feat .feat-icon{font-size:18px;margin-bottom:4px}
 .onb-feat .feat-title{font-size:12px;font-weight:700;color:var(--dark-bg)}
 .onb-feat .feat-desc{font-size:11px;color:var(--gray);margin-top:2px}
 
@@ -88,7 +87,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .search-wrap{position:relative}
 .search-wrap input{width:100%;padding:9px 12px 9px 34px;border:1.5px solid var(--gray-light);border-radius:9px;font-size:13px;font-family:'Inter',sans-serif;outline:none;background:#fff;transition:var(--transition)}
 .search-wrap input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,167,82,.12)}
-.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--gray);font-size:14px}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--gray);display:flex}
+.search-icon svg{width:14px;height:14px}
 .categories-scroll{flex:1;overflow-y:auto;padding:12px 14px}
 .categories-scroll::-webkit-scrollbar{width:3px}
 .categories-scroll::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:2px}
@@ -111,7 +111,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .chat-area{display:flex;flex-direction:column;overflow:hidden;background:transparent}
 .chat-top{padding:16px 20px 12px;background:rgba(255,255,255,.5);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.4);flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
 .chat-top-info{display:flex;align-items:center;gap:10px}
-.ai-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--dark-bg),var(--dark2));display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid var(--green)}
+.ai-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--dark-bg),var(--dark2));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--green);letter-spacing:.5px;border:2px solid var(--green)}
 .ai-name{font-size:14px;font-weight:700;color:var(--dark-bg)}
 .ai-status{font-size:11.5px;color:var(--gray);display:flex;align-items:center;gap:4px}
 .ai-status::before{content:'';display:inline-block;width:6px;height:6px;background:#4ade80;border-radius:50%}
@@ -144,9 +144,10 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .msg-meta{margin-top:8px;display:flex;align-items:center;justify-content:space-between}
 .msg-time{font-size:10.5px;color:rgba(107,117,128,.7)}
 .msg-feedback{display:flex;gap:4px}
-.fb-btn{background:none;border:none;cursor:pointer;font-size:14px;padding:2px 4px;border-radius:6px;transition:var(--spring);opacity:.6}
+.fb-btn{background:none;border:none;cursor:pointer;padding:3px 4px;border-radius:6px;transition:var(--spring);opacity:.5;color:var(--gray)}
+.fb-btn svg{width:14px;height:14px;display:block}
 .fb-btn:hover{opacity:1;transform:scale(1.2)}
-.fb-btn.active{opacity:1}
+.fb-btn.active{opacity:1;color:var(--green-dark)}
 .escalation-card{background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(239,68,68,.04));border:1.5px solid rgba(239,68,68,.2);border-radius:12px;padding:14px 16px;margin-top:4px}
 .esc-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .esc-icon{font-size:16px}
@@ -274,10 +275,10 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
     </div>
     <button class="onb-btn" onclick="startChat()">Support-Chat starten →</button>
     <div class="onb-features">
-      <div class="onb-feat"><div class="feat-icon">⚡</div><div class="feat-title">Sofortantworten</div><div class="feat-desc">Keine Wartezeit</div></div>
-      <div class="onb-feat"><div class="feat-icon">🧠</div><div class="feat-title">KI-gestützt</div><div class="feat-desc">Wissensdatenbank</div></div>
-      <div class="onb-feat"><div class="feat-icon">📊</div><div class="feat-title">Pilot-Tracking</div><div class="feat-desc">Live-Auswertung</div></div>
-      <div class="onb-feat"><div class="feat-icon">🔄</div><div class="feat-title">Eskalation</div><div class="feat-desc">Bei Bedarf zum Experten</div></div>
+      <div class="onb-feat"><div class="feat-title">Sofortantworten</div><div class="feat-desc">Keine Wartezeit</div></div>
+      <div class="onb-feat"><div class="feat-title">Wissensbasiert</div><div class="feat-desc">Geprüfte Wissensdatenbank</div></div>
+      <div class="onb-feat"><div class="feat-title">Pilot-Tracking</div><div class="feat-desc">Live-Auswertung</div></div>
+      <div class="onb-feat"><div class="feat-title">Eskalation</div><div class="feat-desc">Bei Bedarf zum Experten</div></div>
     </div>
   </div>
 </div>
@@ -321,7 +322,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
       <div class="sidebar-header">
         <div class="sidebar-title">Themenbereiche</div>
         <div class="search-wrap">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
           <input type="text" id="categorySearch" placeholder="Suchen..." oninput="filterCategories(this.value)">
         </div>
       </div>
@@ -334,7 +335,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
     <section class="chat-area">
       <div class="chat-top">
         <div class="chat-top-info">
-          <div class="ai-avatar">🤖</div>
+          <div class="ai-avatar">OK</div>
           <div>
             <div class="ai-name">OrKan-Assistent</div>
             <div class="ai-status">Online &amp; bereit</div>
@@ -342,7 +343,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
         </div>
         <div class="chat-actions">
           <button class="action-btn action-btn-ghost" onclick="clearChat()">Chat leeren</button>
-          <button class="action-btn action-btn-green" onclick="exportChat()">📥 Export</button>
+          <button class="action-btn action-btn-green" onclick="exportChat()">Export</button>
         </div>
       </div>
       <div class="messages-wrap" id="messagesWrap"></div>
@@ -427,11 +428,11 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
           <span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span>
         </div>
         <div class="stat-row" style="margin-top:10px">
-          <span class="stat-row-label">👍 Positiv</span>
+          <span class="stat-row-label">Positiv</span>
           <span class="stat-row-val green" id="statPositive">0</span>
         </div>
         <div class="stat-row">
-          <span class="stat-row-label">👎 Negativ</span>
+          <span class="stat-row-label">Negativ</span>
           <span class="stat-row-val red" id="statNegative">0</span>
         </div>
       </div>
@@ -466,7 +467,7 @@ const KB = [
   // Artikel & Lagerplätze
   { id: 'art1', cat: 'Artikel & Lagerplätze', keywords: ['artikel anlegen','neuer artikel','artikelgruppe','bezeichnung','artikel erstellen'],
     title: 'Artikel anlegen',
-    answer: `<h4>📦 Neuen Artikel anlegen</h4>
+    answer: `<h4>Neuen Artikel anlegen</h4>
     <p>Gehen Sie in der <strong>Lagerverwaltung → Artikel → Erstellen</strong>.</p>
     <ul>
       <li>Pflichtfelder: <code>Artikelgruppe</code>, <code>interne Artikelnummer</code>, <code>Bezeichnung 1–3</code></li>
@@ -478,7 +479,7 @@ const KB = [
     <p>Über „Kopieren" lassen sich ähnliche Artikel schnell ohne erneute Eingabe anlegen.</p>` },
   { id: 'art2', cat: 'Artikel & Lagerplätze', keywords: ['lager min','lager max','mindestbestand','maximalbestand','bestellmenge berechnen'],
     title: 'Lager MIN und Lager MAX richtig setzen',
-    answer: `<h4>📐 Lager MIN / Lager MAX</h4>
+    answer: `<h4>Lager MIN / Lager MAX</h4>
     <ul>
       <li><strong>Lager MIN</strong>: Sicherheitsbestand, ab dem nachbestellt werden soll</li>
       <li><strong>Lager MAX</strong>: gewünschter Höchstbestand am Lagerplatz</li>
@@ -487,7 +488,7 @@ const KB = [
     <p>Beispiel: Bei Schraubenpäckchen mit MIN = 2 und MAX = 6 schlägt die OrKan Cloud automatisch <strong>4 Stück</strong> zur Nachbestellung vor.</p>` },
   { id: 'art3', cat: 'Artikel & Lagerplätze', keywords: ['artikel löschen','artikel kopieren','artikel bearbeiten','artikel suchen'],
     title: 'Artikel bearbeiten, kopieren oder löschen',
-    answer: `<h4>✏️ Artikel verwalten</h4>
+    answer: `<h4>Artikel verwalten</h4>
     <ul>
       <li>Auf einen Artikel klicken, um ihn jederzeit zu <strong>bearbeiten</strong></li>
       <li><strong>Löschen</strong> über das entsprechende Symbol in der Artikelübersicht</li>
@@ -498,7 +499,7 @@ const KB = [
   // Import & Lieferanten-Anbindung
   { id: 'imp1', cat: 'Import & Lieferanten', keywords: ['import','excel','zip','artikel importieren','bilder importieren'],
     title: 'Artikelimport per Excel und ZIP',
-    answer: `<h4>📥 Artikelimport durchführen</h4>
+    answer: `<h4>Artikelimport durchführen</h4>
     <ul>
       <li>Import besteht aus einer <strong>Excel-Liste</strong> (Artikeldaten) plus einer <strong>ZIP-Datei</strong> (Artikelbilder)</li>
       <li>Der Bildname in der Excel-Spalte muss <strong>exakt</strong> dem Dateinamen im ZIP-Ordner entsprechen</li>
@@ -508,7 +509,7 @@ const KB = [
     <p>Die Importvorlage enthält Werksnummer, EAN, Bezeichnung 1–3, Lager/Gebäude/Lagerort sowie Min-/Max-Bestände.</p>` },
   { id: 'imp2', cat: 'Import & Lieferanten', keywords: ['zeichensatz','fehler import','encoding','sonderzeichen'],
     title: 'Import-Fehler und Zeichensatz beheben',
-    answer: `<h4>🔧 Häufige Importprobleme</h4>
+    answer: `<h4>Häufige Importprobleme</h4>
     <ul>
       <li>Bildname und Excel-Eintrag stimmen nicht exakt überein → Zuordnung schlägt fehl</li>
       <li>Doppelte interne Artikelnummern führen zu Abgleich-Konflikten</li>
@@ -516,7 +517,7 @@ const KB = [
     </ul>` },
   { id: 'lief1', cat: 'Import & Lieferanten', keywords: ['lieferant','shop-url','lieferanten shop','anbindung','lieferant wechseln'],
     title: 'Lieferanten-Shop anbinden',
-    answer: `<h4>🔗 Lieferanten-Shop-Anbindung</h4>
+    answer: `<h4>Lieferanten-Shop-Anbindung</h4>
     <p>Die OrKan Cloud ist <strong>lieferantenunabhängig</strong> – Sie können den Lieferanten je Artikel jederzeit wechseln.</p>
     <ul>
       <li>Lieferant anlegen unter <strong>Lagerverwaltung → Lieferant → Erstellen</strong></li>
@@ -528,7 +529,7 @@ const KB = [
   // Zwei-Etiketten-System & Bestellvorschlag
   { id: 'etk1', cat: 'Etiketten & Bestellung', keywords: ['etikett','blaues etikett','weißes etikett','kanban','zwei etiketten'],
     title: 'Zwei-Etiketten-System (blau/weiß)',
-    answer: `<h4>🏷️ Blaues und weißes Etikett</h4>
+    answer: `<h4>Blaues und weißes Etikett</h4>
     <ul>
       <li><strong>Blaues Etikett</strong>: bleibt fest am Regal, dient der eindeutigen Lagerplatzkennzeichnung</li>
       <li><strong>Weißes Etikett</strong>: wird bei Erreichen des Mindestbestands (Lager MIN) gezogen</li>
@@ -537,7 +538,7 @@ const KB = [
     </ul>` },
   { id: 'etk2', cat: 'Etiketten & Bestellung', keywords: ['bestellvorschlag','bestellung erstellen','scannen','warenkorb','qr code'],
     title: 'Bestellvorschlag erstellen',
-    answer: `<h4>🔄 Vom Etikett zur Bestellung</h4>
+    answer: `<h4>Vom Etikett zur Bestellung</h4>
     <ul>
       <li>Unter <strong>Bestellvorschlag → Erstellen</strong> Etiketten per QR-Code scannen oder Artikel manuell erfassen</li>
       <li>Erfasste Artikel landen im <strong>Warenkorb</strong></li>
@@ -546,7 +547,7 @@ const KB = [
     </ul>` },
   { id: 'etk3', cat: 'Etiketten & Bestellung', keywords: ['etikett drucken','template','artikelkarte','etikettendrucker'],
     title: 'Etiketten-Template gestalten',
-    answer: `<h4>🖨️ Eigene Etiketten gestalten</h4>
+    answer: `<h4>Eigene Etiketten gestalten</h4>
     <p>Unter <strong>Einstellungen → Lagerverwaltung → Artikelkarte</strong> gestalten Sie Ihr Etiketten-Template frei per Drag & Drop.</p>
     <ul>
       <li>Frei wählbar, welche Felder (Artikelnummer, Lagerort, Firmenlogo …) erscheinen</li>
@@ -557,7 +558,7 @@ const KB = [
   // Wareneingang & Lagerbestand
   { id: 'we1', cat: 'Wareneingang & Bestand', keywords: ['wareneingang','einbuchen','anlieferung','lieferschein'],
     title: 'Wareneingang bestätigen',
-    answer: `<h4>📬 Wareneingang erfassen</h4>
+    answer: `<h4>Wareneingang erfassen</h4>
     <ul>
       <li>Nach Bestellabschluss öffnet sich automatisch das Wareneingangs-Fenster mit Artikelbild und Bezeichnung</li>
       <li>Gelieferte Artikel abhaken und mit dem <strong>Lieferschein</strong> abgleichen</li>
@@ -566,14 +567,14 @@ const KB = [
     </ul>` },
   { id: 'we2', cat: 'Wareneingang & Bestand', keywords: ['lagerbestand','warenwert','bestand prüfen','ist-bestand'],
     title: 'Lagerbestand & Warenwert prüfen',
-    answer: `<h4>📊 Lagerbestand im Überblick</h4>
+    answer: `<h4>Lagerbestand im Überblick</h4>
     <p>Der Reiter <strong>„Lagerbestand"</strong> zeigt je Artikel den aktuellen Ist-Bestand sowie den Warenwert im Verhältnis zu Lager MIN und Lager MAX.</p>
     <p>Der Reiter <strong>„Bestellung"</strong> liefert zusätzlich eine Übersicht aller getätigten Bestellungen.</p>` },
 
   // Gebrauchsgutverwaltung
   { id: 'geb1', cat: 'Gebrauchsgut', keywords: ['maschine','gebrauchsgut','werkzeug','fahrzeug zuordnen','buchung'],
     title: 'Gebrauchsgutverwaltung (Maschinen)',
-    answer: `<h4>🔧 Maschinen und Werkzeuge verwalten</h4>
+    answer: `<h4>Maschinen und Werkzeuge verwalten</h4>
     <ul>
       <li>Zeigt, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine hat</li>
       <li>Über <strong>„Buchung"</strong> eine Maschine einem Standort, Mitarbeiter oder Fahrzeug zuordnen</li>
@@ -584,7 +585,7 @@ const KB = [
   // Benutzer & Module
   { id: 'usr1', cat: 'Benutzer & Module', keywords: ['benutzer','user','mitarbeiter','anlegen','einladen','zugang','rolle','mandant'],
     title: 'Benutzer anlegen (Mandantenverwaltung)',
-    answer: `<h4>👤 Benutzer hinzufügen</h4>
+    answer: `<h4>Benutzer hinzufügen</h4>
     <p>Unter <strong>Einstellungen → Mandantenverwaltung → Benutzer</strong>:</p>
     <ul>
       <li>Neue Mitarbeitende anlegen und Rollen zuweisen</li>
@@ -593,7 +594,7 @@ const KB = [
     </ul>` },
   { id: 'usr2', cat: 'Benutzer & Module', keywords: ['module buchen','modul kündigen','firma','rechnungsadresse','zusatzmodul'],
     title: 'Module buchen und verwalten',
-    answer: `<h4>⚙️ Module verwalten</h4>
+    answer: `<h4>Module verwalten</h4>
     <p>Unter <strong>Einstellungen → Firma</strong> finden Sie Rechnungsadresse sowie alle buchbaren Module.</p>
     <ul>
       <li>Kernbereich: <strong>Lagerverwaltung</strong> (Artikel, Lieferant, Bestellvorschlag …)</li>
@@ -602,7 +603,7 @@ const KB = [
     </ul>` },
   { id: 'usr3', cat: 'Benutzer & Module', keywords: ['passwort','kennwort','vergessen','reset','login','anmelden','einloggen'],
     title: 'Passwort zurücksetzen',
-    answer: `<h4>🔐 Passwort-Reset</h4>
+    answer: `<h4>Passwort-Reset</h4>
     <p>Auf der Login-Seite auf <strong>„Passwort vergessen"</strong> klicken:</p>
     <ul>
       <li>E-Mail-Adresse eingeben → Link kommt innerhalb weniger Minuten</li>
@@ -612,12 +613,12 @@ const KB = [
   // Allgemein / Fallback
   { id: 'gen1', cat: 'Allgemein', keywords: ['preis','kosten','lizenz','paket','tarif','abo'],
     title: 'Lizenzmodelle & Preise',
-    answer: `<h4>💰 Lizenzoptionen</h4>
+    answer: `<h4>Lizenzoptionen</h4>
     <p>Der Funktionsumfang richtet sich nach den gebuchten Modulen (z. B. Lagerverwaltung, Gebrauchsgutverwaltung, Bestandsführung).</p>
     <p>Für ein konkretes Angebot wenden Sie sich an <strong>vertrieb@orkan-system.de</strong>.</p>` },
   { id: 'gen2', cat: 'Allgemein', keywords: ['hilfe','handbuch','dokumentation','anleitung','tutorial','schulung','startseite','kalender'],
     title: 'Startseite und Hilfe-Ressourcen',
-    answer: `<h4>🏠 Startseite & Wissensressourcen</h4>
+    answer: `<h4>Startseite & Wissensressourcen</h4>
     <ul>
       <li>Die Startseite zeigt Ihren <strong>Kalender</strong> (Ampelsystem: Rot = Bestellung fällig) sowie vier Shortcuts</li>
       <li>Über die drei Striche oben links gelangen Sie jederzeit zur Hauptnavigation</li>
@@ -627,13 +628,13 @@ const KB = [
 
 // ─── CATEGORIES ───
 const CATEGORIES = [
-  { name: 'Artikel & Lagerplätze', icon: '📦', ids: ['art1','art2','art3'] },
-  { name: 'Import & Lieferanten', icon: '📥', ids: ['imp1','imp2','lief1'] },
-  { name: 'Etiketten & Bestellung', icon: '🏷️', ids: ['etk1','etk2','etk3'] },
-  { name: 'Wareneingang & Bestand', icon: '📬', ids: ['we1','we2'] },
-  { name: 'Gebrauchsgut', icon: '🔧', ids: ['geb1'] },
-  { name: 'Benutzer & Module', icon: '👤', ids: ['usr1','usr2','usr3'] },
-  { name: 'Allgemein', icon: '💡', ids: ['gen1','gen2'] },
+  { name: 'Artikel & Lagerplätze', icon: '', ids: ['art1','art2','art3'] },
+  { name: 'Import & Lieferanten', icon: '', ids: ['imp1','imp2','lief1'] },
+  { name: 'Etiketten & Bestellung', icon: '', ids: ['etk1','etk2','etk3'] },
+  { name: 'Wareneingang & Bestand', icon: '', ids: ['we1','we2'] },
+  { name: 'Gebrauchsgut', icon: '', ids: ['geb1'] },
+  { name: 'Benutzer & Module', icon: '', ids: ['usr1','usr2','usr3'] },
+  { name: 'Allgemein', icon: '', ids: ['gen1','gen2'] },
 ];
 
 // ─── INIT ───
@@ -684,7 +685,7 @@ function filterCategories(val) {
 function addWelcomeMessage() {
   const wrap = document.getElementById('messagesWrap');
   wrap.innerHTML = '';
-  addBotMessage(`<h4>👋 Willkommen, ${userName}!</h4>
+  addBotMessage(`<h4>Willkommen, ${userName}!</h4>
     <p>Ich bin Ihr KI-Support-Assistent für die <strong>OrKan Cloud</strong>. Ich beantworte Ihre Fragen sofort – ohne Wartezeit.</p>
     <p style="margin-top:8px">Tippen Sie Ihre Frage oder wählen Sie links ein Thema aus. Wie kann ich Ihnen helfen?</p>`);
 }
@@ -696,15 +697,15 @@ function addBotMessage(html, withFeedback = true) {
   const div = document.createElement('div');
   div.className = 'msg bot';
   div.innerHTML = `
-    <div class="msg-avatar">🤖</div>
+    <div class="msg-avatar">OK</div>
     <div>
       <div class="msg-bubble">
         ${html}
         ${withFeedback ? `<div class="msg-meta">
           <span class="msg-time">${time}</span>
           <div class="msg-feedback">
-            <button class="fb-btn" onclick="feedback('${id}','up',this)" title="Hilfreich">👍</button>
-            <button class="fb-btn" onclick="feedback('${id}','down',this)" title="Nicht hilfreich">👎</button>
+            <button class="fb-btn" onclick="feedback('${id}','up',this)" title="Hilfreich"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></svg></button>
+            <button class="fb-btn" onclick="feedback('${id}','down',this)" title="Nicht hilfreich"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/></svg></button>
           </div>
         </div>` : ''}
       </div>
@@ -738,7 +739,7 @@ function showTyping() {
   div.className = 'typing-indicator';
   div.id = 'typingIndicator';
   div.innerHTML = `
-    <div class="msg-avatar" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1F2428,#2E3438);display:flex;align-items:center;justify-content:center;font-size:12px;border:1.5px solid #8EA752">🤖</div>
+    <div class="msg-avatar" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1F2428,#2E3438);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#8EA752;border:1.5px solid #8EA752">OK</div>
     <div class="typing-bubble">
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
@@ -810,7 +811,6 @@ function escalate(question) {
     <p>Für diese Frage benötige ich die Unterstützung unseres Support-Teams.</p>
     <div class="escalation-card">
       <div class="esc-header">
-        <span class="esc-icon">🎫</span>
         <span class="esc-title">Support-Ticket erstellt</span>
         <span class="esc-ticket">${ticket}</span>
       </div>
@@ -819,8 +819,8 @@ function escalate(question) {
         <span style="margin-top:4px;display:block">Ein Experte meldet sich innerhalb von <strong>2 Stunden</strong> bei Ihnen.</span>
       </div>
       <div class="esc-contact">
-        <button class="esc-btn esc-btn-primary" onclick="this.textContent='✓ Gesendet';this.disabled=true">📧 E-Mail bestätigen</button>
-        <button class="esc-btn esc-btn-secondary">📞 Rückruf anfordern</button>
+        <button class="esc-btn esc-btn-primary" onclick="this.textContent='✓ Gesendet';this.disabled=true">E-Mail bestätigen</button>
+        <button class="esc-btn esc-btn-secondary">Rückruf anfordern</button>
       </div>
     </div>`;
   addBotMessage(html);
