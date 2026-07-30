@@ -70,6 +70,8 @@ svg{display:block}
 .ai-toggle-btn svg{width:15px;height:15px}
 .notif-dot{position:absolute;top:-3px;right:-3px;width:9px;height:9px;background:#e8a33d;border-radius:50%;border:2px solid var(--dark-bg)}
 .hdr-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;color:#fff}
+.integration-badge{font-size:11px;font-weight:600;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.15);padding:4px 10px;border-radius:20px;white-space:nowrap;cursor:default}
+.pilot-phase-badge{font-size:10.5px;font-weight:700;color:#e8a33d;background:rgba(232,163,61,.14);border:1px solid rgba(232,163,61,.3);padding:4px 10px;border-radius:20px;white-space:nowrap;letter-spacing:.3px;cursor:default}
 
 .shell-body{flex:1;display:flex;overflow:hidden}
 
@@ -109,6 +111,10 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .ai-banner-text span{font-size:13px;color:var(--dark-bg);opacity:.75;line-height:1.5}
 .ai-banner-btn{background:var(--dark-bg);color:#fff;border:none;padding:10px 18px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer;transition:var(--spring);flex-shrink:0}
 .ai-banner-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.context-note{background:rgba(255,255,255,.6);border:1px dashed var(--border);border-radius:10px;padding:12px 16px;margin-bottom:26px;font-size:12.5px;color:var(--gray);line-height:1.55}
+.context-note strong{color:var(--dark-bg)}
+.app-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark-bg);color:#fff;padding:13px 22px;border-radius:12px;font-size:13px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.34,1.2,.64,1);z-index:300;max-width:420px;text-align:center}
+.app-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
 
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
 .stat-card{background:rgba(255,255,255,.82);border:1px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
@@ -453,6 +459,8 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
     </div>
     <div class="hdr-divider"></div>
     <div class="breadcrumb">Onboarding / <strong id="breadcrumbCurrent">Dashboard</strong></div>
+    <span class="integration-badge" title="Läuft direkt in Ihrer OrKan Cloud – keine separate Installation nötig">In OrKan Cloud integriert</span>
+    <span class="pilot-phase-badge" title="KI-Funktionen befinden sich aktuell in der internen Pilotphase bei SPRÜGEL">Interner Pilot</span>
     <div class="hdr-spacer"></div>
     <button class="ai-toggle-btn" onclick="toggleAI()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/><path d="M6 12v1a6 6 0 0 0 12 0v-1M12 19v3"/></svg>
@@ -687,7 +695,8 @@ const KB_ARTICLES = [
   {cat:'Verwaltung',title:'Neue Benutzer einladen',desc:'Ablauf der Einladung und Rollenzuweisung.',body:['Unter Einstellungen → Mandantenverwaltung → Benutzer können neue Mitarbeitende angelegt werden.','Zusätzlich lassen sich hier Kontakte und die Sprache verwalten.','Welche Module ein Mandant nutzt, wird zentral unter Einstellungen → Firma verwaltet.']},
   {cat:'Verwaltung',title:'Etiketten-Templates gestalten (Artikelkarte)',desc:'Eigene Etikettenvorlagen für den Lagerdruck erstellen.',body:['Unter Einstellungen → Lagerverwaltung → Artikelkarte gestalten Sie das Template für Ihre Etiketten frei per Drag & Drop.','Sie wählen selbst, welche Felder (z. B. Artikelnummer, Lagerort, Firmenlogo) auf dem Etikett erscheinen.','Beim Drucken eines Artikels wählen Sie anschließend das passende Template und erhalten eine druckfertige PDF-Datei.']},
   {cat:'Prozesse',title:'Wareneingang korrekt bestätigen',desc:'Von der Anlieferung bis zur Bestandsaktualisierung.',body:['Nach Bestellabschluss öffnet sich automatisch das Wareneingangs-Fenster mit Artikelbild und Bezeichnung.','Haken Sie gelieferte Artikel ab und gleichen Sie sie mit dem Lieferschein ab.','Der Lagerbestand wird nach Bestätigung automatisch aktualisiert.']},
-  {cat:'Grundlagen',title:'Gebrauchsgutverwaltung (Maschinen)',desc:'Maschinen und Werkzeuge Mitarbeitern zuordnen.',body:['Unter Gebrauchsgut sehen Sie, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine führt.','Über „Buchung" weisen Sie eine Maschine einem Standort oder Mitarbeiter zu, „Reservierungen" planen zukünftige Nutzung.','Service- und Wartungstermine (z. B. Jahresservice) lassen sich direkt an der Maschine hinterlegen.']}
+  {cat:'Grundlagen',title:'Gebrauchsgutverwaltung (Maschinen)',desc:'Maschinen und Werkzeuge Mitarbeitern zuordnen.',body:['Unter Gebrauchsgut sehen Sie, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine führt.','Über „Buchung" weisen Sie eine Maschine einem Standort oder Mitarbeiter zu, „Reservierungen" planen zukünftige Nutzung.','Service- und Wartungstermine (z. B. Jahresservice) lassen sich direkt an der Maschine hinterlegen.']},
+  {cat:'Verwaltung',title:'Schlüsselverwaltung',desc:'Wer hat aktuell welchen Schlüssel – lückenlos dokumentiert.',body:['Die Schlüsselverwaltung ist ein optionales Modul, das wie die Gebrauchsgutverwaltung unter Einstellungen → Firma gebucht werden kann.','Jeder Schlüssel wird als eigener Datensatz angelegt und einem Standort, Gebäude oder Mitarbeiter zugeordnet.','Über „Buchung" wird die Ausgabe und Rückgabe eines Schlüssels dokumentiert, sodass jederzeit nachvollziehbar ist, wer aktuell im Besitz ist.']}
 ];
 
 const BEST_PRACTICES = [
@@ -856,6 +865,10 @@ function renderDashboard(){
     </div>
     `}
 
+    <div class="context-note">
+      <span><strong>Ergänzung, kein Ersatz:</strong> Diese Plattform ergänzt Ihre persönliche Erstschulung bei SPRÜGEL. Eignen Sie sich hier die Grundlagen selbstständig an – Ihr persönlicher Ansprechpartner konzentriert sich im gemeinsamen Termin dann gezielt auf Ihre individuellen Fragen.</span>
+    </div>
+
     <div class="stats-row">
       <div class="stat-card"><div class="stat-label">Abgeschlossene Module</div><div class="stat-val">${done}/5</div><div class="stat-sub">${progressPct()}% des Onboardings</div></div>
       <div class="stat-card"><div class="stat-label">Lernzeit gesamt</div><div class="stat-val">${state.totalTime}</div><div class="stat-sub">Minuten investiert</div></div>
@@ -980,12 +993,15 @@ function renderTab(){
   const host = document.getElementById('tabContentHost');
   if(state.currentTab==='content'){
     host.innerHTML = `
-      <div class="video-placeholder"><div class="play-circle" onclick="this.parentElement.querySelector('span').textContent='Wiedergabe simuliert — Video in Produktion'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span>KI-generiertes Schulungsvideo wird geladen</span></div>
+      <div class="video-placeholder"><div class="play-circle" onclick="this.parentElement.querySelector('span').textContent='Wiedergabe simuliert — Video in Produktion'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span>Prozessnahes Arbeitsvideo: „${m.title}" wird geladen</span></div>
       <ul class="key-points">${m.points.map(pt=>`<li>${pt}</li>`).join('')}</ul>
       <div class="section-heading" style="margin-top:0">Wichtige Funktionen</div>
       <div class="feature-cards">${m.features.map(f=>`<div class="feature-card"><div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></div><h5>${f.t}</h5><p>${f.d}</p></div>`).join('')}</div>
       <div class="practice-callout"><strong>In der Praxis</strong><p>${m.practice}</p></div>
-      <button class="coach-btn" onclick="askCoach(${m.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/></svg>Fragen Sie den KI-Lerncoach</button>
+      <div class="btn-row" style="margin-top:0">
+        <button class="coach-btn" onclick="askCoach(${m.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/></svg>Fragen Sie den KI-Lerncoach</button>
+        <button class="btn btn-outline" onclick="openCloudLink(${m.id})">Direkt in der OrKan Cloud üben</button>
+      </div>
     `;
   } else if(state.currentTab==='task'){
     host.innerHTML = `
@@ -1256,6 +1272,24 @@ function toggleAI(){
 function seedAIMessages(){
   document.getElementById('aiMessages').innerHTML = `<div class="ai-msg bot">Willkommen, ${state.name}. Ich habe Ihren Lernpfad basierend auf Ihrer Rolle als ${state.role} zusammengestellt. Wie kann ich Ihnen helfen?</div>`;
   document.getElementById('suggChips').innerHTML = ['Wo stehe ich im Onboarding?','Was sollte ich als Nächstes lernen?','Habe ich Wissenslücken?','Wie funktioniert das Zwei-Etiketten-System?'].map(s=>`<div class="sugg-chip" onclick="sendAI('${s}')">${s}</div>`).join('');
+}
+const CLOUD_DEEPLINKS = {1:'Startseite',2:'Lagerverwaltung → Artikel',3:'Bestellvorschlag',4:'Lagerverwaltung → Lieferant',5:'Lagerbestand'};
+function openCloudLink(mid){
+  const area = CLOUD_DEEPLINKS[mid] || 'OrKan Cloud';
+  showToast(`In der Live-Integration öffnet sich jetzt direkt „${area}" in Ihrer OrKan Cloud — ohne separate Anmeldung.`);
+}
+function showToast(text){
+  let toast = document.getElementById('appToast');
+  if(!toast){
+    toast = document.createElement('div');
+    toast.id = 'appToast';
+    toast.className = 'app-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = text;
+  toast.classList.add('show');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=>toast.classList.remove('show'), 3800);
 }
 function askCoach(mid){
   toggleAI();
