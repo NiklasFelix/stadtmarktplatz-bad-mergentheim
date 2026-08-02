@@ -141,7 +141,10 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .coach-widget-input-row input:focus{border-color:var(--green);background:rgba(255,255,255,.12)}
 .coach-widget-send{padding:12px 22px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;transition:var(--spring)}
 .coach-widget-send:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(142,167,82,.35)}
-.context-note{background:rgba(255,255,255,.6);border:1px dashed var(--border);border-radius:10px;padding:12px 16px;margin-bottom:26px;font-size:12.5px;color:var(--gray);line-height:1.55}
+.context-note{background:rgba(255,255,255,.6);border:1px dashed var(--border);border-radius:10px;padding:12px 16px;margin-bottom:26px;font-size:12.5px;color:var(--gray);line-height:1.55;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.context-note span{flex:1;min-width:240px}
+.context-note-btn{flex-shrink:0;padding:9px 16px;border-radius:9px;border:1.5px solid var(--dark-bg);background:transparent;color:var(--dark-bg);font-size:12px;font-weight:700;cursor:pointer;transition:var(--spring);white-space:nowrap}
+.context-note-btn:hover{background:var(--dark-bg);color:#fff;transform:translateY(-1px)}
 .context-note strong{color:var(--dark-bg)}
 .app-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark-bg);color:#fff;padding:13px 22px;border-radius:12px;font-size:13px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.34,1.2,.64,1);z-index:300;max-width:420px;text-align:center}
 .app-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
@@ -385,6 +388,19 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .cert-sigs{display:flex;justify-content:space-around;margin-top:36px}
 .sig-line{border-top:1px solid var(--dark-bg);padding-top:8px;font-size:12px;color:var(--gray);width:180px}
 .cert-actions{display:flex;gap:10px;justify-content:center;margin-top:28px}
+.cert-renewal-note{max-width:700px;margin:18px auto 0;text-align:center;font-size:12px;color:var(--gray);background:rgba(255,255,255,.7);border:1px solid var(--border);border-radius:10px;padding:12px 16px}
+
+/* Team-Fortschritt */
+.team-list{display:flex;flex-direction:column;gap:10px}
+.team-row{display:grid;grid-template-columns:40px 1fr 180px 70px 180px;align-items:center;gap:16px;background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:12px;padding:14px 18px;box-shadow:var(--shadow)}
+.team-avatar{width:36px;height:36px;border-radius:50%;background:var(--dark-bg);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.team-name{font-size:13.5px;font-weight:700}
+.team-role{font-size:11.5px;color:var(--gray)}
+.team-progress-wrap{display:flex;flex-direction:column;gap:5px}
+.team-progress-text{font-size:11px;color:var(--gray)}
+.team-quiz{font-size:13px;font-weight:700;color:var(--dark-bg)}
+.team-ok{font-size:11px;font-weight:600;color:var(--green-dark)}
+@media(max-width:1000px){.team-row{grid-template-columns:36px 1fr;grid-template-areas:none}.team-progress-wrap,.team-quiz,.team-flag{display:none}}
 @media print{
   body *{visibility:hidden}
   .certificate,.certificate *{visibility:visible}
@@ -538,6 +554,10 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M9 13.5 7 22l5-3 5 3-2-8.5"/></svg>
         Zertifikate
       </div>
+      <div class="nav-item" data-view="team" onclick="showView('team')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Team-Fortschritt
+      </div>
       <div class="sidebar-progress">
         <div class="sp-label">Fortschritt</div>
         <div class="sp-track"><div class="sp-fill" id="sidebarFill" style="width:0%"></div></div>
@@ -570,6 +590,9 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 
       <!-- CERT -->
       <section class="view" id="view-cert"></section>
+
+      <!-- TEAM -->
+      <section class="view" id="view-team"></section>
 
     </main>
 
@@ -808,6 +831,14 @@ const AGGREGATE_GAPS = [
   {topic:'Lager MIN/MAX', pct:11, moduleId:2}
 ];
 
+/* Simulierte Teamdaten für die Vorgesetzten-Ansicht (Team-Fortschritt) */
+const TEAM_MEMBERS = [
+  {name:'Julia Herrmann', role:'Einkäufer', completed:5, quizAvg:96, weakTopic:null},
+  {name:'Tobias Krämer', role:'Lagermitarbeiter', completed:3, quizAvg:78, weakTopic:'Bestellauslösung'},
+  {name:'Sabine Wolf', role:'Lagerleiter', completed:4, quizAvg:88, weakTopic:'Lieferanten-Shop-Anbindung'},
+  {name:'David Brenner', role:'Lagermitarbeiter', completed:1, quizAvg:60, weakTopic:'Lager MIN/MAX'}
+];
+
 /* ============ STATE ============ */
 let state = {
   name:'', company:'', role:'',
@@ -849,7 +880,7 @@ function startApp(){
 }
 
 /* ============ NAV ============ */
-const VIEW_LABELS = {dashboard:'Dashboard',roadmap:'Mein Lernpfad',modules:'Lernmodule',gaps:'Wissenslücken-Analyse',kb:'Wissensdatenbank',best:'Best Practices',updates:'Update-Center',cert:'Zertifikate'};
+const VIEW_LABELS = {dashboard:'Dashboard',roadmap:'Mein Lernpfad',modules:'Lernmodule',gaps:'Wissenslücken-Analyse',kb:'Wissensdatenbank',best:'Best Practices',updates:'Update-Center',cert:'Zertifikate',team:'Team-Fortschritt'};
 function showView(name){
   state.currentView = name;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -919,6 +950,7 @@ function renderDashboard(){
 
     <div class="context-note">
       <span><strong>Ergänzung, kein Ersatz:</strong> Diese Plattform ergänzt Ihre persönliche Erstschulung bei SPRÜGEL. Eignen Sie sich hier die Grundlagen selbstständig an – Ihr persönlicher Ansprechpartner konzentriert sich im gemeinsamen Termin dann gezielt auf Ihre individuellen Fragen.</span>
+      <button class="context-note-btn" onclick="bookAppointment()">Persönlichen Termin vereinbaren</button>
     </div>
 
     <div class="stats-row">
@@ -1269,10 +1301,11 @@ function renderCert(){
         <div class="cert-name">${state.name}</div>
         <div class="cert-company">${state.company}</div>
         <div class="cert-body">hat alle 5 Pflichtmodule der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen und die zugehörigen Wissenschecks bestanden.</div>
-        <div style="font-size:12px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')}</div>
+        <div style="font-size:12px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')} &middot; Gültig für 24 Monate</div>
         <div class="cert-sigs"><div class="sig-line">Gerhard Sprügel<br>Geschäftsführer</div><div class="sig-line">OrKan System GmbH</div></div>
       </div>
       <div class="cert-actions"><button class="btn btn-primary" onclick="window.print()">Zertifikat drucken</button><button class="btn btn-outline" onclick="downloadCert()">Als Text herunterladen</button></div>
+      <div class="cert-renewal-note">Sie erhalten automatisch 60 Tage vor Ablauf eine Erinnerung zur Auffrischung – z. B. bei neuen OrKan-Cloud-Funktionen aus dem Update-Center.</div>
     `;
   }
 }
@@ -1280,6 +1313,50 @@ function downloadCert(){
   const text = `OrKan Cloud – Zertifikat der Absolvierung\n\n${state.name}\n${state.company}\n\nhat alle 5 Pflichtmodule der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen.\n\nAusgestellt am ${new Date().toLocaleDateString('de-DE')}\nGerhard Sprügel, Geschäftsführer – OrKan System GmbH`;
   const blob = new Blob([text],{type:'text/plain;charset=utf-8'});
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='orkan-zertifikat.txt'; a.click();
+}
+
+/* ============ TEAM-FORTSCHRITT (Vorgesetzten-Ansicht) ============ */
+function renderTeam(){
+  const el = document.getElementById('view-team');
+  if(!el) return;
+  const allMembers = [...TEAM_MEMBERS, {name:`${state.name} (Sie)`, role:state.role, completed:completedCount(), quizAvg: (()=>{ const s=Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore); return s.length?Math.round(s.reduce((a,b)=>a+b,0)/s.length):0; })(), weakTopic: Object.keys(state.weakTopics)[0]||null}];
+  const teamAvgPct = Math.round(allMembers.reduce((a,m)=>a+m.completed,0)/allMembers.length/5*100);
+
+  el.innerHTML = `
+    <h1 class="page-title">Team-Fortschritt</h1>
+    <p class="page-sub">Übersicht für Vorgesetzte: Onboarding-Status aller Teammitglieder im Blick.</p>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Team-Mitglieder</div><div class="stat-val">${allMembers.length}</div><div class="stat-sub">im Onboarding erfasst</div></div>
+      <div class="stat-card"><div class="stat-label">Ø Fortschritt</div><div class="stat-val">${teamAvgPct}%</div><div class="stat-sub">über alle Module</div></div>
+      <div class="stat-card"><div class="stat-label">Vollständig abgeschlossen</div><div class="stat-val">${allMembers.filter(m=>m.completed===5).length}</div><div class="stat-sub">von ${allMembers.length} Personen</div></div>
+      <div class="stat-card"><div class="stat-label">Auffällige Wissenslücken</div><div class="stat-val">${allMembers.filter(m=>m.weakTopic).length}</div><div class="stat-sub">benötigen Vertiefung</div></div>
+    </div>
+
+    <div class="section-heading">Teammitglieder</div>
+    <div class="team-list">
+      ${allMembers.map(m=>`
+        <div class="team-row">
+          <div class="team-avatar">${m.name.split(' ').map(n=>n[0]).slice(0,2).join('')}</div>
+          <div class="team-info">
+            <div class="team-name">${m.name}</div>
+            <div class="team-role">${m.role}</div>
+          </div>
+          <div class="team-progress-wrap">
+            <div class="gap-track" style="width:140px"><div class="gap-fill company" style="width:${m.completed/5*100}%"></div></div>
+            <span class="team-progress-text">${m.completed}/5 Module</span>
+          </div>
+          <div class="team-quiz">Ø ${m.quizAvg}%</div>
+          <div class="team-flag">${m.weakTopic ? `<span class="gap-count">Lücke: ${m.weakTopic}</span>` : `<span class="team-ok">Keine Lücken</span>`}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="insight-callout" style="margin-top:24px">
+      <strong>Hinweis für Vorgesetzte</strong>
+      <p>Diese Ansicht zeigt simulierte Beispieldaten für den Pilotversuch. In der produktiven Version würde sie auf echten Fortschrittsdaten aller Mandanten-Nutzer basieren und Vorgesetzten erlauben, gezielt bei erkannten Wissenslücken nachzusteuern.</p>
+    </div>
+  `;
 }
 
 /* ============ SIDEBAR PROGRESS ============ */
@@ -1290,6 +1367,7 @@ function updateSidebarProgress(){
   renderRoadmap();
   renderCert();
   renderGaps();
+  renderTeam();
 }
 
 /* ============ ADAPTIVE LERNPFAD / WISSENSLÜCKEN-ERKENNUNG ============ */
@@ -1368,6 +1446,9 @@ function sendFromWidget(){
   sendAI(text);
 }
 const CLOUD_DEEPLINKS = {1:'Startseite',2:'Lagerverwaltung → Artikel',3:'Bestellvorschlag',4:'Lagerverwaltung → Lieferant',5:'Lagerbestand'};
+function bookAppointment(){
+  showToast(`Anfrage an Ihren SPRÜGEL-Ansprechpartner gesendet — Sie erhalten in Kürze einen Terminvorschlag für Ihre individuellen Fragen zur OrKan Cloud.`);
+}
 function openCloudLink(mid){
   const area = CLOUD_DEEPLINKS[mid] || 'OrKan Cloud';
   showToast(`In der Live-Integration öffnet sich jetzt direkt „${area}" in Ihrer OrKan Cloud — ohne separate Anmeldung.`);
