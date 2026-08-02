@@ -464,8 +464,8 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
     <div class="hdr-spacer"></div>
     <button class="ai-toggle-btn" onclick="toggleAI()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/><path d="M6 12v1a6 6 0 0 0 12 0v-1M12 19v3"/></svg>
-      KI-Assistent
-      <span class="notif-dot" id="aiNotifDot"></span>
+      KI-Lerncoach
+      <span class="notif-dot" id="aiNotifDot" style="display:none"></span>
     </button>
     <div class="hdr-avatar" id="hdrAvatar">?</div>
   </header>
@@ -543,10 +543,10 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
     <aside class="ai-panel" id="aiPanel">
       <div class="ai-panel-inner">
         <div class="ai-panel-head">
-          <h4>KI-Onboarding-Assistent</h4>
+          <h4>KI-Lerncoach</h4>
           <span class="close-x" onclick="toggleAI()">&times;</span>
         </div>
-        <div class="ai-status-line">Aktiv — analysiert Ihren Lernfortschritt</div>
+        <div class="ai-status-line" id="aiStatusLine">Aktiv — begleitet Ihren Lernfortschritt</div>
         <div class="suggestion-chips" id="suggChips"></div>
         <div class="ai-messages" id="aiMessages"></div>
         <div class="ai-input-row">
@@ -954,6 +954,7 @@ function renderModulesList(){
 }
 
 function openModule(id){
+  const wasStarted = state.moduleProgress[id].started;
   state.currentModule = id;
   state.currentTab = 'content';
   state.moduleProgress[id].started = true;
@@ -961,6 +962,24 @@ function openModule(id){
   renderModuleDetail();
   buildModuleSubNav();
   updateSidebarProgress();
+  if(!wasStarted) coachProactive(moduleIntroCoachMsg(id));
+}
+function moduleIntroCoachMsg(id){
+  const m = MODULES.find(x=>x.id===id);
+  const intros = {
+    'Lagerleiter':'Als Lagerleiter empfehle ich, besonders auf die Praxisaufgabe zu achten — die Inhalte hier wirken sich direkt auf Ihr Team aus.',
+    'Einkäufer':'Für Sie als Einkäufer ist dieser Bereich besonders relevant für Ihre tägliche Bestellpraxis.',
+    'Geschäftsführer':'Als Geschäftsführer reicht Ihnen vermutlich der Überblick — die Kernaussagen finden Sie nach dem Wissenscheck in der Zusammenfassung.',
+    'Lagermitarbeiter':'Für Ihren Arbeitsalltag lohnt sich vor allem die Praxisaufgabe in diesem Modul.'
+  };
+  return `Los geht's mit „${m.title}". ${intros[state.role]||'Schauen Sie sich zunächst das Video an, bearbeiten Sie danach die Praxisaufgabe und schließen Sie mit dem Wissenscheck ab.'} Bei Fragen bin ich jederzeit hier.`;
+}
+function coachProactive(text){
+  addAIMsg('bot', text);
+  if(!state.aiOpen){
+    const dot = document.getElementById('aiNotifDot');
+    if(dot) dot.style.display = 'block';
+  }
 }
 
 function renderModuleDetail(){
@@ -1038,8 +1057,13 @@ function nextModuleLink(id){
 }
 function toggleCheck(mid,i){
   const p = state.moduleProgress[mid];
+  const m = MODULES.find(x=>x.id===mid);
   const idx = p.checklist.indexOf(i);
   if(idx>-1) p.checklist.splice(idx,1); else p.checklist.push(i);
+  if(p.checklist.length===m.checklist.length && idx===-1 && !p.checklistCoached){
+    p.checklistCoached = true;
+    coachProactive(`Gut gemacht — alle Schritte der Praxisaufgabe in „${m.title}" sind erledigt. Wechseln Sie jetzt zum Wissenscheck, um das Modul abzuschließen.`);
+  }
   renderTab();
 }
 
@@ -1089,6 +1113,10 @@ function renderQuizResult(m){
     state.moduleProgress[m.id].completed = true;
     state.totalTime += parseInt(m.time);
     buildModuleSubNav();
+    const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
+    coachProactive(next ? `Modul „${m.title}" ist abgeschlossen — stark! Als Nächstes passt „${next.title}" gut zu Ihrem Lernpfad.` : `Herzlichen Glückwunsch — Sie haben alle fünf Module abgeschlossen. Ihr Zertifikat wartet im Bereich „Zertifikate".`);
+  } else if(justLogged && !passed){
+    coachProactive(`Kein Problem — beim Wissenscheck zu „${m.title}" hat es noch nicht ganz gereicht. Schauen Sie sich den Inhalt noch einmal an, ich habe die betroffenen Themen bereits in Ihrer Wissenslücken-Analyse vorgemerkt.`);
   }
   if(justLogged) updateSidebarProgress();
   return `<div class="quiz-result"><div class="qr-score">${correct}/${m.quiz.length} richtig (${pct}%)</div>
