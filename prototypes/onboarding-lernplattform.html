@@ -415,7 +415,7 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
       </div>
     </div>
     <h1>Willkommen bei Ihrer Onboarding-Plattform</h1>
-    <p class="sub">Strukturierte Einführung in die OrKan Cloud – rollenbasiert und KI-gestützt.</p>
+    <p class="sub">Strukturierte, rollenbasierte Einführung in die OrKan Cloud.</p>
     <div class="field-row">
       <div><span class="field-label">Name</span><input type="text" id="onbName" placeholder="Vor- und Nachname"></div>
       <div><span class="field-label">Unternehmen</span><input type="text" id="onbCompany" placeholder="Firmenname"></div>
@@ -438,7 +438,7 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
     <button class="onb-btn" id="startBtn" disabled onclick="startApp()">Lernpfad starten</button>
     <div class="trust-row">
       <span class="trust-item">5 Module · ca. 60 Minuten</span>
-      <span class="trust-item">KI-gestützte Lernempfehlungen</span>
+      <span class="trust-item">Individuelle Lernpfade je Rolle</span>
       <span class="trust-item">Anerkanntes Abschlusszertifikat</span>
     </div>
   </div>
@@ -460,11 +460,11 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
     <div class="hdr-divider"></div>
     <div class="breadcrumb">Onboarding / <strong id="breadcrumbCurrent">Dashboard</strong></div>
     <span class="integration-badge" title="Läuft direkt in Ihrer OrKan Cloud – keine separate Installation nötig">In OrKan Cloud integriert</span>
-    <span class="pilot-phase-badge" title="KI-Funktionen befinden sich aktuell in der internen Pilotphase bei SPRÜGEL">Interner Pilot</span>
+    <span class="pilot-phase-badge" title="Einige Funktionen befinden sich aktuell in der internen Pilotphase bei SPRÜGEL">Interner Pilot</span>
     <div class="hdr-spacer"></div>
     <button class="ai-toggle-btn" onclick="toggleAI()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/><path d="M6 12v1a6 6 0 0 0 12 0v-1M12 19v3"/></svg>
-      KI-Lerncoach
+      Lerncoach
       <span class="notif-dot" id="aiNotifDot" style="display:none"></span>
     </button>
     <div class="hdr-avatar" id="hdrAvatar">?</div>
@@ -543,7 +543,7 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
     <aside class="ai-panel" id="aiPanel">
       <div class="ai-panel-inner">
         <div class="ai-panel-head">
-          <h4>KI-Lerncoach</h4>
+          <h4>Lerncoach</h4>
           <span class="close-x" onclick="toggleAI()">&times;</span>
         </div>
         <div class="ai-status-line" id="aiStatusLine">Aktiv — begleitet Ihren Lernfortschritt</div>
@@ -746,7 +746,7 @@ const BEST_PRACTICES = [
 ];
 
 const UPDATES = [
-  {v:'v2.4.1',date:'03. Juli 2026',isNew:true,title:'KI-Lernempfehlungen erweitert',items:['Personalisierte Modulvorschläge basierend auf Rolle und Fortschritt','Verbesserte Erkennung offener Lerninhalte','Performance-Optimierung des KI-Assistenten']},
+  {v:'v2.4.1',date:'03. Juli 2026',isNew:true,title:'Lernempfehlungen erweitert',items:['Personalisierte Modulvorschläge basierend auf Rolle und Fortschritt','Verbesserte Erkennung offener Lerninhalte','Performance-Optimierung des Lerncoaches']},
   {v:'v2.4.0',date:'18. Juni 2026',isNew:false,title:'Neues Update-Center eingeführt',items:['Zentrale Übersicht aller Produktneuerungen','Abonnierbare Benachrichtigungen','Versionierte Änderungsprotokolle']},
   {v:'v2.3.2',date:'02. Juni 2026',isNew:false,title:'Best-Practice-Bereich veröffentlicht',items:['Sechs praxiserprobte Schritt-für-Schritt-Anleitungen','Schwierigkeitsgrad- und Zeitangaben je Anleitung','Direkte Verlinkung zu relevanten Lernmodulen']},
   {v:'v2.3.0',date:'14. Mai 2026',isNew:false,title:'Rollenbasierte Lernpfade',items:['Individuelle Lernpfade für vier Nutzerrollen','Angepasste Dashboard-Empfehlungen je Rolle','Verbesserte Fortschrittsvisualisierung']}
@@ -860,7 +860,7 @@ function renderDashboard(){
     ` : `
     <div class="ai-banner">
       <div class="ai-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/><path d="M6 12v1a6 6 0 0 0 12 0v-1M12 19v3"/></svg></div>
-      <div class="ai-banner-text"><strong>KI-Empfehlung</strong><span>Setzen Sie fort mit „${nextModule.title}". Basierend auf Ihrer Rolle als ${state.role} ist dies der optimale nächste Schritt.</span></div>
+      <div class="ai-banner-text"><strong>Empfehlung</strong><span>Setzen Sie fort mit „${nextModule.title}". Basierend auf Ihrer Rolle als ${state.role} ist dies der optimale nächste Schritt.</span></div>
       <button class="ai-banner-btn" onclick="openModule(${nextModule.id})">Jetzt starten</button>
     </div>
     `}
@@ -913,7 +913,7 @@ function renderRoadmap(){
     return `<div class="milestone ${cls}">
       <div class="milestone-dot">${p.completed?'✓':m.id}</div>
       <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${m.time} · Phase ${m.phase}</div><p>${m.points[0]}</p></div>
-      ${i<MODULES.length-1?`<div><span class="ai-hint">KI-Hinweis: ${nextStepHint(m.id)}</span></div>`:''}
+      ${i<MODULES.length-1?`<div><span class="ai-hint">Hinweis: ${nextStepHint(m.id)}</span></div>`:''}
     </div>`;
   }).join('');
 
@@ -933,7 +933,7 @@ function renderRoadmap(){
           <svg width="150" height="150" viewBox="0 0 130 130"><circle class="pr-bg" cx="65" cy="65" r="60"/><circle class="pr-fill" cx="65" cy="65" r="60" style="stroke-dashoffset:${377-377*progressPct()/100}"/></svg>
           <div class="pr-label"><div class="pr-pct">${progressPct()}%</div><div class="pr-sub">ABGESCHLOSSEN</div></div>
         </div>
-        <div class="roadmap-note">Ihr Lernpfad wurde von der KI basierend auf Ihrer Rolle als <strong>${state.role}</strong> personalisiert. Die Reihenfolge berücksichtigt typische Arbeitsabläufe dieser Rolle.${state.adaptiveLog.length?` Zusätzlich wurde der Pfad <strong>${state.adaptiveLog.length}×</strong> adaptiv angepasst, nachdem Wissenslücken erkannt wurden — Details siehe „Wissenslücken-Analyse".`:''}</div>
+        <div class="roadmap-note">Ihr Lernpfad wurde basierend auf Ihrer Rolle als <strong>${state.role}</strong> personalisiert. Die Reihenfolge berücksichtigt typische Arbeitsabläufe dieser Rolle.${state.adaptiveLog.length?` Zusätzlich wurde der Pfad <strong>${state.adaptiveLog.length}×</strong> adaptiv angepasst, nachdem Wissenslücken erkannt wurden — Details siehe „Wissenslücken-Analyse".`:''}</div>
         ${state.adaptiveLog.length?`<div class="adaptive-log" style="margin-top:14px">${state.adaptiveLog.slice(0,4).map(l=>`<div class="log-item"><span class="log-dot"></span><span>${l.time} — ${l.text}</span></div>`).join('')}</div>`:''}
       </div>
     </div>
@@ -997,7 +997,7 @@ function renderModuleDetail(){
       <div class="tab-btn ${state.currentTab==='content'?'active':''}" onclick="switchTab('content')">Inhalt</div>
       <div class="tab-btn ${state.currentTab==='task'?'active':''}" onclick="switchTab('task')">Praxisaufgabe</div>
       <div class="tab-btn ${state.currentTab==='quiz'?'active':''}" onclick="switchTab('quiz')">Wissenscheck</div>
-      <div class="tab-btn ${state.currentTab==='summary'?'active':''}" onclick="switchTab('summary')">KI-Zusammenfassung</div>
+      <div class="tab-btn ${state.currentTab==='summary'?'active':''}" onclick="switchTab('summary')">Zusammenfassung</div>
     </div>
     <div id="tabContentHost"></div>
   `;
@@ -1018,7 +1018,7 @@ function renderTab(){
       <div class="feature-cards">${m.features.map(f=>`<div class="feature-card"><div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></div><h5>${f.t}</h5><p>${f.d}</p></div>`).join('')}</div>
       <div class="practice-callout"><strong>In der Praxis</strong><p>${m.practice}</p></div>
       <div class="btn-row" style="margin-top:0">
-        <button class="coach-btn" onclick="askCoach(${m.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/></svg>Fragen Sie den KI-Lerncoach</button>
+        <button class="coach-btn" onclick="askCoach(${m.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/></svg>Fragen Sie den Lerncoach</button>
         <button class="btn btn-outline" onclick="openCloudLink(${m.id})">Direkt in der OrKan Cloud üben</button>
       </div>
     `;
@@ -1030,7 +1030,7 @@ function renderTab(){
         return `<li class="check-item ${checked?'checked':''}" onclick="toggleCheck(${m.id},${i})"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span>${c}</span></li>`;
       }).join('')}</ul>
       <div class="collapsible" id="tipBox">
-        <div class="collapsible-head" onclick="document.getElementById('tipBox').classList.toggle('open')">Tipps vom KI-Coach <span>+</span></div>
+        <div class="collapsible-head" onclick="document.getElementById('tipBox').classList.toggle('open')">Tipps vom Lerncoach <span>+</span></div>
         <div class="collapsible-body"><p>${m.tip}</p></div>
       </div>
     `;
@@ -1038,10 +1038,9 @@ function renderTab(){
     renderQuiz(m);
   } else if(state.currentTab==='summary'){
     if(!p.completed){
-      host.innerHTML = `<div class="quiz-result"><p>Die KI-Zusammenfassung wird nach erfolgreichem Abschluss des Wissenschecks freigeschaltet.</p></div>`;
+      host.innerHTML = `<div class="quiz-result"><p>Die Zusammenfassung wird nach erfolgreichem Abschluss des Wissenschecks freigeschaltet.</p></div>`;
     } else {
       host.innerHTML = `
-        <p style="font-size:12px;color:var(--gray);margin-bottom:20px">Automatisch generierte Zusammenfassung</p>
         <div class="summary-block"><h5>Kernaussagen</h5><ul>${m.summary.kern.map(x=>`<li>${x}</li>`).join('')}</ul></div>
         <div class="summary-block"><h5>Wichtigste Funktionen</h5><ul>${m.summary.funk.map(x=>`<li>${x}</li>`).join('')}</ul></div>
         <div class="summary-block"><h5>Handlungsempfehlungen</h5><ul>${m.summary.hand.map(x=>`<li>${x}</li>`).join('')}</ul></div>
@@ -1121,7 +1120,7 @@ function renderQuizResult(m){
   if(justLogged) updateSidebarProgress();
   return `<div class="quiz-result"><div class="qr-score">${correct}/${m.quiz.length} richtig (${pct}%)</div>
     <p>${passed?'Modul erfolgreich abgeschlossen.':'Mindestens 2 von 3 Antworten müssen korrekt sein. Bitte wiederholen Sie den Wissenscheck.'}</p>
-    ${passed?`<button class="btn btn-primary" onclick="switchTab('summary');document.querySelectorAll('.tab-btn')[3].classList.add('active');document.querySelectorAll('.tab-btn')[0].classList.remove('active')">Zur KI-Zusammenfassung</button>`:`<button class="btn btn-outline" onclick="retryQuiz(${m.id})">Erneut versuchen</button>`}
+    ${passed?`<button class="btn btn-primary" onclick="switchTab('summary');document.querySelectorAll('.tab-btn')[3].classList.add('active');document.querySelectorAll('.tab-btn')[0].classList.remove('active')">Zur Zusammenfassung</button>`:`<button class="btn btn-outline" onclick="retryQuiz(${m.id})">Erneut versuchen</button>`}
   </div>`;
 }
 function retryQuiz(mid){ delete state.quizAnswers[mid]; renderQuiz(MODULES.find(x=>x.id===mid)); }
@@ -1258,7 +1257,7 @@ function renderGaps(){
 
   el.innerHTML = `
     <h1 class="page-title">Wissenslücken-Analyse</h1>
-    <p class="page-sub">KI-gestützte Erkennung von Wissenslücken — persönlich und unternehmensweit.</p>
+    <p class="page-sub">Automatische Erkennung von Wissenslücken — persönlich und unternehmensweit.</p>
 
     ${personal.length ? `
       <div class="section-heading">Ihre persönlichen Wissenslücken</div>
@@ -1270,9 +1269,9 @@ function renderGaps(){
           <div class="gap-action">Empfehlung: <a onclick="openModule(${module?module.id:1});switchTab('content')">Inhalt zu „${module?module.title:''}" erneut ansehen</a></div>
         </div>`;
       }).join('')}
-    ` : `<div class="gap-empty">Noch keine Wissenslücken erkannt. Sobald Sie einen Wissenscheck nicht vollständig richtig beantworten, analysiert die KI automatisch die betroffenen Themen und passt Ihren Lernpfad an.</div>`}
+    ` : `<div class="gap-empty">Noch keine Wissenslücken erkannt. Sobald Sie einen Wissenscheck nicht vollständig richtig beantworten, werden die betroffenen Themen automatisch analysiert und passt Ihren Lernpfad an.</div>`}
 
-    <div class="section-heading">Unternehmensweite Wissenslücken (KI-Analyse aller Pilotnutzer)</div>
+    <div class="section-heading">Unternehmensweite Wissenslücken (alle Pilotnutzer)</div>
     ${AGGREGATE_GAPS.map(g=>`<div class="gap-card">
       <div class="gap-top"><span class="gap-topic">${g.topic}</span><span class="gap-count">${g.pct}% der Nutzer unsicher</span></div>
       <div class="gap-track"><div class="gap-fill company" style="width:${g.pct}%"></div></div>
@@ -1364,7 +1363,7 @@ function getAIResponse(text){
     return 'Lager MIN ist Ihr Sicherheitsbestand, ab dem nachbestellt wird. Lager MAX ist der gewünschte Höchstbestand. Die vorgeschlagene Bestellmenge ergibt sich automatisch aus MAX minus MIN — bei MIN=2 und MAX=6 werden also 4 Stück vorgeschlagen.';
   }
   if(t.includes('zusammenfass')||t.includes('kapitel')){
-    return 'Öffnen Sie im aktuellen Modul den Tab „KI-Zusammenfassung" nach Abschluss des Wissenschecks — dort finden Sie Kernaussagen, wichtigste Funktionen und konkrete Handlungsempfehlungen.';
+    return 'Öffnen Sie im aktuellen Modul den Tab „Zusammenfassung" nach Abschluss des Wissenschecks — dort finden Sie Kernaussagen, wichtigste Funktionen und konkrete Handlungsempfehlungen.';
   }
   if(t.includes('csv')||t.includes('import')||t.includes('excel')){
     return 'Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei mit den Artikelbildern — der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen. Details finden Sie in Modul 4 oder in der Wissensdatenbank unter „Artikelimport per Excel und ZIP".';
