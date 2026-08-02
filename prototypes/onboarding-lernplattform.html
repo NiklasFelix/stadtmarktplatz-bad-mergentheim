@@ -26,18 +26,33 @@ svg{display:block}
 
 /* ===== ONBOARDING ===== */
 #onboarding{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
-.onb-card{background:rgba(255,255,255,.92);backdrop-filter:blur(24px) saturate(1.6);border:1px solid rgba(255,255,255,.7);border-radius:24px;padding:48px;max-width:640px;width:100%;box-shadow:var(--shadow-lg);animation:cardIn .5s cubic-bezier(.34,1.2,.64,1)}
+.onb-split{display:flex;max-width:920px;width:100%;min-height:600px;border-radius:24px;overflow:hidden;box-shadow:var(--shadow-lg);animation:cardIn .5s cubic-bezier(.34,1.2,.64,1)}
 @keyframes cardIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-.onb-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:28px}
-.onb-texts .logo-name{font-size:20px;font-weight:800;letter-spacing:-.4px}
-.onb-texts .logo-lines{display:flex;flex-direction:column;gap:2px;margin:5px 0 4px}
-.onb-texts .logo-lines span{height:2px;background:var(--green)}
-.onb-texts .logo-lines span:nth-child(1){width:100%}
-.onb-texts .logo-lines span:nth-child(2){width:72%;margin-left:10px}
-.onb-texts .logo-lines span:nth-child(3){width:48%;margin-left:20px}
-.onb-texts .logo-sub{display:block;font-size:10px;font-weight:700;color:var(--green);letter-spacing:4px;margin-top:2px;margin-left:20px}
-.onb-card h1{font-size:26px;font-weight:800;letter-spacing:-.6px;text-align:center;margin-bottom:6px}
-.onb-card>p.sub{color:var(--gray);text-align:center;font-size:14px;margin-bottom:32px}
+
+.onb-side{flex:0 0 40%;background:linear-gradient(160deg,var(--dark-bg),var(--dark2) 70%);color:#fff;padding:44px 38px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.onb-side-glow{position:absolute;width:280px;height:280px;background:radial-gradient(circle,rgba(142,167,82,.35),transparent 70%);border-radius:50%;top:-90px;right:-100px;pointer-events:none}
+.onb-side .onb-logo{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.onb-side .onb-texts .logo-name{font-size:16px;font-weight:800;letter-spacing:-.3px;color:#fff}
+.onb-side .onb-texts .logo-lines{display:flex;flex-direction:column;gap:2px;margin:4px 0 3px}
+.onb-side .onb-texts .logo-lines span{height:2px;background:var(--green)}
+.onb-side .onb-texts .logo-lines span:nth-child(1){width:100%}
+.onb-side .onb-texts .logo-lines span:nth-child(2){width:72%;margin-left:8px}
+.onb-side .onb-texts .logo-lines span:nth-child(3){width:48%;margin-left:16px}
+.onb-side .onb-texts .logo-sub{display:block;font-size:8.5px;font-weight:700;color:var(--green);letter-spacing:3px;margin-top:2px;margin-left:16px}
+.onb-side-body{margin-top:auto;position:relative;z-index:1}
+.onb-side h1{font-size:24px;font-weight:800;letter-spacing:-.5px;line-height:1.25;margin-bottom:10px}
+.onb-side p.sub{color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.6;margin-bottom:30px;max-width:320px}
+.onb-roadmap-preview{display:flex;flex-direction:column;gap:0}
+.orp-item{display:flex;align-items:center;gap:12px;position:relative;padding-bottom:20px}
+.orp-item:last-child{padding-bottom:0}
+.orp-item::before{content:'';position:absolute;left:11px;top:24px;bottom:0;width:1px;background:rgba(255,255,255,.14)}
+.orp-item:last-child::before{display:none}
+.orp-num{width:23px;height:23px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:rgba(255,255,255,.7);flex-shrink:0;background:var(--dark-bg);position:relative;z-index:1}
+.orp-title{font-size:12.5px;color:rgba(255,255,255,.8);font-weight:500}
+
+.onb-form-panel{flex:1;background:#fff;padding:44px 42px;overflow-y:auto;display:flex;flex-direction:column;justify-content:center}
+.form-eyebrow{font-size:11px;font-weight:700;color:var(--green-dark);letter-spacing:1.5px;text-transform:uppercase}
+.onb-form-panel h2{font-size:22px;font-weight:800;letter-spacing:-.4px;margin:6px 0 26px}
 .field-label{font-size:12px;font-weight:600;letter-spacing:.3px;margin-bottom:6px;display:block}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
 .field-row input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;outline:none;transition:var(--ease);background:#fff}
@@ -52,8 +67,12 @@ svg{display:block}
 .onb-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:var(--spring)}
 .onb-btn:disabled{background:var(--gray-light);color:var(--gray);cursor:not-allowed}
 .onb-btn:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(142,167,82,.38)}
-.trust-row{display:flex;justify-content:center;gap:20px;margin-top:20px;flex-wrap:wrap}
-.trust-item{font-size:11.5px;color:var(--gray)}
+
+@media(max-width:760px){
+  .onb-split{flex-direction:column;min-height:0}
+  .onb-side{flex:none}
+  .onb-roadmap-preview{display:none}
+}
 
 /* ===== APP SHELL ===== */
 #app{display:none;height:100vh;flex-direction:column}
@@ -70,8 +89,6 @@ svg{display:block}
 .ai-toggle-btn svg{width:15px;height:15px}
 .notif-dot{position:absolute;top:-3px;right:-3px;width:9px;height:9px;background:#e8a33d;border-radius:50%;border:2px solid var(--dark-bg)}
 .hdr-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;color:#fff}
-.integration-badge{font-size:11px;font-weight:600;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.15);padding:4px 10px;border-radius:20px;white-space:nowrap;cursor:default}
-.pilot-phase-badge{font-size:10.5px;font-weight:700;color:#e8a33d;background:rgba(232,163,61,.14);border:1px solid rgba(232,163,61,.3);padding:4px 10px;border-radius:20px;white-space:nowrap;letter-spacing:.3px;cursor:default}
 
 .shell-body{flex:1;display:flex;overflow:hidden}
 
@@ -399,47 +416,52 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 
 <!-- ONBOARDING -->
 <div id="onboarding">
-  <div class="onb-card">
-    <div class="onb-logo">
-      <svg width="52" height="52" viewBox="0 0 200 220" fill="none">
-        <path d="M156.6,27.6 A88.0,88.0 0 1 1 56.0,18.8 L65.0,34.4 A70.0,70.0 0 1 0 145.0,41.4 Z" fill="#8EA752"/>
-        <path d="M122.6,33.0 A66.0,66.0 0 1 1 57.6,44.4 L67.9,56.7 A50.0,50.0 0 1 0 117.1,48.0 Z" fill="#8EA752"/>
-        <path d="M104.0,49.2 A46.0,46.0 0 1 1 60.2,72.0 L71.4,78.5 A33.0,33.0 0 1 0 102.9,62.1 Z" fill="#8EA752"/>
-        <path d="M95.1,67.4 A28.0,28.0 0 1 1 72.4,99.9 L82.3,98.1 A18.0,18.0 0 1 0 96.9,77.3 Z" fill="#8EA752"/>
-        <path d="M62,118 C50,145 55,175 82,198 C98,211 112,220 122,232 C112,214 96,196 88,176 C80,157 78,138 85,120 C80,116 68,113 62,118 Z" fill="#8EA752"/>
-      </svg>
-      <div class="onb-texts">
-        <span class="logo-name">OrKan Cloud</span>
-        <div class="logo-lines"><span></span><span></span><span></span></div>
-        <span class="logo-sub">ENABLEMENT PLATFORM</span>
+  <div class="onb-split">
+    <div class="onb-side">
+      <div class="onb-side-glow"></div>
+      <div class="onb-logo">
+        <svg width="44" height="44" viewBox="0 0 200 220" fill="none">
+          <path d="M156.6,27.6 A88.0,88.0 0 1 1 56.0,18.8 L65.0,34.4 A70.0,70.0 0 1 0 145.0,41.4 Z" fill="#8EA752"/>
+          <path d="M122.6,33.0 A66.0,66.0 0 1 1 57.6,44.4 L67.9,56.7 A50.0,50.0 0 1 0 117.1,48.0 Z" fill="#8EA752"/>
+          <path d="M104.0,49.2 A46.0,46.0 0 1 1 60.2,72.0 L71.4,78.5 A33.0,33.0 0 1 0 102.9,62.1 Z" fill="#8EA752"/>
+          <path d="M95.1,67.4 A28.0,28.0 0 1 1 72.4,99.9 L82.3,98.1 A18.0,18.0 0 1 0 96.9,77.3 Z" fill="#8EA752"/>
+          <path d="M62,118 C50,145 55,175 82,198 C98,211 112,220 122,232 C112,214 96,196 88,176 C80,157 78,138 85,120 C80,116 68,113 62,118 Z" fill="#8EA752"/>
+        </svg>
+        <div class="onb-texts">
+          <span class="logo-name">OrKan Cloud</span>
+          <div class="logo-lines"><span></span><span></span><span></span></div>
+          <span class="logo-sub">ENABLEMENT PLATFORM</span>
+        </div>
+      </div>
+      <div class="onb-side-body">
+        <h1>Willkommen bei Ihrer<br>Onboarding-Plattform</h1>
+        <p class="sub">Strukturierte, rollenbasierte Einführung in die OrKan Cloud – Schritt für Schritt.</p>
+        <div class="onb-roadmap-preview" id="onbRoadmapPreview"></div>
       </div>
     </div>
-    <h1>Willkommen bei Ihrer Onboarding-Plattform</h1>
-    <p class="sub">Strukturierte, rollenbasierte Einführung in die OrKan Cloud.</p>
-    <div class="field-row">
-      <div><span class="field-label">Name</span><input type="text" id="onbName" placeholder="Vor- und Nachname"></div>
-      <div><span class="field-label">Unternehmen</span><input type="text" id="onbCompany" placeholder="Firmenname"></div>
-    </div>
-    <span class="role-label">Ihre Rolle</span>
-    <div class="role-grid" id="roleGrid">
-      <div class="role-card" data-role="Lagerleiter" onclick="selectRole(this,'Lagerleiter')">
-        <div class="role-title">Lagerleiter</div><div class="role-desc">Lagerverwaltung, Prozesse, Teamführung</div>
+    <div class="onb-form-panel">
+      <span class="form-eyebrow">Erste Schritte</span>
+      <h2>Ihre Daten</h2>
+      <div class="field-row">
+        <div><span class="field-label">Name</span><input type="text" id="onbName" placeholder="Vor- und Nachname"></div>
+        <div><span class="field-label">Unternehmen</span><input type="text" id="onbCompany" placeholder="Firmenname"></div>
       </div>
-      <div class="role-card" data-role="Einkäufer" onclick="selectRole(this,'Einkäufer')">
-        <div class="role-title">Einkäufer</div><div class="role-desc">Bestellwesen, Lieferanten, Mindestmengen</div>
+      <span class="role-label">Ihre Rolle</span>
+      <div class="role-grid" id="roleGrid">
+        <div class="role-card" data-role="Lagerleiter" onclick="selectRole(this,'Lagerleiter')">
+          <div class="role-title">Lagerleiter</div><div class="role-desc">Lagerverwaltung, Prozesse, Teamführung</div>
+        </div>
+        <div class="role-card" data-role="Einkäufer" onclick="selectRole(this,'Einkäufer')">
+          <div class="role-title">Einkäufer</div><div class="role-desc">Bestellwesen, Lieferanten, Mindestmengen</div>
+        </div>
+        <div class="role-card" data-role="Geschäftsführer" onclick="selectRole(this,'Geschäftsführer')">
+          <div class="role-title">Geschäftsführer</div><div class="role-desc">Überblick, KPIs, strategische Einführung</div>
+        </div>
+        <div class="role-card" data-role="Lagermitarbeiter" onclick="selectRole(this,'Lagermitarbeiter')">
+          <div class="role-title">Lagermitarbeiter</div><div class="role-desc">Tagesgeschäft, Scanner, Wareneingang</div>
+        </div>
       </div>
-      <div class="role-card" data-role="Geschäftsführer" onclick="selectRole(this,'Geschäftsführer')">
-        <div class="role-title">Geschäftsführer</div><div class="role-desc">Überblick, KPIs, strategische Einführung</div>
-      </div>
-      <div class="role-card" data-role="Lagermitarbeiter" onclick="selectRole(this,'Lagermitarbeiter')">
-        <div class="role-title">Lagermitarbeiter</div><div class="role-desc">Tagesgeschäft, Scanner, Wareneingang</div>
-      </div>
-    </div>
-    <button class="onb-btn" id="startBtn" disabled onclick="startApp()">Lernpfad starten</button>
-    <div class="trust-row">
-      <span class="trust-item">5 Module · ca. 60 Minuten</span>
-      <span class="trust-item">Individuelle Lernpfade je Rolle</span>
-      <span class="trust-item">Anerkanntes Abschlusszertifikat</span>
+      <button class="onb-btn" id="startBtn" disabled onclick="startApp()">Lernpfad starten</button>
     </div>
   </div>
 </div>
@@ -459,8 +481,6 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
     </div>
     <div class="hdr-divider"></div>
     <div class="breadcrumb">Onboarding / <strong id="breadcrumbCurrent">Dashboard</strong></div>
-    <span class="integration-badge" title="Läuft direkt in Ihrer OrKan Cloud – keine separate Installation nötig">In OrKan Cloud integriert</span>
-    <span class="pilot-phase-badge" title="Einige Funktionen befinden sich aktuell in der internen Pilotphase bei SPRÜGEL">Interner Pilot</span>
     <div class="hdr-spacer"></div>
     <button class="ai-toggle-btn" onclick="toggleAI()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/><path d="M6 12v1a6 6 0 0 0 12 0v-1M12 19v3"/></svg>
@@ -684,6 +704,10 @@ const MODULES = [
       funk:['Drei-Fenster-Bestellabschluss','Gebrauchsgutverwaltung'], hand:['Wareneingang zeitnah bestätigen, um den Lagerbestand aktuell zu halten','Service- und Wartungstermine für Maschinen konsequent hinterlegen'] }
   }
 ];
+
+document.getElementById('onbRoadmapPreview').innerHTML = MODULES.map((m,i)=>`
+  <div class="orp-item"><div class="orp-num">${i+1}</div><div class="orp-title">${m.title}</div></div>
+`).join('');
 
 const KB_ARTICLES = [
   {cat:'Grundlagen',title:'Startseite: Kalender und Shortcuts',desc:'Aufbau der Startseite und das Ampelsystem im Kalender.',body:['Die Startseite zeigt Ihren Kalender sowie vier Shortcuts: Artikel, Lieferant, Bestellvorschläge erstellen und Meine Einstellungen.','Rot markierte Kalendereinträge zeigen fällige Bestellungen, grau markierte folgen dem allgemeinen Ampelsystem.','Über die drei Striche oben links gelangen Sie jederzeit zurück zur Hauptnavigation.']},
