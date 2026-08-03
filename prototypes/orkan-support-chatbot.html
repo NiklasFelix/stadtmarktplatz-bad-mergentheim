@@ -67,6 +67,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .header-divider{width:1px;height:32px;background:rgba(255,255,255,.12)}
 .header-title{color:rgba(255,255,255,.9);font-size:14px;font-weight:600}
 .header-badge{background:rgba(142,167,82,.2);border:1px solid rgba(142,167,82,.4);color:var(--green);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.5px}
+.header-context{font-size:11.5px;color:rgba(255,255,255,.45);cursor:default}
+.header-availability{font-size:10.5px;font-weight:700;color:#4ade80;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);padding:4px 10px;border-radius:20px;cursor:default}
 .header-spacer{flex:1}
 .header-pilot{display:flex;align-items:center;gap:8px}
 .pilot-dot{width:8px;height:8px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite}
@@ -174,6 +176,14 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .input-field{flex:1;position:relative}
 .input-field textarea{width:100%;padding:13px 16px;border:1.5px solid var(--gray-light);border-radius:12px;font-size:14px;font-family:'Inter',sans-serif;outline:none;resize:none;min-height:48px;max-height:120px;line-height:1.5;background:rgba(255,255,255,.9);transition:var(--transition)}
 .input-field textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,167,82,.15);background:#fff}
+.attach-btn{width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.9);border:1.5px solid var(--gray-light);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--spring);flex-shrink:0;color:var(--gray)}
+.attach-btn:hover{border-color:var(--green);color:var(--green-dark);transform:translateY(-1px)}
+.image-preview-bar{display:flex;gap:8px;margin-bottom:8px}
+.image-preview-item{position:relative;width:56px;height:56px;border-radius:10px;overflow:hidden;border:1.5px solid var(--green)}
+.image-preview-item img{width:100%;height:100%;object-fit:cover;display:block}
+.image-preview-remove{position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:rgba(31,36,40,.75);color:#fff;border:none;font-size:11px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.msg-image{max-width:220px;border-radius:10px;margin-bottom:8px;display:block}
+.intent-tag{display:inline-block;font-size:10px;font-weight:700;color:var(--green-dark);background:var(--green-light);padding:2px 8px;border-radius:8px;margin-top:8px;letter-spacing:.2px}
 .send-btn{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--green-dark));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--spring);flex-shrink:0}
 .send-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 6px 20px rgba(142,167,82,.4)}
 .send-btn:active{transform:scale(.95)}
@@ -303,7 +313,9 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
     <div class="header-divider"></div>
     <div class="header-title">KI-Support-Assistent</div>
     <div class="header-badge">PILOT v1.0</div>
+    <div class="header-context" title="Simuliert: Aufruf über den Support-Button direkt aus der OrKan Cloud">Aufgerufen aus: Lagerverwaltung &rarr; Artikel</div>
     <div class="header-spacer"></div>
+    <div class="header-availability" title="Automatisierte Antworten sind rund um die Uhr verfügbar, unabhängig von Support-Öffnungszeiten">24/7 verfügbar</div>
     <div class="header-savings">
       <span class="savings-label">Zeitersparnis heute</span>
       <span class="savings-val" id="headerSavings">0 Min.</span>
@@ -348,7 +360,12 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
       </div>
       <div class="messages-wrap" id="messagesWrap"></div>
       <div class="chat-input-area">
+        <div class="image-preview-bar" id="imagePreviewBar"></div>
         <div class="input-wrap">
+          <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="handleImageSelect(event)">
+          <button class="attach-btn" onclick="document.getElementById('imgInput').click()" title="Foto anhängen (z. B. Fehlermeldung oder defektes Bauteil)">
+            <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          </button>
           <div class="input-field">
             <textarea id="chatInput" placeholder="Stellen Sie Ihre Frage zur OrKan Cloud…" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
           </div>
@@ -356,7 +373,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </button>
         </div>
-        <div class="input-hint">Enter senden · Shift+Enter neue Zeile · Antworten des Assistenten sind automatisiert</div>
+        <div class="input-hint">Enter senden · Shift+Enter neue Zeile · Foto-Symbol für Bildupload · Antworten des Assistenten sind automatisiert</div>
       </div>
     </section>
 
@@ -391,6 +408,10 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
         <div class="stat-row">
           <span class="stat-row-label">Ø Antwortzeit</span>
           <span class="stat-row-val green">1,2 Sek.</span>
+        </div>
+        <div class="stat-row" title="Anteil der häufigsten wiederkehrenden Supportthemen, die die Wissensdatenbank abdeckt">
+          <span class="stat-row-label">Short-Head-Abdeckung</span>
+          <span class="stat-row-val green">92%</span>
         </div>
       </div>
 
@@ -461,6 +482,9 @@ let userName = '', userCompany = '';
 let stats = { answered: 0, escalated: 0, positive: 0, negative: 0, savings: 0 };
 let msgCounter = 0;
 let ticketCounter = 1001;
+let lastTopic = null;
+let pendingImage = null;
+const FOLLOWUP_WORDS = ['das','es','damit','dazu','dafür','davon','dabei','wieso','warum','wie lange','und wenn','was noch'];
 
 // ─── KNOWLEDGE BASE ───
 const KB = [
@@ -714,7 +738,7 @@ function addBotMessage(html, withFeedback = true) {
   wrap.scrollTop = wrap.scrollHeight;
 }
 
-function addUserMessage(text) {
+function addUserMessage(text, imageDataUrl) {
   const wrap = document.getElementById('messagesWrap');
   const time = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
   const div = document.createElement('div');
@@ -723,7 +747,8 @@ function addUserMessage(text) {
     <div class="msg-avatar">${userName.charAt(0).toUpperCase()}</div>
     <div>
       <div class="msg-bubble">
-        <p>${text}</p>
+        ${imageDataUrl ? `<img class="msg-image" src="${imageDataUrl}">` : ''}
+        ${text ? `<p>${text}</p>` : ''}
         <div class="msg-meta" style="justify-content:flex-end">
           <span class="msg-time" style="color:rgba(255,255,255,.5)">${time}</span>
         </div>
@@ -765,7 +790,13 @@ function findAnswer(query) {
     });
     if (score > bestScore) { bestScore = score; best = entry; }
   });
-  return bestScore >= 3 ? best : null;
+  if (bestScore >= 3) return { entry: best, contextUsed: false };
+  // Kontexterhalt: kurze Anschlussfragen ohne eigenes starkes Keyword auf das letzte Thema beziehen
+  const isShortFollowup = q.length < 40 && FOLLOWUP_WORDS.some(w => q.includes(w));
+  if (isShortFollowup && lastTopic) {
+    return { entry: lastTopic, contextUsed: true };
+  }
+  return null;
 }
 
 function askQuestion(id) {
@@ -775,7 +806,8 @@ function askQuestion(id) {
   showTyping();
   setTimeout(() => {
     removeTyping();
-    addBotMessage(entry.answer);
+    addBotMessage(entry.answer + `<span class="intent-tag">Erkanntes Thema: ${entry.cat}</span>`);
+    lastTopic = entry;
     stats.answered++;
     stats.savings += 4;
     updateStats();
@@ -785,16 +817,25 @@ function askQuestion(id) {
 function sendMessage() {
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
-  if (!text) return;
+  const image = pendingImage;
+  if (!text && !image) return;
   input.value = '';
   input.style.height = 'auto';
-  addUserMessage(text);
+  addUserMessage(text, image ? image.dataUrl : null);
+  clearPendingImage();
   showTyping();
   setTimeout(() => {
     removeTyping();
-    const entry = findAnswer(text);
-    if (entry) {
-      addBotMessage(entry.answer);
+    if (image) {
+      handleImageQuery(text, image);
+      updateStats();
+      return;
+    }
+    const result = findAnswer(text);
+    if (result) {
+      const contextNote = result.contextUsed ? `<p style="font-size:12px;color:var(--gray);margin-top:6px">Bezogen auf Ihre vorherige Frage zu „${result.entry.title}".</p>` : '';
+      addBotMessage(result.entry.answer + contextNote + `<span class="intent-tag">Erkanntes Thema: ${result.entry.cat}</span>`);
+      lastTopic = result.entry;
       stats.answered++;
       stats.savings += 4;
     } else {
@@ -802,6 +843,51 @@ function sendMessage() {
     }
     updateStats();
   }, 900 + Math.random() * 700);
+}
+
+// ─── MULTIMODALITÄT: Bild-Upload (z. B. Foto einer Fehlermeldung oder eines defekten Bauteils) ───
+function handleImageSelect(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    pendingImage = { dataUrl: e.target.result, name: file.name };
+    renderImagePreview();
+  };
+  reader.readAsDataURL(file);
+  event.target.value = '';
+}
+function renderImagePreview() {
+  const bar = document.getElementById('imagePreviewBar');
+  bar.innerHTML = pendingImage ? `
+    <div class="image-preview-item">
+      <img src="${pendingImage.dataUrl}">
+      <button class="image-preview-remove" onclick="clearPendingImage()">&times;</button>
+    </div>` : '';
+}
+function clearPendingImage() {
+  pendingImage = null;
+  renderImagePreview();
+}
+function handleImageQuery(caption, image) {
+  const name = image.name.toLowerCase();
+  let response;
+  if (name.includes('fehler') || name.includes('error') || (caption && caption.toLowerCase().includes('fehler'))) {
+    response = `<h4>Bildanalyse: Fehlermeldung</h4>
+      <p>Ich habe Ihr Bild ausgewertet. Bei Fehlermeldungen im Import- oder Bestellprozess helfen meist folgende Schritte:</p>
+      <ul><li>Prüfen Sie die Fehlermeldung auf Angaben zu Artikelnummer oder Zeile</li><li>Bei Import-Fehlern: Zeichensatz und Bildzuordnung kontrollieren</li><li>Screenshot für den Support aufbewahren, falls eine Eskalation nötig wird</li></ul>
+      <p style="margin-top:6px;color:var(--gray);font-size:12px">Hinweis: Die Bildauswertung ist im Pilotversuch simuliert und basiert auf dem Dateinamen. In der produktiven Version würde ein Bild-Modell die Fehlermeldung direkt auslesen.</p>`;
+  } else {
+    response = `<h4>Bild erhalten</h4>
+      <p>Danke für das Foto${caption ? ' und Ihre Nachricht' : ''}. Für eine zuverlässige Einschätzung von Bauteilen oder Etiketten leite ich das Bild an einen Mitarbeiter weiter.</p>
+      <p style="margin-top:6px;color:var(--gray);font-size:12px">Hinweis: Die Bildauswertung ist im Pilotversuch simuliert. In der produktiven Version würde ein multimodales Sprachmodell den Bildinhalt direkt analysieren.</p>`;
+    addBotMessage(response);
+    escalate(caption || '[Bildanfrage: ' + image.name + ']');
+    return;
+  }
+  addBotMessage(response + `<span class="intent-tag">Erkanntes Thema: Bildbasierte Anfrage</span>`);
+  stats.answered++;
+  stats.savings += 4;
 }
 
 function escalate(question) {
