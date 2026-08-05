@@ -561,7 +561,7 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
       <div class="sidebar-progress">
         <div class="sp-label">Fortschritt</div>
         <div class="sp-track"><div class="sp-fill" id="sidebarFill" style="width:0%"></div></div>
-        <div class="sp-text"><span id="sidebarText">0/5 Module</span></div>
+        <div class="sp-text"><span id="sidebarText">0/8 Module</span></div>
       </div>
     </aside>
 
@@ -738,6 +738,78 @@ const MODULES = [
     ],
     summary:{ kern:['Der Bestellabschluss verbindet Wareneingang, Lieferschein und Lieferanten-Shop in einem durchgängigen Drei-Fenster-Prozess.','Der Lagerbestand zeigt den aktuellen Warenwert stets im Verhältnis zu Lager MIN und Lager MAX.','Die Gebrauchsgutverwaltung schafft Transparenz darüber, wer welche Maschine oder welches Werkzeug aktuell nutzt.'],
       funk:['Drei-Fenster-Bestellabschluss','Gebrauchsgutverwaltung'], hand:['Wareneingang zeitnah bestätigen, um den Lagerbestand aktuell zu halten','Service- und Wartungstermine für Maschinen konsequent hinterlegen'] }
+  },
+  { id:6, phase:3, title:'Maschinenverwaltung', time:'12 Min.', diff:2,
+    points:[
+      'Maschinen werden mit Name, Seriennummer, Wert, Heimatstandort (Fahrzeug, Lagerort, Gebäude oder Person) und Anschaffungsdatum angelegt.',
+      'Das erste hochgeladene Dokument erscheint auf dem Etikett, weitere Dokumente wie der Kaufbeleg werden nicht gedruckt, sind aber entscheidend für Garantiefälle.',
+      'Ein Administrator kann jede Maschine auf jeden Standort buchen; ein Monteur kann über die App ausschließlich Maschinen zu sich selbst buchen.',
+      'Für Service & Wartung werden Intervalle hinterlegt (z. B. jährliche VDE-Prüfung) – bei Bestätigung wird automatisch ein Folgetermin angelegt.'
+    ],
+    features:[
+      {t:'Vollständige Maschinen-Stammdaten',d:'Inkl. Electronic ID als Alternative zum QR-Code-Scan (NFC/RFID)'},
+      {t:'Rollenbasierte Buchungslogik',d:'Admin bucht für alle, Monteur nur für sich selbst'},
+      {t:'Service & Wartung mit Automatik',d:'Folgetermin wird nach Bestätigung automatisch angelegt'}
+    ],
+    practice:'Bei 16 baugleichen Pressmaschinen für 20 Monteure lässt sich im Reparaturfall nur dank des digital hinterlegten Kaufbelegs pro Seriennummer zweifelsfrei klären, welche Maschine noch Garantie hat – ohne diese Zuordnung würden berechtigte Garantieansprüche abgelehnt.',
+    task:'Legen Sie eine Testmaschine mit Kaufbeleg an und hinterlegen Sie ein Wartungsintervall.',
+    checklist:['Maschine mit Name, Seriennummer und Heimatstandort anlegen','Kaufbeleg als zusätzliches Dokument hochladen','Service-&-Wartung-Intervall festlegen (z. B. Jahresservice)','Buchung der Maschine auf eine Testperson durchführen'],
+    tip:'Prüfen Sie vor dem Kauf zusätzlicher Werkzeuge wie Entfernungsmesser, ob diese bereits in der Maschinenverwaltung erfasst sind — gerade kleinere, wertvolle Geräte werden bei Versicherungsfällen sonst leicht vergessen.',
+    quiz:[
+      {q:'Wer kann über die App eine Maschine auf eine andere Person buchen?',o:['Jeder Monteur','Nur ein Administrator oder Lagerist mit Adminrechten','Niemand, das geht nur am Desktop','Nur der Maschinenhersteller'],a:1,t:'Maschinen-Buchungslogik'},
+      {q:'Warum ist der digital hinterlegte Kaufbeleg pro Maschine wichtig?',o:['Für die Farbwahl des Etiketts','Für die eindeutige Zuordnung im Garantiefall bei baugleichen Geräten','Er ist nicht wichtig','Nur für die Buchhaltung relevant'],a:1,t:'Kaufbeleg & Garantie'},
+      {q:'Was passiert bei Bestätigung eines Wartungstermins?',o:['Nichts weiter','Automatisch wird ein Folgetermin auf Basis des Intervalls angelegt','Die Maschine wird gelöscht','Der Standort wird zurückgesetzt'],a:1,t:'Service & Wartung'}
+    ],
+    summary:{ kern:['Maschinen werden mit vollständigen Stammdaten inkl. Heimatstandort und Kaufbeleg erfasst.','Die Buchungslogik ist rollenabhängig: Admins buchen für alle, Monteure nur für sich selbst.','Service-&-Wartung-Intervalle erzeugen automatisch Folgetermine und sichern gesetzlich vorgeschriebene Prüfungen ab.'],
+      funk:['Maschinen-Stammdaten & Electronic ID','Service & Wartung mit Automatik'], hand:['Kaufbelege konsequent bei jeder Maschine hinterlegen','Wartungsintervalle für prüfpflichtige Geräte sofort bei Anlage festlegen'] }
+  },
+  { id:7, phase:3, title:'Schlüsselverwaltung', time:'8 Min.', diff:1,
+    points:[
+      'Schlüssel-Etiketten sind spezielle gefaltete Anhänger: außen nur eine Nummer und ein QR-Code, innen (nur beim Öffnen sichtbar) die Kundenadresse.',
+      'Diese Trennung ist ein Sicherheitsprinzip: Bei Diebstahl eines Schlüsselkastens darf niemals sofort erkennbar sein, zu welcher Adresse ein Schlüssel gehört.',
+      'Die Adresse muss als Suchkriterium in der Standardansicht verfügbar sein, da im Alltag primär über die Adresse gesucht wird, nicht über die Schlüsselnummer.',
+      'Buchen funktioniert wie bei Maschinen: Schlüssel scannen, Zielperson wählen, speichern – Rückgabe erfolgt durch erneutes Buchen auf den Schlüsselkasten.'
+    ],
+    features:[
+      {t:'Gefaltetes Sicherheits-Etikett',d:'Nummer und QR-Code außen, Adresse nur innen sichtbar'},
+      {t:'Adresssuche als Standard',d:'Wichtig bei mehreren hundert Schlüsseln im Bestand'},
+      {t:'Finderlohn-Option',d:'Optionaler Hinweis auf dem Etikett erhöht die Rückgabewahrscheinlichkeit'}
+    ],
+    practice:'Bei rund 600 verwalteten Schlüsseln wäre eine Suche ausschließlich über die interne Schlüsselnummer praktisch unbrauchbar – ein Mitarbeiter sucht typischerweise nach „Lerchenweg" oder „Kindergarten Lerchenstraße", nicht nach einer vierstelligen Nummer.',
+    task:'Legen Sie einen Testschlüssel an und buchen Sie ihn auf eine Testperson.',
+    checklist:['Schlüssel mit Adresse als Suchkriterium anlegen','Sicherheitsprinzip des gefalteten Etiketts nachvollziehen (außen anonym, innen Adresse)','Schlüssel auf eine Testperson buchen','Rückgabe durch erneutes Buchen auf den Schlüsselkasten simulieren'],
+    tip:'Schlüsselkästen dürfen niemals mit sichtbaren Adressangaben versehen sein — weder am Schlüssel selbst noch in einem danebenliegenden Zuordnungs-Ordner. Das ist kein Detail, sondern ein zentrales Sicherheitsprinzip.',
+    quiz:[
+      {q:'Was ist auf der Außenseite eines OrKan-Schlüsselanhängers sichtbar?',o:['Die vollständige Kundenadresse','Nur eine Nummer und ein QR-Code','Name des Monteurs','Nichts, das Etikett ist blanko'],a:1,t:'Schlüssel-Etikett'},
+      {q:'Warum ist die Trennung von Nummer (außen) und Adresse (innen) sicherheitsrelevant?',o:['Aus optischen Gründen','Damit bei Diebstahl des Schlüsselkastens keine Adresse sofort erkennbar ist','Weil QR-Codes keine Adressen speichern können','Das ist reiner Zufall'],a:1,t:'Sicherheitsprinzip'},
+      {q:'Wonach wird bei der Schlüsselsuche im Alltag primär gesucht?',o:['Nach der internen Schlüsselnummer','Nach der Adresse','Nach dem Anschaffungsdatum','Nach der Farbe des Anhängers'],a:1,t:'Adresssuche'}
+    ],
+    summary:{ kern:['Schlüssel-Etiketten trennen aus Sicherheitsgründen Nummer/QR-Code (außen) von der Adresse (innen).','Die Adresssuche ist bei größeren Schlüsselbeständen essenziell und muss in der Standardansicht verfügbar sein.','Buchung und Rückgabe folgen derselben Logik wie bei der Maschinenverwaltung.'],
+      funk:['Gefaltetes Sicherheits-Etikett','Adresssuche als Standard'], hand:['Adressfilter bei der täglichen Schlüsselsuche konsequent nutzen','Nie Adressinformationen sichtbar am Schlüsselkasten anbringen'] }
+  },
+  { id:8, phase:3, title:'Projekte & Baustellen', time:'10 Min.', diff:2,
+    points:[
+      'Das Projekte-Modul dokumentiert Materialentnahmen auf Baustellen, die sonst nur handschriftlich per „Aufmaß" erfasst und leicht vergessen werden.',
+      'Wird eine Entnahme vergessen, entsteht ein realer Verlust: Das Material wird dem Kunden nie in Rechnung gestellt.',
+      'Die Nutzung für Materialbuchungen erfordert zwingend die mobile App – über die Desktop-Oberfläche ist keine Buchung im Feld möglich.',
+      'Alternative zur App: Der OrKan-Artikelstamm wird per Matchcode (interne Artikelnummer) direkt in die Branchensoftware importiert, sodass Entnahmen dort gebucht werden.'
+    ],
+    features:[
+      {t:'Entnahme & Einlagerung per App',d:'Artikel scannen, Menge angeben, Projekt auswählen, speichern'},
+      {t:'Projekt-Statistik & Export',d:'Vollständige Buchungsliste je Projekt für die Nachkalkulation'},
+      {t:'Alternative Matchcode-Integration',d:'Nummern-Abgleich mit der Branchensoftware statt eigenem App-Workflow'}
+    ],
+    practice:'Ein Monteur baut ungeplant eine zusätzliche Infrarotheizung aus dem eigenen Lager statt vom Großhändler ein. Ohne App-Buchung fehlt der Beleg komplett – das Material wird nie nachkalkuliert und der Verkaufspreis geht verloren.',
+    task:'Simulieren Sie eine Materialentnahme für ein Testprojekt.',
+    checklist:['Projekt mit Name und Auftragsnummer anlegen','Materialentnahme über die App simulieren (Artikel, Menge, Projekt)','Projekt-Statistik/Export für die Nachkalkulation aufrufen','Alternative Matchcode-Integration mit der Branchensoftware nachvollziehen'],
+    tip:'Achten Sie bei der Projekt-Statistik darauf, dass jeder gebuchte Artikel eine gepflegte Bezeichnung im Artikelstamm hat — sonst erscheint in der Auswertung nur eine bedeutungslose Artikelnummer statt eines lesbaren Namens.',
+    quiz:[
+      {q:'Was ist die zentrale Voraussetzung für Materialbuchungen im Projekte-Modul?',o:['Ein Excel-Import','Die mobile App','Ein zweiter Bildschirm','Nichts Besonderes'],a:1,t:'Projekte-App-Pflicht'},
+      {q:'Was passiert, wenn eine Materialentnahme auf der Baustelle vergessen wird?',o:['Nichts, das System merkt es automatisch','Das Material wird dem Kunden nie in Rechnung gestellt','Der Artikel wird automatisch storniert','Der Monteur erhält eine Mahnung'],a:1,t:'Nachkalkulations-Risiko'},
+      {q:'Was ist die genannte Alternative zur App-basierten Projektbuchung?',o:['Gar keine, es gibt keine Alternative','Matchcode-Integration des Artikelstamms in die Branchensoftware','Ein Anruf beim Support','Papierlisten per Fax'],a:1,t:'Matchcode-Integration'}
+    ],
+    summary:{ kern:['Das Projekte-Modul verhindert, dass Materialentnahmen auf Baustellen unkalkuliert bleiben.','Für Materialbuchungen im Feld ist zwingend die mobile App erforderlich.','Als zukunftsträchtige Alternative gilt die direkte Matchcode-Integration mit der Branchensoftware, ohne zusätzliche OrKan-Module.'],
+      funk:['Entnahme & Einlagerung per App','Alternative Matchcode-Integration'], hand:['Vor Projektstart sicherstellen, dass Artikelbezeichnungen im Stamm gepflegt sind','Bei bereits genutzter Branchensoftware die Matchcode-Integration als Alternative prüfen'] }
   }
 ];
 
@@ -825,25 +897,28 @@ const ROLE_RECOS = {
 const AGGREGATE_GAPS = [
   {topic:'Lieferanten-Shop-Anbindung', pct:47, moduleId:4},
   {topic:'Import-Datenformat', pct:38, moduleId:4},
+  {topic:'Maschinen-Buchungslogik', pct:33, moduleId:6},
   {topic:'Bestellauslösung', pct:29, moduleId:3},
+  {topic:'Projekte-App-Pflicht', pct:26, moduleId:8},
   {topic:'Bestellmengen-Berechnung', pct:24, moduleId:2},
+  {topic:'Sicherheitsprinzip', pct:20, moduleId:7},
   {topic:'Lagerbestand & Warenwert', pct:18, moduleId:5},
   {topic:'Lager MIN/MAX', pct:11, moduleId:2}
 ];
 
 /* Simulierte Teamdaten für die Vorgesetzten-Ansicht (Team-Fortschritt) */
 const TEAM_MEMBERS = [
-  {name:'Julia Herrmann', role:'Einkäufer', completed:5, quizAvg:96, weakTopic:null},
-  {name:'Tobias Krämer', role:'Lagermitarbeiter', completed:3, quizAvg:78, weakTopic:'Bestellauslösung'},
-  {name:'Sabine Wolf', role:'Lagerleiter', completed:4, quizAvg:88, weakTopic:'Lieferanten-Shop-Anbindung'},
-  {name:'David Brenner', role:'Lagermitarbeiter', completed:1, quizAvg:60, weakTopic:'Lager MIN/MAX'}
+  {name:'Julia Herrmann', role:'Einkäufer', completed:8, quizAvg:96, weakTopic:null},
+  {name:'Tobias Krämer', role:'Lagermitarbeiter', completed:5, quizAvg:78, weakTopic:'Bestellauslösung'},
+  {name:'Sabine Wolf', role:'Lagerleiter', completed:6, quizAvg:88, weakTopic:'Maschinen-Buchungslogik'},
+  {name:'David Brenner', role:'Lagermitarbeiter', completed:2, quizAvg:60, weakTopic:'Lager MIN/MAX'}
 ];
 
 /* ============ STATE ============ */
 let state = {
   name:'', company:'', role:'',
   currentView:'dashboard', currentModule:null, currentTab:'content',
-  moduleProgress:{1:{started:false,completed:false,quizScore:null,checklist:[]},2:{started:false,completed:false,quizScore:null,checklist:[]},3:{started:false,completed:false,quizScore:null,checklist:[]},4:{started:false,completed:false,quizScore:null,checklist:[]},5:{started:false,completed:false,quizScore:null,checklist:[]}},
+  moduleProgress:{1:{started:false,completed:false,quizScore:null,checklist:[]},2:{started:false,completed:false,quizScore:null,checklist:[]},3:{started:false,completed:false,quizScore:null,checklist:[]},4:{started:false,completed:false,quizScore:null,checklist:[]},5:{started:false,completed:false,quizScore:null,checklist:[]},6:{started:false,completed:false,quizScore:null,checklist:[]},7:{started:false,completed:false,quizScore:null,checklist:[]},8:{started:false,completed:false,quizScore:null,checklist:[]}},
   totalTime:0, aiOpen:false, quizAnswers:{}, kbFilter:'Alle', kbSearch:'', currentArticle:null, currentBP:null,
   weakTopics:{}, adaptiveLog:[]
 };
@@ -906,12 +981,12 @@ function buildModuleSubNav(){
 
 /* ============ DASHBOARD ============ */
 function completedCount(){ return Object.values(state.moduleProgress).filter(p=>p.completed).length; }
-function progressPct(){ return Math.round(completedCount()/5*100); }
+function progressPct(){ return Math.round(completedCount()/MODULES.length*100); }
 
 function renderDashboard(){
   const done = completedCount();
   const avgQuiz = (()=>{ const scores = Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore); if(!scores.length) return '–'; return Math.round(scores.reduce((a,b)=>a+b,0)/scores.length)+'%'; })();
-  const phase = done>=4?3:(done>=2?2:1);
+  const phase = done>=4?3:(done>=2?2:1); // Phase 3 = Module 5-8
   const nextModule = MODULES.find(m=>!state.moduleProgress[m.id].completed) || MODULES[0];
   const adaptive = getAdaptiveRecommendation();
 
@@ -954,7 +1029,7 @@ function renderDashboard(){
     </div>
 
     <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">Abgeschlossene Module</div><div class="stat-val">${done}/5</div><div class="stat-sub">${progressPct()}% des Onboardings</div></div>
+      <div class="stat-card"><div class="stat-label">Abgeschlossene Module</div><div class="stat-val">${done}/${MODULES.length}</div><div class="stat-sub">${progressPct()}% des Onboardings</div></div>
       <div class="stat-card"><div class="stat-label">Lernzeit gesamt</div><div class="stat-val">${state.totalTime}</div><div class="stat-sub">Minuten investiert</div></div>
       <div class="stat-card"><div class="stat-label">Quiz-Durchschnitt</div><div class="stat-val">${avgQuiz}</div><div class="stat-sub">über alle Module</div></div>
       <div class="stat-card"><div class="stat-label">Onboarding-Status</div><div class="stat-val">Phase ${phase}/3</div><div class="stat-sub">${phase===3?'Zertifizierung in Reichweite':'in Bearbeitung'}</div></div>
@@ -964,7 +1039,7 @@ function renderDashboard(){
     <div class="phases-row">
       <div class="phase-step ${phase>=1?'active':''} ${done>=2?'unlocked':''}"><div class="phase-num">1</div><div class="phase-title">Grundlagen</div><div class="phase-desc">Module 1–2</div></div>
       <div class="phase-step ${phase>=2?'active':''} ${done>=4?'unlocked':''}"><div class="phase-num">2</div><div class="phase-title">Prozesse & Integration</div><div class="phase-desc">Module 3–4</div></div>
-      <div class="phase-step ${phase>=3?'active':''} ${done>=5?'unlocked':''}"><div class="phase-num">3</div><div class="phase-title">Optimierung & Zertifizierung</div><div class="phase-desc">Modul 5 + Zertifikat</div></div>
+      <div class="phase-step ${phase>=3?'active':''} ${done>=MODULES.length?'unlocked':''}"><div class="phase-num">3</div><div class="phase-title">Optimierung & Zertifizierung</div><div class="phase-desc">Module 5–${MODULES.length} + Zertifikat</div></div>
     </div>
 
     <div class="section-heading">Ihre Lernmodule</div>
@@ -1007,8 +1082,8 @@ function renderRoadmap(){
     <div class="roadmap-wrap">
       <div class="roadmap-line">
         ${html}
-        <div class="milestone ${completedCount()===5?'done':''}">
-          <div class="milestone-dot">${completedCount()===5?'✓':'★'}</div>
+        <div class="milestone ${completedCount()===MODULES.length?'done':''}">
+          <div class="milestone-dot">${completedCount()===MODULES.length?'✓':'★'}</div>
           <div class="milestone-card"><h4>Abschlusszertifikat</h4><div class="milestone-meta">Nach Abschluss aller Module</div><p>Erhalten Sie Ihr offizielles Onboarding-Zertifikat.</p></div>
         </div>
       </div>
@@ -1024,7 +1099,7 @@ function renderRoadmap(){
   `;
 }
 function nextStepHint(id){
-  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Das Zwei-Etiketten-System und der Bestellvorschlag folgen.',3:'Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',4:'Fast geschafft — zum Abschluss folgen Wareneingang, Lagerbestand und Gebrauchsgutverwaltung.'};
+  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Das Zwei-Etiketten-System und der Bestellvorschlag folgen.',3:'Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',4:'Weiter geht es mit Wareneingang, Lagerbestand und einem ersten Einblick in die Gebrauchsgutverwaltung.',5:'Vertiefung: Die Maschinenverwaltung mit Service & Wartung folgt als eigenes Modul.',6:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',7:'Fast geschafft — zum Abschluss folgt das Projekte-Modul für Baustellen.'};
   return hints[id]||'';
 }
 
@@ -1286,9 +1361,9 @@ function renderCert(){
     document.getElementById('view-cert').innerHTML = `
       <h1 class="page-title">Zertifikate</h1>
       <p class="page-sub">Ihr Nachweis erfolgreicher Produktadoption.</p>
-      <div class="cert-gate"><h3>Noch nicht verfügbar</h3><p>Schliessen Sie alle 5 Module ab, um Ihr Zertifikat zu erhalten.</p>
+      <div class="cert-gate"><h3>Noch nicht verfügbar</h3><p>Schliessen Sie alle ${MODULES.length} Module ab, um Ihr Zertifikat zu erhalten.</p>
       <div class="gate-track"><div class="gate-fill" style="width:${progressPct()}%"></div></div>
-      <p style="margin-bottom:0">${done}/5 Module abgeschlossen</p></div>
+      <p style="margin-bottom:0">${done}/${MODULES.length} Module abgeschlossen</p></div>
     `;
   } else {
     document.getElementById('view-cert').innerHTML = `
@@ -1343,8 +1418,8 @@ function renderTeam(){
             <div class="team-role">${m.role}</div>
           </div>
           <div class="team-progress-wrap">
-            <div class="gap-track" style="width:140px"><div class="gap-fill company" style="width:${m.completed/5*100}%"></div></div>
-            <span class="team-progress-text">${m.completed}/5 Module</span>
+            <div class="gap-track" style="width:140px"><div class="gap-fill company" style="width:${m.completed/MODULES.length*100}%"></div></div>
+            <span class="team-progress-text">${m.completed}/${MODULES.length} Module</span>
           </div>
           <div class="team-quiz">Ø ${m.quizAvg}%</div>
           <div class="team-flag">${m.weakTopic ? `<span class="gap-count">Lücke: ${m.weakTopic}</span>` : `<span class="team-ok">Keine Lücken</span>`}</div>
@@ -1362,7 +1437,7 @@ function renderTeam(){
 /* ============ SIDEBAR PROGRESS ============ */
 function updateSidebarProgress(){
   document.getElementById('sidebarFill').style.width = progressPct()+'%';
-  document.getElementById('sidebarText').textContent = completedCount()+'/5 Module';
+  document.getElementById('sidebarText').textContent = completedCount()+'/'+MODULES.length+' Module';
   renderDashboard();
   renderRoadmap();
   renderCert();
@@ -1488,7 +1563,7 @@ function getAIResponse(text){
   const t = text.toLowerCase();
   const done = completedCount();
   if(t.includes('stehe')||t.includes('status')||t.includes('fortschritt')){
-    return `Sie haben ${done} von 5 Modulen abgeschlossen (${progressPct()}%). Sie befinden sich in Phase ${done>=4?3:(done>=2?2:1)} des Onboardings.`;
+    return `Sie haben ${done} von ${MODULES.length} Modulen abgeschlossen (${progressPct()}%). Sie befinden sich in Phase ${done>=6?3:(done>=2?2:1)} des Onboardings.`;
   }
   if(t.includes('nächst')||t.includes('weiter')){
     const adaptive = getAdaptiveRecommendation();
@@ -1523,7 +1598,7 @@ function getAIResponse(text){
     return 'Über die Gebrauchsgutverwaltung sehen Sie, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine hat. Zusätzlich lassen sich Service- und Wartungstermine sowie Reservierungen direkt an der Maschine hinterlegen.';
   }
   if(t.includes('zertifikat')){
-    return done===5 ? 'Herzlichen Glückwunsch — Ihr Zertifikat ist im Bereich „Zertifikate" verfügbar.' : `Noch ${5-done} Module bis zu Ihrem Zertifikat. Sie schaffen das.`;
+    return done===MODULES.length ? 'Herzlichen Glückwunsch — Ihr Zertifikat ist im Bereich „Zertifikate" verfügbar.' : `Noch ${MODULES.length-done} Module bis zu Ihrem Zertifikat. Sie schaffen das.`;
   }
   return 'Das ist eine gute Frage. Ich empfehle einen Blick in die Wissensdatenbank oder das passende Lernmodul — dort finden Sie eine ausführliche Erklärung. Sie können mich auch nach Ihrem Fortschritt oder den nächsten Lernschritten fragen.';
 }
