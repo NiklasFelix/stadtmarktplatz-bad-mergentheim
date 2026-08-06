@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OrKan Cloud Enablement Platform</title>
+<title>OrKan Cloud Training-Plattform</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -184,7 +184,7 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
 .module-card{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:var(--shadow);transition:var(--ease);cursor:pointer;display:flex;flex-direction:column}
 .module-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
-.mc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.mc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:6px;flex-wrap:wrap}
 .mc-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;letter-spacing:.3px;text-transform:uppercase}
 .mc-badge.open{background:var(--gray-light);color:var(--gray)}
 .mc-badge.progress{background:#FEF3D8;color:#a6720f}
@@ -497,7 +497,7 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
         <div class="onb-texts">
           <span class="logo-name">OrKan Cloud</span>
           <div class="logo-lines"><span></span><span></span><span></span></div>
-          <span class="logo-sub">ENABLEMENT PLATFORM</span>
+          <span class="logo-sub">TRAINING-PLATTFORM</span>
         </div>
       </div>
       <div class="onb-side-body">
@@ -544,7 +544,7 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
         <ellipse cx="47" cy="65" rx="13" ry="5" fill="#8EA752"/>
         <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/>
       </svg>
-      <div><span class="logo-name">OrKan Cloud</span><span class="logo-sub">ENABLEMENT</span></div>
+      <div><span class="logo-name">OrKan Cloud</span><span class="logo-sub">TRAINING</span></div>
     </div>
     <div class="hdr-divider"></div>
     <div class="breadcrumb">Onboarding / <strong id="breadcrumbCurrent">Dashboard</strong></div>
@@ -957,6 +957,33 @@ const UPDATES = [
   {v:'v2.3.0',date:'14. Mai 2026',isNew:false,title:'Rollenbasierte Lernpfade',items:['Individuelle Lernpfade für vier Nutzerrollen','Angepasste Dashboard-Empfehlungen je Rolle','Verbesserte Fortschrittsvisualisierung']}
 ];
 
+const ROLE_FOCUS = {
+  'Lagerleiter': { heading:'Ihr Fokus als Lagerleiter', priorityModules:[3,6,7],
+    cards:[
+      {label:'Team-Fortschritt', val:'Ø 62%', sub:'4 Mitarbeitende aktuell im Onboarding', link:'team'},
+      {label:'Priorität diese Woche', val:'Zwei-Etiketten-System', sub:'Schulen Sie Ihr Team in der Blau/Weiß-Logik'},
+      {label:'Rollenlogik prüfen', val:'Maschinenverwaltung', sub:'Wer darf für andere buchen? Nur Admins.'}
+    ]},
+  'Einkäufer': { heading:'Ihr Fokus als Einkäufer', priorityModules:[2,4,3],
+    cards:[
+      {label:'Lager MIN/MAX', val:'Bestellmenge = MAX − MIN', sub:'Grundlage jedes Bestellvorschlags'},
+      {label:'Lieferanten-Anbindung', val:'Shop-URL prüfen', sub:'Ohne Shop-URL keine automatische Bestellweiterleitung'},
+      {label:'Nächster Schritt', val:'Bestellvorschlag bearbeiten', sub:'Vom Etikett zur fertigen Bestellung'}
+    ]},
+  'Geschäftsführer': { heading:'Ihr strategischer Überblick', priorityModules:[5,6,8],
+    cards:[
+      {label:'Team-Onboarding', val:'Ø 62%', sub:'Fortschritt aller Mitarbeitenden im Blick', link:'team'},
+      {label:'Lagerwert-Näherung', val:'≈ 53.800 €', sub:'Automatisch aus Lager MIN/MAX und EK-Preisen berechnet'},
+      {label:'Zertifizierungsquote', val:'1 von 5', sub:'Team-Mitglieder mit vollständigem Abschluss'}
+    ]},
+  'Lagermitarbeiter': { heading:'Ihr Fokus im Tagesgeschäft', priorityModules:[3,5,7],
+    cards:[
+      {label:'Heute wichtig', val:'Weißes Etikett = bestellt', sub:'Fehlt es am Regal, ist der Artikel schon unterwegs'},
+      {label:'Wareneingang', val:'Drei-Fenster-Prozess', sub:'Wareneingang, Lieferschein, Lieferanten-Shop'},
+      {label:'Schlüssel suchen?', val:'Immer über die Adresse', sub:'Nicht über die interne Schlüsselnummer'}
+    ]}
+};
+
 const ROLE_RECOS = {
   'Lagerleiter':[{tag:'Prozesse',t:'Team-Einweisung ins Zwei-Etiketten-System',d:'Leitfaden zur Schulung Ihres Lagerteams in Blau/Weiß-Etikettenlogik und Bestellbox.'},{tag:'Best Practice',t:'Lager MIN/MAX unternehmensweit kalibrieren',d:'Anleitung zur Überprüfung und Anpassung bestehender Mindest-/Höchstbestände.'},{tag:'Praxis',t:'Gebrauchsgutverwaltung einführen',d:'Maschinen und Werkzeuge Mitarbeitern und Fahrzeugen zuordnen.'}],
   'Einkäufer':[{tag:'Prozesse',t:'Lager MIN/MAX richtig berechnen',d:'Praxisbeispiele für realistische Mindest- und Höchstbestände.'},{tag:'Best Practice',t:'Lieferanten-Shop-Anbindung einrichten',d:'Shop-URL korrekt pflegen für die automatische Bestellweiterleitung.'},{tag:'Praxis',t:'Artikelimport für neue Lieferanten',d:'Excel- und ZIP-Import Schritt für Schritt.'}],
@@ -993,7 +1020,8 @@ let state = {
   currentView:'dashboard', currentModule:null, currentTab:'content',
   moduleProgress:{1:{started:false,completed:false,quizScore:null,checklist:[]},2:{started:false,completed:false,quizScore:null,checklist:[]},3:{started:false,completed:false,quizScore:null,checklist:[]},4:{started:false,completed:false,quizScore:null,checklist:[]},5:{started:false,completed:false,quizScore:null,checklist:[]},6:{started:false,completed:false,quizScore:null,checklist:[]},7:{started:false,completed:false,quizScore:null,checklist:[]},8:{started:false,completed:false,quizScore:null,checklist:[]}},
   totalTime:0, aiOpen:false, quizAnswers:{}, kbFilter:'Alle', kbSearch:'', currentArticle:null, currentBP:null,
-  weakTopics:{}, adaptiveLog:[]
+  weakTopics:{}, adaptiveLog:[],
+  integrationOptions:{ behavioral:false, help:false, central:false }
 };
 
 /* ============ ONBOARDING ============ */
@@ -1098,6 +1126,13 @@ function renderDashboard(){
       </div>
     </div>
 
+    ${(() => { const rf = ROLE_FOCUS[state.role]; if(!rf) return ''; return `
+    <div class="section-heading">${rf.heading}</div>
+    <div class="stats-row">
+      ${rf.cards.map(c=>`<div class="stat-card" ${c.link?`style="cursor:pointer" onclick="showView('${c.link}')"`:''}><div class="stat-label">${c.label}</div><div class="stat-val" style="font-size:18px">${c.val}</div><div class="stat-sub">${c.sub}</div></div>`).join('')}
+    </div>
+    `; })()}
+
     <div class="context-note">
       <span><strong>Ergänzung, kein Ersatz:</strong> Diese Plattform ergänzt Ihre persönliche Erstschulung bei SPRÜGEL. Eignen Sie sich hier die Grundlagen selbstständig an – Ihr persönlicher Ansprechpartner konzentriert sich im gemeinsamen Termin dann gezielt auf Ihre individuellen Fragen.</span>
       <button class="context-note-btn" onclick="bookAppointment()">Persönlichen Termin vereinbaren</button>
@@ -1117,21 +1152,21 @@ function renderDashboard(){
       <div class="phase-step ${phase>=3?'active':''} ${done>=MODULES.length?'unlocked':''}"><div class="phase-num">3</div><div class="phase-title">Optimierung & Zertifizierung</div><div class="phase-desc">Module 5–${MODULES.length} + Zertifikat</div></div>
     </div>
 
-    <div class="section-heading">Ihre Lernmodule</div>
-    <div class="modules-grid">${MODULES.map(m=>moduleCardHtml(m)).join('')}</div>
+    <div class="section-heading">Ihre Lernmodule <span style="font-size:11px;font-weight:600;color:var(--gray);text-transform:none">— priorisiert für ${state.role}</span></div>
+    <div class="modules-grid">${(() => { const prio = (ROLE_FOCUS[state.role]||{}).priorityModules||[]; const sorted = [...MODULES].sort((a,b)=>{ const ai=prio.indexOf(a.id), bi=prio.indexOf(b.id); const av = ai===-1?99:ai, bv = bi===-1?99:bi; return av-bv; }); return sorted.map(m=>moduleCardHtml(m, prio.includes(m.id))).join(''); })()}</div>
 
     <div class="section-heading">Empfohlen für Ihre Rolle</div>
     <div class="reco-grid">${(ROLE_RECOS[state.role]||[]).map(r=>`<div class="reco-card"><div class="reco-tag">${r.tag}</div><h4>${r.t}</h4><p>${r.d}</p></div>`).join('')}</div>
   `;
 }
 
-function moduleCardHtml(m){
+function moduleCardHtml(m, isPriority){
   const p = state.moduleProgress[m.id];
   const badge = p.completed?'done':(p.started?'progress':'open');
   const badgeText = p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen');
   const pct = p.completed?100:(p.started?45:0);
   return `<div class="module-card" onclick="openModule(${m.id})">
-    <div class="mc-top"><span class="mc-badge ${badge}">${badgeText}</span></div>
+    <div class="mc-top"><span class="mc-badge ${badge}">${badgeText}</span>${isPriority?'<span class="mc-badge" style="background:var(--dark-bg);color:var(--green)">Für Sie</span>':''}</div>
     <div class="mc-title">${m.title}</div>
     <div class="mc-time">${m.time}</div>
     <div class="mc-track"><div class="mc-fill" style="width:${pct}%"></div></div>
@@ -1517,18 +1552,42 @@ const CLOUD_EVENTS = [
   {text:'Bestellvorschlag erstellt und gesendet', status:'ok'},
   {text:'Artikelimport gestartet — Zeichensatz-Fehler in 12 Zeilen', status:'warn', topic:'Import-Datenformat', moduleId:4},
   {text:'Lager MIN und MAX bei 3 Artikeln auf denselben Wert gesetzt', status:'warn', topic:'Lager MIN/MAX', moduleId:2},
-  {text:'Wareneingang bestätigt, Lagerbestand aktualisiert', status:'ok'}
+  {text:'Wareneingang bestätigt, Lagerbestand aktualisiert', status:'ok'},
+  {text:'Zwei-Etiketten-Bestellvorschlag mehrfach abgebrochen', status:'warn', topic:'Bestellauslösung', moduleId:3},
+  {text:'Maschine angelegt — kein Kaufbeleg hochgeladen', status:'warn', topic:'Kaufbeleg & Garantie', moduleId:6},
+  {text:'Versuch, eine fremde Maschine auf einen Kollegen zu buchen (als Monteur)', status:'warn', topic:'Maschinen-Buchungslogik', moduleId:6},
+  {text:'Schlüssel über die interne Nummer statt der Adresse gesucht', status:'warn', topic:'Adresssuche', moduleId:7},
+  {text:'Projekt angelegt, Materialentnahme über die App gebucht', status:'ok'},
+  {text:'Projekt-Statistik exportiert — mehrere Artikel ohne Bezeichnung', status:'warn', topic:'Projekte-App-Pflicht', moduleId:8},
+  {text:'Service-&-Wartung-Termin für Pressmaschine bestätigt', status:'ok'}
 ];
 let ciEventIndex = 0;
+const INTEGRATION_OPTIONS = [
+  { key:'behavioral', title:'Automatische Lernpfad-Anpassung', desc:'Die Plattform erkennt selbstständig, wo Sie in der OrKan Cloud unsicher sind, und passt Ihren Lernpfad automatisch an — ganz ohne eigene Wissenschecks.' },
+  { key:'help', title:'Hilfe-Symbole direkt in der Cloud', desc:'An passenden Stellen in der OrKan Cloud (z. B. beim Anlegen eines Lieferanten) erscheint ein kleines Fragezeichen, das direkt zur passenden Erklärung führt.' },
+  { key:'central', title:'Schnellzugriff-Button', desc:'Ein durchgängig sichtbarer Button öffnet die Trainingsplattform von jeder Stelle der OrKan Cloud aus mit einem Klick.' }
+];
 function renderCloudIntegration(){
   const el = document.getElementById('view-cloudintegration');
   if(!el) return;
+  const behavioralOn = state.integrationOptions.behavioral;
   el.innerHTML = `
-    <h1 class="page-title">Cloud-Integration</h1>
-    <p class="page-sub">Konzept-Demonstration: So könnte der Lerncoach künftig direkt in die OrKan Cloud eingebunden werden.</p>
+    <h1 class="page-title">Integrationseinstellungen</h1>
+    <p class="page-sub">Wählen Sie, wie die Trainingsplattform mit Ihrer OrKan Cloud verbunden werden soll. Sie können mehrere Optionen gleichzeitig aktivieren.</p>
 
-    <div class="section-heading">1. Verhaltensbasierte Erkennung (Live-Demo)</div>
-    <p class="ci-intro">Die Plattform beobachtet simuliert die Arbeitsschritte des Kunden direkt in der OrKan Cloud. Erkennt sie ein wiederkehrendes Muster wie eine fehlende Shop-URL oder falsch gesetzte Lager MIN/MAX-Werte, wird automatisch eine Wissenslücke vermerkt und der Lernpfad angepasst — ganz ohne dass der Kunde selbst einen Wissenscheck ausfüllen muss.</p>
+    <div class="ci-concept-grid" style="grid-template-columns:repeat(3,1fr)">
+      ${INTEGRATION_OPTIONS.map(o=>`
+        <div class="ci-concept-card">
+          <h4>${o.title}</h4>
+          <p>${o.desc}</p>
+          <button class="btn ${state.integrationOptions[o.key]?'btn-primary':'btn-outline'}" style="width:100%" onclick="toggleIntegrationOption('${o.key}')">${state.integrationOptions[o.key]?'Aktiviert — ausschalten':'Aktivieren'}</button>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="section-heading">Vorschau: Automatische Lernpfad-Anpassung${behavioralOn?'':' (deaktiviert)'}</div>
+    ${behavioralOn ? `
+    <p class="ci-intro">So sieht es aus, wenn die Plattform Ihre Arbeitsschritte in der OrKan Cloud verfolgt. Testen Sie es mit dem Button unten — jeder Schritt zeigt, was in Ihrer Cloud passiert wäre.</p>
     <div class="ci-mockup">
       <div class="ci-mockup-bar"><span class="ci-mockup-dot"></span><span class="ci-mockup-dot"></span><span class="ci-mockup-dot"></span><span class="ci-mockup-url">app.orkan-cloud.de · Live-Aktivität von ${state.name}</span></div>
       <div class="ci-mockup-body">
@@ -1541,31 +1600,13 @@ function renderCloudIntegration(){
       <button class="btn btn-primary" onclick="simulateCloudEvent()">Nächsten Cloud-Schritt simulieren</button>
       <button class="btn btn-outline" onclick="resetCloudSimulation()">Zurücksetzen</button>
     </div>
-
-    <div class="section-heading">2. Zwei Wege der Einbindung in die OrKan Cloud</div>
-    <div class="ci-concept-grid">
-      <div class="ci-concept-card">
-        <h4>Kontextsensitive Hilfe-Buttons</h4>
-        <p>An jedem relevanten Arbeitsschritt (z. B. beim Anlegen eines Lieferanten) erscheint ein kleines Fragezeichen-Symbol. Ein Klick öffnet direkt den passenden Abschnitt der Lernplattform.</p>
-        <div class="ci-badge-demo">
-          <div class="ci-fake-field"></div>
-          <div class="ci-help-dot">?</div>
-        </div>
-      </div>
-      <div class="ci-concept-card">
-        <h4>Zentraler Plattform-Button</h4>
-        <p>Ein durchgängig sichtbarer Button öffnet die gesamte Lernplattform als Overlay oder neuen Tab — unabhängig davon, wo sich der Nutzer gerade in der Cloud befindet.</p>
-        <div class="ci-badge-demo" style="justify-content:center">
-          <span class="ci-launcher-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/></svg> Zur Lernplattform</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="insight-callout">
-      <strong>Einordnung für die Bewertung</strong>
-      <p>Die Verhaltenserkennung (1) ist technisch die anspruchsvollste, aber auch wertvollste Variante — sie setzt eine Anbindung an die OrKan-Cloud-Datenbank voraus (siehe Kriterium „Schnittstellenfähigkeit"). Die beiden Einbindungswege (2) sind unabhängig davon schon mit der heutigen Plattform umsetzbar und könnten kurzfristig realisiert werden.</p>
-    </div>
+    ` : `<div class="ci-badge-demo"><span style="font-size:12.5px;color:var(--gray)">Aktivieren Sie oben „Automatische Lernpfad-Anpassung", um die Vorschau zu testen.</span></div>`}
   `;
+}
+function toggleIntegrationOption(key){
+  state.integrationOptions[key] = !state.integrationOptions[key];
+  showToast(state.integrationOptions[key] ? 'Option aktiviert.' : 'Option deaktiviert.');
+  renderCloudIntegration();
 }
 function simulateCloudEvent(){
   if(ciEventIndex >= CLOUD_EVENTS.length){ showToast('Alle simulierten Cloud-Ereignisse wurden bereits durchlaufen.'); return; }
