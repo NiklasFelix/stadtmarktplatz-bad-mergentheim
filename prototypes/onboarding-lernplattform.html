@@ -88,7 +88,20 @@ svg{display:block}
 .ai-toggle-btn:hover{background:rgba(142,167,82,.26);transform:translateY(-1px)}
 .ai-toggle-btn svg{width:15px;height:15px}
 .notif-dot{position:absolute;top:-3px;right:-3px;width:9px;height:9px;background:#e8a33d;border-radius:50%;border:2px solid var(--dark-bg)}
-.hdr-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;color:#fff}
+.hdr-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer;transition:var(--spring)}
+.hdr-avatar:hover{transform:scale(1.06)}
+.profile-wrap{position:relative}
+.profile-menu{position:absolute;top:46px;right:0;width:280px;background:#fff;border-radius:14px;box-shadow:var(--shadow-lg);border:1px solid var(--border);opacity:0;pointer-events:none;transform:translateY(-8px);transition:all .22s cubic-bezier(.34,1.2,.64,1);z-index:250}
+.profile-menu.open{opacity:1;pointer-events:auto;transform:translateY(0)}
+.profile-menu-head{display:flex;align-items:center;gap:12px;padding:18px;border-bottom:1px solid var(--border)}
+.profile-menu-name{font-size:14px;font-weight:700;color:var(--dark-bg)}
+.profile-menu-role{font-size:12px;color:var(--gray)}
+.profile-menu-body{padding:16px 18px}
+.profile-input{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;outline:none;transition:var(--ease);background:#fff;margin-top:4px}
+.profile-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,167,82,.15)}
+.profile-menu-actions{padding:14px 18px 18px;display:flex;flex-direction:column;gap:8px}
+.profile-logout{background:none;border:none;color:var(--gray);font-size:12.5px;font-weight:600;cursor:pointer;padding:6px;transition:var(--ease)}
+.profile-logout:hover{color:#dc2626}
 
 .shell-body{flex:1;display:flex;overflow:hidden}
 
@@ -401,6 +414,31 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .team-quiz{font-size:13px;font-weight:700;color:var(--dark-bg)}
 .team-ok{font-size:11px;font-weight:600;color:var(--green-dark)}
 @media(max-width:1000px){.team-row{grid-template-columns:36px 1fr;grid-template-areas:none}.team-progress-wrap,.team-quiz,.team-flag{display:none}}
+
+/* Cloud-Integration */
+.ci-intro{font-size:13.5px;color:var(--dark-bg);opacity:.8;line-height:1.6;max-width:760px;margin-bottom:24px}
+.ci-mockup{background:var(--dark-bg);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:14px}
+.ci-mockup-bar{background:#15181a;padding:10px 14px;display:flex;align-items:center;gap:8px}
+.ci-mockup-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.2)}
+.ci-mockup-url{margin-left:10px;font-size:11px;color:rgba(255,255,255,.35);background:rgba(255,255,255,.06);padding:3px 10px;border-radius:6px}
+.ci-mockup-body{padding:18px;min-height:70px}
+.ci-event-log{display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto}
+.ci-event{display:flex;align-items:flex-start;gap:10px;font-size:12.5px;color:rgba(255,255,255,.8);animation:viewFade .3s ease}
+.ci-event-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.ci-event-dot.ok{background:#4ade80}
+.ci-event-dot.warn{background:#e8a33d}
+.ci-event-time{color:rgba(255,255,255,.35);font-size:11px;margin-left:auto;flex-shrink:0;white-space:nowrap}
+.ci-empty{color:rgba(255,255,255,.35);font-size:12.5px}
+.ci-actions{display:flex;gap:10px;margin-bottom:28px}
+.ci-concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:10px}
+.ci-concept-card{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow)}
+.ci-concept-card h4{font-size:14px;font-weight:700;margin-bottom:8px}
+.ci-concept-card p{font-size:12.5px;color:var(--gray);line-height:1.6;margin-bottom:14px}
+.ci-badge-demo{background:#f0f2ee;border:1px dashed var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:10px}
+.ci-help-dot{width:26px;height:26px;border-radius:50%;background:var(--dark-bg);color:var(--green);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci-fake-field{flex:1;height:10px;background:var(--gray-light);border-radius:4px}
+.ci-launcher-btn{display:inline-flex;align-items:center;gap:8px;background:var(--dark-bg);color:#fff;padding:10px 18px;border-radius:10px;font-size:12.5px;font-weight:700}
+@media(max-width:900px){.ci-concept-grid{grid-template-columns:1fr}}
 @media print{
   body *{visibility:hidden}
   .certificate,.certificate *{visibility:visible}
@@ -449,12 +487,12 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
     <div class="onb-side">
       <div class="onb-side-glow"></div>
       <div class="onb-logo">
-        <svg width="44" height="44" viewBox="0 0 200 220" fill="none">
-          <path d="M156.6,27.6 A88.0,88.0 0 1 1 56.0,18.8 L65.0,34.4 A70.0,70.0 0 1 0 145.0,41.4 Z" fill="#8EA752"/>
-          <path d="M122.6,33.0 A66.0,66.0 0 1 1 57.6,44.4 L67.9,56.7 A50.0,50.0 0 1 0 117.1,48.0 Z" fill="#8EA752"/>
-          <path d="M104.0,49.2 A46.0,46.0 0 1 1 60.2,72.0 L71.4,78.5 A33.0,33.0 0 1 0 102.9,62.1 Z" fill="#8EA752"/>
-          <path d="M95.1,67.4 A28.0,28.0 0 1 1 72.4,99.9 L82.3,98.1 A18.0,18.0 0 1 0 96.9,77.3 Z" fill="#8EA752"/>
-          <path d="M62,118 C50,145 55,175 82,198 C98,211 112,220 122,232 C112,214 96,196 88,176 C80,157 78,138 85,120 C80,116 68,113 62,118 Z" fill="#8EA752"/>
+        <svg width="44" height="44" viewBox="0 0 100 100" fill="none">
+          <ellipse cx="50" cy="18" rx="36" ry="7" fill="#8EA752"/>
+          <ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8EA752"/>
+          <ellipse cx="54" cy="50" rx="21" ry="6" fill="#8EA752"/>
+          <ellipse cx="47" cy="65" rx="13" ry="5" fill="#8EA752"/>
+          <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/>
         </svg>
         <div class="onb-texts">
           <span class="logo-name">OrKan Cloud</span>
@@ -499,12 +537,12 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 <div id="app">
   <header class="app-header">
     <div class="hdr-logo">
-      <svg width="34" height="34" viewBox="0 0 200 220" fill="none">
-        <path d="M156.6,27.6 A88.0,88.0 0 1 1 56.0,18.8 L65.0,34.4 A70.0,70.0 0 1 0 145.0,41.4 Z" fill="#8EA752"/>
-        <path d="M122.6,33.0 A66.0,66.0 0 1 1 57.6,44.4 L67.9,56.7 A50.0,50.0 0 1 0 117.1,48.0 Z" fill="#8EA752"/>
-        <path d="M104.0,49.2 A46.0,46.0 0 1 1 60.2,72.0 L71.4,78.5 A33.0,33.0 0 1 0 102.9,62.1 Z" fill="#8EA752"/>
-        <path d="M95.1,67.4 A28.0,28.0 0 1 1 72.4,99.9 L82.3,98.1 A18.0,18.0 0 1 0 96.9,77.3 Z" fill="#8EA752"/>
-        <path d="M62,118 C50,145 55,175 82,198 C98,211 112,220 122,232 C112,214 96,196 88,176 C80,157 78,138 85,120 C80,116 68,113 62,118 Z" fill="#8EA752"/>
+      <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
+        <ellipse cx="50" cy="18" rx="36" ry="7" fill="#8EA752"/>
+        <ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8EA752"/>
+        <ellipse cx="54" cy="50" rx="21" ry="6" fill="#8EA752"/>
+        <ellipse cx="47" cy="65" rx="13" ry="5" fill="#8EA752"/>
+        <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/>
       </svg>
       <div><span class="logo-name">OrKan Cloud</span><span class="logo-sub">ENABLEMENT</span></div>
     </div>
@@ -516,7 +554,35 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
       Lerncoach
       <span class="notif-dot" id="aiNotifDot" style="display:none"></span>
     </button>
-    <div class="hdr-avatar" id="hdrAvatar">?</div>
+    <div class="profile-wrap">
+      <div class="hdr-avatar" id="hdrAvatar" onclick="toggleProfileMenu()">?</div>
+      <div class="profile-menu" id="profileMenu">
+        <div class="profile-menu-head">
+          <div class="hdr-avatar" id="profileMenuAvatar" style="width:44px;height:44px;font-size:15px">?</div>
+          <div>
+            <div class="profile-menu-name" id="profileMenuName">–</div>
+            <div class="profile-menu-role" id="profileMenuRole">–</div>
+          </div>
+        </div>
+        <div class="profile-menu-body">
+          <label class="field-label">Name</label>
+          <input type="text" id="profileNameInput" class="profile-input">
+          <label class="field-label" style="margin-top:10px">Unternehmen</label>
+          <input type="text" id="profileCompanyInput" class="profile-input">
+          <label class="field-label" style="margin-top:10px">Rolle</label>
+          <select id="profileRoleInput" class="profile-input">
+            <option>Lagerleiter</option>
+            <option>Einkäufer</option>
+            <option>Geschäftsführer</option>
+            <option>Lagermitarbeiter</option>
+          </select>
+        </div>
+        <div class="profile-menu-actions">
+          <button class="btn btn-primary" style="width:100%" onclick="saveProfile()">Änderungen speichern</button>
+          <button class="profile-logout" onclick="logoutProfile()">Abmelden</button>
+        </div>
+      </div>
+    </div>
   </header>
 
   <div class="shell-body">
@@ -558,6 +624,10 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Team-Fortschritt
       </div>
+      <div class="nav-item" data-view="cloudintegration" onclick="showView('cloudintegration')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+        Cloud-Integration
+      </div>
       <div class="sidebar-progress">
         <div class="sp-label">Fortschritt</div>
         <div class="sp-track"><div class="sp-fill" id="sidebarFill" style="width:0%"></div></div>
@@ -593,6 +663,9 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 
       <!-- TEAM -->
       <section class="view" id="view-team"></section>
+
+      <!-- CLOUD INTEGRATION -->
+      <section class="view" id="view-cloudintegration"></section>
 
     </main>
 
@@ -942,6 +1015,7 @@ function startApp(){
   document.getElementById('onboarding').style.display='none';
   document.getElementById('app').style.display='flex';
   document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
+  refreshProfileMenu();
   buildModuleSubNav();
   renderDashboard();
   renderRoadmap();
@@ -950,12 +1024,13 @@ function startApp(){
   renderBest();
   renderUpdates();
   renderCert();
+  renderCloudIntegration();
   seedAIMessages();
   updateSidebarProgress();
 }
 
 /* ============ NAV ============ */
-const VIEW_LABELS = {dashboard:'Dashboard',roadmap:'Mein Lernpfad',modules:'Lernmodule',gaps:'Wissenslücken-Analyse',kb:'Wissensdatenbank',best:'Best Practices',updates:'Update-Center',cert:'Zertifikate',team:'Team-Fortschritt'};
+const VIEW_LABELS = {dashboard:'Dashboard',roadmap:'Mein Lernpfad',modules:'Lernmodule',gaps:'Wissenslücken-Analyse',kb:'Wissensdatenbank',best:'Best Practices',updates:'Update-Center',cert:'Zertifikate',team:'Team-Fortschritt',cloudintegration:'Cloud-Integration'};
 function showView(name){
   state.currentView = name;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -1370,7 +1445,7 @@ function renderCert(){
       <h1 class="page-title">Zertifikate</h1>
       <p class="page-sub">Herzlichen Glückwunsch zum Abschluss des Onboardings.</p>
       <div class="certificate" id="certPrint">
-        <div class="cert-logo"><svg width="40" height="40" viewBox="0 0 200 220" fill="none"><path d="M156.6,27.6 A88.0,88.0 0 1 1 56.0,18.8 L65.0,34.4 A70.0,70.0 0 1 0 145.0,41.4 Z" fill="#8EA752"/><path d="M122.6,33.0 A66.0,66.0 0 1 1 57.6,44.4 L67.9,56.7 A50.0,50.0 0 1 0 117.1,48.0 Z" fill="#8EA752"/><path d="M104.0,49.2 A46.0,46.0 0 1 1 60.2,72.0 L71.4,78.5 A33.0,33.0 0 1 0 102.9,62.1 Z" fill="#8EA752"/><path d="M95.1,67.4 A28.0,28.0 0 1 1 72.4,99.9 L82.3,98.1 A18.0,18.0 0 1 0 96.9,77.3 Z" fill="#8EA752"/><path d="M62,118 C50,145 55,175 82,198 C98,211 112,220 122,232 C112,214 96,196 88,176 C80,157 78,138 85,120 C80,116 68,113 62,118 Z" fill="#8EA752"/></svg><div><div style="font-weight:800;font-size:15px">OrKan Cloud</div></div></div>
+        <div class="cert-logo"><svg width="40" height="40" viewBox="0 0 100 100" fill="none"><ellipse cx="50" cy="18" rx="36" ry="7" fill="#8EA752"/><ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8EA752"/><ellipse cx="54" cy="50" rx="21" ry="6" fill="#8EA752"/><ellipse cx="47" cy="65" rx="13" ry="5" fill="#8EA752"/><ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/></svg><div><div style="font-weight:800;font-size:15px">OrKan Cloud</div></div></div>
         <div class="cert-title">Zertifikat der Absolvierung</div>
         <div class="cert-heading">OrKan Cloud Onboarding</div>
         <div class="cert-name">${state.name}</div>
@@ -1395,7 +1470,7 @@ function renderTeam(){
   const el = document.getElementById('view-team');
   if(!el) return;
   const allMembers = [...TEAM_MEMBERS, {name:`${state.name} (Sie)`, role:state.role, completed:completedCount(), quizAvg: (()=>{ const s=Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore); return s.length?Math.round(s.reduce((a,b)=>a+b,0)/s.length):0; })(), weakTopic: Object.keys(state.weakTopics)[0]||null}];
-  const teamAvgPct = Math.round(allMembers.reduce((a,m)=>a+m.completed,0)/allMembers.length/5*100);
+  const teamAvgPct = Math.round(allMembers.reduce((a,m)=>a+m.completed,0)/allMembers.length/MODULES.length*100);
 
   el.innerHTML = `
     <h1 class="page-title">Team-Fortschritt</h1>
@@ -1404,7 +1479,7 @@ function renderTeam(){
     <div class="stats-row">
       <div class="stat-card"><div class="stat-label">Team-Mitglieder</div><div class="stat-val">${allMembers.length}</div><div class="stat-sub">im Onboarding erfasst</div></div>
       <div class="stat-card"><div class="stat-label">Ø Fortschritt</div><div class="stat-val">${teamAvgPct}%</div><div class="stat-sub">über alle Module</div></div>
-      <div class="stat-card"><div class="stat-label">Vollständig abgeschlossen</div><div class="stat-val">${allMembers.filter(m=>m.completed===5).length}</div><div class="stat-sub">von ${allMembers.length} Personen</div></div>
+      <div class="stat-card"><div class="stat-label">Vollständig abgeschlossen</div><div class="stat-val">${allMembers.filter(m=>m.completed===MODULES.length).length}</div><div class="stat-sub">von ${allMembers.length} Personen</div></div>
       <div class="stat-card"><div class="stat-label">Auffällige Wissenslücken</div><div class="stat-val">${allMembers.filter(m=>m.weakTopic).length}</div><div class="stat-sub">benötigen Vertiefung</div></div>
     </div>
 
@@ -1432,6 +1507,89 @@ function renderTeam(){
       <p>Diese Ansicht zeigt simulierte Beispieldaten für den Pilotversuch. In der produktiven Version würde sie auf echten Fortschrittsdaten aller Mandanten-Nutzer basieren und Vorgesetzten erlauben, gezielt bei erkannten Wissenslücken nachzusteuern.</p>
     </div>
   `;
+}
+
+/* ============ CLOUD-INTEGRATION (Konzept-Demo) ============ */
+const CLOUD_EVENTS = [
+  {text:'Startseite geöffnet, Kalender geprüft', status:'ok'},
+  {text:'Artikel „T-Stück 28 mm" angelegt', status:'ok'},
+  {text:'Lieferant „Neugart GmbH" angelegt — Shop-URL leer gelassen', status:'warn', topic:'Lieferanten-Shop-Anbindung', moduleId:4},
+  {text:'Bestellvorschlag erstellt und gesendet', status:'ok'},
+  {text:'Artikelimport gestartet — Zeichensatz-Fehler in 12 Zeilen', status:'warn', topic:'Import-Datenformat', moduleId:4},
+  {text:'Lager MIN und MAX bei 3 Artikeln auf denselben Wert gesetzt', status:'warn', topic:'Lager MIN/MAX', moduleId:2},
+  {text:'Wareneingang bestätigt, Lagerbestand aktualisiert', status:'ok'}
+];
+let ciEventIndex = 0;
+function renderCloudIntegration(){
+  const el = document.getElementById('view-cloudintegration');
+  if(!el) return;
+  el.innerHTML = `
+    <h1 class="page-title">Cloud-Integration</h1>
+    <p class="page-sub">Konzept-Demonstration: So könnte der Lerncoach künftig direkt in die OrKan Cloud eingebunden werden.</p>
+
+    <div class="section-heading">1. Verhaltensbasierte Erkennung (Live-Demo)</div>
+    <p class="ci-intro">Die Plattform beobachtet simuliert die Arbeitsschritte des Kunden direkt in der OrKan Cloud. Erkennt sie ein wiederkehrendes Muster wie eine fehlende Shop-URL oder falsch gesetzte Lager MIN/MAX-Werte, wird automatisch eine Wissenslücke vermerkt und der Lernpfad angepasst — ganz ohne dass der Kunde selbst einen Wissenscheck ausfüllen muss.</p>
+    <div class="ci-mockup">
+      <div class="ci-mockup-bar"><span class="ci-mockup-dot"></span><span class="ci-mockup-dot"></span><span class="ci-mockup-dot"></span><span class="ci-mockup-url">app.orkan-cloud.de · Live-Aktivität von ${state.name}</span></div>
+      <div class="ci-mockup-body">
+        <div class="ci-event-log" id="ciEventLog">
+          <div class="ci-empty">Noch keine Aktivität simuliert — klicken Sie unten auf „Nächsten Cloud-Schritt simulieren".</div>
+        </div>
+      </div>
+    </div>
+    <div class="ci-actions">
+      <button class="btn btn-primary" onclick="simulateCloudEvent()">Nächsten Cloud-Schritt simulieren</button>
+      <button class="btn btn-outline" onclick="resetCloudSimulation()">Zurücksetzen</button>
+    </div>
+
+    <div class="section-heading">2. Zwei Wege der Einbindung in die OrKan Cloud</div>
+    <div class="ci-concept-grid">
+      <div class="ci-concept-card">
+        <h4>Kontextsensitive Hilfe-Buttons</h4>
+        <p>An jedem relevanten Arbeitsschritt (z. B. beim Anlegen eines Lieferanten) erscheint ein kleines Fragezeichen-Symbol. Ein Klick öffnet direkt den passenden Abschnitt der Lernplattform.</p>
+        <div class="ci-badge-demo">
+          <div class="ci-fake-field"></div>
+          <div class="ci-help-dot">?</div>
+        </div>
+      </div>
+      <div class="ci-concept-card">
+        <h4>Zentraler Plattform-Button</h4>
+        <p>Ein durchgängig sichtbarer Button öffnet die gesamte Lernplattform als Overlay oder neuen Tab — unabhängig davon, wo sich der Nutzer gerade in der Cloud befindet.</p>
+        <div class="ci-badge-demo" style="justify-content:center">
+          <span class="ci-launcher-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/></svg> Zur Lernplattform</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-callout">
+      <strong>Einordnung für die Bewertung</strong>
+      <p>Die Verhaltenserkennung (1) ist technisch die anspruchsvollste, aber auch wertvollste Variante — sie setzt eine Anbindung an die OrKan-Cloud-Datenbank voraus (siehe Kriterium „Schnittstellenfähigkeit"). Die beiden Einbindungswege (2) sind unabhängig davon schon mit der heutigen Plattform umsetzbar und könnten kurzfristig realisiert werden.</p>
+    </div>
+  `;
+}
+function simulateCloudEvent(){
+  if(ciEventIndex >= CLOUD_EVENTS.length){ showToast('Alle simulierten Cloud-Ereignisse wurden bereits durchlaufen.'); return; }
+  const ev = CLOUD_EVENTS[ciEventIndex++];
+  const log = document.getElementById('ciEventLog');
+  if(log.querySelector('.ci-empty')) log.innerHTML = '';
+  const time = new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const div = document.createElement('div');
+  div.className = 'ci-event';
+  div.innerHTML = `<span class="ci-event-dot ${ev.status}"></span><span>${ev.text}</span><span class="ci-event-time">${time}</span>`;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+
+  if(ev.status === 'warn'){
+    state.weakTopics[ev.topic] = (state.weakTopics[ev.topic]||0)+1;
+    state.adaptiveLog.unshift({ time, text: `Wissenslücke aus Cloud-Beobachtung erkannt: „${ev.topic}" (Ereignis: „${ev.text}") — Lernpfad automatisch angepasst.` });
+    const module = MODULES.find(m=>m.id===ev.moduleId);
+    coachProactive(`Mir ist in der OrKan Cloud aufgefallen: „${ev.text}". Ich habe dazu „${module.title}" priorisiert — schauen Sie es sich gerne an.`);
+    updateSidebarProgress();
+  }
+}
+function resetCloudSimulation(){
+  ciEventIndex = 0;
+  renderCloudIntegration();
 }
 
 /* ============ SIDEBAR PROGRESS ============ */
@@ -1496,6 +1654,37 @@ function renderGaps(){
 }
 
 /* ============ AI PANEL ============ */
+/* ============ PROFILMENÜ ============ */
+function refreshProfileMenu(){
+  document.getElementById('profileMenuAvatar').textContent = state.name.charAt(0).toUpperCase();
+  document.getElementById('profileMenuName').textContent = state.name;
+  document.getElementById('profileMenuRole').textContent = `${state.role} · ${state.company}`;
+  document.getElementById('profileNameInput').value = state.name;
+  document.getElementById('profileCompanyInput').value = state.company;
+  document.getElementById('profileRoleInput').value = state.role;
+}
+function toggleProfileMenu(){
+  document.getElementById('profileMenu').classList.toggle('open');
+}
+document.addEventListener('click', e=>{
+  const wrap = document.querySelector('.profile-wrap');
+  if(wrap && !wrap.contains(e.target)) document.getElementById('profileMenu')?.classList.remove('open');
+});
+function saveProfile(){
+  state.name = document.getElementById('profileNameInput').value.trim() || state.name;
+  state.company = document.getElementById('profileCompanyInput').value.trim() || state.company;
+  state.role = document.getElementById('profileRoleInput').value;
+  document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
+  refreshProfileMenu();
+  updateSidebarProgress();
+  showToast('Profil aktualisiert.');
+  document.getElementById('profileMenu').classList.remove('open');
+}
+function logoutProfile(){
+  document.getElementById('profileMenu').classList.remove('open');
+  document.getElementById('app').style.display='none';
+  document.getElementById('onboarding').style.display='flex';
+}
 function toggleAI(){
   state.aiOpen = !state.aiOpen;
   document.getElementById('aiPanel').classList.toggle('open', state.aiOpen);
