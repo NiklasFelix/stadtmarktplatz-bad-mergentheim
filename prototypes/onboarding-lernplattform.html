@@ -266,7 +266,27 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .tab-content{display:none}
 .tab-content.active{display:block;animation:viewFade .3s ease}
 
-.video-placeholder{background:var(--dark-bg);border-radius:14px;height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:24px;gap:12px}
+.video-placeholder{background:var(--dark-bg);border-radius:14px;height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:24px;gap:12px;overflow:hidden}
+.video-manage-btn{position:absolute;top:12px;right:12px;z-index:2;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:11.5px;font-weight:600;padding:7px 13px;border-radius:8px;cursor:pointer;transition:var(--spring)}
+.video-manage-btn:hover{background:rgba(255,255,255,.22);transform:translateY(-1px)}
+
+/* Video-Manager Modal */
+.vm-overlay{position:fixed;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;background:rgba(31,36,40,.55);opacity:0;pointer-events:none;transition:opacity .2s ease}
+.vm-overlay.open{opacity:1;pointer-events:auto}
+.vm-modal{background:#fff;border-radius:18px;width:480px;max-width:90vw;box-shadow:var(--shadow-lg);padding:24px 26px;transform:translateY(12px);transition:transform .25s cubic-bezier(.34,1.2,.64,1)}
+.vm-overlay.open .vm-modal{transform:translateY(0)}
+.vm-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.vm-head h3{font-size:17px;font-weight:800}
+.vm-tab-bar{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:18px}
+.vm-tab-btn{padding:9px 4px;margin-right:18px;font-size:13px;font-weight:600;color:var(--gray);cursor:pointer;border-bottom:2px solid transparent}
+.vm-tab-btn.active{color:var(--dark-bg);border-bottom-color:var(--green)}
+.vm-tab-panel{display:none}
+.vm-tab-panel.active{display:block}
+.vm-hint{font-size:12.5px;color:var(--gray);line-height:1.55;margin-bottom:14px}
+.vm-file-input{width:100%;font-size:12.5px;padding:10px;border:1.5px dashed var(--border);border-radius:10px;background:var(--bg)}
+.vm-textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'Inter',sans-serif;outline:none;resize:vertical;transition:var(--ease)}
+.vm-textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,167,82,.15)}
+.vm-status{font-size:12px;color:var(--green-dark);margin-top:10px;text-align:center;min-height:16px}
 .play-circle{width:56px;height:56px;border-radius:50%;background:rgba(142,167,82,.2);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--spring)}
 .play-circle:hover{transform:scale(1.08);background:rgba(142,167,82,.3)}
 .play-circle svg{width:20px;height:20px;color:var(--green);margin-left:3px}
@@ -689,6 +709,36 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
   </div>
 </div>
 
+<!-- VIDEO-MANAGER MODAL -->
+<div class="vm-overlay" id="videoManagerModal">
+  <div class="vm-modal">
+    <div class="vm-head">
+      <div>
+        <h3>Video verwalten</h3>
+        <p id="vmModuleTitle" style="font-size:12.5px;color:var(--gray)"></p>
+      </div>
+      <span class="close-x" onclick="closeVideoManager()">&times;</span>
+    </div>
+    <div class="vm-tab-bar">
+      <div class="vm-tab-btn active" data-tab="upload" onclick="switchVmTab('upload')">Video hochladen</div>
+      <div class="vm-tab-btn" data-tab="generate" onclick="switchVmTab('generate')">KI-Video generieren</div>
+    </div>
+    <div class="vm-tab-panel active" id="vmPanel-upload">
+      <p class="vm-hint">Laden Sie ein bereits fertiges Arbeitsvideo hoch. Es ersetzt den Platzhalter direkt im Modul.</p>
+      <input type="file" id="vmUploadInput" accept="video/*" onchange="handleVideoUpload(event)" class="vm-file-input">
+    </div>
+    <div class="vm-tab-panel" id="vmPanel-generate">
+      <p class="vm-hint">Laden Sie eine Quelldatei (z. B. Screen-Recording ohne Ton oder ein Dokument) und/oder ein Transkript hoch. Daraus wird ein KI-gestütztes Erklärvideo erzeugt (z. B. im Stil von Synthesia oder Loom).</p>
+      <label class="field-label">Quelldatei (optional)</label>
+      <input type="file" id="vmGenFile" accept="video/*,.pdf,.docx,.txt" class="vm-file-input">
+      <label class="field-label" style="margin-top:12px">Transkript</label>
+      <textarea id="vmTranscript" class="vm-textarea" rows="5" placeholder="Fügen Sie hier den gesprochenen Text bzw. die Schritt-für-Schritt-Beschreibung ein…"></textarea>
+      <button class="btn btn-primary" style="width:100%;margin-top:14px" onclick="generateAiVideo()">KI-Video generieren</button>
+      <p id="vmGenStatus" class="vm-status"></p>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ============ DATA ============ */
 const MODULES = [
@@ -1021,7 +1071,8 @@ let state = {
   moduleProgress:{1:{started:false,completed:false,quizScore:null,checklist:[]},2:{started:false,completed:false,quizScore:null,checklist:[]},3:{started:false,completed:false,quizScore:null,checklist:[]},4:{started:false,completed:false,quizScore:null,checklist:[]},5:{started:false,completed:false,quizScore:null,checklist:[]},6:{started:false,completed:false,quizScore:null,checklist:[]},7:{started:false,completed:false,quizScore:null,checklist:[]},8:{started:false,completed:false,quizScore:null,checklist:[]}},
   totalTime:0, aiOpen:false, quizAnswers:{}, kbFilter:'Alle', kbSearch:'', currentArticle:null, currentBP:null,
   weakTopics:{}, adaptiveLog:[],
-  integrationOptions:{ behavioral:false, help:false, central:false }
+  integrationOptions:{ behavioral:false, help:false, central:false },
+  moduleVideos:{}, videoManagerModuleId:null
 };
 
 /* ============ ONBOARDING ============ */
@@ -1275,13 +1326,68 @@ function renderModuleDetail(){
 
 function switchTab(tab){ state.currentTab = tab; document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); renderTab(); }
 
+function videoBlockHtml(m){
+  const v = state.moduleVideos[m.id];
+  let inner;
+  if(v && v.type==='uploaded'){
+    inner = `<video src="${v.url}" controls style="width:100%;height:100%;border-radius:14px;object-fit:cover"></video>`;
+  } else if(v && v.type==='generated'){
+    inner = `<div class="play-circle" onclick="this.parentElement.querySelector('span').textContent='Wiedergabe simuliert — KI-Video-Rendering abgeschlossen'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span>KI-generiertes Video bereit: „${v.name}"</span>`;
+  } else {
+    inner = `<div class="play-circle" onclick="this.parentElement.querySelector('span').textContent='Wiedergabe simuliert — Video in Produktion'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span>Prozessnahes Arbeitsvideo: „${m.title}" wird geladen</span>`;
+  }
+  return `<div class="video-placeholder" style="position:relative">
+    <button class="video-manage-btn" onclick="openVideoManager(${m.id})">Video verwalten</button>
+    ${inner}
+  </div>`;
+}
+function openVideoManager(mid){
+  state.videoManagerModuleId = mid;
+  document.getElementById('vmModuleTitle').textContent = MODULES.find(m=>m.id===mid).title;
+  document.getElementById('vmUploadInput').value = '';
+  document.getElementById('vmGenFile').value = '';
+  document.getElementById('vmTranscript').value = '';
+  document.getElementById('vmGenStatus').textContent = '';
+  switchVmTab('upload');
+  document.getElementById('videoManagerModal').classList.add('open');
+}
+function closeVideoManager(){
+  document.getElementById('videoManagerModal').classList.remove('open');
+}
+function switchVmTab(tab){
+  document.querySelectorAll('.vm-tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  document.querySelectorAll('.vm-tab-panel').forEach(p=>p.classList.toggle('active', p.id==='vmPanel-'+tab));
+}
+function handleVideoUpload(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const url = URL.createObjectURL(file);
+  state.moduleVideos[state.videoManagerModuleId] = { type:'uploaded', url, name:file.name };
+  closeVideoManager();
+  renderTab();
+  showToast(`Video „${file.name}" wurde dem Modul zugeordnet.`);
+}
+function generateAiVideo(){
+  const file = document.getElementById('vmGenFile').files[0];
+  const transcript = document.getElementById('vmTranscript').value.trim();
+  if(!file && !transcript){ showToast('Bitte laden Sie eine Quelldatei hoch oder fügen Sie ein Transkript ein.'); return; }
+  const status = document.getElementById('vmGenStatus');
+  status.textContent = 'KI-Video wird generiert …';
+  setTimeout(()=>{
+    const mid = state.videoManagerModuleId;
+    const m = MODULES.find(x=>x.id===mid);
+    state.moduleVideos[mid] = { type:'generated', name:`KI-Video „${m.title}" (${file?file.name:'aus Transkript'})` };
+    status.textContent = 'Fertig — Video wurde dem Modul zugeordnet.';
+    setTimeout(()=>{ closeVideoManager(); renderTab(); showToast('KI-generiertes Video wurde dem Modul zugeordnet. Hinweis: Die Video-Generierung ist im Prototyp simuliert, in Produktion würde ein Dienst wie Synthesia oder Loom das eigentliche Video erzeugen.'); }, 700);
+  }, 1600);
+}
 function renderTab(){
   const m = MODULES.find(x=>x.id===state.currentModule);
   const p = state.moduleProgress[m.id];
   const host = document.getElementById('tabContentHost');
   if(state.currentTab==='content'){
     host.innerHTML = `
-      <div class="video-placeholder"><div class="play-circle" onclick="this.parentElement.querySelector('span').textContent='Wiedergabe simuliert — Video in Produktion'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span>Prozessnahes Arbeitsvideo: „${m.title}" wird geladen</span></div>
+      ${videoBlockHtml(m)}
       <ul class="key-points">${m.points.map(pt=>`<li>${pt}</li>`).join('')}</ul>
       <div class="section-heading" style="margin-top:0">Wichtige Funktionen</div>
       <div class="feature-cards">${m.features.map(f=>`<div class="feature-card"><div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></div><h5>${f.t}</h5><p>${f.d}</p></div>`).join('')}</div>
