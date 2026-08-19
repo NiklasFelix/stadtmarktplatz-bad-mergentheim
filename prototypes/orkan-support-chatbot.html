@@ -29,33 +29,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .orb3{width:250px;height:250px;background:rgba(142,167,82,.12);top:40%;right:-60px;animation-delay:-9s}
 @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.04)}66%{transform:translate(-15px,25px) scale(.97)}}
 
-/* ─── ONBOARDING OVERLAY ─── */
-#onboarding{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.onb-card{background:rgba(255,255,255,.88);backdrop-filter:blur(24px) saturate(1.8);border:1px solid rgba(255,255,255,.7);border-radius:24px;padding:52px 48px;max-width:480px;width:90%;box-shadow:0 24px 80px rgba(31,36,40,.18);text-align:center;animation:cardIn .6s cubic-bezier(.34,1.2,.64,1)}
-@keyframes cardIn{from{opacity:0;transform:translateY(32px) scale(.96)}to{opacity:1;transform:none}}
-.onb-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:32px}
-.onb-icon svg path,.onb-icon svg line{stroke:var(--green)}
-.onb-texts .logo-name{font-size:22px;font-weight:800;color:var(--dark-bg);letter-spacing:-.5px}
-.onb-texts .logo-lines{display:flex;flex-direction:column;gap:2px;margin:6px 0 4px}
-.onb-texts .logo-lines span{height:2px;background:var(--green)}
-.onb-texts .logo-lines span:nth-child(1){width:100%}
-.onb-texts .logo-lines span:nth-child(2){width:72%;margin-left:10px}
-.onb-texts .logo-lines span:nth-child(3){width:48%;margin-left:20px}
-.onb-texts .logo-sub{display:block;font-size:10px;font-weight:700;color:var(--green);letter-spacing:4px;margin-top:2px;margin-left:20px}
-.onb-card h1{font-size:26px;font-weight:800;color:var(--dark-bg);letter-spacing:-.5px;margin-bottom:8px}
-.onb-card p{color:var(--gray);font-size:14.5px;line-height:1.6;margin-bottom:32px}
-.onb-fields{display:flex;flex-direction:column;gap:14px;margin-bottom:28px;text-align:left}
-.onb-fields label{font-size:12px;font-weight:600;color:var(--dark);letter-spacing:.3px;margin-bottom:4px;display:block}
-.onb-fields input{width:100%;padding:13px 16px;border:1.5px solid var(--gray-light);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:var(--transition);background:#fff}
-.onb-fields input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,167,82,.15)}
-.onb-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:var(--spring);letter-spacing:.2px}
-.onb-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 28px rgba(142,167,82,.4)}
-.onb-btn:active{transform:scale(.98)}
-.onb-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
-.onb-feat{background:var(--green-light);border-radius:10px;padding:12px 14px;text-align:left}
-.onb-feat .feat-title{font-size:12px;font-weight:700;color:var(--dark-bg)}
-.onb-feat .feat-desc{font-size:11px;color:var(--gray);margin-top:2px}
-
 /* ─── APP SHELL ─── */
 #app{position:relative;z-index:1;height:100vh;display:flex;flex-direction:column}
 
@@ -66,21 +39,12 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .header-logo .logo-sub{display:block;font-size:9px;font-weight:700;color:var(--green);letter-spacing:4px;margin-top:-2px}
 .header-divider{width:1px;height:32px;background:rgba(255,255,255,.12)}
 .header-title{color:rgba(255,255,255,.9);font-size:14px;font-weight:600}
-.header-badge{background:rgba(142,167,82,.2);border:1px solid rgba(142,167,82,.4);color:var(--green);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.5px}
-.header-context{font-size:11.5px;color:rgba(255,255,255,.45);cursor:default}
-.header-availability{font-size:10.5px;font-weight:700;color:#4ade80;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);padding:4px 10px;border-radius:20px;cursor:default}
 .header-spacer{flex:1}
-.header-pilot{display:flex;align-items:center;gap:8px}
-.pilot-dot{width:8px;height:8px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{opacity:.8;box-shadow:0 0 0 6px rgba(74,222,128,0)}}
-.pilot-label{font-size:12px;color:rgba(255,255,255,.6);font-weight:500}
-.header-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff}
-.header-savings{display:flex;align-items:center;gap:6px;background:rgba(142,167,82,.15);border:1px solid rgba(142,167,82,.3);border-radius:20px;padding:5px 12px}
-.savings-label{font-size:11px;color:rgba(255,255,255,.6)}
-.savings-val{font-size:13px;font-weight:800;color:var(--green)}
+.backoffice-link{background:none;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.5);font-size:11.5px;font-weight:600;padding:6px 14px;border-radius:20px;cursor:pointer;transition:var(--transition);letter-spacing:.2px}
+.backoffice-link:hover{color:rgba(255,255,255,.85);border-color:rgba(255,255,255,.3)}
 
 /* ─── MAIN CONTENT ─── */
-.main-content{flex:1;display:grid;grid-template-columns:280px 1fr 280px;gap:0;overflow:hidden}
+.main-content{flex:1;display:grid;grid-template-columns:280px 1fr;gap:0;overflow:hidden}
 
 /* ─── LEFT SIDEBAR ─── */
 .sidebar-left{background:rgba(255,255,255,.72);backdrop-filter:blur(20px) saturate(1.6);border-right:1px solid rgba(255,255,255,.5);display:flex;flex-direction:column;overflow:hidden}
@@ -188,28 +152,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .closing-btn:hover{transform:translateY(-1px);border-color:var(--green)}
 .closing-btn.primary{background:linear-gradient(135deg,var(--green),var(--green-dark));border-color:transparent;color:#fff}
 
-/* Context switcher */
-.context-switch{position:relative}
-.header-context{cursor:pointer;display:flex;align-items:center;gap:5px;border-radius:8px;padding:4px 8px;transition:var(--transition)}
-.header-context:hover{background:rgba(255,255,255,.08)}
-.header-context svg{width:11px;height:11px;opacity:.6}
-.context-menu{position:fixed;background:#fff;border-radius:12px;box-shadow:var(--shadow-lg);border:1px solid var(--gray-light);width:280px;padding:8px;z-index:150;display:none}
-.context-menu.open{display:block}
-.context-menu-label{font-size:10.5px;font-weight:700;color:var(--gray);letter-spacing:.4px;text-transform:uppercase;padding:8px 10px 4px}
-.context-item{padding:9px 10px;border-radius:8px;cursor:pointer;font-size:12.5px;color:var(--dark);transition:var(--transition)}
-.context-item:hover{background:var(--green-light)}
-.context-item.active{background:var(--green-light);color:var(--green-dark);font-weight:700}
-.context-item-desc{font-size:11px;color:var(--gray);margin-top:1px}
-
-/* Escalation settings modal */
-.modal-overlay{position:fixed;inset:0;background:rgba(31,36,40,.4);backdrop-filter:blur(3px);z-index:200;display:none;align-items:center;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal-card{background:#fff;border-radius:18px;padding:28px;width:440px;max-width:92vw;max-height:86vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
-.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-.modal-title{font-size:17px;font-weight:800;color:var(--dark-bg)}
-.modal-close{background:none;border:none;cursor:pointer;color:var(--gray);font-size:18px;line-height:1;padding:4px}
-.modal-sub{font-size:12.5px;color:var(--gray);margin-bottom:20px;line-height:1.5}
-.modal-section{margin-bottom:18px}
+/* Eskalationseinstellungen (Backoffice) */
 .modal-label{font-size:12px;font-weight:700;color:var(--dark);margin-bottom:8px;display:block}
 .modal-hours{display:flex;align-items:center;gap:8px}
 .modal-hours input{padding:9px 10px;border:1.5px solid var(--gray-light);border-radius:9px;font-size:13px;font-family:'Inter',sans-serif;width:90px}
@@ -223,6 +166,31 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .route-opt-desc{font-size:11px;color:var(--gray);margin-top:1px}
 .modal-save{width:100%;padding:13px;background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;transition:var(--spring)}
 .modal-save:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(142,167,82,.35)}
+
+/* ─── BACKOFFICE ─── */
+#backofficeView{position:relative;z-index:1;height:100vh;display:flex;flex-direction:column}
+.bo-content{flex:1;overflow-y:auto;padding:28px}
+.bo-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+.bo-wide{grid-column:span 3}
+@media(max-width:1000px){.bo-grid{grid-template-columns:1fr}.bo-wide{grid-column:span 1}}
+.agent-log{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto}
+.agent-log-item{display:flex;gap:10px;padding:9px 10px;background:rgba(142,167,82,.06);border:1px solid rgba(142,167,82,.15);border-radius:9px}
+.agent-log-icon{width:22px;height:22px;border-radius:50%;background:var(--green-light);color:var(--green-dark);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.agent-log-icon svg{width:12px;height:12px}
+.agent-log-text{font-size:12px;color:var(--dark);line-height:1.4}
+.agent-log-time{font-size:10.5px;color:var(--gray);margin-top:1px}
+.roadmap-row{display:flex;align-items:stretch;gap:18px}
+.roadmap-col{flex:1;background:rgba(255,255,255,.5);border:1px solid var(--gray-light);border-radius:12px;padding:14px 16px}
+.roadmap-label{font-size:11px;font-weight:700;color:var(--green-dark);letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px}
+.roadmap-list{padding-left:16px;display:flex;flex-direction:column;gap:7px}
+.roadmap-list li{font-size:12.5px;color:var(--dark);line-height:1.5}
+.roadmap-arrow{display:flex;align-items:center;font-size:22px;color:var(--gray)}
+@media(max-width:700px){.roadmap-row{flex-direction:column}.roadmap-arrow{transform:rotate(90deg);justify-content:center}}
+.context-preset-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border:1.5px solid var(--gray-light);border-radius:9px;cursor:pointer;transition:var(--transition)}
+.context-preset-item:hover{border-color:var(--green)}
+.context-preset-item.active{border-color:var(--green);background:var(--green-light)}
+.context-preset-title{font-size:12.5px;font-weight:600;color:var(--dark)}
+.context-preset-desc{font-size:10.5px;color:var(--gray)}
 
 /* Knowledge gaps list */
 .gap-list{display:flex;flex-direction:column;gap:6px}
@@ -251,7 +219,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .attach-btn:hover{border-color:var(--green);color:var(--green-dark);transform:translateY(-1px)}
 .image-preview-bar{display:flex;gap:8px;margin-bottom:8px}
 .image-preview-item{position:relative;width:56px;height:56px;border-radius:10px;overflow:hidden;border:1.5px solid var(--green)}
-.image-preview-item img{width:100%;height:100%;object-fit:cover;display:block}
+.image-preview-item img,.image-preview-item video{width:100%;height:100%;object-fit:cover;display:block}
 .image-preview-remove{position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:rgba(31,36,40,.75);color:#fff;border:none;font-size:11px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .msg-image{max-width:220px;border-radius:10px;margin-bottom:8px;display:block}
 .intent-tag{display:inline-block;font-size:10px;font-weight:700;color:var(--green-dark);background:var(--green-light);padding:2px 8px;border-radius:8px;margin-top:8px;letter-spacing:.2px}
@@ -314,7 +282,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .rating-num{font-size:18px;font-weight:800;color:var(--dark-bg)}
 
 /* Responsive hidden panels */
-@media(max-width:1100px){.sidebar-left,.sidebar-right{display:none}.main-content{grid-template-columns:1fr}}
+@media(max-width:900px){.sidebar-left{display:none}.main-content{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -322,47 +290,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 <div class="orb orb1"></div>
 <div class="orb orb2"></div>
 <div class="orb orb3"></div>
-
-<!-- ONBOARDING -->
-<div id="onboarding">
-  <div class="onb-card">
-    <div class="onb-logo">
-      <div class="onb-icon">
-        <svg width="52" height="52" viewBox="0 0 100 100" fill="none">
-          <ellipse cx="50" cy="18" rx="36" ry="7" fill="#8EA752"/>
-          <ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8EA752"/>
-          <ellipse cx="54" cy="50" rx="21" ry="6" fill="#8EA752"/>
-          <ellipse cx="47" cy="65" rx="13" ry="5" fill="#8EA752"/>
-          <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/>
-        </svg>
-      </div>
-      <div class="onb-texts">
-        <span class="logo-name">OrKan</span>
-        <div class="logo-lines"><span></span><span></span><span></span></div>
-        <span class="logo-sub">SYSTEM</span>
-      </div>
-    </div>
-    <h1>KI-Support-Assistent</h1>
-    <p>Sofortige Antworten auf Ihre OrKan Cloud-Fragen – rund um die Uhr, ohne Wartezeit.</p>
-    <div class="onb-fields">
-      <div>
-        <label>Ihr Name</label>
-        <input type="text" id="onbName" placeholder="z. B. Thomas Müller" autocomplete="off">
-      </div>
-      <div>
-        <label>Unternehmen</label>
-        <input type="text" id="onbCompany" placeholder="z. B. Sanitär Meier GmbH" autocomplete="off">
-      </div>
-    </div>
-    <button class="onb-btn" onclick="startChat()">Support-Chat starten →</button>
-    <div class="onb-features">
-      <div class="onb-feat"><div class="feat-title">Sofortantworten</div><div class="feat-desc">Keine Wartezeit</div></div>
-      <div class="onb-feat"><div class="feat-title">Wissensbasiert</div><div class="feat-desc">Geprüfte Wissensdatenbank</div></div>
-      <div class="onb-feat"><div class="feat-title">Pilot-Tracking</div><div class="feat-desc">Live-Auswertung</div></div>
-      <div class="onb-feat"><div class="feat-title">Eskalation</div><div class="feat-desc">Bei Bedarf zum Experten</div></div>
-    </div>
-  </div>
-</div>
 
 <!-- APP -->
 <div id="app">
@@ -377,30 +304,14 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
         <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/>
       </svg>
       <div>
-        <div class="logo-name">OrKan</div>
-        <div class="logo-sub">SYSTEM</div>
+        <div class="logo-name">OrKan Cloud</div>
+        <div class="logo-sub">SUPPORT</div>
       </div>
     </div>
     <div class="header-divider"></div>
-    <div class="header-title">KI-Support-Assistent</div>
-    <div class="header-badge">PILOT v1.0</div>
-    <div class="context-switch">
-      <div class="header-context" onclick="toggleContextMenu()" title="Einstiegspunkt in der OrKan Cloud simulieren – der Assistent ist über einen Button auf jeder Seite und jeder Detailseite erreichbar">
-        <span id="contextLabel">Aufgerufen aus: Lagerverwaltung → Artikel</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-    </div>
+    <div class="header-title">Support</div>
     <div class="header-spacer"></div>
-    <div class="header-availability" title="Automatisierte Antworten sind rund um die Uhr verfügbar, unabhängig von Support-Öffnungszeiten">24/7 verfügbar</div>
-    <div class="header-savings">
-      <span class="savings-label">Zeitersparnis heute</span>
-      <span class="savings-val" id="headerSavings">0 Min.</span>
-    </div>
-    <div class="header-pilot">
-      <div class="pilot-dot"></div>
-      <span class="pilot-label">System aktiv</span>
-    </div>
-    <div class="header-avatar" id="headerAvatar">?</div>
+    <button class="backoffice-link" onclick="showBackoffice()">Backoffice</button>
   </header>
 
   <!-- MAIN -->
@@ -430,7 +341,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
           </div>
         </div>
         <div class="chat-actions">
-          <button class="action-btn action-btn-ghost" onclick="openEscalationSettings()" title="Geschäftszeiten und Eskalationsweg festlegen">Eskalationseinstellungen</button>
           <button class="action-btn action-btn-ghost" onclick="requestClosingFeedback()" title="Anliegen als gelöst oder ungelöst markieren">Anliegen abschließen</button>
           <button class="action-btn action-btn-ghost" onclick="clearChat()">Chat leeren</button>
           <button class="action-btn action-btn-green" onclick="exportChat()">Export</button>
@@ -440,8 +350,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
       <div class="chat-input-area">
         <div class="image-preview-bar" id="imagePreviewBar"></div>
         <div class="input-wrap">
-          <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="handleImageSelect(event)">
-          <button class="attach-btn" onclick="document.getElementById('imgInput').click()" title="Foto anhängen (z. B. Fehlermeldung oder defektes Bauteil)">
+          <input type="file" id="imgInput" accept="image/*,video/*" style="display:none" onchange="handleImageSelect(event)">
+          <button class="attach-btn" onclick="document.getElementById('imgInput').click()" title="Foto oder Video anhängen">
             <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
           </button>
           <div class="input-field">
@@ -451,18 +361,41 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </button>
         </div>
-        <div class="input-hint">Enter senden · Shift+Enter neue Zeile · Foto-Symbol für Bildupload · Antworten des Assistenten sind automatisiert</div>
       </div>
     </section>
+  </div>
+</div>
 
-    <!-- RIGHT: DASHBOARD -->
-    <aside class="sidebar-right">
+<!-- ═══════════════════════════ BACKOFFICE ═══════════════════════════ -->
+<div id="backofficeView" style="display:none">
+  <header class="app-header">
+    <div class="header-logo">
+      <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
+        <ellipse cx="50" cy="18" rx="36" ry="7" fill="#8EA752"/>
+        <ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8EA752"/>
+        <ellipse cx="54" cy="50" rx="21" ry="6" fill="#8EA752"/>
+        <ellipse cx="47" cy="65" rx="13" ry="5" fill="#8EA752"/>
+        <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/>
+      </svg>
+      <div>
+        <div class="logo-name">OrKan Cloud</div>
+        <div class="logo-sub">SUPPORT</div>
+      </div>
+    </div>
+    <div class="header-divider"></div>
+    <div class="header-title">Backoffice</div>
+    <div class="header-spacer"></div>
+    <button class="backoffice-link" onclick="showCustomerView()">← Zur Kundenansicht</button>
+  </header>
+
+  <div class="bo-content">
+    <div class="bo-grid">
       <!-- Zeitersparnis -->
       <div class="savings-widget">
-        <div class="savings-title">Zeitersparnis (Pilot)</div>
+        <div class="savings-title">Mitarbeiterentlastung (Pilot)</div>
         <div class="savings-big" id="savingsMin">0</div>
         <div class="savings-unit">Minuten gespart</div>
-        <div class="savings-note">+4 Min. je beantworteter Frage vs. manuellem Support</div>
+        <div class="savings-note">+4 Min. je automatisiert beantworteter Frage vs. manuellem Support</div>
       </div>
 
       <!-- Hauptstatistik -->
@@ -565,57 +498,92 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
           <span>Wissensbasis aktualisiert: heute · <strong id="kbCoverage">17</strong> Einträge</span>
         </div>
       </div>
-    </aside>
-  </div>
-</div>
 
-<!-- KONTEXT-DROPDOWN (außerhalb des Headers, um Stacking-Context-Probleme durch backdrop-filter zu vermeiden) -->
-<div class="context-menu" id="contextMenu">
-  <div class="context-menu-label">Einstiegspunkt simulieren</div>
-  <div id="contextMenuItems"></div>
-</div>
+      <!-- KI-Agent Aktivitätsprotokoll -->
+      <div class="stat-card bo-wide">
+        <div class="stat-card-header">
+          <div class="stat-card-title">KI-Agent – Aktivitätsprotokoll</div>
+          <div class="stat-card-badge badge-blue" id="agentLogBadge">0</div>
+        </div>
+        <p style="font-size:11.5px;color:var(--gray);margin:-4px 0 10px">Protokolliert, wann der Agent selbstständig entscheidet, handelt oder aus Feedback lernt – nicht nur, wann er antwortet.</p>
+        <div class="agent-log" id="agentLog">
+          <div class="gap-empty">Noch keine Aktivität in dieser Sitzung</div>
+        </div>
+      </div>
 
-<!-- ESKALATIONSEINSTELLUNGEN -->
-<div class="modal-overlay" id="escSettingsModal">
-  <div class="modal-card">
-    <div class="modal-header">
-      <span class="modal-title">Eskalationseinstellungen</span>
-      <button class="modal-close" onclick="closeEscalationSettings()">&times;</button>
-    </div>
-    <p class="modal-sub">Legen Sie fest, wann und wie ungelöste Anliegen an Ihr Team weitergegeben werden.</p>
-    <div class="modal-section">
-      <label class="modal-label">Geschäftszeiten</label>
-      <div class="modal-hours">
-        <input type="time" id="hoursFrom" value="08:00">
-        <span>bis</span>
-        <input type="time" id="hoursTo" value="17:00">
-        <span>Uhr</span>
+      <!-- Eskalationseinstellungen -->
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-card-title">Eskalationseinstellungen</div>
+        </div>
+        <p style="font-size:11.5px;color:var(--gray);margin:-4px 0 12px">Legt fest, wann und wie ungelöste Anliegen an Ihr Team weitergegeben werden.</p>
+        <label class="modal-label">Geschäftszeiten</label>
+        <div class="modal-hours" style="margin-bottom:16px">
+          <input type="time" id="hoursFrom" value="08:00">
+          <span>bis</span>
+          <input type="time" id="hoursTo" value="17:00">
+          <span>Uhr</span>
+        </div>
+        <label class="modal-label">Eskalationsweg</label>
+        <div class="route-options" id="routeOptions">
+          <label class="route-opt selected" data-route="email">
+            <input type="radio" name="escRoute" value="email" checked>
+            <div><div class="route-opt-title">Weiterleitung per E-Mail</div><div class="route-opt-desc">Ticket geht an eine hinterlegte Support-Adresse</div></div>
+          </label>
+          <label class="route-opt" data-route="team">
+            <input type="radio" name="escRoute" value="team">
+            <div><div class="route-opt-title">An Support-Team zuweisen</div><div class="route-opt-desc">Nächster verfügbarer Mitarbeiter übernimmt das Ticket</div></div>
+          </label>
+          <label class="route-opt" data-route="custom">
+            <input type="radio" name="escRoute" value="custom">
+            <div><div class="route-opt-title">Individuelle Aktion</div><div class="route-opt-desc">Z. B. Rückruf-Anfrage direkt im Kalender des Ansprechpartners anlegen</div></div>
+          </label>
+        </div>
+        <button class="modal-save" style="margin-top:14px" onclick="saveEscalationSettings()">Einstellungen übernehmen</button>
+      </div>
+
+      <!-- Einstiegspunkt-Simulation -->
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-card-title">Einstiegspunkt-Simulation</div>
+        </div>
+        <p style="font-size:11.5px;color:var(--gray);margin:-4px 0 12px">Der Assistent ist über denselben Button auf jeder Seite und jeder Detailseite der OrKan Cloud erreichbar. Vorschau, welche Themen er dort vorschlägt:</p>
+        <div id="contextPresetList" style="display:flex;flex-direction:column;gap:6px"></div>
+        <div id="contextPreview" style="margin-top:10px"></div>
+      </div>
+
+      <!-- Technologie-Roadmap -->
+      <div class="stat-card bo-wide">
+        <div class="stat-card-header">
+          <div class="stat-card-title">Technologie-Roadmap</div>
+        </div>
+        <div class="roadmap-row">
+          <div class="roadmap-col">
+            <div class="roadmap-label">Heute – Pilot</div>
+            <ul class="roadmap-list">
+              <li>Kuratierte Wissensbasis mit intentbasierter Zuordnung</li>
+              <li>Feste Antworttexte je erkanntem Thema</li>
+              <li>Eskalation bei fehlender Übereinstimmung</li>
+            </ul>
+          </div>
+          <div class="roadmap-arrow">→</div>
+          <div class="roadmap-col">
+            <div class="roadmap-label">Geplant – LLM-basiert</div>
+            <ul class="roadmap-list">
+              <li>Antworten werden aus dem Gesprächskontext frei formuliert statt aus Vorlagen zusammengesetzt</li>
+              <li>Der Agent löst wiederkehrende Schritte eigenständig aus (z. B. Ticket anlegen, Kalendertermin buchen)</li>
+              <li>Kontinuierliches Lernen aus Feedback und Support-Historie ohne manuelle Pflege der Wissensbasis</li>
+              <li>Entlastet Mitarbeitende zusätzlich bei komplexeren, mehrstufigen Anliegen</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="modal-section">
-      <label class="modal-label">Eskalationsweg</label>
-      <div class="route-options" id="routeOptions">
-        <label class="route-opt selected" data-route="email">
-          <input type="radio" name="escRoute" value="email" checked>
-          <div><div class="route-opt-title">Weiterleitung per E-Mail</div><div class="route-opt-desc">Ticket geht an eine hinterlegte Support-Adresse</div></div>
-        </label>
-        <label class="route-opt" data-route="team">
-          <input type="radio" name="escRoute" value="team">
-          <div><div class="route-opt-title">An Support-Team zuweisen</div><div class="route-opt-desc">Nächster verfügbarer Mitarbeiter übernimmt das Ticket</div></div>
-        </label>
-        <label class="route-opt" data-route="custom">
-          <input type="radio" name="escRoute" value="custom">
-          <div><div class="route-opt-title">Individuelle Aktion</div><div class="route-opt-desc">Z. B. Rückruf-Anfrage direkt im Kalender des Ansprechpartners anlegen</div></div>
-        </label>
-      </div>
-    </div>
-    <button class="modal-save" onclick="saveEscalationSettings()">Einstellungen übernehmen</button>
   </div>
 </div>
 
 <script>
 // ─── STATE ───
-let userName = '', userCompany = '';
 let stats = { answered: 0, escalated: 0, positive: 0, negative: 0, savings: 0 };
 let msgCounter = 0;
 let ticketCounter = 1001;
@@ -640,6 +608,7 @@ const ROUTE_MESSAGES = {
   }
 };
 const knowledgeGaps = new Map();
+const agentLog = [];
 
 const CONTEXT_PRESETS = [
   { id: 'artikel', label: 'Lagerverwaltung → Artikel', desc: 'Artikelübersicht / Artikel-Detailseite', ids: ['art1','art2','etk1'] },
@@ -841,14 +810,21 @@ const CATEGORIES = [
 ];
 
 // ─── INIT ───
-function startChat() {
-  userName = document.getElementById('onbName').value.trim() || 'Nutzer';
-  userCompany = document.getElementById('onbCompany').value.trim() || 'Ihr Unternehmen';
-  document.getElementById('onboarding').style.display = 'none';
-  document.getElementById('headerAvatar').textContent = userName.charAt(0).toUpperCase();
+function initApp() {
   buildCategories();
   addWelcomeMessage();
   animateBars();
+  renderContextPresetList();
+}
+
+function showBackoffice() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('backofficeView').style.display = 'flex';
+}
+
+function showCustomerView() {
+  document.getElementById('backofficeView').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
 }
 
 function buildCategories(filter='') {
@@ -888,9 +864,8 @@ function filterCategories(val) {
 function addWelcomeMessage() {
   const wrap = document.getElementById('messagesWrap');
   wrap.innerHTML = '';
-  addBotMessage(`<h4>Willkommen, ${userName}!</h4>
-    <p>Ich bin Ihr KI-Support-Assistent für die <strong>OrKan Cloud</strong>. Ich beantworte Ihre Fragen sofort – ohne Wartezeit.</p>
-    <p style="margin-top:8px">Tippen Sie Ihre Frage oder wählen Sie links ein Thema aus. Wie kann ich Ihnen helfen?</p>`);
+  addBotMessage(`<h4>Willkommen beim OrKan Support</h4>
+    <p>Stellen Sie Ihre Frage zur OrKan Cloud oder wählen Sie links ein Thema aus. Bei Bedarf hängen Sie auch ein Foto oder Video an.</p>`, false);
 }
 
 function addBotMessage(html, withFeedback = true) {
@@ -922,11 +897,14 @@ function addUserMessage(text, imageDataUrl) {
   const time = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
   const div = document.createElement('div');
   div.className = 'msg user';
+  const mediaHtml = !imageDataUrl ? '' : imageDataUrl.startsWith('data:video')
+    ? `<video class="msg-image" src="${imageDataUrl}" controls></video>`
+    : `<img class="msg-image" src="${imageDataUrl}">`;
   div.innerHTML = `
-    <div class="msg-avatar">${userName.charAt(0).toUpperCase()}</div>
+    <div class="msg-avatar">K</div>
     <div>
       <div class="msg-bubble">
-        ${imageDataUrl ? `<img class="msg-image" src="${imageDataUrl}">` : ''}
+        ${mediaHtml}
         ${text ? `<p>${text}</p>` : ''}
         <div class="msg-meta" style="justify-content:flex-end">
           <span class="msg-time" style="color:rgba(255,255,255,.5)">${time}</span>
@@ -1079,6 +1057,7 @@ function sendMessage() {
         }
       });
       addBotMessage(html);
+      logAgentAction('action', `Nachricht in ${result.entries.length} eigenständige Anliegen zerlegt und jedes einzeln beantwortet, statt nur auf das dominanteste Stichwort zu reagieren.`);
       lastTopic = result.entries[result.entries.length - 1];
       result.entries.forEach(entry => {
         if (entry.handoff) { stats.escalated++; registerGap(entry.title, true); }
@@ -1090,6 +1069,7 @@ function sendMessage() {
 
     if (result.entry.handoff) { handoff(result.entry); return; }
     const contextNote = result.contextUsed ? `<p style="font-size:12px;color:var(--gray);margin-top:6px">Bezogen auf Ihre vorherige Frage zu „${result.entry.title}".</p>` : '';
+    if (result.contextUsed) logAgentAction('context', `Anschlussfrage ohne eigenes Stichwort eigenständig auf „${result.entry.title}" bezogen.`);
     addBotMessage(traceHtml(['Intent erkannt: ' + result.entry.cat, 'Wissensbasis durchsucht', 'Antwortqualität geprüft']) +
       result.entry.answer + contextNote + `<span class="intent-tag">Erkanntes Thema: ${result.entry.cat}</span>`);
     lastTopic = result.entry;
@@ -1099,13 +1079,14 @@ function sendMessage() {
   }, 900 + Math.random() * 700);
 }
 
-// ─── MULTIMODALITÄT: Bild-Upload (z. B. Foto einer Fehlermeldung oder eines defekten Bauteils) ───
+// ─── MULTIMODALITÄT: Foto- oder Video-Upload (z. B. Fehlermeldung oder defektes Bauteil) ───
 function handleImageSelect(event) {
   const file = event.target.files[0];
   if (!file) return;
+  const isVideo = file.type.startsWith('video/');
   const reader = new FileReader();
   reader.onload = e => {
-    pendingImage = { dataUrl: e.target.result, name: file.name };
+    pendingImage = { dataUrl: e.target.result, name: file.name, isVideo };
     renderImagePreview();
   };
   reader.readAsDataURL(file);
@@ -1113,11 +1094,15 @@ function handleImageSelect(event) {
 }
 function renderImagePreview() {
   const bar = document.getElementById('imagePreviewBar');
-  bar.innerHTML = pendingImage ? `
+  if (!pendingImage) { bar.innerHTML = ''; return; }
+  const media = pendingImage.isVideo
+    ? `<video src="${pendingImage.dataUrl}" muted></video>`
+    : `<img src="${pendingImage.dataUrl}">`;
+  bar.innerHTML = `
     <div class="image-preview-item">
-      <img src="${pendingImage.dataUrl}">
+      ${media}
       <button class="image-preview-remove" onclick="clearPendingImage()">&times;</button>
-    </div>` : '';
+    </div>`;
 }
 function clearPendingImage() {
   pendingImage = null;
@@ -1125,18 +1110,19 @@ function clearPendingImage() {
 }
 function handleImageQuery(caption, image) {
   const name = image.name.toLowerCase();
+  const kind = image.isVideo ? 'Video' : 'Foto';
   let response;
-  if (name.includes('fehler') || name.includes('error') || (caption && caption.toLowerCase().includes('fehler'))) {
+  if (!image.isVideo && (name.includes('fehler') || name.includes('error') || (caption && caption.toLowerCase().includes('fehler')))) {
     response = `<h4>Bildanalyse: Fehlermeldung</h4>
       <p>Ich habe Ihr Bild ausgewertet. Bei Fehlermeldungen im Import- oder Bestellprozess helfen meist folgende Schritte:</p>
       <ul><li>Prüfen Sie die Fehlermeldung auf Angaben zu Artikelnummer oder Zeile</li><li>Bei Import-Fehlern: Zeichensatz und Bildzuordnung kontrollieren</li><li>Screenshot für den Support aufbewahren, falls eine Eskalation nötig wird</li></ul>
-      <p style="margin-top:6px;color:var(--gray);font-size:12px">Hinweis: Die Bildauswertung ist im Pilotversuch simuliert und basiert auf dem Dateinamen. In der produktiven Version würde ein Bild-Modell die Fehlermeldung direkt auslesen.</p>`;
+      <p style="margin-top:6px;color:var(--gray);font-size:12px">Hinweis: Die Bildauswertung ist im Pilotversuch simuliert und basiert auf dem Dateinamen.</p>`;
   } else {
-    response = `<h4>Bild erhalten</h4>
-      <p>Danke für das Foto${caption ? ' und Ihre Nachricht' : ''}. Für eine zuverlässige Einschätzung von Bauteilen oder Etiketten leite ich das Bild an einen Mitarbeiter weiter.</p>
-      <p style="margin-top:6px;color:var(--gray);font-size:12px">Hinweis: Die Bildauswertung ist im Pilotversuch simuliert. In der produktiven Version würde ein multimodales Sprachmodell den Bildinhalt direkt analysieren.</p>`;
+    response = `<h4>${kind} erhalten</h4>
+      <p>Danke für das ${kind.toLowerCase()}${caption ? ' und Ihre Nachricht' : ''}. Für eine zuverlässige Einschätzung leite ich es an einen Mitarbeiter weiter.</p>
+      <p style="margin-top:6px;color:var(--gray);font-size:12px">Hinweis: Die Auswertung ist im Pilotversuch simuliert.</p>`;
     addBotMessage(response);
-    escalate(caption || '[Bildanfrage: ' + image.name + ']');
+    escalate(caption || `[${kind}anfrage: ` + image.name + ']');
     return;
   }
   addBotMessage(response + `<span class="intent-tag">Erkanntes Thema: Bildbasierte Anfrage</span>`);
@@ -1177,6 +1163,7 @@ function escalate(question) {
       </div>
     </div>`;
   addBotMessage(traceHtml(['Wissensbasis durchsucht', 'Keine ausreichende Übereinstimmung', 'An Support-Team eskaliert']) + html);
+  logAgentAction('action', `Ticket ${ticket} selbstständig angelegt und ${escalationSettings.route === 'email' ? 'per E-Mail weitergeleitet' : escalationSettings.route === 'team' ? 'dem Team zugewiesen' : 'als Rückruf-Termin eingeplant'} – ohne manuelle Freigabe.`);
   updateStats();
 }
 
@@ -1193,8 +1180,38 @@ function handoff(entry) {
       <span class="esc-ticket" style="display:inline-block;margin-top:10px">${ticket}</span>
     </div>`;
   addBotMessage(traceHtml(['Intent erkannt: ' + entry.cat, 'Als individuelles Thema eingestuft', 'An Support weitergeleitet']) + html);
+  logAgentAction('handoff', `„${entry.title}" eigenständig als individuelles Thema erkannt und ohne Umweg über eine Fehlantwort direkt weitergeleitet.`);
   lastTopic = entry;
   updateStats();
+}
+
+// ─── KI-AGENT AKTIVITÄTSPROTOKOLL (Backoffice) ───
+const AGENT_LOG_ICONS = {
+  action: '<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/>',
+  learn: '<path d="M12 20v-6M12 4v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
+  context: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>',
+  handoff: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'
+};
+function logAgentAction(kind, text) {
+  const time = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  agentLog.unshift({ kind, text, time });
+  renderAgentLog();
+}
+function renderAgentLog() {
+  const list = document.getElementById('agentLog');
+  const badge = document.getElementById('agentLogBadge');
+  if (!list) return;
+  if (agentLog.length === 0) {
+    list.innerHTML = '<div class="gap-empty">Noch keine Aktivität in dieser Sitzung</div>';
+    badge.textContent = '0';
+    return;
+  }
+  list.innerHTML = agentLog.slice(0, 20).map(e => `
+    <div class="agent-log-item">
+      <div class="agent-log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${AGENT_LOG_ICONS[e.kind] || AGENT_LOG_ICONS.action}</svg></div>
+      <div><div class="agent-log-text">${e.text}</div><div class="agent-log-time">${e.time}</div></div>
+    </div>`).join('');
+  badge.textContent = agentLog.length;
 }
 
 function registerGap(topic, isHandoff = false) {
@@ -1224,7 +1241,10 @@ function feedback(msgId, type, btn) {
     stats.positive++;
   } else {
     stats.negative++;
-    if (lastTopic) registerGap(lastTopic.title + ' – negatives Feedback');
+    if (lastTopic) {
+      registerGap(lastTopic.title + ' – negatives Feedback');
+      logAgentAction('learn', `Negatives Feedback zu „${lastTopic.title}" registriert – Antwort wird zur Überarbeitung vorgemerkt (Lernschleife).`);
+    }
     const bubble = parent.closest('.msg-bubble');
     if (bubble && !bubble.querySelector('.learning-note')) {
       const note = document.createElement('div');
@@ -1259,67 +1279,42 @@ function closingUnresolved(btn) {
   escalate(lastTopic ? lastTopic.title : 'Offenes Anliegen aus dem Chat');
 }
 
-// ─── KONTEXT-UMSCHALTER (Schnittstelle: Button auf jeder Seite/Detailseite der OrKan Cloud) ───
-function toggleContextMenu() {
-  const menu = document.getElementById('contextMenu');
-  if (!menu.classList.contains('open')) {
-    buildContextMenu();
-    const rect = document.querySelector('.header-context').getBoundingClientRect();
-    menu.style.top = (rect.bottom + 8) + 'px';
-    menu.style.left = rect.left + 'px';
-  }
-  menu.classList.toggle('open');
-}
-
-function buildContextMenu() {
-  const wrap = document.getElementById('contextMenuItems');
+// ─── EINSTIEGSPUNKT-SIMULATION (Backoffice-Vorschau, K7: Schnittstellenfähigkeit) ───
+function renderContextPresetList() {
+  const wrap = document.getElementById('contextPresetList');
+  if (!wrap) return;
   wrap.innerHTML = CONTEXT_PRESETS.map(p => `
-    <div class="context-item ${p.id === currentContextId ? 'active' : ''}" onclick="applyContext('${p.id}')">
-      <div>${p.label}</div>
-      <div class="context-item-desc">${p.desc}</div>
+    <div class="context-preset-item ${p.id === currentContextId ? 'active' : ''}" onclick="previewContext('${p.id}')">
+      <div>
+        <div class="context-preset-title">${p.label}</div>
+        <div class="context-preset-desc">${p.desc}</div>
+      </div>
     </div>`).join('');
 }
 
-function applyContext(id) {
+function previewContext(id) {
   const preset = CONTEXT_PRESETS.find(p => p.id === id);
   if (!preset) return;
   currentContextId = id;
-  document.getElementById('contextLabel').textContent = 'Aufgerufen aus: ' + preset.label;
-  document.getElementById('contextMenu').classList.remove('open');
+  renderContextPresetList();
   const suggestions = preset.ids.map(qid => KB.find(k => k.id === qid)).filter(Boolean);
-  addBotMessage(`<h4>Kontext übernommen: ${preset.label}</h4>
-    <p>Der Assistent ist über denselben Button auf jeder Seite und jeder Detailseite der OrKan Cloud erreichbar. Passend zu dieser Seite:</p>
-    <div style="margin-top:8px">${suggestions.map(s => `<span class="quick-chip" onclick="askQuestion('${s.id}')">${s.title}</span>`).join('')}</div>`, false);
+  document.getElementById('contextPreview').innerHTML = `
+    <p style="font-size:11px;color:var(--gray);margin-bottom:6px">Vorschläge auf dieser Seite:</p>
+    ${suggestions.map(s => `<span class="quick-chip">${s.title}</span>`).join('')}`;
 }
 
-document.addEventListener('click', function (e) {
-  const switchEl = document.querySelector('.context-switch');
-  const menu = document.getElementById('contextMenu');
-  if (switchEl && menu && !switchEl.contains(e.target)) menu.classList.remove('open');
-});
-
-// ─── ESKALATIONSEINSTELLUNGEN ───
-function openEscalationSettings() {
-  document.getElementById('hoursFrom').value = escalationSettings.hoursFrom;
-  document.getElementById('hoursTo').value = escalationSettings.hoursTo;
-  document.querySelectorAll('.route-opt').forEach(el => {
-    const active = el.dataset.route === escalationSettings.route;
-    el.classList.toggle('selected', active);
-    el.querySelector('input').checked = active;
-  });
-  document.getElementById('escSettingsModal').classList.add('open');
-}
-
-function closeEscalationSettings() {
-  document.getElementById('escSettingsModal').classList.remove('open');
-}
-
+// ─── ESKALATIONSEINSTELLUNGEN (Backoffice) ───
 function saveEscalationSettings() {
   escalationSettings.hoursFrom = document.getElementById('hoursFrom').value || escalationSettings.hoursFrom;
   escalationSettings.hoursTo = document.getElementById('hoursTo').value || escalationSettings.hoursTo;
   const checked = document.querySelector('input[name="escRoute"]:checked');
   escalationSettings.route = checked ? checked.value : escalationSettings.route;
-  closeEscalationSettings();
+  const btn = document.querySelector('.modal-save');
+  if (btn) {
+    const original = btn.textContent;
+    btn.textContent = 'Übernommen';
+    setTimeout(() => { btn.textContent = original; }, 1500);
+  }
 }
 
 document.getElementById('routeOptions')?.addEventListener('click', e => {
@@ -1336,7 +1331,6 @@ function updateStats() {
   document.getElementById('statAnswered').textContent = stats.answered;
   document.getElementById('statEscalated').textContent = stats.escalated;
   document.getElementById('savingsMin').textContent = stats.savings;
-  document.getElementById('headerSavings').textContent = stats.savings + ' Min.';
   document.getElementById('statPositive').textContent = stats.positive;
   document.getElementById('statNegative').textContent = stats.negative;
 
@@ -1394,16 +1388,21 @@ function clearChat() {
 }
 
 function exportChat() {
-  const msgs = document.querySelectorAll('.msg-bubble');
-  let text = `OrKan Cloud – Support-Chat Export\nDatum: ${new Date().toLocaleString('de-DE')}\nNutzer: ${userName} (${userCompany})\n${'─'.repeat(50)}\n\n`;
-  msgs.forEach((m, i) => { text += (i % 2 === 0 ? 'BOT: ' : `${userName}: `) + m.innerText.split('\n').filter(l => l.trim()).join(' ').substring(0, 200) + '\n\n'; });
-  text += `\n${'─'.repeat(50)}\nStatistiken:\n- Fragen beantwortet: ${stats.answered}\n- Eskalationen: ${stats.escalated}\n- Zeitersparnis: ${stats.savings} Min.`;
+  let text = `OrKan Cloud – Support-Chat Export\nDatum: ${new Date().toLocaleString('de-DE')}\n${'─'.repeat(50)}\n\n`;
+  document.querySelectorAll('#messagesWrap .msg').forEach(m => {
+    const speaker = m.classList.contains('user') ? 'Kunde' : 'Assistent';
+    const bubble = m.querySelector('.msg-bubble');
+    text += speaker + ': ' + bubble.innerText.split('\n').filter(l => l.trim()).join(' ').substring(0, 200) + '\n\n';
+  });
+  text += `\n${'─'.repeat(50)}\nStatistiken:\n- Fragen beantwortet: ${stats.answered}\n- Eskalationen: ${stats.escalated}`;
   const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = `orkan-chat-${Date.now()}.txt`;
   a.click();
 }
+
+initApp();
 </script>
 </body>
 </html>
