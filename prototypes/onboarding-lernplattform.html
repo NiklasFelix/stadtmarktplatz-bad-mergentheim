@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OrKan Cloud Training-Plattform</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --dark-bg:#1F2428;--dark2:#2E3438;--dark3:#262B2F;
+  --green:#8EA752;--green-dark:#6E8440;--green-light:#F1F6E8;--green-mid:#D4E4B0;
+  --bg:#F0F2EE;--white:#fff;--gray:#6B7580;--gray-light:#E8EAE5;--border:#DEE1DA;
+  --radius:12px;--radius-lg:18px;--shadow:0 4px 20px rgba(31,36,40,.08);--shadow-lg:0 16px 48px rgba(31,36,40,.14);
+  --spring:all .3s cubic-bezier(.34,1.56,.64,1);--ease:all .25s cubic-bezier(.4,0,.2,1);
+}
+html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark-bg);background:var(--bg)}
+button,input,textarea{font-family:inherit}
+svg{display:block}
+.bg-mesh{position:fixed;inset:0;z-index:-2;background:linear-gradient(135deg,#eef1e6 0%,#f0f2ee 30%,#e2ead0 60%,#f4f5f0 100%);background-size:400% 400%;animation:gradShift 22s ease infinite}
+@keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:-1;opacity:.5;animation:orbFloat 14s ease-in-out infinite}
+.orb1{width:400px;height:400px;background:rgba(142,167,82,.16);top:-100px;left:-80px}
+.orb2{width:280px;height:280px;background:rgba(31,36,40,.06);bottom:-60px;right:8%;animation-delay:-6s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-25px)}}
+
+/* ===== ONBOARDING ===== */
+#onboarding{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+.onb-split{display:flex;max-width:920px;width:100%;min-height:600px;border-radius:24px;overflow:hidden;box-shadow:var(--shadow-lg);animation:cardIn .5s cubic-bezier(.34,1.2,.64,1)}
+@keyframes cardIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+.onb-side{flex:0 0 40%;background:linear-gradient(160deg,var(--dark-bg),var(--dark2) 70%);color:#fff;padding:44px 38px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.onb-side-glow{position:absolute;width:280px;height:280px;background:radial-gradient(circle,rgba(142,167,82,.35),transparent 70%);border-radius:50%;top:-90px;right:-100px;pointer-events:none}
+.onb-side .onb-logo{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.onb-side .onb-texts .logo-name{font-size:16px;font-weight:800;letter-spacing:-.3px;color:#fff}
+.onb-side .onb-texts .logo-lines{display:flex;flex-direction:column;gap:2px;margin:4px 0 3px}
+.onb-side .onb-texts .logo-lines span{height:2px;background:var(--green)}
+.onb-side .onb-texts .logo-lines span:nth-child(1){width:100%}
+.onb-side .onb-texts .logo-lines span:nth-child(2){width:72%;margin-left:8px}
+.onb-side .onb-texts .logo-lines span:nth-child(3){width:48%;margin-left:16px}
+.onb-side .onb-texts .logo-sub{display:block;font-size:8.5px;font-weight:700;color:var(--green);letter-spacing:3px;margin-top:2px;margin-left:16px}
+.onb-side-body{margin-top:auto;position:relative;z-index:1}
+.onb-side h1{font-size:24px;font-weight:800;letter-spacing:-.5px;line-height:1.25;margin-bottom:10px}
+.onb-side p.sub{color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.6;margin-bottom:30px;max-width:320px}
+.onb-roadmap-preview{display:flex;flex-direction:column;gap:0}
+.orp-item{display:flex;align-items:center;gap:12px;position:relative;padding-bottom:20px}
+.orp-item:last-child{padding-bottom:0}
+.orp-item::before{content:'';position:absolute;left:11px;top:24px;bottom:0;width:1px;background:rgba(255,255,255,.14)}
+.orp-item:last-child::before{display:none}
+.orp-num{width:23px;height:23px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:rgba(255,255,255,.7);flex-shrink:0;background:var(--dark-bg);position:relative;z-index:1}
+.orp-title{font-size:12.5px;color:rgba(255,255,255,.8);font-weight:500}
+
+.onb-form-panel{flex:1;background:#fff;padding:44px 42px;overflow-y:auto;display:flex;flex-direction:column;justify-content:center}
+.form-eyebrow{font-size:11px;font-weight:700;color:var(--green-dark);letter-spacing:1.5px;text-transform:uppercase}
+.onb-form-panel h2{font-size:22px;font-weight:800;letter-spacing:-.4px;margin:6px 0 26px}
+.field-label{font-size:12px;font-weight:600;letter-spacing:.3px;margin-bottom:6px;display:block}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.field-row input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;outline:none;transition:var(--ease);background:#fff}
+.field-row input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,167,82,.15)}
+.role-label{font-size:12px;font-weight:600;letter-spacing:.3px;margin-bottom:10px;display:block}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+.role-card{border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:var(--ease);background:#fff}
+.role-card:hover{border-color:var(--green-mid);transform:translateY(-1px)}
+.role-card.selected{border-color:var(--green);background:var(--green-light);box-shadow:0 0 0 3px rgba(142,167,82,.12)}
+.role-card .role-title{font-size:13.5px;font-weight:700;margin-bottom:3px}
+.role-card .role-desc{font-size:11.5px;color:var(--gray);line-height:1.4}
+.onb-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:var(--spring)}
+.onb-btn:disabled{background:var(--gray-light);color:var(--gray);cursor:not-allowed}
+.onb-btn:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(142,167,82,.38)}
+
+@media(max-width:760px){
+  .onb-split{flex-direction:column;min-height:0}
+  .onb-side{flex:none}
+  .onb-roadmap-preview{display:none}
+}
+
+/* ===== APP SHELL ===== */
+#app{display:none;height:100vh;flex-direction:column}
+.app-header{background:var(--dark-bg);height:60px;flex-shrink:0;display:flex;align-items:center;gap:18px;padding:0 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.hdr-logo{display:flex;align-items:center;gap:10px}
+.hdr-logo .logo-name{color:#fff;font-size:16px;font-weight:800;letter-spacing:-.3px}
+.hdr-logo .logo-sub{display:block;font-size:8.5px;font-weight:700;color:var(--green);letter-spacing:3.5px;margin-top:-2px}
+.hdr-divider{width:1px;height:26px;background:rgba(255,255,255,.1)}
+.breadcrumb{color:rgba(255,255,255,.55);font-size:13px;font-weight:500}
+.breadcrumb strong{color:#fff;font-weight:600}
+.hdr-spacer{flex:1}
+.ai-toggle-btn{display:flex;align-items:center;gap:7px;background:rgba(142,167,82,.16);border:1px solid rgba(142,167,82,.35);color:var(--green);font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:9px;cursor:pointer;transition:var(--spring);position:relative}
+.ai-toggle-btn:hover{background:rgba(142,167,82,.26);transform:translateY(-1px)}
+.ai-toggle-btn svg{width:15px;height:15px}
+.notif-dot{position:absolute;top:-3px;right:-3px;width:9px;height:9px;background:#e8a33d;border-radius:50%;border:2px solid var(--dark-bg)}
+.hdr-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer;transition:var(--spring)}
+.hdr-avatar:hover{transform:scale(1.06)}
+.profile-wrap{position:relative}
+.profile-menu{position:absolute;top:46px;right:0;width:280px;background:#fff;border-radius:14px;box-shadow:var(--shadow-lg);border:1px solid var(--border);opacity:0;pointer-events:none;transform:translateY(-8px);transition:all .22s cubic-bezier(.34,1.2,.64,1);z-index:250}
+.profile-menu.open{opacity:1;pointer-events:auto;transform:translateY(0)}
+.profile-menu-head{display:flex;align-items:center;gap:12px;padding:18px;border-bottom:1px solid var(--border)}
+.profile-menu-name{font-size:14px;font-weight:700;color:var(--dark-bg)}
+.profile-menu-role{font-size:12px;color:var(--gray)}
+.profile-menu-body{padding:16px 18px}
+.profile-input{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;outline:none;transition:var(--ease);background:#fff;margin-top:4px}
+.profile-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,167,82,.15)}
+.profile-menu-actions{padding:14px 18px 18px;display:flex;flex-direction:column;gap:8px}
+.profile-logout{background:none;border:none;color:var(--gray);font-size:12.5px;font-weight:600;cursor:pointer;padding:6px;transition:var(--ease)}
+.profile-logout:hover{color:#dc2626}
+
+.shell-body{flex:1;display:flex;overflow:hidden}
+
+/* ===== SIDEBAR ===== */
+.sidebar{width:240px;flex-shrink:0;background:rgba(255,255,255,.7);backdrop-filter:blur(18px) saturate(1.5);border-right:1px solid rgba(255,255,255,.5);display:flex;flex-direction:column;padding:18px 12px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:9px;cursor:pointer;transition:var(--ease);color:var(--dark-bg);font-size:13.5px;font-weight:600;margin-bottom:2px}
+.nav-item svg{width:17px;height:17px;color:var(--gray);flex-shrink:0}
+.nav-item:hover{background:var(--green-light)}
+.nav-item.active{background:var(--dark-bg);color:#fff}
+.nav-item.active svg{color:var(--green)}
+.nav-sub{padding-left:38px;display:none;flex-direction:column;gap:2px;margin-bottom:4px}
+.nav-sub.open{display:flex}
+.nav-sub-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;font-size:12px;color:var(--gray);cursor:pointer;transition:var(--ease)}
+.nav-sub-item:hover{background:var(--green-light);color:var(--dark-bg)}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--gray-light);flex-shrink:0}
+.status-dot.done{background:var(--green)}
+.status-dot.active{background:#e8a33d}
+.sidebar-progress{margin-top:auto;background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:12px;padding:14px}
+.sp-label{font-size:11px;color:var(--gray);font-weight:600;margin-bottom:8px;letter-spacing:.3px;text-transform:uppercase}
+.sp-track{background:var(--gray-light);border-radius:5px;height:6px;overflow:hidden;margin-bottom:6px}
+.sp-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-dark));border-radius:5px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.sp-text{font-size:12px;font-weight:700}
+
+/* ===== MAIN CONTENT ===== */
+.main-scroll{flex:1;overflow-y:auto;padding:28px 36px 60px}
+.view{display:none;animation:viewFade .35s ease}
+.view.active{display:block}
+@keyframes viewFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h1.page-title{font-size:24px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px}
+p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
+
+.ai-banner{background:linear-gradient(135deg,var(--green-light),#eaf1dc);border:1px solid var(--green-mid);border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:16px;margin-bottom:26px}
+.ai-banner-icon{width:40px;height:40px;border-radius:10px;background:var(--dark-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-banner-icon svg{width:20px;height:20px;color:var(--green)}
+.ai-banner-text{flex:1}
+.ai-banner-text strong{font-size:13.5px;font-weight:700;display:block;margin-bottom:2px}
+.ai-banner-text span{font-size:13px;color:var(--dark-bg);opacity:.75;line-height:1.5}
+.ai-banner-btn{background:var(--dark-bg);color:#fff;border:none;padding:10px 18px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer;transition:var(--spring);flex-shrink:0}
+.ai-banner-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.coach-widget{background:linear-gradient(155deg,var(--dark-bg),var(--dark2));border-radius:18px;padding:26px 28px;margin-bottom:22px;color:#fff;position:relative;overflow:hidden}
+.coach-widget::before{content:'';position:absolute;width:260px;height:260px;background:radial-gradient(circle,rgba(142,167,82,.28),transparent 70%);border-radius:50%;top:-110px;right:-80px;pointer-events:none}
+.coach-widget-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;position:relative;z-index:1}
+.coach-widget-avatar{width:46px;height:46px;border-radius:50%;background:rgba(142,167,82,.18);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--green);flex-shrink:0}
+.coach-widget-name{font-size:15px;font-weight:700}
+.coach-widget-status{font-size:12px;color:rgba(255,255,255,.5);margin-top:1px}
+.coach-widget-msg{font-size:14px;line-height:1.6;color:rgba(255,255,255,.88);margin-bottom:18px;max-width:640px;position:relative;z-index:1}
+.coach-widget-input-row{display:flex;gap:10px;position:relative;z-index:1}
+.coach-widget-input-row input{flex:1;padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-size:13.5px;outline:none;transition:var(--ease)}
+.coach-widget-input-row input::placeholder{color:rgba(255,255,255,.4)}
+.coach-widget-input-row input:focus{border-color:var(--green);background:rgba(255,255,255,.12)}
+.coach-widget-send{padding:12px 22px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;transition:var(--spring)}
+.coach-widget-send:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(142,167,82,.35)}
+.context-note{background:rgba(255,255,255,.6);border:1px dashed var(--border);border-radius:10px;padding:12px 16px;margin-bottom:26px;font-size:12.5px;color:var(--gray);line-height:1.55;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.context-note span{flex:1;min-width:240px}
+.context-note-btn{flex-shrink:0;padding:9px 16px;border-radius:9px;border:1.5px solid var(--dark-bg);background:transparent;color:var(--dark-bg);font-size:12px;font-weight:700;cursor:pointer;transition:var(--spring);white-space:nowrap}
+.context-note-btn:hover{background:var(--dark-bg);color:#fff;transform:translateY(-1px)}
+.context-note strong{color:var(--dark-bg)}
+.app-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark-bg);color:#fff;padding:13px 22px;border-radius:12px;font-size:13px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.34,1.2,.64,1);z-index:300;max-width:420px;text-align:center}
+.app-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.stat-card{background:rgba(255,255,255,.82);border:1px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
+.stat-card .stat-label{font-size:11.5px;color:var(--gray);font-weight:600;letter-spacing:.3px;text-transform:uppercase;margin-bottom:8px}
+.stat-card .stat-val{font-size:28px;font-weight:800;letter-spacing:-1px}
+.stat-card .stat-sub{font-size:12px;color:var(--gray);margin-top:4px}
+
+.phases-row{display:flex;gap:0;margin-bottom:32px;position:relative}
+.phase-step{flex:1;position:relative;padding:0 12px}
+.phase-step::before{content:'';position:absolute;top:19px;left:-50%;width:100%;height:2px;background:var(--border);z-index:0}
+.phase-step:first-child::before{display:none}
+.phase-step.unlocked::before{background:var(--green)}
+.phase-num{width:38px;height:38px;border-radius:50%;background:#fff;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:var(--gray);position:relative;z-index:1;margin-bottom:10px}
+.phase-step.active .phase-num{border-color:var(--green);color:var(--green-dark);background:var(--green-light)}
+.phase-step.unlocked .phase-num{border-color:var(--green);background:var(--green);color:#fff}
+.phase-title{font-size:13px;font-weight:700;margin-bottom:2px}
+.phase-desc{font-size:11.5px;color:var(--gray)}
+
+.section-heading{font-size:15px;font-weight:700;margin:32px 0 14px;display:flex;align-items:center;justify-content:space-between}
+
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.module-card{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:var(--shadow);transition:var(--ease);cursor:pointer;display:flex;flex-direction:column}
+.module-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.mc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:6px;flex-wrap:wrap}
+.mc-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;letter-spacing:.3px;text-transform:uppercase}
+.mc-badge.open{background:var(--gray-light);color:var(--gray)}
+.mc-badge.progress{background:#FEF3D8;color:#a6720f}
+.mc-badge.done{background:var(--green-light);color:var(--green-dark)}
+.mc-title{font-size:14.5px;font-weight:700;margin-bottom:4px}
+.mc-time{font-size:12px;color:var(--gray);margin-bottom:14px}
+.mc-track{background:var(--gray-light);height:5px;border-radius:4px;overflow:hidden;margin-bottom:14px}
+.mc-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-dark));border-radius:4px;transition:width .6s ease}
+.mc-btn{margin-top:auto;background:var(--dark-bg);color:#fff;border:none;padding:9px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;transition:var(--spring)}
+.mc-btn:hover{background:var(--green-dark);transform:translateY(-1px)}
+
+.reco-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.reco-card{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+.reco-tag{font-size:10px;font-weight:700;color:var(--green-dark);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.reco-card h4{font-size:13.5px;font-weight:700;margin-bottom:6px}
+.reco-card p{font-size:12.5px;color:var(--gray);line-height:1.5}
+
+/* Wissenslücken / adaptive Lernpfade */
+.adaptive-banner{background:linear-gradient(135deg,#FEF3D8,#fdf7e6);border:1px solid #ecd396;border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:16px;margin-bottom:26px}
+.adaptive-banner .ai-banner-icon{background:#a6720f}
+.adaptive-banner .ai-banner-icon svg{color:#FEF3D8}
+.gap-empty{background:rgba(255,255,255,.8);border:1px solid var(--border);border-radius:14px;padding:28px;text-align:center;color:var(--gray);font-size:13.5px}
+.gap-card{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:12px;box-shadow:var(--shadow)}
+.gap-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.gap-topic{font-size:13.5px;font-weight:700}
+.gap-count{font-size:11px;font-weight:700;color:#a6720f;background:#FEF3D8;padding:3px 9px;border-radius:10px}
+.gap-track{background:var(--gray-light);height:6px;border-radius:4px;overflow:hidden;margin-bottom:10px}
+.gap-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#e8a33d,#a6720f);transition:width .8s ease}
+.gap-fill.company{background:linear-gradient(90deg,var(--green),var(--green-dark))}
+.gap-action{font-size:12px;color:var(--gray)}
+.gap-action a{color:var(--green-dark);font-weight:700;cursor:pointer}
+.adaptive-log{background:rgba(255,255,255,.7);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-top:16px}
+.log-item{display:flex;gap:10px;font-size:12px;color:var(--gray);padding:7px 0;border-bottom:1px dashed var(--border)}
+.log-item:last-child{border-bottom:none}
+.log-item .log-dot{width:6px;height:6px;border-radius:50%;background:#e8a33d;margin-top:5px;flex-shrink:0}
+.insight-callout{background:var(--green-light);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:16px 18px;margin-top:24px}
+.insight-callout strong{font-size:12.5px;font-weight:700;display:block;margin-bottom:5px;color:var(--green-dark)}
+.insight-callout p{font-size:13px;line-height:1.55;color:var(--dark-bg)}
+
+/* Roadmap */
+.roadmap-wrap{display:grid;grid-template-columns:1fr 280px;gap:28px}
+.roadmap-line{position:relative;padding-left:34px}
+.roadmap-line::before{content:'';position:absolute;left:13px;top:6px;bottom:6px;width:2px;background:var(--border)}
+.milestone{position:relative;margin-bottom:28px;padding-bottom:4px}
+.milestone-dot{position:absolute;left:-34px;top:0;width:28px;height:28px;border-radius:50%;background:#fff;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:var(--gray)}
+.milestone.done .milestone-dot{background:var(--green);border-color:var(--green);color:#fff}
+.milestone.active .milestone-dot{border-color:var(--green);color:var(--green-dark)}
+.milestone-card{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow)}
+.milestone-card h4{font-size:14px;font-weight:700;margin-bottom:3px}
+.milestone-meta{font-size:11.5px;color:var(--gray);margin-bottom:8px}
+.milestone-card p{font-size:12.5px;color:var(--dark-bg);opacity:.8;line-height:1.5}
+.ai-hint{font-size:11.5px;color:var(--green-dark);background:var(--green-light);padding:8px 12px;border-radius:8px;margin-top:20px;margin-bottom:8px;display:inline-block}
+.roadmap-side{text-align:center}
+.progress-ring-wrap{position:relative;width:150px;height:150px;margin:0 auto 16px}
+.progress-ring-wrap svg{transform:rotate(-90deg)}
+.pr-bg{fill:none;stroke:var(--gray-light);stroke-width:11}
+.pr-fill{fill:none;stroke:var(--green);stroke-width:11;stroke-linecap:round;stroke-dasharray:377;transition:stroke-dashoffset 1s ease}
+.pr-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pr-pct{font-size:26px;font-weight:800}
+.pr-sub{font-size:10.5px;color:var(--gray)}
+.roadmap-note{font-size:12.5px;color:var(--gray);line-height:1.6;background:rgba(255,255,255,.7);border:1px solid var(--border);border-radius:12px;padding:14px}
+
+/* Module detail */
+.module-detail-header{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:20px;box-shadow:var(--shadow)}
+.md-back{font-size:12.5px;color:var(--gray);cursor:pointer;margin-bottom:12px;display:inline-flex;align-items:center;gap:5px}
+.md-back:hover{color:var(--dark-bg)}
+.md-title-row{display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+.md-title-row h2{font-size:20px;font-weight:800;letter-spacing:-.4px}
+.phase-badge{font-size:10.5px;font-weight:700;background:var(--green-light);color:var(--green-dark);padding:3px 10px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px}
+.md-meta{display:flex;gap:16px;font-size:12.5px;color:var(--gray);align-items:center}
+.diff-dots{display:inline-flex;gap:3px}
+.diff-dot{width:6px;height:6px;border-radius:50%;background:var(--gray-light)}
+.diff-dot.filled{background:var(--green)}
+
+.tab-bar{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:24px}
+.tab-btn{padding:11px 18px;font-size:13px;font-weight:600;color:var(--gray);cursor:pointer;border-bottom:2px solid transparent;transition:var(--ease)}
+.tab-btn:hover{color:var(--dark-bg)}
+.tab-btn.active{color:var(--dark-bg);border-bottom-color:var(--green)}
+.tab-content{display:none}
+.tab-content.active{display:block;animation:viewFade .3s ease}
+
+.video-placeholder{background:var(--dark-bg);border-radius:14px;height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:24px;gap:12px;overflow:hidden}
+.video-manage-btn{position:absolute;top:12px;right:12px;z-index:2;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:11.5px;font-weight:600;padding:7px 13px;border-radius:8px;cursor:pointer;transition:var(--spring)}
+.video-manage-btn:hover{background:rgba(255,255,255,.22);transform:translateY(-1px)}
+
+/* Video-Manager Modal */
+.vm-overlay{position:fixed;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;background:rgba(31,36,40,.55);opacity:0;pointer-events:none;transition:opacity .2s ease}
+.vm-overlay.open{opacity:1;pointer-events:auto}
+.vm-modal{background:#fff;border-radius:18px;width:480px;max-width:90vw;box-shadow:var(--shadow-lg);padding:24px 26px;transform:translateY(12px);transition:transform .25s cubic-bezier(.34,1.2,.64,1)}
+.vm-overlay.open .vm-modal{transform:translateY(0)}
+.vm-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.vm-head h3{font-size:17px;font-weight:800}
+.vm-tab-bar{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:18px}
+.vm-tab-btn{padding:9px 4px;margin-right:18px;font-size:13px;font-weight:600;color:var(--gray);cursor:pointer;border-bottom:2px solid transparent}
+.vm-tab-btn.active{color:var(--dark-bg);border-bottom-color:var(--green)}
+.vm-tab-panel{display:none}
+.vm-tab-panel.active{display:block}
+.vm-hint{font-size:12.5px;color:var(--gray);line-height:1.55;margin-bottom:14px}
+.vm-file-input{width:100%;font-size:12.5px;padding:10px;border:1.5px dashed var(--border);border-radius:10px;background:var(--bg)}
+.vm-textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'Inter',sans-serif;outline:none;resize:vertical;transition:var(--ease)}
+.vm-textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,167,82,.15)}
+.vm-status{font-size:12px;color:var(--green-dark);margin-top:10px;text-align:center;min-height:16px}
+.play-circle{width:56px;height:56px;border-radius:50%;background:rgba(142,167,82,.2);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--spring)}
+.play-circle:hover{transform:scale(1.08);background:rgba(142,167,82,.3)}
+.play-circle svg{width:20px;height:20px;color:var(--green);margin-left:3px}
+.video-placeholder span{color:rgba(255,255,255,.5);font-size:12.5px}
+
+.key-points{list-style:none;margin-bottom:24px}
+.key-points li{display:flex;gap:10px;font-size:13.5px;line-height:1.6;margin-bottom:10px;color:var(--dark-bg)}
+.key-points li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);margin-top:7px;flex-shrink:0}
+
+.feature-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.feature-card{background:rgba(255,255,255,.8);border:1px solid var(--border);border-radius:12px;padding:16px}
+.fc-icon{width:32px;height:32px;border-radius:8px;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.fc-icon svg{width:16px;height:16px;color:var(--green-dark)}
+.feature-card h5{font-size:13px;font-weight:700;margin-bottom:4px}
+.feature-card p{font-size:12px;color:var(--gray);line-height:1.4}
+
+.practice-callout{background:var(--green-light);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:16px 18px;margin-bottom:24px}
+.practice-callout strong{font-size:12.5px;font-weight:700;display:block;margin-bottom:5px;color:var(--green-dark)}
+.practice-callout p{font-size:13px;line-height:1.55;color:var(--dark-bg)}
+
+.coach-btn{display:inline-flex;align-items:center;gap:8px;background:var(--dark-bg);color:#fff;border:none;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;transition:var(--spring)}
+.coach-btn:hover{background:var(--green-dark);transform:translateY(-1px)}
+.coach-btn svg{width:15px;height:15px;color:var(--green)}
+
+.checklist{list-style:none;margin:18px 0}
+.check-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer;transition:var(--ease);background:rgba(255,255,255,.7)}
+.check-item:hover{border-color:var(--green-mid)}
+.check-item.checked{background:var(--green-light);border-color:var(--green)}
+.check-box{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.check-item.checked .check-box{background:var(--green);border-color:var(--green)}
+.check-box svg{width:11px;height:11px;color:#fff;display:none}
+.check-item.checked .check-box svg{display:block}
+.check-item span{font-size:13.5px}
+
+.collapsible{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:16px}
+.collapsible-head{padding:12px 16px;background:rgba(255,255,255,.7);font-size:13px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.collapsible-body{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s ease}
+.collapsible.open .collapsible-body{padding:14px 16px;max-height:400px}
+.collapsible-body p{font-size:12.5px;color:var(--gray);line-height:1.6}
+
+.quiz-q{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.quiz-q h5{font-size:13.5px;font-weight:700;margin-bottom:12px}
+.quiz-opt{padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;cursor:pointer;margin-bottom:8px;transition:var(--ease)}
+.quiz-opt:hover{border-color:var(--green-mid)}
+.quiz-opt.correct{background:var(--green-light);border-color:var(--green);font-weight:600}
+.quiz-opt.wrong{background:#FCEAEA;border-color:#e5a0a0}
+.quiz-opt.disabled{pointer-events:none}
+.quiz-result{text-align:center;padding:24px;background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px}
+.quiz-result .qr-score{font-size:32px;font-weight:800;margin-bottom:6px}
+.quiz-result p{color:var(--gray);font-size:13px;margin-bottom:16px}
+
+.summary-block{margin-bottom:20px}
+.summary-block h5{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--green-dark);text-transform:uppercase;letter-spacing:.3px}
+.summary-block ul{list-style:none}
+.summary-block li{font-size:13.5px;line-height:1.6;margin-bottom:6px;padding-left:16px;position:relative}
+.summary-block li::before{content:'—';position:absolute;left:0;color:var(--green)}
+
+/* Buttons generic */
+.btn{padding:11px 20px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:var(--spring)}
+.btn-primary{background:var(--dark-bg);color:#fff}
+.btn-primary:hover{background:var(--green-dark);transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--dark-bg)}
+.btn-outline:hover{border-color:var(--green)}
+.btn-row{display:flex;gap:10px;margin-top:20px}
+
+/* Knowledge base */
+.kb-search{width:100%;padding:14px 18px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;outline:none;margin-bottom:18px;background:#fff;transition:var(--ease)}
+.kb-search:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,167,82,.15)}
+.chip-row{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.chip{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);font-size:12.5px;font-weight:600;cursor:pointer;transition:var(--ease);background:#fff}
+.chip:hover{border-color:var(--green-mid)}
+.chip.active{background:var(--dark-bg);color:#fff;border-color:var(--dark-bg)}
+.kb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.kb-card{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:var(--shadow);cursor:pointer;transition:var(--ease)}
+.kb-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.kb-cat{font-size:10px;font-weight:700;color:var(--green-dark);text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px}
+.kb-card h4{font-size:14px;font-weight:700;margin-bottom:6px}
+.kb-card p{font-size:12.5px;color:var(--gray);line-height:1.5;margin-bottom:10px}
+.kb-link{font-size:12px;font-weight:700;color:var(--dark-bg)}
+.kb-article{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px;padding:26px 30px;box-shadow:var(--shadow)}
+.kb-article-crumb{font-size:12px;color:var(--gray);margin-bottom:10px}
+.kb-article h2{font-size:21px;font-weight:800;margin-bottom:16px;letter-spacing:-.4px}
+.kb-article h4{font-size:14px;font-weight:700;margin:18px 0 8px}
+.kb-article p{font-size:13.5px;line-height:1.7;color:var(--dark-bg);opacity:.85;margin-bottom:10px}
+.helpful-row{display:flex;gap:10px;margin:22px 0;padding-top:18px;border-top:1px solid var(--border)}
+.helpful-btn{padding:9px 16px;border-radius:9px;border:1.5px solid var(--border);font-size:12.5px;font-weight:600;cursor:pointer;background:#fff;transition:var(--ease)}
+.helpful-btn:hover{border-color:var(--green)}
+
+/* Best practices */
+.bp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.bp-card{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow)}
+.bp-top{display:flex;justify-content:space-between;margin-bottom:10px}
+.bp-time{font-size:11.5px;color:var(--gray)}
+.bp-diff{font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;text-transform:uppercase}
+.bp-diff.easy{background:var(--green-light);color:var(--green-dark)}
+.bp-diff.medium{background:#FEF3D8;color:#a6720f}
+.bp-card h4{font-size:14.5px;font-weight:700;margin-bottom:6px}
+.bp-card p{font-size:12.5px;color:var(--gray);line-height:1.5;margin-bottom:14px}
+.step-list{counter-reset:step}
+.step-item{display:flex;gap:14px;margin-bottom:20px}
+.step-num{width:30px;height:30px;border-radius:50%;background:var(--dark-bg);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.step-body h5{font-size:14px;font-weight:700;margin-bottom:5px}
+.step-body p{font-size:13px;color:var(--gray);line-height:1.6}
+.step-hint{background:var(--green-light);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--green-dark);margin-top:8px;display:inline-block}
+
+/* Update center */
+.update-item{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:14px;box-shadow:var(--shadow)}
+.update-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.version-badge{background:var(--dark-bg);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:8px}
+.update-date{font-size:12px;color:var(--gray)}
+.new-badge{background:var(--green);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;text-transform:uppercase}
+.update-item h4{font-size:15px;font-weight:700;margin-bottom:10px}
+.update-item ul{list-style:none}
+.update-item li{font-size:13px;line-height:1.7;padding-left:16px;position:relative;color:var(--dark-bg);opacity:.85}
+.update-item li::before{content:'—';position:absolute;left:0;color:var(--green)}
+.subscribe-cta{background:var(--dark-bg);border-radius:14px;padding:22px;text-align:center;color:#fff;margin-top:8px}
+.subscribe-cta p{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:14px}
+
+/* Certificate */
+.cert-gate{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px;padding:40px;text-align:center;box-shadow:var(--shadow)}
+.cert-gate h3{font-size:18px;font-weight:700;margin-bottom:10px}
+.cert-gate p{color:var(--gray);font-size:13.5px;margin-bottom:20px}
+.gate-track{background:var(--gray-light);height:8px;border-radius:5px;overflow:hidden;max-width:340px;margin:0 auto 8px}
+.gate-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-dark));border-radius:5px;transition:width .6s ease}
+.certificate{background:#fff;border:3px double var(--green);border-radius:14px;padding:50px 60px;text-align:center;box-shadow:var(--shadow-lg);max-width:700px;margin:0 auto}
+.cert-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:24px}
+.cert-title{font-size:13px;letter-spacing:4px;color:var(--gray);text-transform:uppercase;margin-bottom:6px}
+.cert-heading{font-size:26px;font-weight:800;letter-spacing:-.5px;margin-bottom:26px}
+.cert-name{font-size:22px;font-weight:800;color:var(--green-dark);margin-bottom:4px}
+.cert-company{font-size:14px;color:var(--gray);margin-bottom:22px}
+.cert-body{font-size:13.5px;line-height:1.7;color:var(--dark-bg);max-width:480px;margin:0 auto 30px}
+.cert-sigs{display:flex;justify-content:space-around;margin-top:36px}
+.sig-line{border-top:1px solid var(--dark-bg);padding-top:8px;font-size:12px;color:var(--gray);width:180px}
+.cert-actions{display:flex;gap:10px;justify-content:center;margin-top:28px}
+.cert-renewal-note{max-width:700px;margin:18px auto 0;text-align:center;font-size:12px;color:var(--gray);background:rgba(255,255,255,.7);border:1px solid var(--border);border-radius:10px;padding:12px 16px}
+
+/* Team-Fortschritt */
+.team-list{display:flex;flex-direction:column;gap:10px}
+.team-row{display:grid;grid-template-columns:40px 1fr 180px 70px 180px;align-items:center;gap:16px;background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:12px;padding:14px 18px;box-shadow:var(--shadow)}
+.team-avatar{width:36px;height:36px;border-radius:50%;background:var(--dark-bg);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.team-name{font-size:13.5px;font-weight:700}
+.team-role{font-size:11.5px;color:var(--gray)}
+.team-progress-wrap{display:flex;flex-direction:column;gap:5px}
+.team-progress-text{font-size:11px;color:var(--gray)}
+.team-quiz{font-size:13px;font-weight:700;color:var(--dark-bg)}
+.team-ok{font-size:11px;font-weight:600;color:var(--green-dark)}
+@media(max-width:1000px){.team-row{grid-template-columns:36px 1fr;grid-template-areas:none}.team-progress-wrap,.team-quiz,.team-flag{display:none}}
+
+/* Cloud-Integration */
+.ci-intro{font-size:13.5px;color:var(--dark-bg);opacity:.8;line-height:1.6;max-width:760px;margin-bottom:24px}
+.ci-mockup{background:var(--dark-bg);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:14px}
+.ci-mockup-bar{background:#15181a;padding:10px 14px;display:flex;align-items:center;gap:8px}
+.ci-mockup-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.2)}
+.ci-mockup-url{margin-left:10px;font-size:11px;color:rgba(255,255,255,.35);background:rgba(255,255,255,.06);padding:3px 10px;border-radius:6px}
+.ci-mockup-body{padding:18px;min-height:70px}
+.ci-event-log{display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto}
+.ci-event{display:flex;align-items:flex-start;gap:10px;font-size:12.5px;color:rgba(255,255,255,.8);animation:viewFade .3s ease}
+.ci-event-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.ci-event-dot.ok{background:#4ade80}
+.ci-event-dot.warn{background:#e8a33d}
+.ci-event-time{color:rgba(255,255,255,.35);font-size:11px;margin-left:auto;flex-shrink:0;white-space:nowrap}
+.ci-empty{color:rgba(255,255,255,.35);font-size:12.5px}
+.ci-actions{display:flex;gap:10px;margin-bottom:28px}
+.ci-concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:10px}
+.ci-concept-card{background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow)}
+.ci-concept-card h4{font-size:14px;font-weight:700;margin-bottom:8px}
+.ci-concept-card p{font-size:12.5px;color:var(--gray);line-height:1.6;margin-bottom:14px}
+.ci-badge-demo{background:#f0f2ee;border:1px dashed var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:10px}
+.ci-help-dot{width:26px;height:26px;border-radius:50%;background:var(--dark-bg);color:var(--green);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci-fake-field{flex:1;height:10px;background:var(--gray-light);border-radius:4px}
+.ci-launcher-btn{display:inline-flex;align-items:center;gap:8px;background:var(--dark-bg);color:#fff;padding:10px 18px;border-radius:10px;font-size:12.5px;font-weight:700}
+@media(max-width:900px){.ci-concept-grid{grid-template-columns:1fr}}
+@media print{
+  body *{visibility:hidden}
+  .certificate,.certificate *{visibility:visible}
+  .certificate{position:absolute;top:0;left:0;width:100%;box-shadow:none;border:3px double #8EA752}
+}
+
+/* AI panel */
+.ai-panel{width:0;flex-shrink:0;background:rgba(255,255,255,.85);backdrop-filter:blur(20px) saturate(1.6);border-left:1px solid rgba(255,255,255,.5);display:flex;flex-direction:column;overflow:hidden;transition:width .32s cubic-bezier(.4,0,.2,1)}
+.ai-panel.open{width:380px}
+.ai-panel-inner{width:380px;display:flex;flex-direction:column;height:100%}
+.ai-panel-head{padding:18px 18px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.ai-panel-head h4{font-size:14px;font-weight:700}
+.ai-panel-head .close-x{cursor:pointer;color:var(--gray);font-size:18px;line-height:1}
+.ai-status-line{padding:0 18px;font-size:11.5px;color:var(--green-dark);display:flex;align-items:center;gap:6px;margin:10px 0}
+.ai-status-line::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse2 2s infinite}
+@keyframes pulse2{0%,100%{opacity:1}50%{opacity:.4}}
+.suggestion-chips{display:flex;flex-direction:column;gap:6px;padding:0 18px 14px}
+.sugg-chip{text-align:left;padding:9px 12px;border:1px solid var(--border);border-radius:9px;font-size:12px;color:var(--dark-bg);cursor:pointer;background:#fff;transition:var(--ease)}
+.sugg-chip:hover{border-color:var(--green);background:var(--green-light)}
+.ai-messages{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:12px}
+.ai-msg{font-size:12.5px;line-height:1.6;padding:11px 14px;border-radius:12px;max-width:92%}
+.ai-msg.bot{background:var(--green-light);border-top-left-radius:3px}
+.ai-msg.user{background:var(--dark-bg);color:#fff;align-self:flex-end;border-top-right-radius:3px}
+.ai-input-row{padding:14px 18px;border-top:1px solid var(--border);display:flex;gap:8px}
+.ai-input-row input{flex:1;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:12.5px;outline:none}
+.ai-input-row input:focus{border-color:var(--green)}
+.ai-send{width:36px;height:36px;border-radius:9px;background:var(--dark-bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-send svg{width:15px;height:15px;color:var(--green)}
+
+@media(max-width:1000px){
+  .sidebar,.ai-panel{display:none}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .roadmap-wrap{grid-template-columns:1fr}
+  .feature-cards{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<!-- ONBOARDING -->
+<div id="onboarding">
+  <div class="onb-split">
+    <div class="onb-side">
+      <div class="onb-side-glow"></div>
+      <div class="onb-logo">
+        <svg width="44" height="44" viewBox="0 0 100 100" fill="none">
+          <ellipse cx="50" cy="18" rx="36" ry="7" fill="#8EA752"/>
+          <ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8EA752"/>
+          <ellipse cx="54" cy="50" rx="21" ry="6" fill="#8EA752"/>
+          <ellipse cx="47" cy="65" rx="13" ry="5" fill="#8EA752"/>
+          <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/>
+        </svg>
+        <div class="onb-texts">
+          <span class="logo-name">OrKan Cloud</span>
+          <div class="logo-lines"><span></span><span></span><span></span></div>
+          <span class="logo-sub">TRAINING-PLATTFORM</span>
+        </div>
+      </div>
+      <div class="onb-side-body">
+        <h1>Willkommen bei Ihrer<br>Onboarding-Plattform</h1>
+        <p class="sub">Strukturierte, rollenbasierte Einführung in die OrKan Cloud – Schritt für Schritt.</p>
+        <div class="onb-roadmap-preview" id="onbRoadmapPreview"></div>
+      </div>
+    </div>
+    <div class="onb-form-panel">
+      <span class="form-eyebrow">Erste Schritte</span>
+      <h2>Ihre Daten</h2>
+      <div class="field-row">
+        <div><span class="field-label">Name</span><input type="text" id="onbName" placeholder="Vor- und Nachname"></div>
+        <div><span class="field-label">Unternehmen</span><input type="text" id="onbCompany" placeholder="Firmenname"></div>
+      </div>
+      <span class="role-label">Ihre Rolle</span>
+      <div class="role-grid" id="roleGrid">
+        <div class="role-card" data-role="Lagerleiter" onclick="selectRole(this,'Lagerleiter')">
+          <div class="role-title">Lagerleiter</div><div class="role-desc">Lagerverwaltung, Prozesse, Teamführung</div>
+        </div>
+        <div class="role-card" data-role="Einkäufer" onclick="selectRole(this,'Einkäufer')">
+          <div class="role-title">Einkäufer</div><div class="role-desc">Bestellwesen, Lieferanten, Mindestmengen</div>
+        </div>
+        <div class="role-card" data-role="Geschäftsführer" onclick="selectRole(this,'Geschäftsführer')">
+          <div class="role-title">Geschäftsführer</div><div class="role-desc">Überblick, KPIs, strategische Einführung</div>
+        </div>
+        <div class="role-card" data-role="Lagermitarbeiter" onclick="selectRole(this,'Lagermitarbeiter')">
+          <div class="role-title">Lagermitarbeiter</div><div class="role-desc">Tagesgeschäft, Scanner, Wareneingang</div>
+        </div>
+      </div>
+      <button class="onb-btn" id="startBtn" disabled onclick="startApp()">Lernpfad starten</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="app">
+  <header class="app-header">
+    <div class="hdr-logo">
+      <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
+        <ellipse cx="50" cy="18" rx="36" ry="7" fill="#8EA752"/>
+        <ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8EA752"/>
+        <ellipse cx="54" cy="50" rx="21" ry="6" fill="#8EA752"/>
+        <ellipse cx="47" cy="65" rx="13" ry="5" fill="#8EA752"/>
+        <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/>
+      </svg>
+      <div><span class="logo-name">OrKan Cloud</span><span class="logo-sub">TRAINING</span></div>
+    </div>
+    <div class="hdr-divider"></div>
+    <div class="breadcrumb">Onboarding / <strong id="breadcrumbCurrent">Dashboard</strong></div>
+    <div class="hdr-spacer"></div>
+    <button class="ai-toggle-btn" onclick="toggleAI()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/><path d="M6 12v1a6 6 0 0 0 12 0v-1M12 19v3"/></svg>
+      Lerncoach
+      <span class="notif-dot" id="aiNotifDot" style="display:none"></span>
+    </button>
+    <div class="profile-wrap">
+      <div class="hdr-avatar" id="hdrAvatar" onclick="toggleProfileMenu()">?</div>
+      <div class="profile-menu" id="profileMenu">
+        <div class="profile-menu-head">
+          <div class="hdr-avatar" id="profileMenuAvatar" style="width:44px;height:44px;font-size:15px">?</div>
+          <div>
+            <div class="profile-menu-name" id="profileMenuName">–</div>
+            <div class="profile-menu-role" id="profileMenuRole">–</div>
+          </div>
+        </div>
+        <div class="profile-menu-body">
+          <label class="field-label">Name</label>
+          <input type="text" id="profileNameInput" class="profile-input">
+          <label class="field-label" style="margin-top:10px">Unternehmen</label>
+          <input type="text" id="profileCompanyInput" class="profile-input">
+          <label class="field-label" style="margin-top:10px">Rolle</label>
+          <select id="profileRoleInput" class="profile-input">
+            <option>Lagerleiter</option>
+            <option>Einkäufer</option>
+            <option>Geschäftsführer</option>
+            <option>Lagermitarbeiter</option>
+          </select>
+        </div>
+        <div class="profile-menu-actions">
+          <button class="btn btn-primary" style="width:100%" onclick="saveProfile()">Änderungen speichern</button>
+          <button class="profile-logout" onclick="logoutProfile()">Abmelden</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell-body">
+    <aside class="sidebar">
+      <div class="nav-item active" data-view="dashboard" onclick="showView('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item" data-view="roadmap" onclick="showView('roadmap')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M9 19h6a4 4 0 0 0 4-4V9a4 4 0 0 0-4-4H9"/></svg>
+        Mein Lernpfad
+      </div>
+      <div class="nav-item" data-view="modules" onclick="showView('modules');toggleSub(event)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Lernmodule
+      </div>
+      <div class="nav-sub" id="moduleSubNav"></div>
+      <div class="nav-item" data-view="gaps" onclick="showView('gaps')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-5 4 3 5-7"/></svg>
+        Wissenslücken-Analyse
+      </div>
+      <div class="nav-item" data-view="kb" onclick="showView('kb')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+        Wissensdatenbank
+      </div>
+      <div class="nav-item" data-view="best" onclick="showView('best')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg>
+        Best Practices
+      </div>
+      <div class="nav-item" data-view="updates" onclick="showView('updates')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3.5-7.1M21 4v6h-6"/></svg>
+        Update-Center
+      </div>
+      <div class="nav-item" data-view="cert" onclick="showView('cert')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M9 13.5 7 22l5-3 5 3-2-8.5"/></svg>
+        Zertifikate
+      </div>
+      <div class="nav-item" data-view="team" onclick="showView('team')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Team-Fortschritt
+      </div>
+      <div class="nav-item" data-view="cloudintegration" onclick="showView('cloudintegration')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+        Cloud-Integration
+      </div>
+      <div class="sidebar-progress">
+        <div class="sp-label">Fortschritt</div>
+        <div class="sp-track"><div class="sp-fill" id="sidebarFill" style="width:0%"></div></div>
+        <div class="sp-text"><span id="sidebarText">0/8 Module</span></div>
+      </div>
+    </aside>
+
+    <main class="main-scroll" id="mainScroll">
+
+      <!-- DASHBOARD -->
+      <section class="view active" id="view-dashboard"></section>
+
+      <!-- ROADMAP -->
+      <section class="view" id="view-roadmap"></section>
+
+      <!-- MODULES -->
+      <section class="view" id="view-modules"></section>
+
+      <!-- WISSENSLÜCKEN -->
+      <section class="view" id="view-gaps"></section>
+
+      <!-- KB -->
+      <section class="view" id="view-kb"></section>
+
+      <!-- BEST PRACTICES -->
+      <section class="view" id="view-best"></section>
+
+      <!-- UPDATES -->
+      <section class="view" id="view-updates"></section>
+
+      <!-- CERT -->
+      <section class="view" id="view-cert"></section>
+
+      <!-- TEAM -->
+      <section class="view" id="view-team"></section>
+
+      <!-- CLOUD INTEGRATION -->
+      <section class="view" id="view-cloudintegration"></section>
+
+    </main>
+
+    <aside class="ai-panel" id="aiPanel">
+      <div class="ai-panel-inner">
+        <div class="ai-panel-head">
+          <h4>Lerncoach</h4>
+          <span class="close-x" onclick="toggleAI()">&times;</span>
+        </div>
+        <div class="ai-status-line" id="aiStatusLine">Aktiv — begleitet Ihren Lernfortschritt</div>
+        <div class="suggestion-chips" id="suggChips"></div>
+        <div class="ai-messages" id="aiMessages"></div>
+        <div class="ai-input-row">
+          <input type="text" id="aiInput" placeholder="Frage stellen..." onkeydown="if(event.key==='Enter')sendAI()">
+          <button class="ai-send" onclick="sendAI()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- VIDEO-MANAGER MODAL -->
+<div class="vm-overlay" id="videoManagerModal">
+  <div class="vm-modal">
+    <div class="vm-head">
+      <div>
+        <h3>Video verwalten</h3>
+        <p id="vmModuleTitle" style="font-size:12.5px;color:var(--gray)"></p>
+      </div>
+      <span class="close-x" onclick="closeVideoManager()">&times;</span>
+    </div>
+    <div class="vm-tab-bar">
+      <div class="vm-tab-btn active" data-tab="upload" onclick="switchVmTab('upload')">Video hochladen</div>
+      <div class="vm-tab-btn" data-tab="generate" onclick="switchVmTab('generate')">KI-Video generieren</div>
+    </div>
+    <div class="vm-tab-panel active" id="vmPanel-upload">
+      <p class="vm-hint">Laden Sie ein bereits fertiges Arbeitsvideo hoch. Es ersetzt den Platzhalter direkt im Modul.</p>
+      <input type="file" id="vmUploadInput" accept="video/*" onchange="handleVideoUpload(event)" class="vm-file-input">
+    </div>
+    <div class="vm-tab-panel" id="vmPanel-generate">
+      <p class="vm-hint">Laden Sie eine Quelldatei (z. B. Screen-Recording ohne Ton oder ein Dokument) und/oder ein Transkript hoch. Daraus wird ein KI-gestütztes Erklärvideo erzeugt (z. B. im Stil von Synthesia oder Loom).</p>
+      <label class="field-label">Quelldatei (optional)</label>
+      <input type="file" id="vmGenFile" accept="video/*,.pdf,.docx,.txt" class="vm-file-input">
+      <label class="field-label" style="margin-top:12px">Transkript</label>
+      <textarea id="vmTranscript" class="vm-textarea" rows="5" placeholder="Fügen Sie hier den gesprochenen Text bzw. die Schritt-für-Schritt-Beschreibung ein…"></textarea>
+      <button class="btn btn-primary" style="width:100%;margin-top:14px" onclick="generateAiVideo()">KI-Video generieren</button>
+      <p id="vmGenStatus" class="vm-status"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ DATA ============ */
+const MODULES = [
+  { id:1, phase:1, title:'Grundlagen OrKan Cloud', time:'12 Min.', diff:1,
+    points:[
+      'Die Startseite zeigt Ihren Kalender sowie vier Shortcuts: Artikel, Lieferant, Bestellvorschläge erstellen und Meine Einstellungen.',
+      'Über die drei Striche oben links gelangen Sie jederzeit zurück zum Home-Bereich und zur Hauptnavigation.',
+      'Der Kalender arbeitet mit einem Ampelsystem: Rot markierte Einträge zeigen fällige Bestellungen an.',
+      'Die Lagerverwaltung gliedert sich in Artikel, Lieferant, Standorte, Bestellvorschlag, Bestellungen, Scan, Bestelleingang und Lagerbestand.'
+    ],
+    features:[
+      {t:'Startseite mit Kalender',d:'Fällige Bestellungen auf einen Blick, Ampelsystem zur Priorisierung'},
+      {t:'Vier Schnellzugriffe',d:'Artikel, Lieferant, Bestellvorschläge erstellen, Meine Einstellungen'},
+      {t:'Lagerverwaltung als Hauptbereich',d:'Acht Unterpunkte von Artikel bis Lagerbestand'}
+    ],
+    practice:'Ein Lagerleiter meldet sich morgens an und sieht auf der Startseite sofort im Kalender, welche Bestellungen heute fällig sind (rot markiert) – ohne eine einzige Excel-Liste zu öffnen.',
+    task:'Melden Sie sich testweise an und erkunden Sie die Startseite mit Kalender und den vier Shortcuts.',
+    checklist:['Kalender öffnen und Ampelsystem prüfen','Die vier Shortcuts einmal anklicken','Über die drei Striche in die Lagerverwaltung wechseln','Die acht Unterpunkte der Lagerverwaltung einmal durchklicken'],
+    tip:'Rot markierte Kalendereinträge haben Priorität – prüfen Sie diese jeden Morgen zuerst, bevor Sie mit anderen Aufgaben starten.',
+    quiz:[
+      {q:'Was zeigt ein rot markierter Eintrag im Kalender der OrKan Cloud?',o:['Einen Urlaubstag','Eine fällige Bestellung','Einen neuen Artikel','Eine abgeschlossene Lieferung'],a:1,t:'Systemgrundlagen'},
+      {q:'Wie gelangen Sie zur Hauptnavigation zurück?',o:['Über die drei Striche oben links','Nur über die Browser-Zurück-Taste','Über das Firmenlogo','Gar nicht, Neuanmeldung nötig'],a:0,t:'Navigation'},
+      {q:'Welcher Bereich gehört NICHT zu den acht Unterpunkten der Lagerverwaltung?',o:['Bestellvorschlag','Scan','Lagerbestand','Gehaltsabrechnung'],a:3,t:'Lagerverwaltung-Struktur'}
+    ],
+    summary:{ kern:['Die Startseite bündelt Kalender und vier Shortcuts für die häufigsten Aufgaben.','Das Ampelsystem im Kalender priorisiert fällige Bestellungen visuell.','Die Lagerverwaltung ist der zentrale Hauptbereich mit acht klar gegliederten Unterpunkten.'],
+      funk:['Startseite mit Kalender','Lagerverwaltung als Hauptbereich'], hand:['Kalender täglich als ersten Schritt prüfen','Sich mit den acht Unterpunkten der Lagerverwaltung vertraut machen'] }
+  },
+  { id:2, phase:1, title:'Artikel & Lagerplätze', time:'15 Min.', diff:1,
+    points:[
+      'Ein Artikel wird mit Artikelgruppe, interner Artikelnummer, Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort angelegt.',
+      'Lager MIN definiert den Sicherheitsbestand, Lager MAX den gewünschten Höchstbestand am Lagerplatz.',
+      'Die Bestellmenge im Bestellvorschlag ergibt sich automatisch aus der Differenz zwischen Lager MAX und Lager MIN.',
+      'Zu jedem Artikel werden Lagereinheit, Lieferant, Lieferanten-Artikelnummer, EK-Preis sowie Menge und VPE hinterlegt.'
+    ],
+    features:[
+      {t:'Vollständiger Artikelstamm',d:'Artikelgruppe, Bezeichnung 1–3, Lager/Gebäude/Lagerort in einer Maske'},
+      {t:'Lager MIN / Lager MAX',d:'Sicherheitsbestand und Höchstbestand steuern die Bestellmenge automatisch'},
+      {t:'Artikel erstellen, kopieren, bearbeiten',d:'Ähnliche Artikel per Kopie statt Neuanlage anlegen'}
+    ],
+    practice:'Für ein Schraubenpäckchen wird Lager MIN = 2 und Lager MAX = 6 hinterlegt. Sobald der Mindestbestand von 2 erreicht ist, schlägt die OrKan Cloud automatisch die Differenz von 4 Päckchen zur Nachbestellung vor.',
+    task:'Legen Sie einen Artikel mit Lager MIN/MAX nach dem Schraubenpäckchen-Beispiel an.',
+    checklist:['Artikelgruppe und interne Artikelnummer vergeben','Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort eintragen','Lager MIN und Lager MAX festlegen (z. B. 2 / 6)','Lieferant, Lieferanten-Artikelnummer und Lagereinheit hinterlegen','Artikelbild per Drag & Drop unter „Dokumente" hinzufügen'],
+    tip:'Nutzen Sie die „Kopieren"-Funktion für ähnliche Artikel (z. B. gleicher Bohrer in anderer Größe) – Beschreibung und Lieferant müssen dann nicht erneut gepflegt werden.',
+    quiz:[
+      {q:'Wofür steht „Lager MIN" bei einem Artikel?',o:['Der maximale Lagerbestand','Der Sicherheitsbestand, ab dem nachbestellt wird','Der Einkaufspreis','Die kleinste Verpackungseinheit'],a:1,t:'Lager MIN/MAX'},
+      {q:'Bei Lager MIN = 2 und Lager MAX = 6 – wie viele Stück werden im Bestellvorschlag vorgeschlagen?',o:['2','6','4','8'],a:2,t:'Bestellmengen-Berechnung'},
+      {q:'Wozu dient die „Kopieren"-Funktion bei Artikeln?',o:['Zum Löschen mehrerer Artikel','Um ähnliche Artikel ohne erneute Dateneingabe anzulegen','Nur für den Export','Für die Passwortänderung'],a:1,t:'Artikel-Pflichtfelder'}
+    ],
+    summary:{ kern:['Artikel werden mit Artikelgruppe, interner Artikelnummer, Bezeichnung 1–3 sowie Lager/Gebäude/Lagerort angelegt.','Lager MIN und Lager MAX steuern automatisch die vorgeschlagene Bestellmenge (MAX minus MIN).','Ähnliche Artikel lassen sich per Kopierfunktion effizient anlegen statt neu einzugeben.'],
+      funk:['Lager MIN / Lager MAX','Artikel kopieren'], hand:['Lager MIN/MAX realistisch anhand des Verbrauchs festlegen','Bei ähnlichen Artikeln konsequent die Kopierfunktion nutzen'] }
+  },
+  { id:3, phase:2, title:'Zwei-Etiketten-System & Bestellvorschlag', time:'10 Min.', diff:2,
+    points:[
+      'An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, zur Kennzeichnung des Lagerplatzes) und ein weißes (Bestellauslöser).',
+      'Wird der Mindestbestand erreicht, zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox.',
+      'Abends nimmt ein Lagermitarbeiter die Bestellbox und erfasst die Artikel unter „Bestellvorschlag → Erstellen" – per QR-Code-Scan oder manuell.',
+      'Nach „Bestellungen erstellen" und „Senden" folgt die Zusammenfassung mit Ansprechpartner, Liefertermin, Lieferadresse und Lieferant.'
+    ],
+    features:[
+      {t:'Blaues Etikett',d:'Bleibt dauerhaft am Regal – eindeutige Lagerplatzkennzeichnung'},
+      {t:'Weißes Etikett',d:'Wird bei Mindestbestand gezogen und signalisiert laufende Bestellung'},
+      {t:'Bestellvorschlag per Scan',d:'QR-Code scannen oder Artikel manuell erfassen und in den Warenkorb legen'}
+    ],
+    practice:'Ein Lagermitarbeiter zieht am Nachmittag das weiße Etikett vom leeren Schrauben-Fach und legt es in die Bestellbox. Abends scannt ein Kollege alle Etiketten aus der Box unter „Bestellvorschlag" ein – die Bestellung ist in wenigen Minuten fertig zusammengestellt.',
+    task:'Simulieren Sie den Ablauf vom weißen Etikett bis zum fertigen Bestellvorschlag.',
+    checklist:['Zwei-Etiketten-System am Testregal nachvollziehen (blau vs. weiß)','Weißes Etikett in die Bestellbox legen','Unter „Bestellvorschlag → Erstellen" den Artikel scannen oder manuell erfassen','„Bestellungen erstellen" und Zusammenfassung prüfen (Ansprechpartner, Liefertermin, Lieferadresse)'],
+    tip:'Fehlt am Regal das weiße Etikett, ist der Artikel bereits im Bestellprozess – so weiß jeder Mitarbeiter auf einen Blick, ob schon bestellt wurde, ohne im System nachschauen zu müssen.',
+    quiz:[
+      {q:'Wofür steht das blaue Etikett am Lagerplatz?',o:['Für den Bestellauslöser','Für die dauerhafte Lagerplatzkennzeichnung','Für den Lieferantenpreis','Für die Inventur'],a:1,t:'Zwei-Etiketten-System'},
+      {q:'Was passiert, wenn der Mindestbestand erreicht ist?',o:['Nichts, das System merkt es automatisch','Das weiße Etikett wird gezogen und in die Bestellbox gelegt','Der Artikel wird gelöscht','Der Lieferant wird automatisch gewechselt'],a:1,t:'Bestellauslösung'},
+      {q:'Was folgt nach „Bestellungen erstellen" und „Senden"?',o:['Die Bestellung wird sofort ohne Kontrolle verschickt','Eine Zusammenfassung mit Ansprechpartner, Liefertermin und Lieferadresse','Der Artikel wird automatisch gelöscht','Nichts, der Vorgang ist bereits beendet'],a:1,t:'Bestellvorschlag-Ablauf'}
+    ],
+    summary:{ kern:['Das Zwei-Etiketten-System (blau/weiß) macht den Bestellstatus jedes Lagerplatzes ohne Systemzugriff sichtbar.','Das weiße Etikett wandert bei Mindestbestand in die Bestellbox und wird gesammelt eingescannt.','Der Bestellvorschlag fasst alle erfassten Artikel zu einer Bestellung mit vollständigen Lieferdaten zusammen.'],
+      funk:['Zwei-Etiketten-System','Bestellvorschlag per Scan'], hand:['Bestellbox täglich zur festen Uhrzeit leeren','Weißes Etikett nach Wareneingang wieder ans Regal anbringen'] }
+  },
+  { id:4, phase:2, title:'Artikelimport & Lieferanten-Anbindung', time:'18 Min.', diff:3,
+    points:[
+      'Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei mit den zugehörigen Artikelbildern.',
+      'Beim Import stehen drei Optionen zur Wahl: „Importieren und aktualisieren", „nur importieren" oder „nur aktualisieren".',
+      'Der Abgleich läuft wahlweise über die Lieferanten-Artikelnummer, die EAN-Nummer oder die interne Artikelnummer.',
+      'Die Shop-URL im Lieferantenstamm ist die Grundlage der Anbindung: Die OrKan Cloud greift darüber später direkt auf den Lieferanten-Shop zu.'
+    ],
+    features:[
+      {t:'Excel + ZIP-Import',d:'Artikeldaten und Bilder werden gemeinsam über Dateiname-Zuordnung importiert'},
+      {t:'Drei Abgleich-Optionen',d:'Lieferanten-Artikelnummer, EAN-Nummer oder interne Artikelnummer'},
+      {t:'Lieferanten-Shop-Anbindung',d:'Shop-URL verknüpft die OrKan Cloud direkt mit dem Bestellshop des Lieferanten'}
+    ],
+    practice:'Beim Wechsel von einer Excel-basierten Lagerverwaltung werden mehrere hundert Artikel per Excel-Import angelegt: Die Artikeldaten liegen in der Excel-Liste, die passenden Produktbilder in einer ZIP-Datei – der Dateiname im Ordner entspricht dabei exakt dem Bildnamen in der Excel-Spalte.',
+    task:'Bereiten Sie eine Excel-Importvorlage inklusive Bilderordner vor.',
+    checklist:['Pflichtfelder der Importvorlage prüfen (Werksnummer, EAN, Bezeichnung 1–3, Lager/Gebäude/Lagerort)','Artikelbilder in einem Ordner sammeln und als ZIP vorbereiten','Bildnamen in der Excel-Spalte exakt dem Dateinamen im Ordner zuordnen','Passende Import-Option wählen (importieren/aktualisieren) und Abgleichfeld festlegen'],
+    tip:'Bei der Lieferantenanlage unbedingt die Shop-URL pflegen – ohne sie kann die OrKan Cloud die Bestellung später nicht automatisch zum Lieferanten-Shop weiterleiten.',
+    quiz:[
+      {q:'Was wird zusätzlich zur Excel-Liste beim Artikelimport hochgeladen?',o:['Eine PDF-Datei','Eine ZIP-Datei mit den Artikelbildern','Ein Word-Dokument','Nichts weiter'],a:1,t:'Import-Datenformat'},
+      {q:'Über welches Feld läuft die Anbindung an den Lieferanten-Shop?',o:['Die Postleitzahl','Die Shop-URL im Lieferantenstamm','Den Firmennamen','Das Bestelldatum'],a:1,t:'Lieferanten-Shop-Anbindung'},
+      {q:'Welche Option gibt es NICHT beim Artikelimport?',o:['Importieren und aktualisieren','Nur importieren','Nur aktualisieren','Automatisch übersetzen'],a:3,t:'Import-Optionen'}
+    ],
+    summary:{ kern:['Der Artikelimport kombiniert eine Excel-Liste mit einer ZIP-Datei für Bilder über eine Dateinamen-Zuordnung.','Drei Importoptionen und drei Abgleichfelder ermöglichen einen flexiblen, wiederholbaren Importprozess.','Die Shop-URL im Lieferantenstamm ist die technische Grundlage für die spätere automatische Bestellweiterleitung.'],
+      funk:['Excel + ZIP-Import','Lieferanten-Shop-Anbindung'], hand:['Vor dem Vollimport Bildzuordnung an wenigen Testartikeln prüfen','Shop-URL bei jedem neuen Lieferanten sofort hinterlegen'] }
+  },
+  { id:5, phase:3, title:'Wareneingang, Lagerbestand & Gebrauchsgut', time:'8 Min.', diff:2,
+    points:[
+      'Beim Bestellabschluss öffnen sich drei Fenster: Wareneingang-Bestätigung, Lieferschein und der Lieferanten-Shop zur finalen Bestellung.',
+      'Unter „Scan / Bestelleingang" sehen Sie, wann Ware angekommen ist – inklusive Bestellnummer und Kommission.',
+      'Der Reiter „Lagerbestand" zeigt je Artikel den aktuellen Bestand sowie den Warenwert auf Basis von Lager MIN und Lager MAX.',
+      'Die Gebrauchsgutverwaltung (Maschinenverwaltung) zeigt, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine führt.'
+    ],
+    features:[
+      {t:'Drei-Fenster-Bestellabschluss',d:'Wareneingang, Lieferschein und Lieferanten-Shop in einem Schritt'},
+      {t:'Lagerbestand mit Warenwert',d:'Ist-Bestand je Artikel im Verhältnis zu Lager MIN/MAX'},
+      {t:'Gebrauchsgutverwaltung',d:'Maschinen und Werkzeuge Mitarbeitern oder Fahrzeugen zuordnen'}
+    ],
+    practice:'Nach Abschluss einer Bestellung hakt ein Lagermitarbeiter im Wareneingangs-Fenster die gelieferten Artikel ab, prüft sie gegen den Lieferschein und aktualisiert damit automatisch den Lagerbestand – ganz ohne separate Excel-Erfassung.',
+    task:'Prüfen Sie den Lagerbestand eines Testartikels und ordnen Sie ein Gebrauchsgut einem Mitarbeiter zu.',
+    checklist:['Bestellabschluss mit den drei Fenstern nachvollziehen','Wareneingang für einen Testartikel bestätigen','Lagerbestand und Warenwert eines Artikels prüfen','Ein Gebrauchsgut über „Buchung" einem Mitarbeiter zuordnen'],
+    tip:'Nutzen Sie bei der Gebrauchsgutverwaltung die Funktion „Service und Wartung", um wiederkehrende Prüftermine (z. B. Jahresservice) direkt an der Maschine zu hinterlegen.',
+    quiz:[
+      {q:'Welche drei Fenster öffnen sich nach Abschluss einer Bestellung?',o:['Rechnung, Mahnung, Gutschrift','Wareneingang, Lieferschein, Lieferanten-Shop','Kalender, Kontakte, Einstellungen','Nur ein Bestätigungsfenster'],a:1,t:'Bestellabschluss-Fenster'},
+      {q:'Was zeigt der Reiter „Lagerbestand" zusätzlich zum aktuellen Bestand an?',o:['Den Warenwert auf Basis von Lager MIN/MAX','Die Urlaubstage der Mitarbeiter','Das Wetter am Lagerstandort','Nichts weiter'],a:0,t:'Lagerbestand & Warenwert'},
+      {q:'Wofür wird die Gebrauchsgutverwaltung genutzt?',o:['Für die Buchhaltung','Um zu erfassen, welcher Mitarbeiter welche Maschine hat','Für den Artikelimport','Für die Passwortverwaltung'],a:1,t:'Gebrauchsgutverwaltung'}
+    ],
+    summary:{ kern:['Der Bestellabschluss verbindet Wareneingang, Lieferschein und Lieferanten-Shop in einem durchgängigen Drei-Fenster-Prozess.','Der Lagerbestand zeigt den aktuellen Warenwert stets im Verhältnis zu Lager MIN und Lager MAX.','Die Gebrauchsgutverwaltung schafft Transparenz darüber, wer welche Maschine oder welches Werkzeug aktuell nutzt.'],
+      funk:['Drei-Fenster-Bestellabschluss','Gebrauchsgutverwaltung'], hand:['Wareneingang zeitnah bestätigen, um den Lagerbestand aktuell zu halten','Service- und Wartungstermine für Maschinen konsequent hinterlegen'] }
+  },
+  { id:6, phase:3, title:'Maschinenverwaltung', time:'12 Min.', diff:2,
+    points:[
+      'Maschinen werden mit Name, Seriennummer, Wert, Heimatstandort (Fahrzeug, Lagerort, Gebäude oder Person) und Anschaffungsdatum angelegt.',
+      'Das erste hochgeladene Dokument erscheint auf dem Etikett, weitere Dokumente wie der Kaufbeleg werden nicht gedruckt, sind aber entscheidend für Garantiefälle.',
+      'Ein Administrator kann jede Maschine auf jeden Standort buchen; ein Monteur kann über die App ausschließlich Maschinen zu sich selbst buchen.',
+      'Für Service & Wartung werden Intervalle hinterlegt (z. B. jährliche VDE-Prüfung) – bei Bestätigung wird automatisch ein Folgetermin angelegt.'
+    ],
+    features:[
+      {t:'Vollständige Maschinen-Stammdaten',d:'Inkl. Electronic ID als Alternative zum QR-Code-Scan (NFC/RFID)'},
+      {t:'Rollenbasierte Buchungslogik',d:'Admin bucht für alle, Monteur nur für sich selbst'},
+      {t:'Service & Wartung mit Automatik',d:'Folgetermin wird nach Bestätigung automatisch angelegt'}
+    ],
+    practice:'Bei 16 baugleichen Pressmaschinen für 20 Monteure lässt sich im Reparaturfall nur dank des digital hinterlegten Kaufbelegs pro Seriennummer zweifelsfrei klären, welche Maschine noch Garantie hat – ohne diese Zuordnung würden berechtigte Garantieansprüche abgelehnt.',
+    task:'Legen Sie eine Testmaschine mit Kaufbeleg an und hinterlegen Sie ein Wartungsintervall.',
+    checklist:['Maschine mit Name, Seriennummer und Heimatstandort anlegen','Kaufbeleg als zusätzliches Dokument hochladen','Service-&-Wartung-Intervall festlegen (z. B. Jahresservice)','Buchung der Maschine auf eine Testperson durchführen'],
+    tip:'Prüfen Sie vor dem Kauf zusätzlicher Werkzeuge wie Entfernungsmesser, ob diese bereits in der Maschinenverwaltung erfasst sind — gerade kleinere, wertvolle Geräte werden bei Versicherungsfällen sonst leicht vergessen.',
+    quiz:[
+      {q:'Wer kann über die App eine Maschine auf eine andere Person buchen?',o:['Jeder Monteur','Nur ein Administrator oder Lagerist mit Adminrechten','Niemand, das geht nur am Desktop','Nur der Maschinenhersteller'],a:1,t:'Maschinen-Buchungslogik'},
+      {q:'Warum ist der digital hinterlegte Kaufbeleg pro Maschine wichtig?',o:['Für die Farbwahl des Etiketts','Für die eindeutige Zuordnung im Garantiefall bei baugleichen Geräten','Er ist nicht wichtig','Nur für die Buchhaltung relevant'],a:1,t:'Kaufbeleg & Garantie'},
+      {q:'Was passiert bei Bestätigung eines Wartungstermins?',o:['Nichts weiter','Automatisch wird ein Folgetermin auf Basis des Intervalls angelegt','Die Maschine wird gelöscht','Der Standort wird zurückgesetzt'],a:1,t:'Service & Wartung'}
+    ],
+    summary:{ kern:['Maschinen werden mit vollständigen Stammdaten inkl. Heimatstandort und Kaufbeleg erfasst.','Die Buchungslogik ist rollenabhängig: Admins buchen für alle, Monteure nur für sich selbst.','Service-&-Wartung-Intervalle erzeugen automatisch Folgetermine und sichern gesetzlich vorgeschriebene Prüfungen ab.'],
+      funk:['Maschinen-Stammdaten & Electronic ID','Service & Wartung mit Automatik'], hand:['Kaufbelege konsequent bei jeder Maschine hinterlegen','Wartungsintervalle für prüfpflichtige Geräte sofort bei Anlage festlegen'] }
+  },
+  { id:7, phase:3, title:'Schlüsselverwaltung', time:'8 Min.', diff:1,
+    points:[
+      'Schlüssel-Etiketten sind spezielle gefaltete Anhänger: außen nur eine Nummer und ein QR-Code, innen (nur beim Öffnen sichtbar) die Kundenadresse.',
+      'Diese Trennung ist ein Sicherheitsprinzip: Bei Diebstahl eines Schlüsselkastens darf niemals sofort erkennbar sein, zu welcher Adresse ein Schlüssel gehört.',
+      'Die Adresse muss als Suchkriterium in der Standardansicht verfügbar sein, da im Alltag primär über die Adresse gesucht wird, nicht über die Schlüsselnummer.',
+      'Buchen funktioniert wie bei Maschinen: Schlüssel scannen, Zielperson wählen, speichern – Rückgabe erfolgt durch erneutes Buchen auf den Schlüsselkasten.'
+    ],
+    features:[
+      {t:'Gefaltetes Sicherheits-Etikett',d:'Nummer und QR-Code außen, Adresse nur innen sichtbar'},
+      {t:'Adresssuche als Standard',d:'Wichtig bei mehreren hundert Schlüsseln im Bestand'},
+      {t:'Finderlohn-Option',d:'Optionaler Hinweis auf dem Etikett erhöht die Rückgabewahrscheinlichkeit'}
+    ],
+    practice:'Bei rund 600 verwalteten Schlüsseln wäre eine Suche ausschließlich über die interne Schlüsselnummer praktisch unbrauchbar – ein Mitarbeiter sucht typischerweise nach „Lerchenweg" oder „Kindergarten Lerchenstraße", nicht nach einer vierstelligen Nummer.',
+    task:'Legen Sie einen Testschlüssel an und buchen Sie ihn auf eine Testperson.',
+    checklist:['Schlüssel mit Adresse als Suchkriterium anlegen','Sicherheitsprinzip des gefalteten Etiketts nachvollziehen (außen anonym, innen Adresse)','Schlüssel auf eine Testperson buchen','Rückgabe durch erneutes Buchen auf den Schlüsselkasten simulieren'],
+    tip:'Schlüsselkästen dürfen niemals mit sichtbaren Adressangaben versehen sein — weder am Schlüssel selbst noch in einem danebenliegenden Zuordnungs-Ordner. Das ist kein Detail, sondern ein zentrales Sicherheitsprinzip.',
+    quiz:[
+      {q:'Was ist auf der Außenseite eines OrKan-Schlüsselanhängers sichtbar?',o:['Die vollständige Kundenadresse','Nur eine Nummer und ein QR-Code','Name des Monteurs','Nichts, das Etikett ist blanko'],a:1,t:'Schlüssel-Etikett'},
+      {q:'Warum ist die Trennung von Nummer (außen) und Adresse (innen) sicherheitsrelevant?',o:['Aus optischen Gründen','Damit bei Diebstahl des Schlüsselkastens keine Adresse sofort erkennbar ist','Weil QR-Codes keine Adressen speichern können','Das ist reiner Zufall'],a:1,t:'Sicherheitsprinzip'},
+      {q:'Wonach wird bei der Schlüsselsuche im Alltag primär gesucht?',o:['Nach der internen Schlüsselnummer','Nach der Adresse','Nach dem Anschaffungsdatum','Nach der Farbe des Anhängers'],a:1,t:'Adresssuche'}
+    ],
+    summary:{ kern:['Schlüssel-Etiketten trennen aus Sicherheitsgründen Nummer/QR-Code (außen) von der Adresse (innen).','Die Adresssuche ist bei größeren Schlüsselbeständen essenziell und muss in der Standardansicht verfügbar sein.','Buchung und Rückgabe folgen derselben Logik wie bei der Maschinenverwaltung.'],
+      funk:['Gefaltetes Sicherheits-Etikett','Adresssuche als Standard'], hand:['Adressfilter bei der täglichen Schlüsselsuche konsequent nutzen','Nie Adressinformationen sichtbar am Schlüsselkasten anbringen'] }
+  },
+  { id:8, phase:3, title:'Projekte & Baustellen', time:'10 Min.', diff:2,
+    points:[
+      'Das Projekte-Modul dokumentiert Materialentnahmen auf Baustellen, die sonst nur handschriftlich per „Aufmaß" erfasst und leicht vergessen werden.',
+      'Wird eine Entnahme vergessen, entsteht ein realer Verlust: Das Material wird dem Kunden nie in Rechnung gestellt.',
+      'Die Nutzung für Materialbuchungen erfordert zwingend die mobile App – über die Desktop-Oberfläche ist keine Buchung im Feld möglich.',
+      'Alternative zur App: Der OrKan-Artikelstamm wird per Matchcode (interne Artikelnummer) direkt in die Branchensoftware importiert, sodass Entnahmen dort gebucht werden.'
+    ],
+    features:[
+      {t:'Entnahme & Einlagerung per App',d:'Artikel scannen, Menge angeben, Projekt auswählen, speichern'},
+      {t:'Projekt-Statistik & Export',d:'Vollständige Buchungsliste je Projekt für die Nachkalkulation'},
+      {t:'Alternative Matchcode-Integration',d:'Nummern-Abgleich mit der Branchensoftware statt eigenem App-Workflow'}
+    ],
+    practice:'Ein Monteur baut ungeplant eine zusätzliche Infrarotheizung aus dem eigenen Lager statt vom Großhändler ein. Ohne App-Buchung fehlt der Beleg komplett – das Material wird nie nachkalkuliert und der Verkaufspreis geht verloren.',
+    task:'Simulieren Sie eine Materialentnahme für ein Testprojekt.',
+    checklist:['Projekt mit Name und Auftragsnummer anlegen','Materialentnahme über die App simulieren (Artikel, Menge, Projekt)','Projekt-Statistik/Export für die Nachkalkulation aufrufen','Alternative Matchcode-Integration mit der Branchensoftware nachvollziehen'],
+    tip:'Achten Sie bei der Projekt-Statistik darauf, dass jeder gebuchte Artikel eine gepflegte Bezeichnung im Artikelstamm hat — sonst erscheint in der Auswertung nur eine bedeutungslose Artikelnummer statt eines lesbaren Namens.',
+    quiz:[
+      {q:'Was ist die zentrale Voraussetzung für Materialbuchungen im Projekte-Modul?',o:['Ein Excel-Import','Die mobile App','Ein zweiter Bildschirm','Nichts Besonderes'],a:1,t:'Projekte-App-Pflicht'},
+      {q:'Was passiert, wenn eine Materialentnahme auf der Baustelle vergessen wird?',o:['Nichts, das System merkt es automatisch','Das Material wird dem Kunden nie in Rechnung gestellt','Der Artikel wird automatisch storniert','Der Monteur erhält eine Mahnung'],a:1,t:'Nachkalkulations-Risiko'},
+      {q:'Was ist die genannte Alternative zur App-basierten Projektbuchung?',o:['Gar keine, es gibt keine Alternative','Matchcode-Integration des Artikelstamms in die Branchensoftware','Ein Anruf beim Support','Papierlisten per Fax'],a:1,t:'Matchcode-Integration'}
+    ],
+    summary:{ kern:['Das Projekte-Modul verhindert, dass Materialentnahmen auf Baustellen unkalkuliert bleiben.','Für Materialbuchungen im Feld ist zwingend die mobile App erforderlich.','Als zukunftsträchtige Alternative gilt die direkte Matchcode-Integration mit der Branchensoftware, ohne zusätzliche OrKan-Module.'],
+      funk:['Entnahme & Einlagerung per App','Alternative Matchcode-Integration'], hand:['Vor Projektstart sicherstellen, dass Artikelbezeichnungen im Stamm gepflegt sind','Bei bereits genutzter Branchensoftware die Matchcode-Integration als Alternative prüfen'] }
+  }
+];
+
+document.getElementById('onbRoadmapPreview').innerHTML = MODULES.map((m,i)=>`
+  <div class="orp-item"><div class="orp-num">${i+1}</div><div class="orp-title">${m.title}</div></div>
+`).join('');
+
+const KB_ARTICLES = [
+  {cat:'Grundlagen',title:'Startseite: Kalender und Shortcuts',desc:'Aufbau der Startseite und das Ampelsystem im Kalender.',body:['Die Startseite zeigt Ihren Kalender sowie vier Shortcuts: Artikel, Lieferant, Bestellvorschläge erstellen und Meine Einstellungen.','Rot markierte Kalendereinträge zeigen fällige Bestellungen, grau markierte folgen dem allgemeinen Ampelsystem.','Über die drei Striche oben links gelangen Sie jederzeit zurück zur Hauptnavigation.']},
+  {cat:'Grundlagen',title:'Aufbau der Lagerverwaltung',desc:'Die acht Unterpunkte im Überblick.',body:['Die Lagerverwaltung gliedert sich in Artikel, Lieferant, Standorte, Bestellvorschlag, Bestellungen, Scan, Bestelleingang und Lagerbestand.','Jeder Unterpunkt deckt einen Schritt im Prozess ab – von der Artikelanlage bis zur Bestandsprüfung.','Die Anordnung der Spalten ist in jedem Bereich frei konfigurierbar.']},
+  {cat:'Prozesse',title:'Lager MIN und Lager MAX richtig setzen',desc:'Wie sich die vorgeschlagene Bestellmenge automatisch berechnet.',body:['Lager MIN ist der Sicherheitsbestand, ab dem nachbestellt werden soll; Lager MAX der gewünschte Höchstbestand.','Die vorgeschlagene Bestellmenge im Bestellvorschlag ergibt sich automatisch aus der Differenz MAX minus MIN.','Beispiel: Bei MIN = 2 und MAX = 6 schlägt die OrKan Cloud 4 Stück zur Nachbestellung vor.']},
+  {cat:'Prozesse',title:'Bestellvorschlag bearbeiten',desc:'Vom Etikett in der Bestellbox zur fertigen Bestellung.',body:['Unter „Bestellvorschlag → Erstellen" werden Artikel per QR-Code-Scan oder manuell erfasst und landen im Warenkorb.','Über „Bestellungen erstellen" und „Senden" gelangen Sie zur Zusammenfassung mit Ansprechpartner, Liefertermin und Lieferadresse.','Nach „Bestellen" öffnen sich drei Fenster: Wareneingang, Lieferschein und der Lieferanten-Shop zur finalen Bestellauslösung.']},
+  {cat:'Schnittstellen',title:'Artikelimport per Excel und ZIP',desc:'Vorbereitung, Durchführung und Bildzuordnung.',body:['Der Import besteht aus einer Excel-Liste mit den Artikeldaten und einer ZIP-Datei mit den zugehörigen Bildern.','Der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen.','Beim Import wählen Sie zwischen „Importieren und aktualisieren", „nur importieren" oder „nur aktualisieren" sowie dem Abgleichfeld (Lieferanten-Artikelnummer, EAN- oder interne Artikelnummer).']},
+  {cat:'Schnittstellen',title:'Lieferanten-Shop anbinden',desc:'Warum die Shop-URL im Lieferantenstamm entscheidend ist.',body:['Die OrKan Cloud ist lieferantenunabhängig – Sie können den Lieferanten für jeden Artikel jederzeit wechseln.','Die Shop-URL im Lieferantenstamm ist die Grundlage dafür, dass die OrKan Cloud später direkt auf den Bestellshop zugreifen kann.','Zusätzlich lassen sich Liefertermine je Lieferant hinterlegen, z. B. „nur freitags".']},
+  {cat:'Verwaltung',title:'Neue Benutzer einladen',desc:'Ablauf der Einladung und Rollenzuweisung.',body:['Unter Einstellungen → Mandantenverwaltung → Benutzer können neue Mitarbeitende angelegt werden.','Zusätzlich lassen sich hier Kontakte und die Sprache verwalten.','Welche Module ein Mandant nutzt, wird zentral unter Einstellungen → Firma verwaltet.']},
+  {cat:'Verwaltung',title:'Etiketten-Templates gestalten (Artikelkarte)',desc:'Eigene Etikettenvorlagen für den Lagerdruck erstellen.',body:['Unter Einstellungen → Lagerverwaltung → Artikelkarte gestalten Sie das Template für Ihre Etiketten frei per Drag & Drop.','Sie wählen selbst, welche Felder (z. B. Artikelnummer, Lagerort, Firmenlogo) auf dem Etikett erscheinen.','Beim Drucken eines Artikels wählen Sie anschließend das passende Template und erhalten eine druckfertige PDF-Datei.']},
+  {cat:'Prozesse',title:'Wareneingang korrekt bestätigen',desc:'Von der Anlieferung bis zur Bestandsaktualisierung.',body:['Nach Bestellabschluss öffnet sich automatisch das Wareneingangs-Fenster mit Artikelbild und Bezeichnung.','Haken Sie gelieferte Artikel ab und gleichen Sie sie mit dem Lieferschein ab.','Der Lagerbestand wird nach Bestätigung automatisch aktualisiert.']},
+  {cat:'Grundlagen',title:'Gebrauchsgutverwaltung (Maschinen)',desc:'Maschinen und Werkzeuge Mitarbeitern zuordnen.',body:['Unter Gebrauchsgut sehen Sie, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine führt.','Über „Buchung" weisen Sie eine Maschine einem Standort oder Mitarbeiter zu, „Reservierungen" planen zukünftige Nutzung.','Service- und Wartungstermine (z. B. Jahresservice) lassen sich direkt an der Maschine hinterlegen.']},
+  {cat:'Verwaltung',title:'Schlüsselverwaltung',desc:'Wer hat aktuell welchen Schlüssel – lückenlos dokumentiert.',body:['Die Schlüsselverwaltung ist ein optionales Modul, das wie die Gebrauchsgutverwaltung unter Einstellungen → Firma gebucht werden kann.','Jeder Schlüssel wird als eigener Datensatz angelegt und einem Standort, Gebäude oder Mitarbeiter zugeordnet.','Über „Buchung" wird die Ausgabe und Rückgabe eines Schlüssels dokumentiert, sodass jederzeit nachvollziehbar ist, wer aktuell im Besitz ist.']}
+];
+
+const BEST_PRACTICES = [
+  {title:'Ersten Artikel vollständig anlegen',time:'12',diff:'easy',desc:'Von der Artikelgruppe bis zum Artikelbild in einem Durchgang.',
+   steps:[
+    {t:'Artikelgruppe und interne Artikelnummer vergeben',d:'Wählen Sie eine passende Artikelgruppe und ein einheitliches Nummernschema.'},
+    {t:'Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort eintragen',d:'Je genauer die Bezeichnung, desto leichter die spätere Suche.'},
+    {t:'Lager MIN und Lager MAX festlegen',d:'Definieren Sie Sicherheitsbestand und Höchstbestand realistisch.',hint:'Bei Unsicherheit lieber leicht großzügiger kalkulieren und nach vier Wochen nachjustieren.'},
+    {t:'Lieferant und EK-Preis hinterlegen',d:'Lieferant, Lieferanten-Artikelnummer und Preis vervollständigen den Artikel.'},
+    {t:'Artikelbild per Drag & Drop hinzufügen',d:'Ein Bild erleichtert die Wiedererkennung am Lagerplatz erheblich.'}
+   ]},
+  {title:'Artikel-Stammdaten per Excel importieren',time:'20',diff:'medium',desc:'Effizienter Massenimport bestehender Artikeldaten inklusive Bildern.',
+   steps:[
+    {t:'Importvorlage vorbereiten',d:'Nutzen Sie die Excel-Vorlage mit Werksnummer, EAN, Bezeichnung 1–3, Lager/Gebäude/Lagerort.'},
+    {t:'Bilder sammeln und benennen',d:'Speichern Sie Artikelbilder in einem Ordner; der Dateiname muss exakt dem Eintrag in der Excel-Spalte entsprechen.',hint:'Bildname und Excel-Eintrag Zeichen für Zeichen abgleichen, sonst schlägt die Zuordnung fehl.'},
+    {t:'ZIP-Datei erstellen',d:'Packen Sie den Bilderordner als ZIP-Datei für den Upload.'},
+    {t:'Import-Option wählen',d:'Entscheiden Sie zwischen „Importieren und aktualisieren", „nur importieren" oder „nur aktualisieren".'},
+    {t:'Abgleichfeld festlegen und importieren',d:'Wählen Sie Lieferanten-Artikelnummer, EAN oder interne Artikelnummer als Abgleich und starten Sie den Import.'}
+   ]},
+  {title:'Lager MIN/MAX realistisch berechnen',time:'15',diff:'easy',desc:'Systematische Ermittlung von Sicherheits- und Höchstbestand.',
+   steps:[
+    {t:'Verbrauch beobachten',d:'Analysieren Sie den tatsächlichen Verbrauch je Artikel über mehrere Wochen.'},
+    {t:'Lager MIN festlegen',d:'Setzen Sie den Sicherheitsbestand so, dass er bis zur Lieferung ausreicht.'},
+    {t:'Lager MAX festlegen',d:'Definieren Sie den gewünschten Höchstbestand am Lagerplatz.'},
+    {t:'Bestellmenge prüfen',d:'Kontrollieren Sie, ob die automatisch vorgeschlagene Menge (MAX minus MIN) sinnvoll ist.'}
+   ]},
+  {title:'Zwei-Etiketten-System im Team einführen',time:'10',diff:'easy',desc:'Blaues und weißes Etikett korrekt im Lageralltag nutzen.',
+   steps:[
+    {t:'Etiketten drucken',d:'Erstellen Sie für jeden Lagerplatz ein blaues (fix) und ein weißes (Bestellauslöser) Etikett über die Artikelkarte.'},
+    {t:'Team einweisen',d:'Erklären Sie, dass das weiße Etikett bei Mindestbestand gezogen und in die Bestellbox gelegt wird.',hint:'Ein fehlendes weißes Etikett am Regal bedeutet: Artikel ist bereits bestellt.'},
+    {t:'Bestellbox-Routine festlegen',d:'Legen Sie eine feste Uhrzeit fest, zu der die Bestellbox geleert und in „Bestellvorschlag" erfasst wird.'}
+   ]},
+  {title:'Bestellvorschlag bis zum Wareneingang durchführen',time:'18',diff:'medium',desc:'Vom Scan der Etiketten bis zur bestätigten Anlieferung.',
+   steps:[
+    {t:'Etiketten aus der Bestellbox scannen',d:'Erfassen Sie die Artikel unter „Bestellvorschlag → Erstellen" per QR-Code oder manuell.'},
+    {t:'Bestellung zusammenfassen und senden',d:'Prüfen Sie Ansprechpartner, Liefertermin, Lieferadresse und Lieferant, bevor Sie bestellen.'},
+    {t:'Im Lieferanten-Shop final bestellen',d:'Das dritte der drei Fenster öffnet direkt den Lieferanten-Shop zur Bestellauslösung.'},
+    {t:'Wareneingang bestätigen',d:'Nach Anlieferung Artikel im Wareneingangs-Fenster abhaken und mit dem Lieferschein abgleichen.'}
+   ]},
+  {title:'Gebrauchsgutverwaltung für Maschinen einrichten',time:'12',diff:'easy',desc:'Transparenz darüber schaffen, wer welche Maschine nutzt.',
+   steps:[
+    {t:'Maschinen anlegen',d:'Erfassen Sie Ihre Maschinen und Werkzeuge im Bereich Gebrauchsgut.'},
+    {t:'Buchung vornehmen',d:'Ordnen Sie jede Maschine einem Mitarbeiter, Standort oder Fahrzeug zu.'},
+    {t:'Service und Wartung hinterlegen',d:'Tragen Sie wiederkehrende Termine wie Jahresservice oder Pressencheck ein.'},
+    {t:'Reservierungen nutzen',d:'Planen Sie künftige Nutzung, um Engpässe im Team zu vermeiden.'}
+   ]}
+];
+
+const UPDATES = [
+  {v:'v2.4.1',date:'03. Juli 2026',isNew:true,title:'Lernempfehlungen erweitert',items:['Personalisierte Modulvorschläge basierend auf Rolle und Fortschritt','Verbesserte Erkennung offener Lerninhalte','Performance-Optimierung des Lerncoaches']},
+  {v:'v2.4.0',date:'18. Juni 2026',isNew:false,title:'Neues Update-Center eingeführt',items:['Zentrale Übersicht aller Produktneuerungen','Abonnierbare Benachrichtigungen','Versionierte Änderungsprotokolle']},
+  {v:'v2.3.2',date:'02. Juni 2026',isNew:false,title:'Best-Practice-Bereich veröffentlicht',items:['Sechs praxiserprobte Schritt-für-Schritt-Anleitungen','Schwierigkeitsgrad- und Zeitangaben je Anleitung','Direkte Verlinkung zu relevanten Lernmodulen']},
+  {v:'v2.3.0',date:'14. Mai 2026',isNew:false,title:'Rollenbasierte Lernpfade',items:['Individuelle Lernpfade für vier Nutzerrollen','Angepasste Dashboard-Empfehlungen je Rolle','Verbesserte Fortschrittsvisualisierung']}
+];
+
+const ROLE_FOCUS = {
+  'Lagerleiter': { heading:'Ihr Fokus als Lagerleiter', priorityModules:[3,6,7],
+    cards:[
+      {label:'Team-Fortschritt', val:'Ø 62%', sub:'4 Mitarbeitende aktuell im Onboarding', link:'team'},
+      {label:'Priorität diese Woche', val:'Zwei-Etiketten-System', sub:'Schulen Sie Ihr Team in der Blau/Weiß-Logik'},
+      {label:'Rollenlogik prüfen', val:'Maschinenverwaltung', sub:'Wer darf für andere buchen? Nur Admins.'}
+    ]},
+  'Einkäufer': { heading:'Ihr Fokus als Einkäufer', priorityModules:[2,4,3],
+    cards:[
+      {label:'Lager MIN/MAX', val:'Bestellmenge = MAX − MIN', sub:'Grundlage jedes Bestellvorschlags'},
+      {label:'Lieferanten-Anbindung', val:'Shop-URL prüfen', sub:'Ohne Shop-URL keine automatische Bestellweiterleitung'},
+      {label:'Nächster Schritt', val:'Bestellvorschlag bearbeiten', sub:'Vom Etikett zur fertigen Bestellung'}
+    ]},
+  'Geschäftsführer': { heading:'Ihr strategischer Überblick', priorityModules:[5,6,8],
+    cards:[
+      {label:'Team-Onboarding', val:'Ø 62%', sub:'Fortschritt aller Mitarbeitenden im Blick', link:'team'},
+      {label:'Lagerwert-Näherung', val:'≈ 53.800 €', sub:'Automatisch aus Lager MIN/MAX und EK-Preisen berechnet'},
+      {label:'Zertifizierungsquote', val:'1 von 5', sub:'Team-Mitglieder mit vollständigem Abschluss'}
+    ]},
+  'Lagermitarbeiter': { heading:'Ihr Fokus im Tagesgeschäft', priorityModules:[3,5,7],
+    cards:[
+      {label:'Heute wichtig', val:'Weißes Etikett = bestellt', sub:'Fehlt es am Regal, ist der Artikel schon unterwegs'},
+      {label:'Wareneingang', val:'Drei-Fenster-Prozess', sub:'Wareneingang, Lieferschein, Lieferanten-Shop'},
+      {label:'Schlüssel suchen?', val:'Immer über die Adresse', sub:'Nicht über die interne Schlüsselnummer'}
+    ]}
+};
+
+const ROLE_RECOS = {
+  'Lagerleiter':[{tag:'Prozesse',t:'Team-Einweisung ins Zwei-Etiketten-System',d:'Leitfaden zur Schulung Ihres Lagerteams in Blau/Weiß-Etikettenlogik und Bestellbox.'},{tag:'Best Practice',t:'Lager MIN/MAX unternehmensweit kalibrieren',d:'Anleitung zur Überprüfung und Anpassung bestehender Mindest-/Höchstbestände.'},{tag:'Praxis',t:'Gebrauchsgutverwaltung einführen',d:'Maschinen und Werkzeuge Mitarbeitern und Fahrzeugen zuordnen.'}],
+  'Einkäufer':[{tag:'Prozesse',t:'Lager MIN/MAX richtig berechnen',d:'Praxisbeispiele für realistische Mindest- und Höchstbestände.'},{tag:'Best Practice',t:'Lieferanten-Shop-Anbindung einrichten',d:'Shop-URL korrekt pflegen für die automatische Bestellweiterleitung.'},{tag:'Praxis',t:'Artikelimport für neue Lieferanten',d:'Excel- und ZIP-Import Schritt für Schritt.'}],
+  'Geschäftsführer':[{tag:'Überblick',t:'Lagerbestand & Warenwert verstehen',d:'Ist-Bestand und Warenwert je Artikel auf einen Blick.'},{tag:'Strategie',t:'Rollout-Fortschritt im Unternehmen verfolgen',d:'Behalten Sie den Onboarding-Fortschritt aller Teammitglieder im Blick.'},{tag:'Praxis',t:'Module in den Einstellungen verwalten',d:'Übersicht über buchbare Zusatzmodule wie Bestandsführung oder Schlüsselverwaltung.'}],
+  'Lagermitarbeiter':[{tag:'Praxis',t:'Weißes Etikett richtig einsetzen',d:'So läuft der Bestellprozess vom Regal bis zur Bestellbox reibungslos.'},{tag:'Prozesse',t:'Wareneingang korrekt bestätigen',d:'Schritt-für-Schritt-Anleitung für die tägliche Erfassung im Drei-Fenster-Prozess.'},{tag:'Praxis',t:'Artikel per QR-Code scannen',d:'Bestellvorschläge schnell und fehlerfrei erfassen.'}]
+};
+
+/* Simulierte unternehmensweite KI-Aggregation aller bisherigen Pilotnutzer.
+   Bildet die in Kapitel 2.3.1 beschriebene Rückkopplung von Wissenslücken
+   in die Produktdokumentation ab. */
+const AGGREGATE_GAPS = [
+  {topic:'Lieferanten-Shop-Anbindung', pct:47, moduleId:4},
+  {topic:'Import-Datenformat', pct:38, moduleId:4},
+  {topic:'Maschinen-Buchungslogik', pct:33, moduleId:6},
+  {topic:'Bestellauslösung', pct:29, moduleId:3},
+  {topic:'Projekte-App-Pflicht', pct:26, moduleId:8},
+  {topic:'Bestellmengen-Berechnung', pct:24, moduleId:2},
+  {topic:'Sicherheitsprinzip', pct:20, moduleId:7},
+  {topic:'Lagerbestand & Warenwert', pct:18, moduleId:5},
+  {topic:'Lager MIN/MAX', pct:11, moduleId:2}
+];
+
+/* Simulierte Teamdaten für die Vorgesetzten-Ansicht (Team-Fortschritt) */
+const TEAM_MEMBERS = [
+  {name:'Julia Herrmann', role:'Einkäufer', completed:8, quizAvg:96, weakTopic:null},
+  {name:'Tobias Krämer', role:'Lagermitarbeiter', completed:5, quizAvg:78, weakTopic:'Bestellauslösung'},
+  {name:'Sabine Wolf', role:'Lagerleiter', completed:6, quizAvg:88, weakTopic:'Maschinen-Buchungslogik'},
+  {name:'David Brenner', role:'Lagermitarbeiter', completed:2, quizAvg:60, weakTopic:'Lager MIN/MAX'}
+];
+
+/* ============ STATE ============ */
+let state = {
+  name:'', company:'', role:'',
+  currentView:'dashboard', currentModule:null, currentTab:'content',
+  moduleProgress:{1:{started:false,completed:false,quizScore:null,checklist:[]},2:{started:false,completed:false,quizScore:null,checklist:[]},3:{started:false,completed:false,quizScore:null,checklist:[]},4:{started:false,completed:false,quizScore:null,checklist:[]},5:{started:false,completed:false,quizScore:null,checklist:[]},6:{started:false,completed:false,quizScore:null,checklist:[]},7:{started:false,completed:false,quizScore:null,checklist:[]},8:{started:false,completed:false,quizScore:null,checklist:[]}},
+  totalTime:0, aiOpen:false, quizAnswers:{}, kbFilter:'Alle', kbSearch:'', currentArticle:null, currentBP:null,
+  weakTopics:{}, adaptiveLog:[],
+  integrationOptions:{ behavioral:false, help:false, central:false },
+  moduleVideos:{}, videoManagerModuleId:null
+};
+
+/* ============ ONBOARDING ============ */
+function selectRole(el, role){
+  document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.role = role;
+  checkStart();
+}
+function checkStart(){
+  const name = document.getElementById('onbName').value.trim();
+  document.getElementById('startBtn').disabled = !(name && state.role);
+}
+document.addEventListener('input', e=>{ if(e.target.id==='onbName'||e.target.id==='onbCompany') checkStart(); });
+
+function startApp(){
+  state.name = document.getElementById('onbName').value.trim() || 'Nutzer';
+  state.company = document.getElementById('onbCompany').value.trim() || 'Ihr Unternehmen';
+  document.getElementById('onboarding').style.display='none';
+  document.getElementById('app').style.display='flex';
+  document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
+  refreshProfileMenu();
+  buildModuleSubNav();
+  renderDashboard();
+  renderRoadmap();
+  renderModulesList();
+  renderKB();
+  renderBest();
+  renderUpdates();
+  renderCert();
+  renderCloudIntegration();
+  seedAIMessages();
+  updateSidebarProgress();
+}
+
+/* ============ NAV ============ */
+const VIEW_LABELS = {dashboard:'Dashboard',roadmap:'Mein Lernpfad',modules:'Lernmodule',gaps:'Wissenslücken-Analyse',kb:'Wissensdatenbank',best:'Best Practices',updates:'Update-Center',cert:'Zertifikate',team:'Team-Fortschritt',cloudintegration:'Cloud-Integration'};
+function showView(name){
+  state.currentView = name;
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const item = document.querySelector('.nav-item[data-view="'+name+'"]');
+  if(item) item.classList.add('active');
+  document.getElementById('breadcrumbCurrent').textContent = VIEW_LABELS[name];
+  document.getElementById('mainScroll').scrollTop = 0;
+}
+function toggleSub(e){
+  e.stopPropagation();
+  document.getElementById('moduleSubNav').classList.toggle('open');
+}
+function buildModuleSubNav(){
+  const el = document.getElementById('moduleSubNav');
+  el.innerHTML = MODULES.map(m=>{
+    const p = state.moduleProgress[m.id];
+    const cls = p.completed?'done':(p.started?'active':'');
+    return `<div class="nav-sub-item" onclick="openModule(${m.id});event.stopPropagation()"><span class="status-dot ${cls}"></span>${m.title}</div>`;
+  }).join('');
+}
+
+/* ============ DASHBOARD ============ */
+function completedCount(){ return Object.values(state.moduleProgress).filter(p=>p.completed).length; }
+function progressPct(){ return Math.round(completedCount()/MODULES.length*100); }
+
+function renderDashboard(){
+  const done = completedCount();
+  const avgQuiz = (()=>{ const scores = Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore); if(!scores.length) return '–'; return Math.round(scores.reduce((a,b)=>a+b,0)/scores.length)+'%'; })();
+  const phase = done>=4?3:(done>=2?2:1); // Phase 3 = Module 5-8
+  const nextModule = MODULES.find(m=>!state.moduleProgress[m.id].completed) || MODULES[0];
+  const adaptive = getAdaptiveRecommendation();
+
+  document.getElementById('view-dashboard').innerHTML = `
+    <h1 class="page-title">Guten Tag, ${state.name}.</h1>
+    <p class="page-sub">Hier ist Ihr Onboarding-Überblick als ${state.role}.</p>
+
+    ${adaptive ? `
+    <div class="adaptive-banner">
+      <div class="ai-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-5 4 3 5-7"/></svg></div>
+      <div class="ai-banner-text"><strong>Adaptiver Lernpfad — Wissenslücke erkannt</strong><span>Bei „${adaptive.topic}" gab es Unsicherheiten. Ihr Lernpfad wurde angepasst: Modul „${adaptive.module.title}" wird vor dem regulären nächsten Schritt zur Vertiefung empfohlen.</span></div>
+      <button class="ai-banner-btn" onclick="openModule(${adaptive.module.id});switchTab('content')">Vertiefung ansehen</button>
+    </div>
+    ` : `
+    <div class="ai-banner">
+      <div class="ai-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/><path d="M6 12v1a6 6 0 0 0 12 0v-1M12 19v3"/></svg></div>
+      <div class="ai-banner-text"><strong>Empfehlung</strong><span>Setzen Sie fort mit „${nextModule.title}". Basierend auf Ihrer Rolle als ${state.role} ist dies der optimale nächste Schritt.</span></div>
+      <button class="ai-banner-btn" onclick="openModule(${nextModule.id})">Jetzt starten</button>
+    </div>
+    `}
+
+    <div class="coach-widget">
+      <div class="coach-widget-head">
+        <div class="coach-widget-avatar">LC</div>
+        <div>
+          <div class="coach-widget-name">Lerncoach</div>
+          <div class="coach-widget-status">Online &middot; begleitet Ihren Lernfortschritt</div>
+        </div>
+      </div>
+      <p class="coach-widget-msg" id="coachWidgetMsg">${coachWidgetGreeting()}</p>
+      <div class="coach-widget-input-row">
+        <input type="text" id="coachWidgetInput" placeholder="Frage an Ihren Lerncoach…" onkeydown="if(event.key==='Enter')sendFromWidget()">
+        <button class="coach-widget-send" onclick="sendFromWidget()">Fragen</button>
+      </div>
+    </div>
+
+    ${(() => { const rf = ROLE_FOCUS[state.role]; if(!rf) return ''; return `
+    <div class="section-heading">${rf.heading}</div>
+    <div class="stats-row">
+      ${rf.cards.map(c=>`<div class="stat-card" ${c.link?`style="cursor:pointer" onclick="showView('${c.link}')"`:''}><div class="stat-label">${c.label}</div><div class="stat-val" style="font-size:18px">${c.val}</div><div class="stat-sub">${c.sub}</div></div>`).join('')}
+    </div>
+    `; })()}
+
+    <div class="context-note">
+      <span><strong>Ergänzung, kein Ersatz:</strong> Diese Plattform ergänzt Ihre persönliche Erstschulung bei SPRÜGEL. Eignen Sie sich hier die Grundlagen selbstständig an – Ihr persönlicher Ansprechpartner konzentriert sich im gemeinsamen Termin dann gezielt auf Ihre individuellen Fragen.</span>
+      <button class="context-note-btn" onclick="bookAppointment()">Persönlichen Termin vereinbaren</button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Abgeschlossene Module</div><div class="stat-val">${done}/${MODULES.length}</div><div class="stat-sub">${progressPct()}% des Onboardings</div></div>
+      <div class="stat-card"><div class="stat-label">Lernzeit gesamt</div><div class="stat-val">${state.totalTime}</div><div class="stat-sub">Minuten investiert</div></div>
+      <div class="stat-card"><div class="stat-label">Quiz-Durchschnitt</div><div class="stat-val">${avgQuiz}</div><div class="stat-sub">über alle Module</div></div>
+      <div class="stat-card"><div class="stat-label">Onboarding-Status</div><div class="stat-val">Phase ${phase}/3</div><div class="stat-sub">${phase===3?'Zertifizierung in Reichweite':'in Bearbeitung'}</div></div>
+    </div>
+
+    <div class="section-heading">Onboarding-Phasen</div>
+    <div class="phases-row">
+      <div class="phase-step ${phase>=1?'active':''} ${done>=2?'unlocked':''}"><div class="phase-num">1</div><div class="phase-title">Grundlagen</div><div class="phase-desc">Module 1–2</div></div>
+      <div class="phase-step ${phase>=2?'active':''} ${done>=4?'unlocked':''}"><div class="phase-num">2</div><div class="phase-title">Prozesse & Integration</div><div class="phase-desc">Module 3–4</div></div>
+      <div class="phase-step ${phase>=3?'active':''} ${done>=MODULES.length?'unlocked':''}"><div class="phase-num">3</div><div class="phase-title">Optimierung & Zertifizierung</div><div class="phase-desc">Module 5–${MODULES.length} + Zertifikat</div></div>
+    </div>
+
+    <div class="section-heading">Ihre Lernmodule <span style="font-size:11px;font-weight:600;color:var(--gray);text-transform:none">— priorisiert für ${state.role}</span></div>
+    <div class="modules-grid">${(() => { const prio = (ROLE_FOCUS[state.role]||{}).priorityModules||[]; const sorted = [...MODULES].sort((a,b)=>{ const ai=prio.indexOf(a.id), bi=prio.indexOf(b.id); const av = ai===-1?99:ai, bv = bi===-1?99:bi; return av-bv; }); return sorted.map(m=>moduleCardHtml(m, prio.includes(m.id))).join(''); })()}</div>
+
+    <div class="section-heading">Empfohlen für Ihre Rolle</div>
+    <div class="reco-grid">${(ROLE_RECOS[state.role]||[]).map(r=>`<div class="reco-card"><div class="reco-tag">${r.tag}</div><h4>${r.t}</h4><p>${r.d}</p></div>`).join('')}</div>
+  `;
+}
+
+function moduleCardHtml(m, isPriority){
+  const p = state.moduleProgress[m.id];
+  const badge = p.completed?'done':(p.started?'progress':'open');
+  const badgeText = p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen');
+  const pct = p.completed?100:(p.started?45:0);
+  return `<div class="module-card" onclick="openModule(${m.id})">
+    <div class="mc-top"><span class="mc-badge ${badge}">${badgeText}</span>${isPriority?'<span class="mc-badge" style="background:var(--dark-bg);color:var(--green)">Für Sie</span>':''}</div>
+    <div class="mc-title">${m.title}</div>
+    <div class="mc-time">${m.time}</div>
+    <div class="mc-track"><div class="mc-fill" style="width:${pct}%"></div></div>
+    <button class="mc-btn" onclick="event.stopPropagation();openModule(${m.id})">${p.completed?'Erneut ansehen':(p.started?'Fortsetzen':'Starten')}</button>
+  </div>`;
+}
+
+/* ============ ROADMAP ============ */
+function renderRoadmap(){
+  const html = MODULES.map((m,i)=>{
+    const p = state.moduleProgress[m.id];
+    const cls = p.completed?'done':(p.started?'active':'');
+    return `<div class="milestone ${cls}">
+      <div class="milestone-dot">${p.completed?'✓':m.id}</div>
+      <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${m.time} · Phase ${m.phase}</div><p>${m.points[0]}</p></div>
+      ${i<MODULES.length-1?`<div><span class="ai-hint">Hinweis: ${nextStepHint(m.id)}</span></div>`:''}
+    </div>`;
+  }).join('');
+
+  document.getElementById('view-roadmap').innerHTML = `
+    <h1 class="page-title">Mein Lernpfad</h1>
+    <p class="page-sub">Ihre persönliche Onboarding-Roadmap für die OrKan Cloud.</p>
+    <div class="roadmap-wrap">
+      <div class="roadmap-line">
+        ${html}
+        <div class="milestone ${completedCount()===MODULES.length?'done':''}">
+          <div class="milestone-dot">${completedCount()===MODULES.length?'✓':'★'}</div>
+          <div class="milestone-card"><h4>Abschlusszertifikat</h4><div class="milestone-meta">Nach Abschluss aller Module</div><p>Erhalten Sie Ihr offizielles Onboarding-Zertifikat.</p></div>
+        </div>
+      </div>
+      <div class="roadmap-side">
+        <div class="progress-ring-wrap">
+          <svg width="150" height="150" viewBox="0 0 130 130"><circle class="pr-bg" cx="65" cy="65" r="60"/><circle class="pr-fill" cx="65" cy="65" r="60" style="stroke-dashoffset:${377-377*progressPct()/100}"/></svg>
+          <div class="pr-label"><div class="pr-pct">${progressPct()}%</div><div class="pr-sub">ABGESCHLOSSEN</div></div>
+        </div>
+        <div class="roadmap-note">Ihr Lernpfad wurde basierend auf Ihrer Rolle als <strong>${state.role}</strong> personalisiert. Die Reihenfolge berücksichtigt typische Arbeitsabläufe dieser Rolle.${state.adaptiveLog.length?` Zusätzlich wurde der Pfad <strong>${state.adaptiveLog.length}×</strong> adaptiv angepasst, nachdem Wissenslücken erkannt wurden — Details siehe „Wissenslücken-Analyse".`:''}</div>
+        ${state.adaptiveLog.length?`<div class="adaptive-log" style="margin-top:14px">${state.adaptiveLog.slice(0,4).map(l=>`<div class="log-item"><span class="log-dot"></span><span>${l.time} — ${l.text}</span></div>`).join('')}</div>`:''}
+      </div>
+    </div>
+  `;
+}
+function nextStepHint(id){
+  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Das Zwei-Etiketten-System und der Bestellvorschlag folgen.',3:'Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',4:'Weiter geht es mit Wareneingang, Lagerbestand und einem ersten Einblick in die Gebrauchsgutverwaltung.',5:'Vertiefung: Die Maschinenverwaltung mit Service & Wartung folgt als eigenes Modul.',6:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',7:'Fast geschafft — zum Abschluss folgt das Projekte-Modul für Baustellen.'};
+  return hints[id]||'';
+}
+
+/* ============ MODULES LIST + DETAIL ============ */
+function renderModulesList(){
+  document.getElementById('view-modules').innerHTML = `
+    <h1 class="page-title">Lernmodule</h1>
+    <p class="page-sub">Fünf praxisorientierte Module führen Sie durch die OrKan Cloud.</p>
+    <div class="modules-grid">${MODULES.map(m=>moduleCardHtml(m)).join('')}</div>
+  `;
+}
+
+function openModule(id){
+  const wasStarted = state.moduleProgress[id].started;
+  state.currentModule = id;
+  state.currentTab = 'content';
+  state.moduleProgress[id].started = true;
+  showView('modules');
+  renderModuleDetail();
+  buildModuleSubNav();
+  updateSidebarProgress();
+  if(!wasStarted) coachProactive(moduleIntroCoachMsg(id));
+}
+function moduleIntroCoachMsg(id){
+  const m = MODULES.find(x=>x.id===id);
+  const intros = {
+    'Lagerleiter':'Als Lagerleiter empfehle ich, besonders auf die Praxisaufgabe zu achten — die Inhalte hier wirken sich direkt auf Ihr Team aus.',
+    'Einkäufer':'Für Sie als Einkäufer ist dieser Bereich besonders relevant für Ihre tägliche Bestellpraxis.',
+    'Geschäftsführer':'Als Geschäftsführer reicht Ihnen vermutlich der Überblick — die Kernaussagen finden Sie nach dem Wissenscheck in der Zusammenfassung.',
+    'Lagermitarbeiter':'Für Ihren Arbeitsalltag lohnt sich vor allem die Praxisaufgabe in diesem Modul.'
+  };
+  return `Los geht's mit „${m.title}". ${intros[state.role]||'Schauen Sie sich zunächst das Video an, bearbeiten Sie danach die Praxisaufgabe und schließen Sie mit dem Wissenscheck ab.'} Bei Fragen bin ich jederzeit hier.`;
+}
+function coachProactive(text){
+  addAIMsg('bot', text);
+  if(!state.aiOpen){
+    const dot = document.getElementById('aiNotifDot');
+    if(dot) dot.style.display = 'block';
+  }
+}
+
+function renderModuleDetail(){
+  const m = MODULES.find(x=>x.id===state.currentModule);
+  const p = state.moduleProgress[m.id];
+  const diffDots = [1,2,3].map(i=>`<span class="diff-dot ${i<=m.diff?'filled':''}"></span>`).join('');
+
+  document.getElementById('view-modules').innerHTML = `
+    <div class="md-back" onclick="renderModulesList()">&larr; Zurück zu allen Modulen</div>
+    <div class="module-detail-header">
+      <div class="md-title-row"><h2>${m.title}</h2><span class="phase-badge">Phase ${m.phase}</span></div>
+      <div class="md-meta"><span>${m.time}</span><span class="diff-dots">${diffDots}</span><span>${p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen')}</span></div>
+    </div>
+    <div class="tab-bar">
+      <div class="tab-btn ${state.currentTab==='content'?'active':''}" onclick="switchTab('content')">Inhalt</div>
+      <div class="tab-btn ${state.currentTab==='task'?'active':''}" onclick="switchTab('task')">Praxisaufgabe</div>
+      <div class="tab-btn ${state.currentTab==='quiz'?'active':''}" onclick="switchTab('quiz')">Wissenscheck</div>
+      <div class="tab-btn ${state.currentTab==='summary'?'active':''}" onclick="switchTab('summary')">Zusammenfassung</div>
+    </div>
+    <div id="tabContentHost"></div>
+  `;
+  renderTab();
+}
+
+function switchTab(tab){ state.currentTab = tab; document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); renderTab(); }
+
+function videoBlockHtml(m){
+  const v = state.moduleVideos[m.id];
+  let inner;
+  if(v && v.type==='uploaded'){
+    inner = `<video src="${v.url}" controls style="width:100%;height:100%;border-radius:14px;object-fit:cover"></video>`;
+  } else if(v && v.type==='generated'){
+    inner = `<div class="play-circle" onclick="this.parentElement.querySelector('span').textContent='Wiedergabe simuliert — KI-Video-Rendering abgeschlossen'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span>KI-generiertes Video bereit: „${v.name}"</span>`;
+  } else {
+    inner = `<div class="play-circle" onclick="this.parentElement.querySelector('span').textContent='Wiedergabe simuliert — Video in Produktion'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span>Prozessnahes Arbeitsvideo: „${m.title}" wird geladen</span>`;
+  }
+  return `<div class="video-placeholder" style="position:relative">
+    <button class="video-manage-btn" onclick="openVideoManager(${m.id})">Video verwalten</button>
+    ${inner}
+  </div>`;
+}
+function openVideoManager(mid){
+  state.videoManagerModuleId = mid;
+  document.getElementById('vmModuleTitle').textContent = MODULES.find(m=>m.id===mid).title;
+  document.getElementById('vmUploadInput').value = '';
+  document.getElementById('vmGenFile').value = '';
+  document.getElementById('vmTranscript').value = '';
+  document.getElementById('vmGenStatus').textContent = '';
+  switchVmTab('upload');
+  document.getElementById('videoManagerModal').classList.add('open');
+}
+function closeVideoManager(){
+  document.getElementById('videoManagerModal').classList.remove('open');
+}
+function switchVmTab(tab){
+  document.querySelectorAll('.vm-tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  document.querySelectorAll('.vm-tab-panel').forEach(p=>p.classList.toggle('active', p.id==='vmPanel-'+tab));
+}
+function handleVideoUpload(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const url = URL.createObjectURL(file);
+  state.moduleVideos[state.videoManagerModuleId] = { type:'uploaded', url, name:file.name };
+  closeVideoManager();
+  renderTab();
+  showToast(`Video „${file.name}" wurde dem Modul zugeordnet.`);
+}
+function generateAiVideo(){
+  const file = document.getElementById('vmGenFile').files[0];
+  const transcript = document.getElementById('vmTranscript').value.trim();
+  if(!file && !transcript){ showToast('Bitte laden Sie eine Quelldatei hoch oder fügen Sie ein Transkript ein.'); return; }
+  const status = document.getElementById('vmGenStatus');
+  status.textContent = 'KI-Video wird generiert …';
+  setTimeout(()=>{
+    const mid = state.videoManagerModuleId;
+    const m = MODULES.find(x=>x.id===mid);
+    state.moduleVideos[mid] = { type:'generated', name:`KI-Video „${m.title}" (${file?file.name:'aus Transkript'})` };
+    status.textContent = 'Fertig — Video wurde dem Modul zugeordnet.';
+    setTimeout(()=>{ closeVideoManager(); renderTab(); showToast('KI-generiertes Video wurde dem Modul zugeordnet. Hinweis: Die Video-Generierung ist im Prototyp simuliert, in Produktion würde ein Dienst wie Synthesia oder Loom das eigentliche Video erzeugen.'); }, 700);
+  }, 1600);
+}
+function renderTab(){
+  const m = MODULES.find(x=>x.id===state.currentModule);
+  const p = state.moduleProgress[m.id];
+  const host = document.getElementById('tabContentHost');
+  if(state.currentTab==='content'){
+    host.innerHTML = `
+      ${videoBlockHtml(m)}
+      <ul class="key-points">${m.points.map(pt=>`<li>${pt}</li>`).join('')}</ul>
+      <div class="section-heading" style="margin-top:0">Wichtige Funktionen</div>
+      <div class="feature-cards">${m.features.map(f=>`<div class="feature-card"><div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></div><h5>${f.t}</h5><p>${f.d}</p></div>`).join('')}</div>
+      <div class="practice-callout"><strong>In der Praxis</strong><p>${m.practice}</p></div>
+      <div class="btn-row" style="margin-top:0">
+        <button class="coach-btn" onclick="askCoach(${m.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/></svg>Fragen Sie den Lerncoach</button>
+        <button class="btn btn-outline" onclick="openCloudLink(${m.id})">Direkt in der OrKan Cloud üben</button>
+      </div>
+    `;
+  } else if(state.currentTab==='task'){
+    host.innerHTML = `
+      <p style="font-size:14px;margin-bottom:6px"><strong>Aufgabe:</strong> ${m.task}</p>
+      <ul class="checklist">${m.checklist.map((c,i)=>{
+        const checked = p.checklist.includes(i);
+        return `<li class="check-item ${checked?'checked':''}" onclick="toggleCheck(${m.id},${i})"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span>${c}</span></li>`;
+      }).join('')}</ul>
+      <div class="collapsible" id="tipBox">
+        <div class="collapsible-head" onclick="document.getElementById('tipBox').classList.toggle('open')">Tipps vom Lerncoach <span>+</span></div>
+        <div class="collapsible-body"><p>${m.tip}</p></div>
+      </div>
+    `;
+  } else if(state.currentTab==='quiz'){
+    renderQuiz(m);
+  } else if(state.currentTab==='summary'){
+    if(!p.completed){
+      host.innerHTML = `<div class="quiz-result"><p>Die Zusammenfassung wird nach erfolgreichem Abschluss des Wissenschecks freigeschaltet.</p></div>`;
+    } else {
+      host.innerHTML = `
+        <div class="summary-block"><h5>Kernaussagen</h5><ul>${m.summary.kern.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="summary-block"><h5>Wichtigste Funktionen</h5><ul>${m.summary.funk.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="summary-block"><h5>Handlungsempfehlungen</h5><ul>${m.summary.hand.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="summary-block"><h5>Nächste Lernschritte</h5><ul><li>${nextModuleLink(m.id)}</li></ul></div>
+      `;
+    }
+  }
+}
+function nextModuleLink(id){
+  const next = MODULES.find(x=>x.id===id+1);
+  if(!next) return 'Sie haben das letzte Modul erreicht — besuchen Sie den Bereich Zertifikate.';
+  return `Fahren Sie fort mit „<a href="#" onclick="openModule(${next.id});return false" style="color:var(--green-dark);font-weight:700">${next.title}</a>"`;
+}
+function toggleCheck(mid,i){
+  const p = state.moduleProgress[mid];
+  const m = MODULES.find(x=>x.id===mid);
+  const idx = p.checklist.indexOf(i);
+  if(idx>-1) p.checklist.splice(idx,1); else p.checklist.push(i);
+  if(p.checklist.length===m.checklist.length && idx===-1 && !p.checklistCoached){
+    p.checklistCoached = true;
+    coachProactive(`Gut gemacht — alle Schritte der Praxisaufgabe in „${m.title}" sind erledigt. Wechseln Sie jetzt zum Wissenscheck, um das Modul abzuschließen.`);
+  }
+  renderTab();
+}
+
+function renderQuiz(m){
+  const host = document.getElementById('tabContentHost');
+  const answers = state.quizAnswers[m.id] || {};
+  const allAnswered = m.quiz.every((_,i)=>answers[i]!==undefined);
+  host.innerHTML = m.quiz.map((q,qi)=>`
+    <div class="quiz-q"><h5>${qi+1}. ${q.q}</h5>
+      ${q.o.map((opt,oi)=>{
+        let cls='';
+        if(answers[qi]!==undefined){
+          cls='disabled';
+          if(oi===q.a) cls+=' correct'; else if(oi===answers[qi]) cls+=' wrong';
+        }
+        return `<div class="quiz-opt ${cls}" onclick="answerQuiz(${m.id},${qi},${oi})">${opt}</div>`;
+      }).join('')}
+    </div>`).join('') +
+    (allAnswered ? renderQuizResult(m) : '');
+}
+function answerQuiz(mid,qi,oi){
+  if(!state.quizAnswers[mid]) state.quizAnswers[mid]={};
+  if(state.quizAnswers[mid][qi]!==undefined) return;
+  state.quizAnswers[mid][qi]=oi;
+  renderQuiz(MODULES.find(x=>x.id===mid));
+}
+function renderQuizResult(m){
+  const answers = state.quizAnswers[m.id];
+  const correct = m.quiz.filter((q,i)=>answers[i]===q.a).length;
+  const pct = Math.round(correct/m.quiz.length*100);
+  const passed = correct>=2;
+  state.moduleProgress[m.id].quizScore = pct;
+  let justLogged = false;
+  if(!answers._logged){
+    answers._logged = true;
+    justLogged = true;
+    const wrongTopics = m.quiz.filter((q,i)=>answers[i]!==q.a).map(q=>q.t);
+    if(wrongTopics.length){
+      wrongTopics.forEach(t=>{ state.weakTopics[t] = (state.weakTopics[t]||0)+1; });
+      state.adaptiveLog.unshift({
+        time: new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}),
+        text: `Wissenslücke erkannt: „${wrongTopics.join('“, „')}“ in Modul „${m.title}“ (${correct}/${m.quiz.length} richtig) — Lernpfad wurde angepasst, Vertiefung wird priorisiert empfohlen.`
+      });
+    }
+  }
+  if(passed && !state.moduleProgress[m.id].completed){
+    state.moduleProgress[m.id].completed = true;
+    state.totalTime += parseInt(m.time);
+    buildModuleSubNav();
+    const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
+    coachProactive(next ? `Modul „${m.title}" ist abgeschlossen — stark! Als Nächstes passt „${next.title}" gut zu Ihrem Lernpfad.` : `Herzlichen Glückwunsch — Sie haben alle fünf Module abgeschlossen. Ihr Zertifikat wartet im Bereich „Zertifikate".`);
+  } else if(justLogged && !passed){
+    coachProactive(`Kein Problem — beim Wissenscheck zu „${m.title}" hat es noch nicht ganz gereicht. Schauen Sie sich den Inhalt noch einmal an, ich habe die betroffenen Themen bereits in Ihrer Wissenslücken-Analyse vorgemerkt.`);
+  }
+  if(justLogged) updateSidebarProgress();
+  return `<div class="quiz-result"><div class="qr-score">${correct}/${m.quiz.length} richtig (${pct}%)</div>
+    <p>${passed?'Modul erfolgreich abgeschlossen.':'Mindestens 2 von 3 Antworten müssen korrekt sein. Bitte wiederholen Sie den Wissenscheck.'}</p>
+    ${passed?`<button class="btn btn-primary" onclick="switchTab('summary');document.querySelectorAll('.tab-btn')[3].classList.add('active');document.querySelectorAll('.tab-btn')[0].classList.remove('active')">Zur Zusammenfassung</button>`:`<button class="btn btn-outline" onclick="retryQuiz(${m.id})">Erneut versuchen</button>`}
+  </div>`;
+}
+function retryQuiz(mid){ delete state.quizAnswers[mid]; renderQuiz(MODULES.find(x=>x.id===mid)); }
+
+/* ============ KNOWLEDGE BASE ============ */
+function renderKB(){
+  document.getElementById('view-kb').innerHTML = `
+    <h1 class="page-title">Wissensdatenbank</h1>
+    <p class="page-sub">Durchsuchbare Artikel zu allen Themen der OrKan Cloud.</p>
+    <input type="text" class="kb-search" placeholder="Suchen Sie nach Themen, Funktionen oder Prozessen..." oninput="kbSearchInput(this.value)">
+    <div class="chip-row" id="kbChips">${['Alle','Grundlagen','Prozesse','Schnittstellen','Verwaltung'].map(c=>`<div class="chip ${state.kbFilter===c?'active':''}" onclick="kbFilterClick('${c}')">${c}</div>`).join('')}</div>
+    <div id="kbGridHost"></div>
+  `;
+  renderKBGrid();
+}
+function kbFilterClick(c){ state.kbFilter=c; renderKB(); }
+function kbSearchInput(v){ state.kbSearch=v; renderKBGrid(); }
+function renderKBGrid(){
+  const host = document.getElementById('kbGridHost');
+  if(!host) return;
+  const filtered = KB_ARTICLES.filter(a=>(state.kbFilter==='Alle'||a.cat===state.kbFilter) && (a.title.toLowerCase().includes(state.kbSearch.toLowerCase())||a.desc.toLowerCase().includes(state.kbSearch.toLowerCase())));
+  host.innerHTML = `<div class="kb-grid">${filtered.map((a,i)=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(a)})"><div class="kb-cat">${a.cat}</div><h4>${a.title}</h4><p>${a.desc}</p><span class="kb-link">Lesen &rarr;</span></div>`).join('')}</div>`;
+}
+function openArticle(idx){
+  state.currentArticle = idx;
+  const a = KB_ARTICLES[idx];
+  document.getElementById('view-kb').innerHTML = `
+    <div class="md-back" onclick="renderKB()">&larr; Zurück zur Wissensdatenbank</div>
+    <div class="kb-article">
+      <div class="kb-article-crumb">Wissensdatenbank / ${a.cat}</div>
+      <h2>${a.title}</h2>
+      ${a.body.map((p,i)=>`<h4>${['Übersicht','Details','Empfehlung'][i]||''}</h4><p>${p}</p>`).join('')}
+      <div class="helpful-row">
+        <span style="font-size:12.5px;color:var(--gray);align-self:center">War dieser Artikel hilfreich?</span>
+        <button class="helpful-btn" onclick="this.textContent='Danke für Ihr Feedback'">Ja, hilfreich</button>
+        <button class="helpful-btn">Nein, verbesserungswürdig</button>
+      </div>
+      <div class="section-heading" style="margin-top:8px">Verwandte Artikel</div>
+      <div class="kb-grid">${KB_ARTICLES.filter(x=>x.cat===a.cat && x!==a).slice(0,2).map(x=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(x)})"><div class="kb-cat">${x.cat}</div><h4>${x.title}</h4><p>${x.desc}</p><span class="kb-link">Lesen &rarr;</span></div>`).join('')}</div>
+    </div>
+  `;
+}
+
+/* ============ BEST PRACTICES ============ */
+function renderBest(){
+  document.getElementById('view-best').innerHTML = `
+    <h1 class="page-title">Praxiserprobte Anleitungen für häufige Aufgaben</h1>
+    <p class="page-sub">Schritt-für-Schritt-Anleitungen für die wichtigsten Arbeitsabläufe.</p>
+    <div class="bp-grid">${BEST_PRACTICES.map((b,i)=>`
+      <div class="bp-card"><div class="bp-top"><span class="bp-time">ca. ${b.time} Min.</span><span class="bp-diff ${b.diff}">${b.diff==='easy'?'Einfach':'Mittel'}</span></div>
+      <h4>${b.title}</h4><p>${b.desc}</p>
+      <button class="btn btn-primary" style="width:100%" onclick="openBP(${i})">Anleitung starten</button></div>`).join('')}</div>
+  `;
+}
+function openBP(idx){
+  const b = BEST_PRACTICES[idx];
+  document.getElementById('view-best').innerHTML = `
+    <div class="md-back" onclick="renderBest()">&larr; Zurück zu Best Practices</div>
+    <h1 class="page-title">${b.title}</h1>
+    <p class="page-sub">${b.desc} · ca. ${b.time} Minuten</p>
+    <div class="step-list">${b.steps.map((s,i)=>`<div class="step-item"><div class="step-num">${i+1}</div><div class="step-body"><h5>${s.t}</h5><p>${s.d}</p>${s.hint?`<div class="step-hint">Hinweis: ${s.hint}</div>`:''}</div></div>`).join('')}</div>
+  `;
+}
+
+/* ============ UPDATES ============ */
+function renderUpdates(){
+  document.getElementById('view-updates').innerHTML = `
+    <h1 class="page-title">Neue Funktionen und Verbesserungen</h1>
+    <p class="page-sub">Bleiben Sie über alle Neuerungen der OrKan Cloud informiert.</p>
+    ${UPDATES.map(u=>`<div class="update-item"><div class="update-top"><span class="version-badge">${u.v}</span><span class="update-date">${u.date}</span>${u.isNew?'<span class="new-badge">Neu</span>':''}</div><h4>${u.title}</h4><ul>${u.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('')}
+    <div class="subscribe-cta"><h4 style="margin-bottom:6px">Abonnieren Sie Update-Benachrichtigungen</h4><p>Erhalten Sie eine kurze Zusammenfassung, sobald neue Funktionen verfügbar sind.</p><button class="btn btn-primary" onclick="this.textContent='Abonniert'">Jetzt abonnieren</button></div>
+  `;
+}
+
+/* ============ CERTIFICATE ============ */
+function renderCert(){
+  const done = completedCount();
+  if(done<5){
+    document.getElementById('view-cert').innerHTML = `
+      <h1 class="page-title">Zertifikate</h1>
+      <p class="page-sub">Ihr Nachweis erfolgreicher Produktadoption.</p>
+      <div class="cert-gate"><h3>Noch nicht verfügbar</h3><p>Schliessen Sie alle ${MODULES.length} Module ab, um Ihr Zertifikat zu erhalten.</p>
+      <div class="gate-track"><div class="gate-fill" style="width:${progressPct()}%"></div></div>
+      <p style="margin-bottom:0">${done}/${MODULES.length} Module abgeschlossen</p></div>
+    `;
+  } else {
+    document.getElementById('view-cert').innerHTML = `
+      <h1 class="page-title">Zertifikate</h1>
+      <p class="page-sub">Herzlichen Glückwunsch zum Abschluss des Onboardings.</p>
+      <div class="certificate" id="certPrint">
+        <div class="cert-logo"><svg width="40" height="40" viewBox="0 0 100 100" fill="none"><ellipse cx="50" cy="18" rx="36" ry="7" fill="#8EA752"/><ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8EA752"/><ellipse cx="54" cy="50" rx="21" ry="6" fill="#8EA752"/><ellipse cx="47" cy="65" rx="13" ry="5" fill="#8EA752"/><ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/></svg><div><div style="font-weight:800;font-size:15px">OrKan Cloud</div></div></div>
+        <div class="cert-title">Zertifikat der Absolvierung</div>
+        <div class="cert-heading">OrKan Cloud Onboarding</div>
+        <div class="cert-name">${state.name}</div>
+        <div class="cert-company">${state.company}</div>
+        <div class="cert-body">hat alle 5 Pflichtmodule der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen und die zugehörigen Wissenschecks bestanden.</div>
+        <div style="font-size:12px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')} &middot; Gültig für 24 Monate</div>
+        <div class="cert-sigs"><div class="sig-line">Gerhard Sprügel<br>Geschäftsführer</div><div class="sig-line">OrKan System GmbH</div></div>
+      </div>
+      <div class="cert-actions"><button class="btn btn-primary" onclick="window.print()">Zertifikat drucken</button><button class="btn btn-outline" onclick="downloadCert()">Als Text herunterladen</button></div>
+      <div class="cert-renewal-note">Sie erhalten automatisch 60 Tage vor Ablauf eine Erinnerung zur Auffrischung – z. B. bei neuen OrKan-Cloud-Funktionen aus dem Update-Center.</div>
+    `;
+  }
+}
+function downloadCert(){
+  const text = `OrKan Cloud – Zertifikat der Absolvierung\n\n${state.name}\n${state.company}\n\nhat alle 5 Pflichtmodule der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen.\n\nAusgestellt am ${new Date().toLocaleDateString('de-DE')}\nGerhard Sprügel, Geschäftsführer – OrKan System GmbH`;
+  const blob = new Blob([text],{type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='orkan-zertifikat.txt'; a.click();
+}
+
+/* ============ TEAM-FORTSCHRITT (Vorgesetzten-Ansicht) ============ */
+function renderTeam(){
+  const el = document.getElementById('view-team');
+  if(!el) return;
+  const allMembers = [...TEAM_MEMBERS, {name:`${state.name} (Sie)`, role:state.role, completed:completedCount(), quizAvg: (()=>{ const s=Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore); return s.length?Math.round(s.reduce((a,b)=>a+b,0)/s.length):0; })(), weakTopic: Object.keys(state.weakTopics)[0]||null}];
+  const teamAvgPct = Math.round(allMembers.reduce((a,m)=>a+m.completed,0)/allMembers.length/MODULES.length*100);
+
+  el.innerHTML = `
+    <h1 class="page-title">Team-Fortschritt</h1>
+    <p class="page-sub">Übersicht für Vorgesetzte: Onboarding-Status aller Teammitglieder im Blick.</p>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Team-Mitglieder</div><div class="stat-val">${allMembers.length}</div><div class="stat-sub">im Onboarding erfasst</div></div>
+      <div class="stat-card"><div class="stat-label">Ø Fortschritt</div><div class="stat-val">${teamAvgPct}%</div><div class="stat-sub">über alle Module</div></div>
+      <div class="stat-card"><div class="stat-label">Vollständig abgeschlossen</div><div class="stat-val">${allMembers.filter(m=>m.completed===MODULES.length).length}</div><div class="stat-sub">von ${allMembers.length} Personen</div></div>
+      <div class="stat-card"><div class="stat-label">Auffällige Wissenslücken</div><div class="stat-val">${allMembers.filter(m=>m.weakTopic).length}</div><div class="stat-sub">benötigen Vertiefung</div></div>
+    </div>
+
+    <div class="section-heading">Teammitglieder</div>
+    <div class="team-list">
+      ${allMembers.map(m=>`
+        <div class="team-row">
+          <div class="team-avatar">${m.name.split(' ').map(n=>n[0]).slice(0,2).join('')}</div>
+          <div class="team-info">
+            <div class="team-name">${m.name}</div>
+            <div class="team-role">${m.role}</div>
+          </div>
+          <div class="team-progress-wrap">
+            <div class="gap-track" style="width:140px"><div class="gap-fill company" style="width:${m.completed/MODULES.length*100}%"></div></div>
+            <span class="team-progress-text">${m.completed}/${MODULES.length} Module</span>
+          </div>
+          <div class="team-quiz">Ø ${m.quizAvg}%</div>
+          <div class="team-flag">${m.weakTopic ? `<span class="gap-count">Lücke: ${m.weakTopic}</span>` : `<span class="team-ok">Keine Lücken</span>`}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="insight-callout" style="margin-top:24px">
+      <strong>Hinweis für Vorgesetzte</strong>
+      <p>Diese Ansicht zeigt simulierte Beispieldaten für den Pilotversuch. In der produktiven Version würde sie auf echten Fortschrittsdaten aller Mandanten-Nutzer basieren und Vorgesetzten erlauben, gezielt bei erkannten Wissenslücken nachzusteuern.</p>
+    </div>
+  `;
+}
+
+/* ============ CLOUD-INTEGRATION (Konzept-Demo) ============ */
+const CLOUD_EVENTS = [
+  {text:'Startseite geöffnet, Kalender geprüft', status:'ok'},
+  {text:'Artikel „T-Stück 28 mm" angelegt', status:'ok'},
+  {text:'Lieferant „Neugart GmbH" angelegt — Shop-URL leer gelassen', status:'warn', topic:'Lieferanten-Shop-Anbindung', moduleId:4},
+  {text:'Bestellvorschlag erstellt und gesendet', status:'ok'},
+  {text:'Artikelimport gestartet — Zeichensatz-Fehler in 12 Zeilen', status:'warn', topic:'Import-Datenformat', moduleId:4},
+  {text:'Lager MIN und MAX bei 3 Artikeln auf denselben Wert gesetzt', status:'warn', topic:'Lager MIN/MAX', moduleId:2},
+  {text:'Wareneingang bestätigt, Lagerbestand aktualisiert', status:'ok'},
+  {text:'Zwei-Etiketten-Bestellvorschlag mehrfach abgebrochen', status:'warn', topic:'Bestellauslösung', moduleId:3},
+  {text:'Maschine angelegt — kein Kaufbeleg hochgeladen', status:'warn', topic:'Kaufbeleg & Garantie', moduleId:6},
+  {text:'Versuch, eine fremde Maschine auf einen Kollegen zu buchen (als Monteur)', status:'warn', topic:'Maschinen-Buchungslogik', moduleId:6},
+  {text:'Schlüssel über die interne Nummer statt der Adresse gesucht', status:'warn', topic:'Adresssuche', moduleId:7},
+  {text:'Projekt angelegt, Materialentnahme über die App gebucht', status:'ok'},
+  {text:'Projekt-Statistik exportiert — mehrere Artikel ohne Bezeichnung', status:'warn', topic:'Projekte-App-Pflicht', moduleId:8},
+  {text:'Service-&-Wartung-Termin für Pressmaschine bestätigt', status:'ok'}
+];
+let ciEventIndex = 0;
+const INTEGRATION_OPTIONS = [
+  { key:'behavioral', title:'Automatische Lernpfad-Anpassung', desc:'Die Plattform erkennt selbstständig, wo Sie in der OrKan Cloud unsicher sind, und passt Ihren Lernpfad automatisch an — ganz ohne eigene Wissenschecks.' },
+  { key:'help', title:'Hilfe-Symbole direkt in der Cloud', desc:'An passenden Stellen in der OrKan Cloud (z. B. beim Anlegen eines Lieferanten) erscheint ein kleines Fragezeichen, das direkt zur passenden Erklärung führt.' },
+  { key:'central', title:'Schnellzugriff-Button', desc:'Ein durchgängig sichtbarer Button öffnet die Trainingsplattform von jeder Stelle der OrKan Cloud aus mit einem Klick.' }
+];
+function renderCloudIntegration(){
+  const el = document.getElementById('view-cloudintegration');
+  if(!el) return;
+  const behavioralOn = state.integrationOptions.behavioral;
+  el.innerHTML = `
+    <h1 class="page-title">Integrationseinstellungen</h1>
+    <p class="page-sub">Wählen Sie, wie die Trainingsplattform mit Ihrer OrKan Cloud verbunden werden soll. Sie können mehrere Optionen gleichzeitig aktivieren.</p>
+
+    <div class="ci-concept-grid" style="grid-template-columns:repeat(3,1fr)">
+      ${INTEGRATION_OPTIONS.map(o=>`
+        <div class="ci-concept-card">
+          <h4>${o.title}</h4>
+          <p>${o.desc}</p>
+          <button class="btn ${state.integrationOptions[o.key]?'btn-primary':'btn-outline'}" style="width:100%" onclick="toggleIntegrationOption('${o.key}')">${state.integrationOptions[o.key]?'Aktiviert — ausschalten':'Aktivieren'}</button>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="section-heading">Vorschau: Automatische Lernpfad-Anpassung${behavioralOn?'':' (deaktiviert)'}</div>
+    ${behavioralOn ? `
+    <p class="ci-intro">So sieht es aus, wenn die Plattform Ihre Arbeitsschritte in der OrKan Cloud verfolgt. Testen Sie es mit dem Button unten — jeder Schritt zeigt, was in Ihrer Cloud passiert wäre.</p>
+    <div class="ci-mockup">
+      <div class="ci-mockup-bar"><span class="ci-mockup-dot"></span><span class="ci-mockup-dot"></span><span class="ci-mockup-dot"></span><span class="ci-mockup-url">app.orkan-cloud.de · Live-Aktivität von ${state.name}</span></div>
+      <div class="ci-mockup-body">
+        <div class="ci-event-log" id="ciEventLog">
+          <div class="ci-empty">Noch keine Aktivität simuliert — klicken Sie unten auf „Nächsten Cloud-Schritt simulieren".</div>
+        </div>
+      </div>
+    </div>
+    <div class="ci-actions">
+      <button class="btn btn-primary" onclick="simulateCloudEvent()">Nächsten Cloud-Schritt simulieren</button>
+      <button class="btn btn-outline" onclick="resetCloudSimulation()">Zurücksetzen</button>
+    </div>
+    ` : `<div class="ci-badge-demo"><span style="font-size:12.5px;color:var(--gray)">Aktivieren Sie oben „Automatische Lernpfad-Anpassung", um die Vorschau zu testen.</span></div>`}
+  `;
+}
+function toggleIntegrationOption(key){
+  state.integrationOptions[key] = !state.integrationOptions[key];
+  showToast(state.integrationOptions[key] ? 'Option aktiviert.' : 'Option deaktiviert.');
+  renderCloudIntegration();
+}
+function simulateCloudEvent(){
+  if(ciEventIndex >= CLOUD_EVENTS.length){ showToast('Alle simulierten Cloud-Ereignisse wurden bereits durchlaufen.'); return; }
+  const ev = CLOUD_EVENTS[ciEventIndex++];
+  const log = document.getElementById('ciEventLog');
+  if(log.querySelector('.ci-empty')) log.innerHTML = '';
+  const time = new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const div = document.createElement('div');
+  div.className = 'ci-event';
+  div.innerHTML = `<span class="ci-event-dot ${ev.status}"></span><span>${ev.text}</span><span class="ci-event-time">${time}</span>`;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+
+  if(ev.status === 'warn'){
+    state.weakTopics[ev.topic] = (state.weakTopics[ev.topic]||0)+1;
+    state.adaptiveLog.unshift({ time, text: `Wissenslücke aus Cloud-Beobachtung erkannt: „${ev.topic}" (Ereignis: „${ev.text}") — Lernpfad automatisch angepasst.` });
+    const module = MODULES.find(m=>m.id===ev.moduleId);
+    coachProactive(`Mir ist in der OrKan Cloud aufgefallen: „${ev.text}". Ich habe dazu „${module.title}" priorisiert — schauen Sie es sich gerne an.`);
+    updateSidebarProgress();
+  }
+}
+function resetCloudSimulation(){
+  ciEventIndex = 0;
+  renderCloudIntegration();
+}
+
+/* ============ SIDEBAR PROGRESS ============ */
+function updateSidebarProgress(){
+  document.getElementById('sidebarFill').style.width = progressPct()+'%';
+  document.getElementById('sidebarText').textContent = completedCount()+'/'+MODULES.length+' Module';
+  renderDashboard();
+  renderRoadmap();
+  renderCert();
+  renderGaps();
+  renderTeam();
+}
+
+/* ============ ADAPTIVE LERNPFAD / WISSENSLÜCKEN-ERKENNUNG ============ */
+function getAdaptiveRecommendation(){
+  const topics = Object.entries(state.weakTopics).sort((a,b)=>b[1]-a[1]);
+  if(!topics.length) return null;
+  const [topTopic] = topics[0];
+  const module = MODULES.find(m=>m.quiz.some(q=>q.t===topTopic));
+  if(!module) return null;
+  return { topic:topTopic, module };
+}
+function renderGaps(){
+  const el = document.getElementById('view-gaps');
+  if(!el) return;
+  const personal = Object.entries(state.weakTopics).sort((a,b)=>b[1]-a[1]);
+  const maxCount = Math.max(1, ...personal.map(t=>t[1]));
+
+  el.innerHTML = `
+    <h1 class="page-title">Wissenslücken-Analyse</h1>
+    <p class="page-sub">Automatische Erkennung von Wissenslücken — persönlich und unternehmensweit.</p>
+
+    ${personal.length ? `
+      <div class="section-heading">Ihre persönlichen Wissenslücken</div>
+      ${personal.map(([topic,count])=>{
+        const module = MODULES.find(m=>m.quiz.some(q=>q.t===topic));
+        return `<div class="gap-card">
+          <div class="gap-top"><span class="gap-topic">${topic}</span><span class="gap-count">${count}× falsch beantwortet</span></div>
+          <div class="gap-track"><div class="gap-fill" style="width:${Math.round(count/maxCount*100)}%"></div></div>
+          <div class="gap-action">Empfehlung: <a onclick="openModule(${module?module.id:1});switchTab('content')">Inhalt zu „${module?module.title:''}" erneut ansehen</a></div>
+        </div>`;
+      }).join('')}
+    ` : `<div class="gap-empty">Noch keine Wissenslücken erkannt. Sobald Sie einen Wissenscheck nicht vollständig richtig beantworten, werden die betroffenen Themen automatisch analysiert und passt Ihren Lernpfad an.</div>`}
+
+    <div class="section-heading">Unternehmensweite Wissenslücken (alle Pilotnutzer)</div>
+    ${AGGREGATE_GAPS.map(g=>`<div class="gap-card">
+      <div class="gap-top"><span class="gap-topic">${g.topic}</span><span class="gap-count">${g.pct}% der Nutzer unsicher</span></div>
+      <div class="gap-track"><div class="gap-fill company" style="width:${g.pct}%"></div></div>
+      <div class="gap-action">Betroffenes Modul: <a onclick="openModule(${g.moduleId});switchTab('content')">${MODULES.find(m=>m.id===g.moduleId).title}</a></div>
+    </div>`).join('')}
+
+    <div class="insight-callout">
+      <strong>Mehrwert für OrKan System</strong>
+      <p>Diese aggregierten Erkenntnisse fließen automatisch in die Produktdokumentation und Content-Pflege zurück: Häufig missverstandene Themen wie „ERP-Anbindungen" oder „CSV-Zeichensatz" markieren konkreten Überarbeitungsbedarf in Lerninhalten und UI-Texten — noch bevor sie zu Supportanfragen führen.</p>
+    </div>
+
+    ${state.adaptiveLog.length ? `
+      <div class="section-heading">Adaptionsverlauf</div>
+      <div class="adaptive-log">${state.adaptiveLog.map(l=>`<div class="log-item"><span class="log-dot"></span><span>${l.time} — ${l.text}</span></div>`).join('')}</div>
+    ` : ''}
+  `;
+}
+
+/* ============ AI PANEL ============ */
+/* ============ PROFILMENÜ ============ */
+function refreshProfileMenu(){
+  document.getElementById('profileMenuAvatar').textContent = state.name.charAt(0).toUpperCase();
+  document.getElementById('profileMenuName').textContent = state.name;
+  document.getElementById('profileMenuRole').textContent = `${state.role} · ${state.company}`;
+  document.getElementById('profileNameInput').value = state.name;
+  document.getElementById('profileCompanyInput').value = state.company;
+  document.getElementById('profileRoleInput').value = state.role;
+}
+function toggleProfileMenu(){
+  document.getElementById('profileMenu').classList.toggle('open');
+}
+document.addEventListener('click', e=>{
+  const wrap = document.querySelector('.profile-wrap');
+  if(wrap && !wrap.contains(e.target)) document.getElementById('profileMenu')?.classList.remove('open');
+});
+function saveProfile(){
+  state.name = document.getElementById('profileNameInput').value.trim() || state.name;
+  state.company = document.getElementById('profileCompanyInput').value.trim() || state.company;
+  state.role = document.getElementById('profileRoleInput').value;
+  document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
+  refreshProfileMenu();
+  updateSidebarProgress();
+  showToast('Profil aktualisiert.');
+  document.getElementById('profileMenu').classList.remove('open');
+}
+function logoutProfile(){
+  document.getElementById('profileMenu').classList.remove('open');
+  document.getElementById('app').style.display='none';
+  document.getElementById('onboarding').style.display='flex';
+}
+function toggleAI(){
+  state.aiOpen = !state.aiOpen;
+  document.getElementById('aiPanel').classList.toggle('open', state.aiOpen);
+  if(state.aiOpen) document.getElementById('aiNotifDot').style.display='none';
+}
+function seedAIMessages(){
+  document.getElementById('aiMessages').innerHTML = `<div class="ai-msg bot">Willkommen, ${state.name}. Ich habe Ihren Lernpfad basierend auf Ihrer Rolle als ${state.role} zusammengestellt. Wie kann ich Ihnen helfen?</div>`;
+  document.getElementById('suggChips').innerHTML = ['Wo stehe ich im Onboarding?','Was sollte ich als Nächstes lernen?','Habe ich Wissenslücken?','Wie funktioniert das Zwei-Etiketten-System?'].map(s=>`<div class="sugg-chip" onclick="sendAI('${s}')">${s}</div>`).join('');
+}
+function coachWidgetGreeting(){
+  const adaptive = getAdaptiveRecommendation();
+  if(adaptive) return `Mir ist aufgefallen, dass es bei „${adaptive.topic}" noch hakt. Soll ich Ihnen „${adaptive.module.title}" kurz genauer erklären?`;
+  const next = MODULES.find(m=>!state.moduleProgress[m.id].completed);
+  if(!next) return `Sie haben alle Module abgeschlossen, ${state.name.split(' ')[0]}. Fragen Sie mich gerne noch etwas oder holen Sie sich Ihr Zertifikat ab.`;
+  return `Hallo ${state.name.split(' ')[0]}, ich bin Ihr Lerncoach. Fragen Sie mich jederzeit zu „${next.title}" oder jedem anderen Thema aus der OrKan Cloud.`;
+}
+function sendFromWidget(){
+  const input = document.getElementById('coachWidgetInput');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = '';
+  if(!state.aiOpen) toggleAI();
+  sendAI(text);
+}
+const CLOUD_DEEPLINKS = {1:'Startseite',2:'Lagerverwaltung → Artikel',3:'Bestellvorschlag',4:'Lagerverwaltung → Lieferant',5:'Lagerbestand'};
+function bookAppointment(){
+  showToast(`Anfrage an Ihren SPRÜGEL-Ansprechpartner gesendet — Sie erhalten in Kürze einen Terminvorschlag für Ihre individuellen Fragen zur OrKan Cloud.`);
+}
+function openCloudLink(mid){
+  const area = CLOUD_DEEPLINKS[mid] || 'OrKan Cloud';
+  showToast(`In der Live-Integration öffnet sich jetzt direkt „${area}" in Ihrer OrKan Cloud — ohne separate Anmeldung.`);
+}
+function showToast(text){
+  let toast = document.getElementById('appToast');
+  if(!toast){
+    toast = document.createElement('div');
+    toast.id = 'appToast';
+    toast.className = 'app-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = text;
+  toast.classList.add('show');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=>toast.classList.remove('show'), 3800);
+}
+function askCoach(mid){
+  toggleAI();
+  const m = MODULES.find(x=>x.id===mid);
+  addAIMsg('bot', `Sie befinden sich im Modul „${m.title}". Stellen Sie mir gerne eine Frage dazu, zum Beispiel „Fasse dieses Kapitel zusammen" oder „Welche Schritte sind besonders wichtig?".`);
+}
+function addAIMsg(role,text){
+  const wrap = document.getElementById('aiMessages');
+  const div = document.createElement('div'); div.className='ai-msg '+role; div.textContent = text;
+  wrap.appendChild(div); wrap.scrollTop = wrap.scrollHeight;
+}
+function sendAI(preset){
+  const input = document.getElementById('aiInput');
+  const text = preset || input.value.trim();
+  if(!text) return;
+  if(!preset) input.value='';
+  addAIMsg('user', text);
+  setTimeout(()=>{ addAIMsg('bot', getAIResponse(text)); }, 500);
+}
+function getAIResponse(text){
+  const t = text.toLowerCase();
+  const done = completedCount();
+  if(t.includes('stehe')||t.includes('status')||t.includes('fortschritt')){
+    return `Sie haben ${done} von ${MODULES.length} Modulen abgeschlossen (${progressPct()}%). Sie befinden sich in Phase ${done>=6?3:(done>=2?2:1)} des Onboardings.`;
+  }
+  if(t.includes('nächst')||t.includes('weiter')){
+    const adaptive = getAdaptiveRecommendation();
+    if(adaptive) return `Ich habe bei „${adaptive.topic}" eine Wissenslücke erkannt. Ihr Lernpfad wurde adaptiv angepasst: Ich empfehle vorrangig „${adaptive.module.title}" zur Vertiefung, bevor Sie regulär fortfahren.`;
+    const next = MODULES.find(m=>!state.moduleProgress[m.id].completed);
+    return next ? `Empfehlung: Setzen Sie fort mit „${next.title}" (${next.time}). Dies passt am besten zu Ihrer Rolle als ${state.role}.` : 'Sie haben alle Module abgeschlossen — besuchen Sie den Bereich Zertifikate, um Ihr Zertifikat zu erhalten.';
+  }
+  if(t.includes('wissenslück')||t.includes('lücke')||t.includes('schwäch')){
+    const topics = Object.entries(state.weakTopics).sort((a,b)=>b[1]-a[1]);
+    if(!topics.length) return 'Bisher wurden bei Ihnen keine Wissenslücken erkannt. Sobald ein Wissenscheck nicht vollständig richtig beantwortet wird, analysiere ich automatisch die betroffenen Themen und passe Ihren Lernpfad an — Details finden Sie im Bereich „Wissenslücken-Analyse".';
+    return `Ich habe bei Ihnen folgende Wissenslücken erkannt: ${topics.map(t=>t[0]).join(', ')}. Diese Themen wurden priorisiert in Ihren Lernpfad eingeplant. Zusätzlich fließen unternehmensweit aggregierte Lücken automatisch in die Produktdokumentation von OrKan System zurück.`;
+  }
+  if(t.includes('adapt')||t.includes('anpassung')||t.includes('lernpfad')){
+    return state.adaptiveLog.length ? `Ihr Lernpfad wurde bereits ${state.adaptiveLog.length}× automatisch angepasst, basierend auf erkannten Wissenslücken in Ihren Wissenschecks. Details finden Sie im Bereich „Mein Lernpfad" unter Adaptionsverlauf.` : 'Ihr Lernpfad passt sich automatisch an, sobald ich Wissenslücken in Ihren Wissenschecks erkenne — bislang war das noch nicht nötig, da Sie alle Fragen korrekt beantwortet haben.';
+  }
+  if(t.includes('etikett')||t.includes('kanban')){
+    return 'An jedem Lagerplatz hängen zwei Etiketten: Das blaue bleibt fest am Regal zur Lagerplatzkennzeichnung. Das weiße wird bei Mindestbestand gezogen und in die Bestellbox gelegt — von dort werden die Artikel unter „Bestellvorschlag" gescannt und bestellt.';
+  }
+  if(t.includes('mindestmenge')||t.includes('lager min')||t.includes('lager max')||t.includes(' min')||t.includes(' max')){
+    return 'Lager MIN ist Ihr Sicherheitsbestand, ab dem nachbestellt wird. Lager MAX ist der gewünschte Höchstbestand. Die vorgeschlagene Bestellmenge ergibt sich automatisch aus MAX minus MIN — bei MIN=2 und MAX=6 werden also 4 Stück vorgeschlagen.';
+  }
+  if(t.includes('zusammenfass')||t.includes('kapitel')){
+    return 'Öffnen Sie im aktuellen Modul den Tab „Zusammenfassung" nach Abschluss des Wissenschecks — dort finden Sie Kernaussagen, wichtigste Funktionen und konkrete Handlungsempfehlungen.';
+  }
+  if(t.includes('csv')||t.includes('import')||t.includes('excel')){
+    return 'Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei mit den Artikelbildern — der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen. Details finden Sie in Modul 4 oder in der Wissensdatenbank unter „Artikelimport per Excel und ZIP".';
+  }
+  if(t.includes('shop')||t.includes('lieferant')){
+    return 'Die OrKan Cloud ist lieferantenunabhängig. Entscheidend für die Anbindung ist die Shop-URL im Lieferantenstamm — darüber greift die OrKan Cloud beim Bestellabschluss direkt auf den Bestellshop des Lieferanten zu.';
+  }
+  if(t.includes('gebrauchsgut')||t.includes('maschine')){
+    return 'Über die Gebrauchsgutverwaltung sehen Sie, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine hat. Zusätzlich lassen sich Service- und Wartungstermine sowie Reservierungen direkt an der Maschine hinterlegen.';
+  }
+  if(t.includes('zertifikat')){
+    return done===MODULES.length ? 'Herzlichen Glückwunsch — Ihr Zertifikat ist im Bereich „Zertifikate" verfügbar.' : `Noch ${MODULES.length-done} Module bis zu Ihrem Zertifikat. Sie schaffen das.`;
+  }
+  return 'Das ist eine gute Frage. Ich empfehle einen Blick in die Wissensdatenbank oder das passende Lernmodul — dort finden Sie eine ausführliche Erklärung. Sie können mich auch nach Ihrem Fortschritt oder den nächsten Lernschritten fragen.';
+}
+</script>
+</body>
+</html>
