@@ -134,11 +134,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .handoff-title{font-size:13px;font-weight:700;color:var(--green-dark)}
 .handoff-text{font-size:12.5px;color:var(--dark);line-height:1.5}
 
-/* Agent reasoning trace */
-.agent-trace{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}
-.trace-step{display:flex;align-items:center;gap:4px;font-size:10.5px;color:var(--gray);background:rgba(142,167,82,.08);border:1px solid rgba(142,167,82,.18);padding:3px 8px 3px 6px;border-radius:7px}
-.trace-step svg{width:10px;height:10px;color:var(--green-dark);flex-shrink:0}
-.trace-sep{color:var(--gray-light);font-size:10px;align-self:center}
 .learning-note{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--green-dark);background:var(--green-light);padding:6px 10px;border-radius:8px;margin-top:8px}
 .learning-note svg{width:12px;height:12px;flex-shrink:0}
 .multi-intent-divider{height:1px;background:var(--gray-light);margin:12px 0}
@@ -283,6 +278,169 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 
 /* Responsive hidden panels */
 @media(max-width:900px){.sidebar-left{display:none}.main-content{grid-template-columns:1fr}}
+
+/* ─── BACKOFFICE: NAV SHELL ─── */
+.bo-shell{flex:1;display:grid;grid-template-columns:240px 1fr;overflow:hidden}
+.bo-nav{background:rgba(255,255,255,.72);backdrop-filter:blur(20px) saturate(1.6);border-right:1px solid rgba(255,255,255,.5);overflow-y:auto;padding:14px 10px}
+.bo-nav::-webkit-scrollbar{width:3px}
+.bo-nav::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:2px}
+.bo-nav-section-label{font-size:10px;font-weight:700;color:var(--gray);letter-spacing:.6px;text-transform:uppercase;padding:14px 12px 6px}
+.bo-nav-section-label:first-child{padding-top:4px}
+.bo-nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--dark);transition:var(--transition);margin-bottom:2px}
+.bo-nav-item:hover{background:var(--green-light)}
+.bo-nav-item.active{background:var(--green);color:#fff}
+.bo-nav-icon{width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;opacity:.75}
+.bo-nav-item.active .bo-nav-icon{opacity:1}
+.bo-nav-icon svg{width:16px;height:16px}
+.bo-main{overflow-y:auto;padding:24px 28px}
+.bo-main::-webkit-scrollbar{width:4px}
+.bo-main::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:2px}
+.bo-page{display:none}
+.bo-page.active{display:block}
+.bo-page-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;max-width:1280px;margin-left:auto;margin-right:auto;gap:12px;flex-wrap:wrap}
+.bo-page-title{font-size:20px;font-weight:800;color:var(--dark-bg);letter-spacing:-.3px}
+.bo-page-sub{font-size:12.5px;color:var(--gray);margin-top:3px}
+.bo-kpi-row{max-width:1280px;margin:0 auto 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.bo-kpi{background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+.bo-kpi-label{font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.3px;text-transform:uppercase;margin-bottom:6px}
+.bo-kpi-val{font-size:26px;font-weight:900;color:var(--dark-bg);letter-spacing:-1px}
+.bo-kpi-note{font-size:11px;color:var(--gray);margin-top:4px}
+.bo-kpi-val.green{color:var(--green-dark)}
+.bo-kpi-val.red{color:#dc2626}
+
+/* ─── BACKOFFICE: TABLES ─── */
+.bo-table-card{max-width:1280px;margin:0 auto;background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.7);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.bo-toolbar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--gray-light);flex-wrap:wrap}
+.bo-toolbar input[type=text],.bo-toolbar input[type=search]{padding:8px 12px;border:1.5px solid var(--gray-light);border-radius:8px;font-size:12.5px;font-family:'Inter',sans-serif;outline:none;min-width:190px;background:#fff}
+.bo-toolbar input:focus{border-color:var(--green)}
+.bo-toolbar select{padding:8px 10px;border:1.5px solid var(--gray-light);border-radius:8px;font-size:12.5px;font-family:'Inter',sans-serif;background:#fff;outline:none;color:var(--dark);cursor:pointer}
+.bo-toolbar-spacer{flex:1}
+.bo-btn{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--gray-light);background:#fff;color:var(--dark);transition:var(--transition);white-space:nowrap}
+.bo-btn:hover{border-color:var(--green);color:var(--green-dark)}
+.bo-btn.primary{background:linear-gradient(135deg,var(--green),var(--green-dark));border-color:transparent;color:#fff}
+.bo-btn.primary:hover{color:#fff;filter:brightness(1.06)}
+.bo-btn:disabled{opacity:.45;cursor:default;pointer-events:none}
+.bo-bulk-bar{display:none;align-items:center;gap:10px;padding:10px 16px;background:var(--green-light);border-bottom:1px solid var(--gray-light);font-size:12.5px;color:var(--green-dark);font-weight:700}
+.bo-bulk-bar.active{display:flex}
+.bo-table-wrap{overflow-x:auto}
+.bo-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.bo-table thead th{text-align:left;padding:10px 14px;font-size:10.5px;font-weight:700;color:var(--gray);letter-spacing:.4px;text-transform:uppercase;border-bottom:1px solid var(--gray-light);cursor:pointer;white-space:nowrap;user-select:none}
+.bo-table thead th:hover{color:var(--green-dark)}
+.bo-table thead th.sorted{color:var(--green-dark)}
+.bo-table thead th.sorted::after{content:' ▾'}
+.bo-table thead th.checkbox-col,.bo-table td.checkbox-col{width:34px;cursor:default}
+.bo-table tbody tr{border-bottom:1px solid var(--gray-light);cursor:pointer;transition:background .15s}
+.bo-table tbody tr:hover{background:var(--green-light)}
+.bo-table tbody tr:last-child{border-bottom:none}
+.bo-table td{padding:11px 14px;color:var(--dark);vertical-align:middle}
+.bo-table td.mono{font-family:monospace;font-size:11.5px;color:var(--gray)}
+.bo-empty-row td{text-align:center;color:var(--gray);padding:34px 0}
+.bo-pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700;letter-spacing:.2px;white-space:nowrap}
+.pill-open{background:#EFF6FF;color:#1D4ED8}
+.pill-progress{background:#FEF3C7;color:#B45309}
+.pill-escalated{background:#FEE2E2;color:#DC2626}
+.pill-solved{background:var(--green-light);color:var(--green-dark)}
+.pill-closed{background:var(--gray-light);color:var(--gray)}
+.pill-low{background:var(--gray-light);color:var(--gray)}
+.pill-normal{background:#EFF6FF;color:#1D4ED8}
+.pill-hoch{background:#FEF3C7;color:#B45309}
+.pill-kritisch{background:#FEE2E2;color:#DC2626}
+.bo-avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-right:7px;vertical-align:middle}
+
+/* Toggle switch */
+.bo-switch{position:relative;width:36px;height:21px;border-radius:20px;background:var(--gray-light);cursor:pointer;transition:var(--transition);flex-shrink:0;display:inline-block}
+.bo-switch.on{background:var(--green)}
+.bo-switch::after{content:'';position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:#fff;transition:var(--spring);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.bo-switch.on::after{transform:translateX(15px)}
+
+/* Detail slide-over */
+.bo-detail-overlay{position:fixed;inset:0;background:rgba(31,36,40,.35);z-index:250;display:none;justify-content:flex-end}
+.bo-detail-overlay.open{display:flex}
+.bo-detail-panel{width:480px;max-width:92vw;background:var(--bg);height:100%;overflow-y:auto;box-shadow:-12px 0 40px rgba(0,0,0,.15);animation:slideInPanel .3s cubic-bezier(.4,0,.2,1)}
+@keyframes slideInPanel{from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1}}
+.bo-detail-head{padding:20px 22px;border-bottom:1px solid var(--gray-light);background:#fff;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.bo-detail-title{font-size:16px;font-weight:800;color:var(--dark-bg)}
+.bo-detail-sub{font-size:12px;color:var(--gray);margin-top:3px}
+.bo-detail-close{background:none;border:none;cursor:pointer;color:var(--gray);font-size:20px;line-height:1;padding:2px}
+.bo-detail-body{padding:20px 22px;display:flex;flex-direction:column;gap:16px}
+.bo-detail-section-label{font-size:10.5px;font-weight:700;color:var(--gray);letter-spacing:.4px;text-transform:uppercase;margin-bottom:8px}
+.bo-detail-field-row{display:flex;gap:10px}
+.bo-detail-field{flex:1;background:#fff;border:1px solid var(--gray-light);border-radius:9px;padding:9px 11px}
+.bo-detail-field label{font-size:10px;color:var(--gray);display:block;margin-bottom:3px}
+.bo-detail-field select{width:100%;border:none;background:none;font-size:12.5px;font-family:'Inter',sans-serif;color:var(--dark);outline:none;cursor:pointer}
+.bo-transcript{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto;background:#fff;border:1px solid var(--gray-light);border-radius:10px;padding:12px}
+.bo-transcript-msg{font-size:12px;line-height:1.5;padding:8px 10px;border-radius:8px;max-width:88%}
+.bo-transcript-msg.customer{background:var(--dark-bg);color:#fff;align-self:flex-end}
+.bo-transcript-msg.bot{background:var(--green-light);color:var(--dark);align-self:flex-start}
+.bo-copilot-box{background:linear-gradient(135deg,rgba(142,167,82,.1),rgba(142,167,82,.03));border:1.5px solid rgba(142,167,82,.25);border-radius:10px;padding:12px}
+.bo-copilot-label{font-size:10.5px;font-weight:700;color:var(--green-dark);letter-spacing:.3px;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.bo-copilot-text{font-size:12.5px;color:var(--dark);line-height:1.55}
+.bo-copilot-actions{display:flex;gap:8px;margin-top:10px}
+
+/* Integrations */
+.bo-int-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.bo-int-card{background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.bo-int-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.bo-int-name{font-size:13.5px;font-weight:700;color:var(--dark-bg)}
+.bo-int-desc{font-size:11.5px;color:var(--gray);margin-bottom:12px;line-height:1.5;min-height:32px}
+.bo-int-status{font-size:11px;color:var(--gray);margin-top:10px;display:flex;align-items:center;gap:6px}
+
+/* Permission matrix */
+.bo-perm-check{width:16px;height:16px;accent-color:var(--green-dark);cursor:pointer}
+
+/* Forms (Systemeinstellungen etc.) */
+.bo-form-card{max-width:760px;margin:0 auto;background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.7);border-radius:14px;box-shadow:var(--shadow);padding:22px}
+.bo-form-row{margin-bottom:16px}
+.bo-form-row label{font-size:12px;font-weight:700;color:var(--dark);margin-bottom:6px;display:block}
+.bo-form-row input[type=text],.bo-form-row input[type=number],.bo-form-row select{width:100%;padding:10px 12px;border:1.5px solid var(--gray-light);border-radius:9px;font-size:13px;font-family:'Inter',sans-serif;outline:none;background:#fff}
+.bo-form-row input:focus,.bo-form-row select:focus{border-color:var(--green)}
+.bo-form-hint{font-size:11px;color:var(--gray);margin-top:5px}
+.bo-swatches{display:flex;gap:8px}
+.bo-swatch{width:32px;height:32px;border-radius:8px;border:2px solid rgba(255,255,255,.8);box-shadow:0 0 0 1px var(--gray-light)}
+
+/* Global search (header) */
+.bo-global-search{position:relative;width:260px}
+.bo-global-search input{width:100%;padding:8px 12px 8px 32px;border-radius:20px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-size:12.5px;font-family:'Inter',sans-serif;outline:none;transition:var(--transition)}
+.bo-global-search input::placeholder{color:rgba(255,255,255,.4)}
+.bo-global-search input:focus{border-color:var(--green);background:rgba(255,255,255,.12)}
+.bo-global-search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4);display:flex;pointer-events:none}
+.bo-global-search-icon svg{width:14px;height:14px}
+.bo-search-results{position:fixed;width:340px;background:#fff;border-radius:12px;box-shadow:var(--shadow-lg);border:1px solid var(--gray-light);max-height:380px;overflow-y:auto;display:none;z-index:260}
+.bo-search-results.open{display:block}
+.bo-search-group-label{font-size:10px;font-weight:700;color:var(--gray);letter-spacing:.4px;text-transform:uppercase;padding:10px 12px 4px}
+.bo-search-item{padding:8px 12px;cursor:pointer;font-size:12.5px;color:var(--dark)}
+.bo-search-item:hover{background:var(--green-light)}
+.bo-search-empty{padding:16px;text-align:center;font-size:12px;color:var(--gray)}
+
+/* Tenant switcher */
+.bo-tenant-wrap{position:relative}
+.bo-tenant{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.7);font-size:12.5px;font-weight:600;cursor:pointer;padding:6px 10px;border-radius:8px;transition:var(--transition)}
+.bo-tenant:hover{background:rgba(255,255,255,.08);color:#fff}
+.bo-tenant svg{width:11px;height:11px;opacity:.6}
+.bo-tenant-menu{position:fixed;width:230px;background:#fff;border-radius:12px;box-shadow:var(--shadow-lg);border:1px solid var(--gray-light);padding:8px;display:none;z-index:260}
+.bo-tenant-menu.open{display:block}
+.bo-tenant-item{padding:9px 10px;border-radius:8px;cursor:pointer;font-size:12.5px;color:var(--dark)}
+.bo-tenant-item:hover{background:var(--green-light)}
+.bo-tenant-item.active{color:var(--green-dark);font-weight:700}
+
+/* Simple line/area chart for analytics */
+.bo-linechart{width:100%;height:140px}
+.bo-linechart .fill{fill:rgba(142,167,82,.15)}
+.bo-linechart .line{fill:none;stroke:var(--green-dark);stroke-width:2}
+.bo-linechart .dot{fill:var(--green-dark)}
+.bo-chart-axis{display:flex;justify-content:space-between;font-size:10px;color:var(--gray);margin-top:4px}
+
+/* Customer chat: language selector */
+.lang-switch{position:relative}
+.lang-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.6);border:1px solid var(--gray-light);color:var(--dark);font-size:12px;font-weight:600;padding:7px 12px;border-radius:9px;cursor:pointer;transition:var(--spring)}
+.lang-btn:hover{background:#fff}
+.lang-menu{position:fixed;width:160px;background:#fff;border-radius:10px;box-shadow:var(--shadow-lg);border:1px solid var(--gray-light);padding:6px;display:none;z-index:150}
+.lang-menu.open{display:block}
+.lang-item{padding:8px 10px;border-radius:7px;cursor:pointer;font-size:12.5px;color:var(--dark)}
+.lang-item:hover{background:var(--green-light)}
+.lang-item.active{color:var(--green-dark);font-weight:700}
+
+@media(max-width:1000px){.bo-shell{grid-template-columns:1fr}.bo-nav{display:flex;flex-wrap:nowrap;overflow-x:auto;padding:8px 10px;border-right:none;border-bottom:1px solid var(--gray-light)}.bo-nav-section-label{display:none}.bo-nav-item{white-space:nowrap;margin-bottom:0}.bo-detail-panel{width:100%}}
 </style>
 </head>
 <body>
@@ -341,11 +499,18 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
           </div>
         </div>
         <div class="chat-actions">
+          <div class="lang-switch">
+            <button class="lang-btn" onclick="toggleLangMenu()" title="Sprache der Unterhaltung">
+              <span id="langLabel">DE</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
           <button class="action-btn action-btn-ghost" onclick="requestClosingFeedback()" title="Anliegen als gelöst oder ungelöst markieren">Anliegen abschließen</button>
           <button class="action-btn action-btn-ghost" onclick="clearChat()">Chat leeren</button>
           <button class="action-btn action-btn-green" onclick="exportChat()">Export</button>
         </div>
       </div>
+      <div class="lang-menu" id="langMenu"></div>
       <div class="messages-wrap" id="messagesWrap"></div>
       <div class="chat-input-area">
         <div class="image-preview-bar" id="imagePreviewBar"></div>
@@ -383,13 +548,24 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
       </div>
     </div>
     <div class="header-divider"></div>
-    <div class="header-title">Backoffice</div>
+    <div class="bo-tenant-wrap">
+      <div class="bo-tenant" onclick="toggleTenantMenu()">
+        <span id="tenantLabel">Sanitär Meier GmbH</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
     <div class="header-spacer"></div>
+    <div class="bo-global-search">
+      <span class="bo-global-search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <input type="text" id="globalSearchInput" placeholder="Global suchen: Fälle, Wissensbasis, Nutzer…" oninput="globalSearch(this.value)" onfocus="globalSearch(this.value)">
+    </div>
     <button class="backoffice-link" onclick="showCustomerView()">← Zur Kundenansicht</button>
   </header>
 
-  <div class="bo-content">
-    <div class="bo-grid">
+  <div class="bo-shell">
+    <nav class="bo-nav" id="boNav"></nav>
+    <div class="bo-main">
+    <div class="bo-page bo-grid active" id="boPage-dashboard">
       <!-- Zeitersparnis -->
       <div class="savings-widget">
         <div class="savings-title">Mitarbeiterentlastung (Pilot)</div>
@@ -579,8 +755,25 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
         </div>
       </div>
     </div>
+
+    <div class="bo-page" id="boPage-chats"></div>
+    <div class="bo-page" id="boPage-kb"></div>
+    <div class="bo-page" id="boPage-docs"></div>
+    <div class="bo-page" id="boPage-workflows"></div>
+    <div class="bo-page" id="boPage-agents"></div>
+    <div class="bo-page" id="boPage-users"></div>
+    <div class="bo-page" id="boPage-roles"></div>
+    <div class="bo-page" id="boPage-integrations"></div>
+    <div class="bo-page" id="boPage-analytics"></div>
+    <div class="bo-page" id="boPage-settings"></div>
+    <div class="bo-page" id="boPage-audit"></div>
+    </div>
   </div>
 </div>
+
+<div class="bo-search-results" id="globalSearchResults"></div>
+<div class="bo-tenant-menu" id="tenantMenu"></div>
+<div class="bo-detail-overlay" id="ticketDetailOverlay" onclick="if(event.target===this) closeTicketDetail()"></div>
 
 <script>
 // ─── STATE ───
@@ -609,6 +802,59 @@ const ROUTE_MESSAGES = {
 };
 const knowledgeGaps = new Map();
 const agentLog = [];
+const auditLog = [];
+let currentLanguage = 'DE';
+
+// ─── TICKET-/FALLMANAGEMENT ───
+// Jede Kundenunterhaltung wird strukturiert als Fall erfasst (Kanal, Kategorie, Priorität,
+// Status, Zuständigkeit) statt nur als loser Chatverlauf – Grundlage für Inbox, Reporting
+// und automatisierte Workflows im Backoffice.
+const tickets = [];
+let liveTicket = null;
+const URGENCY_WORDS = ['dringend','sofort','notfall','ausfall','steht still','geht nicht mehr','produktionsstopp','kritisch'];
+
+function stripHtml(html) {
+  return html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+}
+
+function newTicketId() {
+  return 'TK-2025-' + (ticketCounter++);
+}
+
+function ensureLiveTicket() {
+  if (!liveTicket) {
+    liveTicket = {
+      id: newTicketId(), channel: 'chat', subject: 'Neue Chat-Anfrage', category: 'Allgemein',
+      priority: 'niedrig', status: 'offen', language: currentLanguage, customer: 'Websitzung (live)',
+      assignedAgent: 'Nicht zugewiesen', createdAt: new Date(), updatedAt: new Date(),
+      messages: [], tags: [], live: true, csat: null
+    };
+    tickets.unshift(liveTicket);
+    logAudit('KI-Agent', `Neuer Fall ${liveTicket.id} aus Live-Chat angelegt.`);
+  }
+  return liveTicket;
+}
+
+function ticketLog(role, text) {
+  const t = ensureLiveTicket();
+  t.messages.push({ role, text: stripHtml(text), time: new Date() });
+  t.updatedAt = new Date();
+  if (role === 'customer' && t.messages.filter(m => m.role === 'customer').length === 1) {
+    t.subject = stripHtml(text).slice(0, 64);
+  }
+  renderBoSectionIfActive('chats');
+}
+
+function priorityForText(text) {
+  const t = (text || '').toLowerCase();
+  return URGENCY_WORDS.some(w => t.includes(w)) ? 'kritisch' : 'normal';
+}
+
+function updateLiveTicket(fields) {
+  const t = ensureLiveTicket();
+  Object.assign(t, fields, { updatedAt: new Date() });
+  renderBoSectionIfActive('chats');
+}
 
 const CONTEXT_PRESETS = [
   { id: 'artikel', label: 'Lagerverwaltung → Artikel', desc: 'Artikelübersicht / Artikel-Detailseite', ids: ['art1','art2','etk1'] },
@@ -820,12 +1066,843 @@ function initApp() {
 function showBackoffice() {
   document.getElementById('app').style.display = 'none';
   document.getElementById('backofficeView').style.display = 'flex';
+  initBackoffice();
+  showBoSection(activeBoSection);
 }
 
 function showCustomerView() {
   document.getElementById('backofficeView').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
 }
+
+// ═══════════════════════════════════════════════════════════════════
+// BACKOFFICE ENGINE — Enterprise-Verwaltung: Chats/Fälle, Wissensdatenbank,
+// Dokumente, Workflows, KI-Agenten, Nutzer, Rollen, Integrationen,
+// Analysen, Systemeinstellungen, Audit-Logs.
+// ═══════════════════════════════════════════════════════════════════
+
+function toast(msg) {
+  let el = document.getElementById('boToast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'boToast';
+    el.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--dark-bg);color:#fff;padding:11px 20px;border-radius:10px;font-size:12.5px;font-weight:600;box-shadow:var(--shadow-lg);z-index:400;opacity:0;transition:opacity .25s;pointer-events:none';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.style.opacity = '1';
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.style.opacity = '0'; }, 2200);
+}
+
+function fmtDate(d) {
+  if (!d) return '–';
+  const dt = new Date(d);
+  return dt.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' · ' + dt.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+}
+function fmtRelative(d) {
+  if (!d) return '–';
+  const diffMin = Math.round((Date.now() - new Date(d).getTime()) / 60000);
+  if (diffMin < 1) return 'gerade eben';
+  if (diffMin < 60) return `vor ${diffMin} Min.`;
+  const diffH = Math.round(diffMin / 60);
+  if (diffH < 24) return `vor ${diffH} Std.`;
+  return `vor ${Math.round(diffH / 24)} Tg.`;
+}
+function priorityPill(p) {
+  const map = { niedrig: 'low', normal: 'normal', hoch: 'hoch', kritisch: 'kritisch' };
+  return `<span class="bo-pill pill-${map[p] || 'normal'}">${p}</span>`;
+}
+function statusPill(s) {
+  const map = { 'offen': 'open', 'in Bearbeitung': 'progress', 'eskaliert': 'escalated', 'gelöst': 'solved', 'geschlossen': 'closed' };
+  return `<span class="bo-pill pill-${map[s] || 'open'}">${s}</span>`;
+}
+function channelLabel(c) {
+  return { chat: 'Chat', email: 'E-Mail', whatsapp: 'WhatsApp', formular: 'Formular', api: 'API' }[c] || c;
+}
+
+// ─── SEED-DATEN ───
+const CATEGORY_POOL = CATEGORIES.map(c => c.name);
+const AGENTS = ['Sarah Weber', 'Thomas Klein', 'Julia Hoffmann', 'KI-Agent (automatisiert)', 'Nicht zugewiesen'];
+const CUSTOMER_POOL = ['Sanitär Meier GmbH', 'Elektro Hoffmann', 'Bau Schneider & Söhne', 'Heizung Bär GmbH', 'Metallbau Vogt', 'Dach & Fassade Krüger', 'Installations-Team Nord', 'Handwerk Zentrum Süd'];
+
+function daysAgoDate(d) { return new Date(Date.now() - d * 86400000); }
+
+function seedTickets() {
+  const seeds = [
+    ['chat', 'Wie lege ich einen Lagerort mit zwei Etiketten an?', 'Etiketten & Bestellung', 'niedrig', 'gelöst', 6, 'KI-Agent (automatisiert)', 5],
+    ['email', 'Import bricht bei Zeile 340 ab, Fehlermeldung Encoding', 'Import & Lieferanten', 'hoch', 'in Bearbeitung', 1, 'Thomas Klein', null],
+    ['whatsapp', 'Bestellvorschlag zeigt falsche Menge an', 'Etiketten & Bestellung', 'normal', 'offen', 0.2, 'Nicht zugewiesen', null],
+    ['chat', 'Passwort zurücksetzen funktioniert nicht', 'Benutzer & Module', 'normal', 'gelöst', 9, 'KI-Agent (automatisiert)', 4],
+    ['formular', 'Anfrage zu Lizenzkosten Zusatzmodul Flaschenverwaltung', 'Allgemein', 'niedrig', 'geschlossen', 14, 'Julia Hoffmann', 5],
+    ['api', 'Webhook liefert 500 bei Wareneingang-Bestätigung', 'Wareneingang & Bestand', 'kritisch', 'eskaliert', 0.05, 'Thomas Klein', null],
+    ['chat', 'Maschine lässt sich keinem Mitarbeiter zuordnen', 'Gebrauchsgut', 'normal', 'gelöst', 3, 'KI-Agent (automatisiert)', 4],
+    ['email', 'Zwei Lagerorte für Zweigstelle einrichten', 'Individuelle Prozesse', 'hoch', 'eskaliert', 2, 'Sarah Weber', null],
+    ['chat', 'Artikelbild lässt sich nicht hochladen', 'Artikel & Lagerplätze', 'niedrig', 'gelöst', 5, 'KI-Agent (automatisiert)', 5],
+    ['whatsapp', 'Lieferant wechseln für bestehenden Artikel', 'Import & Lieferanten', 'normal', 'geschlossen', 8, 'Julia Hoffmann', 3],
+    ['chat', 'Wie funktioniert der Bestellvorschlag genau?', 'Etiketten & Bestellung', 'niedrig', 'gelöst', 11, 'KI-Agent (automatisiert)', 5],
+    ['formular', 'Reklamation: Etikettendrucker druckt falsches Format', 'Etiketten & Bestellung', 'hoch', 'in Bearbeitung', 1.5, 'Thomas Klein', null],
+    ['chat', 'Mehrere Lieferanten mit unterschiedlichen Konditionen', 'Individuelle Prozesse', 'hoch', 'eskaliert', 4, 'Sarah Weber', null],
+    ['email', 'Frage zur Short-Head-Abdeckung im Reporting', 'Allgemein', 'niedrig', 'geschlossen', 20, 'Julia Hoffmann', 4],
+  ];
+  return seeds.map(([channel, subject, category, priority, status, daysAgo, agent, csat], i) => {
+    const created = new Date(Date.now() - daysAgo * 86400000 - i * 3600000);
+    return {
+      id: newTicketId(), channel, subject, category, priority, status, language: 'DE',
+      customer: CUSTOMER_POOL[i % CUSTOMER_POOL.length], assignedAgent: agent,
+      createdAt: created, updatedAt: new Date(created.getTime() + 3600000),
+      messages: [
+        { role: 'customer', text: subject, time: created },
+        { role: 'bot', text: (status === 'gelöst' || status === 'geschlossen') ? 'Antwort automatisiert aus der Wissensbasis bereitgestellt.' : 'An das Support-Team weitergeleitet.', time: new Date(created.getTime() + 60000) }
+      ],
+      tags: priority === 'kritisch' ? ['Dringend'] : [], live: false, csat: csat || null
+    };
+  });
+}
+
+const USERS = [
+  { id: 'u1', name: 'Sarah Weber', email: 's.weber@orkan-system.de', role: 'Administrator', status: 'Aktiv', lastLogin: daysAgoDate(0.1) },
+  { id: 'u2', name: 'Thomas Klein', email: 't.klein@orkan-system.de', role: 'Agent', status: 'Aktiv', lastLogin: daysAgoDate(0.3) },
+  { id: 'u3', name: 'Julia Hoffmann', email: 'j.hoffmann@orkan-system.de', role: 'Agent', status: 'Aktiv', lastLogin: daysAgoDate(1) },
+  { id: 'u4', name: 'Michael Seiler', email: 'm.seiler@orkan-system.de', role: 'Administrator', status: 'Aktiv', lastLogin: daysAgoDate(0.5) },
+  { id: 'u5', name: 'Nadine Roth', email: 'n.roth@orkan-system.de', role: 'Betrachter', status: 'Inaktiv', lastLogin: daysAgoDate(40) },
+  { id: 'u6', name: 'Daniel Fischer', email: 'd.fischer@orkan-system.de', role: 'Agent', status: 'Eingeladen', lastLogin: null },
+];
+
+const PERMISSIONS = ['Chats verwalten', 'Wissensdatenbank bearbeiten', 'Workflows verwalten', 'Nutzer verwalten', 'Systemeinstellungen', 'Reports einsehen', 'Integrationen verwalten'];
+const ROLES = [
+  { name: 'Administrator', perms: PERMISSIONS.reduce((o, p) => (o[p] = true, o), {}) },
+  { name: 'Agent', perms: { 'Chats verwalten': true, 'Wissensdatenbank bearbeiten': true, 'Workflows verwalten': false, 'Nutzer verwalten': false, 'Systemeinstellungen': false, 'Reports einsehen': true, 'Integrationen verwalten': false } },
+  { name: 'Betrachter', perms: { 'Chats verwalten': false, 'Wissensdatenbank bearbeiten': false, 'Workflows verwalten': false, 'Nutzer verwalten': false, 'Systemeinstellungen': false, 'Reports einsehen': true, 'Integrationen verwalten': false } },
+];
+
+const WORKFLOWS = [
+  { id: 'wf1', name: 'Kritische Anfragen sofort eskalieren', trigger: 'Priorität = Kritisch', action: 'Eskalation an Teamleiter + Rückruf anfordern', enabled: true },
+  { id: 'wf2', name: 'Negatives Feedback an Wissensmanagement melden', trigger: 'Bewertung = Nicht hilfreich', action: 'Wissenslücke im Backoffice vormerken', enabled: true },
+  { id: 'wf3', name: 'Individuelle Prozesse an Fachbereich weiterleiten', trigger: 'Kategorie = Individuelle Prozesse', action: 'Zuweisung an Team „Kundenprozesse"', enabled: true },
+  { id: 'wf4', name: 'Außerhalb der Geschäftszeiten sammeln', trigger: 'Eingang außerhalb Geschäftszeiten', action: 'Fall für nächsten Werktag vormerken', enabled: true },
+  { id: 'wf5', name: 'Wiederkehrende Anfragen automatisch clustern', trigger: '≥ 3 ähnliche offene Fälle', action: 'Vorschlag für neuen FAQ-Eintrag erzeugen', enabled: false },
+  { id: 'wf6', name: 'CSAT-Nachfrage nach Fallabschluss', trigger: 'Status = Geschlossen', action: 'Bewertungsanfrage automatisch versenden', enabled: true },
+];
+
+const INTEGRATIONS = [
+  { id: 'chat', name: 'Chat-Widget', desc: 'Support-Assistent eingebettet in die OrKan Cloud', connected: true, lastSync: 'Live' },
+  { id: 'email', name: 'E-Mail', desc: 'Support-Postfach support@orkan-system.de', connected: true, lastSync: 'vor 4 Min.' },
+  { id: 'whatsapp', name: 'WhatsApp Business', desc: 'Anfragen über die WhatsApp Business API', connected: true, lastSync: 'vor 12 Min.' },
+  { id: 'formular', name: 'Kontaktformular', desc: 'Formular auf orkan-system.de/kontakt', connected: true, lastSync: 'vor 1 Std.' },
+  { id: 'api', name: 'API / Webhooks', desc: 'Externe Systeme per REST-Schnittstelle anbinden', connected: false, lastSync: 'nicht verbunden' },
+];
+
+const DOCS = [
+  { id: 'd1', name: 'Prozessdokumentation OrKan Cloud v3.pdf', type: 'PDF', size: '2.4 MB', owner: 'Michael Seiler', updated: daysAgoDate(6) },
+  { id: 'd2', name: 'Etiketten-Templates Übersicht.xlsx', type: 'XLSX', size: '640 KB', owner: 'Sarah Weber', updated: daysAgoDate(2) },
+  { id: 'd3', name: 'Onboarding-Leitfaden Neukunden.docx', type: 'DOCX', size: '1.1 MB', owner: 'Julia Hoffmann', updated: daysAgoDate(15) },
+  { id: 'd4', name: 'API-Dokumentation Wareneingang.pdf', type: 'PDF', size: '890 KB', owner: 'Thomas Klein', updated: daysAgoDate(30) },
+];
+
+let agentConfig = { autoCategorize: true, autoPriority: true, autoKbExpand: true, copilot: true, languages: ['DE', 'EN'] };
+const ROUTING_RULES = [
+  { category: 'Individuelle Prozesse', team: 'Kundenprozesse-Team' },
+  { category: 'Import & Lieferanten', team: 'Technischer Support' },
+  { category: 'Wareneingang & Bestand', team: 'Logistik-Support' },
+  { category: 'Allgemein', team: 'First-Level-Support' },
+];
+let systemSettings = { companyName: 'OrKan System GmbH', timezone: 'Europe/Berlin', retentionDays: 365 };
+const TENANTS = ['Sanitär Meier GmbH', 'Elektro Hoffmann', 'Bau Schneider & Söhne'];
+let currentTenant = TENANTS[0];
+
+// ─── NAVIGATION ───
+const BO_ICONS = {
+  dashboard: '<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>',
+  chats: '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+  kb: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+  docs: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>',
+  workflows: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M6 9v6"/><circle cx="18" cy="12" r="3"/><path d="M9 6h4a5 5 0 0 1 5 5"/><path d="M9 18h4a5 5 0 0 0 5-5"/>',
+  agents: '<rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8.01" y2="16"/><line x1="16" y1="16" x2="16.01" y2="16"/>',
+  users: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  roles: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  integrations: '<path d="M18 16.98h-5.99c-1.66 0-3.01-1.34-3.01-3s1.34-3 3.01-3H18M6 7h5.99C13.65 7 15 8.34 15 10s-1.34 3-3.01 3H6"/><circle cx="6" cy="7" r="2"/><circle cx="18" cy="17" r="2"/>',
+  analytics: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+  settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  audit: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>'
+};
+const BO_NAV = [
+  { section: 'Übersicht', items: [{ id: 'dashboard', label: 'Dashboard' }] },
+  { section: 'Kundenservice', items: [{ id: 'chats', label: 'Chats' }, { id: 'kb', label: 'Wissensdatenbank' }, { id: 'docs', label: 'Dokumente' }] },
+  { section: 'Automatisierung', items: [{ id: 'workflows', label: 'Workflows' }, { id: 'agents', label: 'KI-Agenten' }] },
+  { section: 'Verwaltung', items: [{ id: 'users', label: 'Nutzerverwaltung' }, { id: 'roles', label: 'Rollen & Berechtigungen' }, { id: 'integrations', label: 'Integrationen' }] },
+  { section: 'Einblicke', items: [{ id: 'analytics', label: 'Analysen & Reports' }] },
+  { section: 'System', items: [{ id: 'settings', label: 'Systemeinstellungen' }, { id: 'audit', label: 'Audit-Logs' }] },
+];
+let activeBoSection = 'dashboard';
+let boInitialized = false;
+
+function renderBoNav() {
+  const nav = document.getElementById('boNav');
+  nav.innerHTML = BO_NAV.map(group => `
+    <div class="bo-nav-section-label">${group.section}</div>
+    ${group.items.map(item => `
+      <div class="bo-nav-item ${item.id === activeBoSection ? 'active' : ''}" onclick="showBoSection('${item.id}')">
+        <span class="bo-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${BO_ICONS[item.id]}</svg></span>
+        <span>${item.label}</span>
+      </div>`).join('')}`).join('');
+}
+
+const BO_RENDERERS = {
+  dashboard: function () {},
+  chats: function () { renderChatsSection(); },
+  kb: function () { renderKbSection(); },
+  docs: function () { renderDocsSection(); },
+  workflows: function () { renderWorkflowsSection(); },
+  agents: function () { renderAgentsSection(); },
+  users: function () { renderUsersSection(); },
+  roles: function () { renderRolesSection(); },
+  integrations: function () { renderIntegrationsSection(); },
+  analytics: function () { renderAnalyticsSection(); },
+  settings: function () { renderSettingsSection(); },
+  audit: function () { renderAuditSection(); },
+};
+function renderBoSection(id) { (BO_RENDERERS[id] || function () {})(); }
+function renderBoSectionIfActive(id) { if (activeBoSection === id) renderBoSection(id); }
+
+function showBoSection(id) {
+  activeBoSection = id;
+  document.querySelectorAll('.bo-page').forEach(p => p.classList.remove('active'));
+  document.getElementById('boPage-' + id).classList.add('active');
+  renderBoNav();
+  renderBoSection(id);
+}
+
+function initBackoffice() {
+  if (boInitialized) return;
+  tickets.push(...seedTickets());
+  renderBoNav();
+  Object.keys(BO_RENDERERS).forEach(renderBoSection);
+  boInitialized = true;
+}
+
+// ─── CHATS (Ticket-/Fallmanagement) ───
+let chatsState = { search: '', status: '', channel: '', priority: '', sortKey: 'updatedAt', sortDir: 'desc', selected: new Set() };
+
+function getFilteredTickets() {
+  let rows = tickets.filter(t => {
+    if (chatsState.status && t.status !== chatsState.status) return false;
+    if (chatsState.channel && t.channel !== chatsState.channel) return false;
+    if (chatsState.priority && t.priority !== chatsState.priority) return false;
+    if (chatsState.search) {
+      const s = chatsState.search.toLowerCase();
+      if (!(t.subject.toLowerCase().includes(s) || t.id.toLowerCase().includes(s) || t.customer.toLowerCase().includes(s) || t.category.toLowerCase().includes(s))) return false;
+    }
+    return true;
+  });
+  rows.sort((a, b) => {
+    let av = a[chatsState.sortKey], bv = b[chatsState.sortKey];
+    if (av instanceof Date) av = av.getTime();
+    if (bv instanceof Date) bv = bv.getTime();
+    if (typeof av === 'string') { av = av.toLowerCase(); bv = (bv || '').toLowerCase(); }
+    if (av < bv) return chatsState.sortDir === 'asc' ? -1 : 1;
+    if (av > bv) return chatsState.sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+  return rows;
+}
+function sortChats(key) {
+  if (chatsState.sortKey === key) chatsState.sortDir = chatsState.sortDir === 'asc' ? 'desc' : 'asc';
+  else { chatsState.sortKey = key; chatsState.sortDir = 'asc'; }
+  renderChatsSection();
+}
+function renderChatsSection() {
+  const mount = document.getElementById('boPage-chats');
+  if (!mount) return;
+  const rows = getFilteredTickets();
+  const cols = [['id', 'Fall'], ['channel', 'Kanal'], ['subject', 'Betreff'], ['category', 'Kategorie'], ['priority', 'Priorität'], ['status', 'Status'], ['assignedAgent', 'Zuständig'], ['updatedAt', 'Aktualisiert']];
+  mount.innerHTML = `
+    <div class="bo-page-header">
+      <div><div class="bo-page-title">Chats</div><div class="bo-page-sub">${tickets.length} Fälle über alle Kanäle · ${tickets.filter(t => t.status === 'offen' || t.status === 'eskaliert' || t.status === 'in Bearbeitung').length} offen</div></div>
+      <button class="bo-btn primary" onclick="toast('Neuer Fall würde hier manuell angelegt.')">+ Neuer Fall</button>
+    </div>
+    <div class="bo-table-card">
+      <div class="bo-toolbar">
+        <input type="text" placeholder="Fälle durchsuchen…" value="${chatsState.search}" oninput="chatsState.search=this.value;renderChatsSection()">
+        <select onchange="chatsState.status=this.value;renderChatsSection()">
+          <option value="">Alle Status</option>
+          ${['offen', 'in Bearbeitung', 'eskaliert', 'gelöst', 'geschlossen'].map(s => `<option value="${s}" ${chatsState.status === s ? 'selected' : ''}>${s}</option>`).join('')}
+        </select>
+        <select onchange="chatsState.channel=this.value;renderChatsSection()">
+          <option value="">Alle Kanäle</option>
+          ${['chat', 'email', 'whatsapp', 'formular', 'api'].map(c => `<option value="${c}" ${chatsState.channel === c ? 'selected' : ''}>${channelLabel(c)}</option>`).join('')}
+        </select>
+        <select onchange="chatsState.priority=this.value;renderChatsSection()">
+          <option value="">Alle Prioritäten</option>
+          ${['niedrig', 'normal', 'hoch', 'kritisch'].map(p => `<option value="${p}" ${chatsState.priority === p ? 'selected' : ''}>${p}</option>`).join('')}
+        </select>
+        <div class="bo-toolbar-spacer"></div>
+        <span style="font-size:11.5px;color:var(--gray)">${rows.length} Treffer</span>
+      </div>
+      <div class="bo-bulk-bar ${chatsState.selected.size ? 'active' : ''}">
+        <span>${chatsState.selected.size} ausgewählt</span>
+        <button class="bo-btn" onclick="bulkChats('assign')">Zuweisen</button>
+        <button class="bo-btn" onclick="bulkChats('close')">Schließen</button>
+        <button class="bo-btn" onclick="bulkChats('tag')">Tag hinzufügen</button>
+      </div>
+      <div class="bo-table-wrap">
+        <table class="bo-table">
+          <thead><tr>
+            <th class="checkbox-col"><input type="checkbox" onclick="toggleAllChats(this)" ${rows.length && rows.every(r => chatsState.selected.has(r.id)) ? 'checked' : ''}></th>
+            ${cols.map(([k, l]) => `<th class="${chatsState.sortKey === k ? 'sorted' : ''}" onclick="sortChats('${k}')">${l}</th>`).join('')}
+          </tr></thead>
+          <tbody>
+            ${rows.length === 0 ? `<tr class="bo-empty-row"><td colspan="${cols.length + 1}">Keine Fälle gefunden</td></tr>` : rows.map(t => `
+              <tr onclick="openTicketDetail('${t.id}')">
+                <td class="checkbox-col" onclick="event.stopPropagation()"><input type="checkbox" ${chatsState.selected.has(t.id) ? 'checked' : ''} onchange="toggleChatSelect('${t.id}',this)"></td>
+                <td class="mono">${t.id}${t.live ? ' <span class="bo-pill pill-open">LIVE</span>' : ''}</td>
+                <td>${channelLabel(t.channel)}</td>
+                <td>${t.subject}</td>
+                <td>${t.category}</td>
+                <td>${priorityPill(t.priority)}</td>
+                <td>${statusPill(t.status)}</td>
+                <td>${t.assignedAgent}</td>
+                <td>${fmtRelative(t.updatedAt)}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+function toggleChatSelect(id, el) { if (el.checked) chatsState.selected.add(id); else chatsState.selected.delete(id); renderChatsSection(); }
+function toggleAllChats(el) {
+  const rows = getFilteredTickets();
+  if (el.checked) rows.forEach(r => chatsState.selected.add(r.id)); else rows.forEach(r => chatsState.selected.delete(r.id));
+  renderChatsSection();
+}
+function bulkChats(action) {
+  const n = chatsState.selected.size;
+  const labels = { assign: 'zugewiesen', close: 'geschlossen', tag: 'markiert' };
+  if (action === 'close') tickets.forEach(t => { if (chatsState.selected.has(t.id)) t.status = 'geschlossen'; });
+  if (action === 'assign') tickets.forEach(t => { if (chatsState.selected.has(t.id)) t.assignedAgent = 'Sarah Weber'; });
+  if (action === 'tag') tickets.forEach(t => { if (chatsState.selected.has(t.id) && !t.tags.includes('Nachverfolgen')) t.tags.push('Nachverfolgen'); });
+  logAudit('Sarah Weber', `${n} Fälle als „${labels[action]}" markiert.`, 'Chats');
+  chatsState.selected.clear();
+  renderChatsSection();
+}
+function summarizeTicket(t) {
+  const lastCustomer = [...t.messages].reverse().find(m => m.role === 'customer');
+  return `${t.customer} meldet sich über ${channelLabel(t.channel)} zu „${t.category}" (Priorität ${t.priority}). ${lastCustomer ? 'Zuletzt: „' + lastCustomer.text.slice(0, 110) + (lastCustomer.text.length > 110 ? '…' : '') + '"' : ''} Aktueller Status: ${t.status}.`;
+}
+function suggestReply(t) {
+  if (t.status === 'gelöst' || t.status === 'geschlossen') return 'Der Fall ist bereits gelöst. Vorschlag: kurze Rückfrage, ob die Lösung dauerhaft funktioniert, danach den Fall schließen.';
+  return `Vorschlag: Auf „${t.category}" eingehen, den passenden Lösungsschritt aus der Wissensbasis referenzieren und offene Rückfragen zur Konfiguration von ${t.customer} klären, bevor der Fall geschlossen wird.`;
+}
+function openTicketDetail(id) {
+  const t = tickets.find(x => x.id === id);
+  if (!t) return;
+  const overlay = document.getElementById('ticketDetailOverlay');
+  overlay.innerHTML = `
+    <div class="bo-detail-panel">
+      <div class="bo-detail-head">
+        <div><div class="bo-detail-title">${t.id}</div><div class="bo-detail-sub">${t.customer} · ${channelLabel(t.channel)} · ${fmtDate(t.createdAt)}</div></div>
+        <button class="bo-detail-close" onclick="closeTicketDetail()">&times;</button>
+      </div>
+      <div class="bo-detail-body">
+        <div class="bo-detail-field-row">
+          <div class="bo-detail-field"><label>Kategorie (automatisch)</label>
+            <select onchange="updateTicketField('${t.id}','category',this.value)">${CATEGORY_POOL.map(c => `<option value="${c}" ${t.category === c ? 'selected' : ''}>${c}</option>`).join('')}</select>
+          </div>
+          <div class="bo-detail-field"><label>Priorität</label>
+            <select onchange="updateTicketField('${t.id}','priority',this.value)">${['niedrig', 'normal', 'hoch', 'kritisch'].map(p => `<option value="${p}" ${t.priority === p ? 'selected' : ''}>${p}</option>`).join('')}</select>
+          </div>
+        </div>
+        <div class="bo-detail-field-row">
+          <div class="bo-detail-field"><label>Status</label>
+            <select onchange="updateTicketField('${t.id}','status',this.value)">${['offen', 'in Bearbeitung', 'eskaliert', 'gelöst', 'geschlossen'].map(s => `<option value="${s}" ${t.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select>
+          </div>
+          <div class="bo-detail-field"><label>Zuständig</label>
+            <select onchange="updateTicketField('${t.id}','assignedAgent',this.value)">${AGENTS.map(a => `<option value="${a}" ${t.assignedAgent === a ? 'selected' : ''}>${a}</option>`).join('')}</select>
+          </div>
+        </div>
+        <div>
+          <div class="bo-detail-section-label">KI-Zusammenfassung</div>
+          <div class="bo-copilot-box"><div class="bo-copilot-text">${summarizeTicket(t)}</div></div>
+        </div>
+        <div>
+          <div class="bo-detail-section-label">Gesprächsverlauf</div>
+          <div class="bo-transcript">${t.messages.length === 0 ? '<div style="font-size:12px;color:var(--gray)">Noch keine Nachrichten</div>' : t.messages.map(m => `<div class="bo-transcript-msg ${m.role === 'customer' ? 'customer' : 'bot'}">${m.text}</div>`).join('')}</div>
+        </div>
+        <div>
+          <div class="bo-detail-section-label">Copilot – Antwortvorschlag für Mitarbeitende</div>
+          <div class="bo-copilot-box">
+            <div class="bo-copilot-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>Vorschlag</div>
+            <div class="bo-copilot-text">${suggestReply(t)}</div>
+            <div class="bo-copilot-actions">
+              <button class="bo-btn primary" onclick="toast('Antwortvorschlag übernommen.')">Übernehmen</button>
+              <button class="bo-btn" onclick="toast('Neuer Vorschlag würde generiert.')">Neu generieren</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  overlay.classList.add('open');
+}
+function closeTicketDetail() { document.getElementById('ticketDetailOverlay').classList.remove('open'); }
+function updateTicketField(id, field, value) {
+  const t = tickets.find(x => x.id === id);
+  if (!t) return;
+  t[field] = value; t.updatedAt = new Date();
+  logAudit('Sarah Weber', `Fall ${t.id}: ${field} geändert auf „${value}".`, 'Chats');
+  renderChatsSection();
+}
+
+// ─── WISSENSDATENBANK ───
+function kbViews(entry) { let h = 0; for (const c of entry.id) h = (h * 31 + c.charCodeAt(0)) % 997; return 40 + (h % 260); }
+function kbQuality(entry) { let h = 0; for (const c of entry.id) h = (h * 17 + c.charCodeAt(0)) % 89; return 70 + (h % 30); }
+let kbState = { search: '' };
+function renderKbSection() {
+  const mount = document.getElementById('boPage-kb');
+  if (!mount) return;
+  const rows = KB.filter(k => !kbState.search || k.title.toLowerCase().includes(kbState.search.toLowerCase()) || k.cat.toLowerCase().includes(kbState.search.toLowerCase()));
+  mount.innerHTML = `
+    <div class="bo-page-header">
+      <div><div class="bo-page-title">Wissensdatenbank</div><div class="bo-page-sub">${KB.length} Einträge · zuletzt aktualisiert heute</div></div>
+      <button class="bo-btn primary" onclick="toast('Neuer Wissenseintrag würde hier angelegt.')">+ Neuer Eintrag</button>
+    </div>
+    <div class="bo-table-card">
+      <div class="bo-toolbar">
+        <input type="text" placeholder="Wissensbasis durchsuchen…" value="${kbState.search}" oninput="kbState.search=this.value;renderKbSection()">
+        <div class="bo-toolbar-spacer"></div>
+        <span style="font-size:11.5px;color:var(--gray)">${rows.length} Treffer</span>
+      </div>
+      <div class="bo-table-wrap">
+        <table class="bo-table">
+          <thead><tr><th>Titel</th><th>Kategorie</th><th>Aufrufe (30 Tage)</th><th>Qualität</th><th>Version</th></tr></thead>
+          <tbody>${rows.map(k => `
+            <tr onclick="openKbDetail('${k.id}')">
+              <td>${k.title}${k.handoff ? ' <span class="bo-pill pill-hoch">Weiterleitung</span>' : ''}</td>
+              <td>${k.cat}</td>
+              <td>${kbViews(k)}</td>
+              <td><div class="bar-track" style="width:70px;display:inline-block;vertical-align:middle;margin-right:6px"><div class="bar-fill" style="width:${kbQuality(k)}%"></div></div>${kbQuality(k)}%</td>
+              <td class="mono">v1.${(kbViews(k) % 4) + 1}</td>
+            </tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="bo-table-card" style="margin-top:16px">
+      <div class="bo-toolbar"><strong style="font-size:12.5px">Fehlende Wissensinhalte</strong></div>
+      <div class="gap-list" style="padding:14px 16px">
+        ${knowledgeGaps.size === 0 ? '<div class="gap-empty">Noch keine ungelösten Themen erfasst</div>' : [...knowledgeGaps.entries()].sort((a, b) => b[1] - a[1]).map(([topic, count]) => `<div class="gap-item"><span class="gap-item-text">${topic}</span><span class="gap-item-count">${count}×</span></div>`).join('')}
+      </div>
+    </div>`;
+}
+function openKbDetail(id) {
+  const k = KB.find(x => x.id === id);
+  if (!k) return;
+  const overlay = document.getElementById('ticketDetailOverlay');
+  const v = (kbViews(k) % 4) + 1;
+  overlay.innerHTML = `
+    <div class="bo-detail-panel">
+      <div class="bo-detail-head">
+        <div><div class="bo-detail-title">${k.title}</div><div class="bo-detail-sub">${k.cat} · v1.${v}</div></div>
+        <button class="bo-detail-close" onclick="closeTicketDetail()">&times;</button>
+      </div>
+      <div class="bo-detail-body">
+        <div><div class="bo-detail-section-label">Inhalt</div><div class="bo-copilot-box"><div class="bo-copilot-text">${k.handoff ? k.handoffText : stripHtml(k.answer)}</div></div></div>
+        <div>
+          <div class="bo-detail-section-label">Versionshistorie</div>
+          <div class="bo-transcript" style="max-height:160px">
+            <div class="bo-transcript-msg bot">v1.${v} · aktuell · zuletzt geprüft heute</div>
+            <div class="bo-transcript-msg bot">v1.${Math.max(1, v - 1)} · Formulierung präzisiert</div>
+            <div class="bo-transcript-msg bot">v1.0 · Ersterfassung aus Schulungsgespräch</div>
+          </div>
+        </div>
+        <div><div class="bo-detail-section-label">Qualitätsbewertung</div><div class="bo-copilot-text">${kbQuality(k)}% Nutzerzustimmung · ${kbViews(k)} Aufrufe in den letzten 30 Tagen</div></div>
+      </div>
+    </div>`;
+  overlay.classList.add('open');
+}
+
+// ─── DOKUMENTE ───
+let docsState = { search: '' };
+function renderDocsSection() {
+  const mount = document.getElementById('boPage-docs');
+  if (!mount) return;
+  const rows = DOCS.filter(d => !docsState.search || d.name.toLowerCase().includes(docsState.search.toLowerCase()));
+  mount.innerHTML = `
+    <div class="bo-page-header">
+      <div><div class="bo-page-title">Dokumente</div><div class="bo-page-sub">${DOCS.length} Dateien in der zentralen Dokumentenverwaltung</div></div>
+      <button class="bo-btn primary" onclick="document.getElementById('docUploadInput').click()">+ Datei hochladen</button>
+      <input type="file" id="docUploadInput" style="display:none" onchange="handleDocUpload(event)">
+    </div>
+    <div class="bo-table-card">
+      <div class="bo-toolbar">
+        <input type="text" placeholder="Dokumente durchsuchen…" value="${docsState.search}" oninput="docsState.search=this.value;renderDocsSection()">
+        <div class="bo-toolbar-spacer"></div>
+        <span style="font-size:11.5px;color:var(--gray)">${rows.length} Treffer</span>
+      </div>
+      <div class="bo-table-wrap">
+        <table class="bo-table">
+          <thead><tr><th>Name</th><th>Typ</th><th>Größe</th><th>Hochgeladen von</th><th>Aktualisiert</th></tr></thead>
+          <tbody>${rows.map(d => `<tr onclick="toast('Vorschau für „${d.name}“ würde hier geöffnet.')"><td>${d.name}</td><td>${d.type}</td><td>${d.size}</td><td>${d.owner}</td><td>${fmtRelative(d.updated)}</td></tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+function handleDocUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  DOCS.unshift({ id: 'd' + (DOCS.length + 1), name: file.name, type: (file.name.split('.').pop() || 'DAT').toUpperCase(), size: (file.size / 1024).toFixed(0) + ' KB', owner: 'Sie', updated: new Date() });
+  logAudit('Sie', `Dokument „${file.name}" hochgeladen.`, 'Dokumente');
+  e.target.value = '';
+  renderDocsSection();
+}
+
+// ─── WORKFLOWS ───
+function renderWorkflowsSection() {
+  const mount = document.getElementById('boPage-workflows');
+  if (!mount) return;
+  mount.innerHTML = `
+    <div class="bo-page-header">
+      <div><div class="bo-page-title">Workflows</div><div class="bo-page-sub">Automatisierte Regeln, die auf eingehende Fälle reagieren</div></div>
+      <button class="bo-btn primary" onclick="toast('Neuer Workflow würde hier angelegt.')">+ Neuer Workflow</button>
+    </div>
+    <div class="bo-table-card">
+      <div class="bo-table-wrap">
+        <table class="bo-table">
+          <thead><tr><th>Workflow</th><th>Wenn (Trigger)</th><th>Dann (Aktion)</th><th>Status</th></tr></thead>
+          <tbody>${WORKFLOWS.map(w => `
+            <tr><td>${w.name}</td><td>${w.trigger}</td><td>${w.action}</td>
+              <td onclick="event.stopPropagation()"><span class="bo-switch ${w.enabled ? 'on' : ''}" onclick="toggleWorkflow('${w.id}')"></span></td>
+            </tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+function toggleWorkflow(id) {
+  const w = WORKFLOWS.find(x => x.id === id);
+  w.enabled = !w.enabled;
+  logAudit('Sie', `Workflow „${w.name}" ${w.enabled ? 'aktiviert' : 'deaktiviert'}.`, 'Workflows');
+  renderWorkflowsSection();
+}
+
+// ─── KI-AGENTEN ───
+function renderAgentsSection() {
+  const mount = document.getElementById('boPage-agents');
+  if (!mount) return;
+  const total = Math.max(1, stats.answered + stats.escalated);
+  mount.innerHTML = `
+    <div class="bo-page-header"><div><div class="bo-page-title">KI-Agenten</div><div class="bo-page-sub">Konfiguration der automatisierten Fallbearbeitung</div></div></div>
+    <div class="bo-kpi-row">
+      <div class="bo-kpi"><div class="bo-kpi-label">Automatisierungsgrad</div><div class="bo-kpi-val green">${Math.round((stats.answered / total) * 100)}%</div><div class="bo-kpi-note">automatisiert gelöste Fälle</div></div>
+      <div class="bo-kpi"><div class="bo-kpi-label">Aktive Sprachen</div><div class="bo-kpi-val">${agentConfig.languages.length}</div><div class="bo-kpi-note">${agentConfig.languages.join(', ')}</div></div>
+      <div class="bo-kpi"><div class="bo-kpi-label">Aktive Workflows</div><div class="bo-kpi-val">${WORKFLOWS.filter(w => w.enabled).length}/${WORKFLOWS.length}</div><div class="bo-kpi-note">verknüpfte Automatisierungen</div></div>
+    </div>
+    <div class="bo-table-card" style="padding:18px 20px;margin-bottom:16px;max-width:1280px;margin-left:auto;margin-right:auto">
+      <div class="bo-detail-section-label" style="margin-bottom:8px">Automatisierungsfunktionen</div>
+      ${[['autoCategorize', 'Automatische Kategorisierung', 'Ordnet jede Anfrage automatisch einem Themenbereich zu'],
+         ['autoPriority', 'Automatische Priorisierung', 'Erkennt Dringlichkeit anhand von Formulierung und Kontext'],
+         ['autoKbExpand', 'Automatische Wissensdatenbank-Erweiterung', 'Schlägt neue FAQ-Einträge aus wiederkehrenden Wissenslücken vor'],
+         ['copilot', 'KI-Copilot für Mitarbeitende', 'Antwortvorschläge und Zusammenfassungen im Fall-Detail']]
+        .map(([key, label, desc]) => `
+        <div class="stat-row" style="align-items:flex-start">
+          <div><div style="font-size:12.5px;font-weight:600;color:var(--dark)">${label}</div><div style="font-size:11px;color:var(--gray);margin-top:2px;max-width:440px">${desc}</div></div>
+          <span class="bo-switch ${agentConfig[key] ? 'on' : ''}" onclick="toggleAgentConfig('${key}')"></span>
+        </div>`).join('')}
+    </div>
+    <div class="bo-table-card" style="padding:18px 20px;margin-bottom:16px;max-width:1280px;margin-left:auto;margin-right:auto">
+      <div class="bo-detail-section-label" style="margin-bottom:10px">Unterstützte Sprachen</div>
+      <div>${['DE', 'EN', 'FR', 'IT'].map(l => `<span class="quick-chip" style="${agentConfig.languages.includes(l) ? '' : 'opacity:.4'}" onclick="toggleAgentLanguage('${l}')">${l}</span>`).join('')}</div>
+    </div>
+    <div class="bo-table-card">
+      <div class="bo-toolbar"><strong style="font-size:12.5px">Intelligente Weiterleitung nach Kategorie</strong></div>
+      <div class="bo-table-wrap"><table class="bo-table"><thead><tr><th>Kategorie</th><th>Zuständiges Team</th></tr></thead>
+      <tbody>${ROUTING_RULES.map(r => `<tr><td>${r.category}</td><td>${r.team}</td></tr>`).join('')}</tbody></table></div>
+    </div>`;
+}
+function toggleAgentConfig(key) {
+  agentConfig[key] = !agentConfig[key];
+  logAudit('Sie', `KI-Agent-Einstellung „${key}" ${agentConfig[key] ? 'aktiviert' : 'deaktiviert'}.`, 'KI-Agenten');
+  renderAgentsSection();
+}
+function toggleAgentLanguage(l) {
+  if (agentConfig.languages.includes(l)) agentConfig.languages = agentConfig.languages.filter(x => x !== l);
+  else agentConfig.languages.push(l);
+  renderAgentsSection();
+}
+
+// ─── NUTZERVERWALTUNG ───
+let usersState = { search: '', selected: new Set() };
+function renderUsersSection() {
+  const mount = document.getElementById('boPage-users');
+  if (!mount) return;
+  const rows = USERS.filter(u => !usersState.search || u.name.toLowerCase().includes(usersState.search.toLowerCase()) || u.email.toLowerCase().includes(usersState.search.toLowerCase()));
+  mount.innerHTML = `
+    <div class="bo-page-header">
+      <div><div class="bo-page-title">Nutzerverwaltung</div><div class="bo-page-sub">${USERS.length} Nutzer · ${USERS.filter(u => u.status === 'Aktiv').length} aktiv</div></div>
+      <button class="bo-btn primary" onclick="addDemoUser()">+ Neuer Nutzer</button>
+    </div>
+    <div class="bo-table-card">
+      <div class="bo-toolbar">
+        <input type="text" placeholder="Nutzer durchsuchen…" value="${usersState.search}" oninput="usersState.search=this.value;renderUsersSection()">
+        <div class="bo-toolbar-spacer"></div>
+        <span style="font-size:11.5px;color:var(--gray)">${rows.length} Treffer</span>
+      </div>
+      <div class="bo-bulk-bar ${usersState.selected.size ? 'active' : ''}">
+        <span>${usersState.selected.size} ausgewählt</span>
+        <button class="bo-btn" onclick="bulkUsers('deactivate')">Deaktivieren</button>
+        <button class="bo-btn" onclick="bulkUsers('activate')">Aktivieren</button>
+      </div>
+      <div class="bo-table-wrap">
+        <table class="bo-table">
+          <thead><tr><th class="checkbox-col"><input type="checkbox" onclick="toggleAllUsers(this)"></th><th>Name</th><th>E-Mail</th><th>Rolle</th><th>Status</th><th>Letzter Login</th></tr></thead>
+          <tbody>${rows.map(u => `
+            <tr>
+              <td class="checkbox-col" onclick="event.stopPropagation()"><input type="checkbox" ${usersState.selected.has(u.id) ? 'checked' : ''} onchange="toggleUserSelect('${u.id}',this)"></td>
+              <td><span class="bo-avatar">${u.name.split(' ').map(n => n[0]).join('')}</span>${u.name}</td>
+              <td>${u.email}</td>
+              <td onclick="event.stopPropagation()"><select onchange="changeUserRole('${u.id}',this.value)">${ROLES.map(r => `<option value="${r.name}" ${u.role === r.name ? 'selected' : ''}>${r.name}</option>`).join('')}</select></td>
+              <td>${u.status === 'Aktiv' ? '<span class="bo-pill pill-solved">Aktiv</span>' : u.status === 'Inaktiv' ? '<span class="bo-pill pill-closed">Inaktiv</span>' : '<span class="bo-pill pill-normal">Eingeladen</span>'}</td>
+              <td>${u.lastLogin ? fmtRelative(u.lastLogin) : 'Noch nie'}</td>
+            </tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+function toggleUserSelect(id, el) { if (el.checked) usersState.selected.add(id); else usersState.selected.delete(id); renderUsersSection(); }
+function toggleAllUsers(el) { if (el.checked) USERS.forEach(u => usersState.selected.add(u.id)); else usersState.selected.clear(); renderUsersSection(); }
+function bulkUsers(action) {
+  USERS.forEach(u => { if (usersState.selected.has(u.id)) u.status = action === 'deactivate' ? 'Inaktiv' : 'Aktiv'; });
+  logAudit('Sie', `${usersState.selected.size} Nutzer ${action === 'deactivate' ? 'deaktiviert' : 'aktiviert'}.`, 'Nutzerverwaltung');
+  usersState.selected.clear();
+  renderUsersSection();
+}
+function changeUserRole(id, role) {
+  const u = USERS.find(x => x.id === id);
+  u.role = role;
+  logAudit('Sie', `Rolle von ${u.name} auf „${role}" geändert.`, 'Rollen & Berechtigungen');
+  renderUsersSection();
+}
+function addDemoUser() {
+  const n = USERS.length + 1;
+  USERS.push({ id: 'u' + n, name: 'Neuer Nutzer ' + n, email: 'neu' + n + '@orkan-system.de', role: 'Agent', status: 'Eingeladen', lastLogin: null });
+  logAudit('Sie', 'Neuer Nutzer eingeladen.', 'Nutzerverwaltung');
+  renderUsersSection();
+}
+
+// ─── ROLLEN & BERECHTIGUNGEN ───
+function renderRolesSection() {
+  const mount = document.getElementById('boPage-roles');
+  if (!mount) return;
+  mount.innerHTML = `
+    <div class="bo-page-header"><div><div class="bo-page-title">Rollen & Berechtigungen</div><div class="bo-page-sub">Rollenbasierte Zugriffsrechte je Funktionsbereich</div></div></div>
+    <div class="bo-table-card">
+      <div class="bo-table-wrap">
+        <table class="bo-table">
+          <thead><tr><th>Berechtigung</th>${ROLES.map(r => `<th>${r.name}</th>`).join('')}</tr></thead>
+          <tbody>${PERMISSIONS.map(p => `<tr><td>${p}</td>${ROLES.map(r => `<td onclick="event.stopPropagation()"><input class="bo-perm-check" type="checkbox" ${r.perms[p] ? 'checked' : ''} onchange="togglePermission('${r.name}','${p}',this)"></td>`).join('')}</tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+function togglePermission(roleName, perm, el) {
+  const r = ROLES.find(x => x.name === roleName);
+  r.perms[perm] = el.checked;
+  logAudit('Sie', `Berechtigung „${perm}" für Rolle „${roleName}" ${el.checked ? 'erteilt' : 'entzogen'}.`, 'Rollen & Berechtigungen');
+}
+
+// ─── INTEGRATIONEN ───
+function renderIntegrationsSection() {
+  const mount = document.getElementById('boPage-integrations');
+  if (!mount) return;
+  mount.innerHTML = `
+    <div class="bo-page-header"><div><div class="bo-page-title">Integrationen</div><div class="bo-page-sub">Zentrale Verwaltung aller Kommunikationskanäle</div></div></div>
+    <div class="bo-int-grid">${INTEGRATIONS.map(i => `
+      <div class="bo-int-card">
+        <div class="bo-int-header"><span class="bo-int-name">${i.name}</span><span class="bo-switch ${i.connected ? 'on' : ''}" onclick="toggleIntegration('${i.id}')"></span></div>
+        <div class="bo-int-desc">${i.desc}</div>
+        <div class="bo-int-status"><span class="freshness-dot" style="background:${i.connected ? '#4ade80' : '#d1d5db'}"></span>${i.connected ? 'Verbunden · ' + i.lastSync : 'Nicht verbunden'}</div>
+      </div>`).join('')}</div>`;
+}
+function toggleIntegration(id) {
+  const i = INTEGRATIONS.find(x => x.id === id);
+  i.connected = !i.connected;
+  i.lastSync = i.connected ? 'gerade eben' : 'nicht verbunden';
+  logAudit('Sie', `Integration „${i.name}" ${i.connected ? 'verbunden' : 'getrennt'}.`, 'Integrationen');
+  renderIntegrationsSection();
+}
+
+// ─── ANALYSEN & REPORTS ───
+function buildSparkline(values, w = 560, h = 120) {
+  const max = Math.max(...values, 1), min = Math.min(...values, 0);
+  const range = max - min || 1;
+  const stepX = w / (values.length - 1);
+  const pts = values.map((v, i) => [i * stepX, h - ((v - min) / range) * h]);
+  const line = pts.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+  const fill = line + ` L${w},${h} L0,${h} Z`;
+  return `<svg class="bo-linechart" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><path class="fill" d="${fill}"/><path class="line" d="${line}"/>${pts.map(p => `<circle class="dot" cx="${p[0]}" cy="${p[1]}" r="3"/>`).join('')}</svg>`;
+}
+function renderAnalyticsSection() {
+  const mount = document.getElementById('boPage-analytics');
+  if (!mount) return;
+  const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+  const trend = [62, 68, 71, 66, 74, 58, 54];
+  const channelCounts = {};
+  tickets.forEach(t => { channelCounts[t.channel] = (channelCounts[t.channel] || 0) + 1; });
+  const totalTix = tickets.length || 1;
+  const catCounts = {};
+  tickets.forEach(t => { catCounts[t.category] = (catCounts[t.category] || 0) + 1; });
+  const topCats = Object.entries(catCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const csatVals = tickets.filter(t => t.csat != null).map(t => t.csat);
+  const csatAvg = csatVals.length ? (csatVals.reduce((a, b) => a + b, 0) / csatVals.length).toFixed(1) : '–';
+  mount.innerHTML = `
+    <div class="bo-page-header"><div><div class="bo-page-title">Analysen & Reports</div><div class="bo-page-sub">Auswertungen über alle Kanäle und Fälle</div></div></div>
+    <div class="bo-kpi-row">
+      <div class="bo-kpi"><div class="bo-kpi-label">Gesamtfälle</div><div class="bo-kpi-val">${tickets.length}</div></div>
+      <div class="bo-kpi"><div class="bo-kpi-label">Automatisiert gelöst</div><div class="bo-kpi-val green">${tickets.filter(t => t.status === 'gelöst' || t.status === 'geschlossen').length}</div></div>
+      <div class="bo-kpi"><div class="bo-kpi-label">Eskaliert</div><div class="bo-kpi-val red">${tickets.filter(t => t.status === 'eskaliert').length}</div></div>
+      <div class="bo-kpi"><div class="bo-kpi-label">Ø CSAT</div><div class="bo-kpi-val">${csatAvg}${csatVals.length ? '/5' : ''}</div></div>
+    </div>
+    <div class="bo-table-card" style="padding:18px 20px;margin-bottom:16px">
+      <div class="bo-detail-section-label">Lösungsquote – letzte 7 Tage</div>
+      ${buildSparkline(trend)}
+      <div class="bo-chart-axis">${days.map(d => `<span>${d}</span>`).join('')}</div>
+    </div>
+    <div class="bo-grid" style="grid-template-columns:1fr 1fr;max-width:1280px;margin:0 auto">
+      <div class="stat-card">
+        <div class="stat-card-header"><div class="stat-card-title">Verteilung nach Kanal</div></div>
+        <div class="bar-chart">${['chat', 'email', 'whatsapp', 'formular', 'api'].map(c => {
+          const pct = Math.round(((channelCounts[c] || 0) / totalTix) * 100);
+          return `<div class="bar-item"><span class="bar-label">${channelLabel(c)}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-val">${pct}%</span></div>`;
+        }).join('')}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><div class="stat-card-title">Häufigste Kategorien</div></div>
+        <div class="bar-chart">${topCats.map(([cat, count]) => {
+          const pct = Math.round((count / totalTix) * 100);
+          return `<div class="bar-item"><span class="bar-label">${cat}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-val">${count}</span></div>`;
+        }).join('')}</div>
+      </div>
+    </div>`;
+}
+
+// ─── SYSTEMEINSTELLUNGEN ───
+function renderSettingsSection() {
+  const mount = document.getElementById('boPage-settings');
+  if (!mount) return;
+  mount.innerHTML = `
+    <div class="bo-page-header"><div><div class="bo-page-title">Systemeinstellungen</div><div class="bo-page-sub">Allgemeine Einstellungen für diesen Mandanten</div></div></div>
+    <div class="bo-form-card">
+      <div class="bo-form-row"><label>Firmenname</label><input type="text" id="setCompanyName" value="${systemSettings.companyName}"></div>
+      <div class="bo-form-row"><label>Zeitzone</label><select id="setTimezone">${['Europe/Berlin', 'Europe/Vienna', 'Europe/Zurich'].map(tz => `<option ${systemSettings.timezone === tz ? 'selected' : ''}>${tz}</option>`).join('')}</select></div>
+      <div class="bo-form-row"><label>Datenaufbewahrung (Tage)</label><input type="number" id="setRetention" value="${systemSettings.retentionDays}"><div class="bo-form-hint">Nach Ablauf werden abgeschlossene Fälle automatisch archiviert.</div></div>
+      <div class="bo-form-row"><label>Markenfarben</label>
+        <div class="bo-swatches"><div class="bo-swatch" style="background:#8EA752"></div><div class="bo-swatch" style="background:#1F2428"></div><div class="bo-swatch" style="background:#FFFFFF"></div></div>
+        <div class="bo-form-hint">Aus der Corporate Identity übernommen, hier nicht änderbar.</div>
+      </div>
+      <button class="bo-btn primary" onclick="saveSystemSettings()">Einstellungen speichern</button>
+    </div>`;
+}
+function saveSystemSettings() {
+  systemSettings.companyName = document.getElementById('setCompanyName').value;
+  systemSettings.timezone = document.getElementById('setTimezone').value;
+  systemSettings.retentionDays = document.getElementById('setRetention').value;
+  logAudit('Sie', 'Systemeinstellungen aktualisiert.', 'Systemeinstellungen');
+  toast('Einstellungen gespeichert.');
+}
+
+// ─── AUDIT-LOGS ───
+function renderAuditSection() {
+  const mount = document.getElementById('boPage-audit');
+  if (!mount) return;
+  mount.innerHTML = `
+    <div class="bo-page-header"><div><div class="bo-page-title">Audit-Logs</div><div class="bo-page-sub">Vollständige Aktivitätshistorie über alle Backoffice-Bereiche</div></div></div>
+    <div class="bo-table-card">
+      <div class="bo-table-wrap">
+        <table class="bo-table">
+          <thead><tr><th>Zeitpunkt</th><th>Akteur</th><th>Bereich</th><th>Aktion</th></tr></thead>
+          <tbody>${auditLog.length === 0 ? '<tr class="bo-empty-row"><td colspan="4">Noch keine Aktivität erfasst</td></tr>' : auditLog.map(a => `<tr><td class="mono">${fmtDate(a.time)}</td><td>${a.actor}</td><td>${a.category}</td><td>${a.action}</td></tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ─── GLOBALE SUCHE ───
+function globalSearch(q) {
+  const box = document.getElementById('globalSearchResults');
+  const input = document.getElementById('globalSearchInput');
+  if (!q) { box.classList.remove('open'); return; }
+  const ql = q.toLowerCase();
+  const ticketHits = tickets.filter(t => t.subject.toLowerCase().includes(ql) || t.id.toLowerCase().includes(ql)).slice(0, 4);
+  const kbHits = KB.filter(k => k.title.toLowerCase().includes(ql)).slice(0, 4);
+  const userHits = USERS.filter(u => u.name.toLowerCase().includes(ql)).slice(0, 4);
+  const groups = [
+    ['Fälle', ticketHits.map(t => ({ label: `${t.id} · ${t.subject}`, action: `showBoSection('chats');closeGlobalSearch();openTicketDetail('${t.id}')` }))],
+    ['Wissensdatenbank', kbHits.map(k => ({ label: k.title, action: `showBoSection('kb');closeGlobalSearch();openKbDetail('${k.id}')` }))],
+    ['Nutzer', userHits.map(u => ({ label: u.name, action: `showBoSection('users');closeGlobalSearch()` }))],
+  ].filter(([, items]) => items.length);
+  const rect = input.getBoundingClientRect();
+  box.style.top = (rect.bottom + 8) + 'px';
+  box.style.left = Math.min(rect.left, window.innerWidth - 360) + 'px';
+  box.innerHTML = groups.length === 0 ? '<div class="bo-search-empty">Keine Treffer</div>' :
+    groups.map(([label, items]) => `<div class="bo-search-group-label">${label}</div>${items.map(i => `<div class="bo-search-item" onclick="${i.action}">${i.label}</div>`).join('')}`).join('');
+  box.classList.add('open');
+}
+function closeGlobalSearch() {
+  document.getElementById('globalSearchResults').classList.remove('open');
+  document.getElementById('globalSearchInput').value = '';
+}
+document.addEventListener('click', e => {
+  const box = document.getElementById('globalSearchResults');
+  const input = document.getElementById('globalSearchInput');
+  if (box && input && !box.contains(e.target) && e.target !== input) box.classList.remove('open');
+});
+
+// ─── MANDANTENFÄHIGKEIT (vorbereitet) ───
+function toggleTenantMenu() {
+  const menu = document.getElementById('tenantMenu');
+  if (!menu.classList.contains('open')) {
+    menu.innerHTML = TENANTS.map(t => `<div class="bo-tenant-item ${t === currentTenant ? 'active' : ''}" onclick="selectTenant('${t}')">${t}</div>`).join('');
+    const rect = document.querySelector('.bo-tenant').getBoundingClientRect();
+    menu.style.top = (rect.bottom + 8) + 'px';
+    menu.style.left = rect.left + 'px';
+  }
+  menu.classList.toggle('open');
+}
+function selectTenant(t) {
+  currentTenant = t;
+  document.getElementById('tenantLabel').textContent = t;
+  document.getElementById('tenantMenu').classList.remove('open');
+  toast(`Mandant gewechselt zu ${t}.`);
+}
+document.addEventListener('click', e => {
+  const wrap = document.querySelector('.bo-tenant-wrap');
+  const menu = document.getElementById('tenantMenu');
+  if (wrap && menu && !wrap.contains(e.target)) menu.classList.remove('open');
+});
+
+// ─── MEHRSPRACHIGKEIT (Kundenchat) ───
+const LANGUAGES = { DE: 'Deutsch', EN: 'English' };
+function toggleLangMenu() {
+  const menu = document.getElementById('langMenu');
+  if (!menu.classList.contains('open')) {
+    menu.innerHTML = Object.entries(LANGUAGES).map(([code, label]) => `<div class="lang-item ${code === currentLanguage ? 'active' : ''}" onclick="selectLanguage('${code}')">${label}</div>`).join('');
+    const rect = document.querySelector('.lang-btn').getBoundingClientRect();
+    menu.style.top = (rect.bottom + 8) + 'px';
+    menu.style.left = rect.left + 'px';
+  }
+  menu.classList.toggle('open');
+}
+function selectLanguage(code) {
+  currentLanguage = code;
+  document.getElementById('langLabel').textContent = code;
+  document.getElementById('langMenu').classList.remove('open');
+  if (liveTicket) liveTicket.language = code;
+  addBotMessage(code === 'EN'
+    ? '<p>I will now continue in English. Feel free to keep asking your questions.</p>'
+    : '<p>Ich antworte Ihnen ab jetzt wieder auf Deutsch.</p>', false);
+}
+document.addEventListener('click', e => {
+  const wrap = document.querySelector('.lang-switch');
+  const menu = document.getElementById('langMenu');
+  if (wrap && menu && !wrap.contains(e.target)) menu.classList.remove('open');
+});
 
 function buildCategories(filter='') {
   const scroll = document.getElementById('categoriesScroll');
@@ -890,6 +1967,7 @@ function addBotMessage(html, withFeedback = true) {
     </div>`;
   wrap.appendChild(div);
   wrap.scrollTop = wrap.scrollHeight;
+  if (liveTicket) ticketLog('bot', html);
 }
 
 function addUserMessage(text, imageDataUrl) {
@@ -913,6 +1991,7 @@ function addUserMessage(text, imageDataUrl) {
     </div>`;
   wrap.appendChild(div);
   wrap.scrollTop = wrap.scrollHeight;
+  ticketLog('customer', text || (imageDataUrl ? '[Medienanhang]' : ''));
 }
 
 function showTyping() {
@@ -1003,10 +2082,6 @@ function findAnswer(query) {
   return null;
 }
 
-function traceHtml(steps) {
-  return `<div class="agent-trace">${steps.map(s => `<span class="trace-step"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>${s}</span>`).join('')}</div>`;
-}
-
 function askQuestion(id) {
   const entry = KB.find(k => k.id === id);
   if (!entry) return;
@@ -1015,8 +2090,8 @@ function askQuestion(id) {
   setTimeout(() => {
     removeTyping();
     if (entry.handoff) { handoff(entry); return; }
-    addBotMessage(traceHtml(['Intent erkannt: ' + entry.cat, 'Wissensbasis durchsucht', 'Antwortqualität geprüft']) +
-      entry.answer + `<span class="intent-tag">Erkanntes Thema: ${entry.cat}</span>`);
+    addBotMessage(entry.answer);
+    logAnswer(entry, false);
     lastTopic = entry;
     stats.answered++;
     stats.savings += 4;
@@ -1045,19 +2120,19 @@ function sendMessage() {
     if (!result) { escalate(text); return; }
 
     if (result.multi) {
-      const steps = [`${result.entries.length} Anliegen in einer Nachricht erkannt`, 'Wissensbasis durchsucht', 'Antwortqualität geprüft'];
-      let html = traceHtml(steps);
+      let html = '';
       result.entries.forEach((entry, i) => {
         if (i > 0) html += `<div class="multi-intent-divider"></div>`;
         html += `<div class="multi-intent-label">Anliegen ${i + 1} von ${result.entries.length}</div>`;
         if (entry.handoff) {
           html += `<div class="handoff-card"><div class="handoff-header"><span class="handoff-title">Bewusst an einen Kollegen weitergeleitet</span></div><div class="handoff-text">${entry.handoffText}</div></div>`;
         } else {
-          html += entry.answer + `<span class="intent-tag">Erkanntes Thema: ${entry.cat}</span>`;
+          html += entry.answer;
         }
       });
       addBotMessage(html);
       logAgentAction('action', `Nachricht in ${result.entries.length} eigenständige Anliegen zerlegt und jedes einzeln beantwortet, statt nur auf das dominanteste Stichwort zu reagieren.`);
+      result.entries.forEach(entry => logAnswer(entry, false));
       lastTopic = result.entries[result.entries.length - 1];
       result.entries.forEach(entry => {
         if (entry.handoff) { stats.escalated++; registerGap(entry.title, true); }
@@ -1070,8 +2145,8 @@ function sendMessage() {
     if (result.entry.handoff) { handoff(result.entry); return; }
     const contextNote = result.contextUsed ? `<p style="font-size:12px;color:var(--gray);margin-top:6px">Bezogen auf Ihre vorherige Frage zu „${result.entry.title}".</p>` : '';
     if (result.contextUsed) logAgentAction('context', `Anschlussfrage ohne eigenes Stichwort eigenständig auf „${result.entry.title}" bezogen.`);
-    addBotMessage(traceHtml(['Intent erkannt: ' + result.entry.cat, 'Wissensbasis durchsucht', 'Antwortqualität geprüft']) +
-      result.entry.answer + contextNote + `<span class="intent-tag">Erkanntes Thema: ${result.entry.cat}</span>`);
+    addBotMessage(result.entry.answer + contextNote);
+    logAnswer(result.entry, result.contextUsed);
     lastTopic = result.entry;
     stats.answered++;
     stats.savings += 4;
@@ -1125,7 +2200,8 @@ function handleImageQuery(caption, image) {
     escalate(caption || `[${kind}anfrage: ` + image.name + ']');
     return;
   }
-  addBotMessage(response + `<span class="intent-tag">Erkanntes Thema: Bildbasierte Anfrage</span>`);
+  addBotMessage(response);
+  updateLiveTicket({ category: 'Bildbasierte Anfrage', priority: 'niedrig', status: 'gelöst' });
   stats.answered++;
   stats.savings += 4;
 }
@@ -1138,19 +2214,36 @@ function isWithinBusinessHours() {
   return cur >= fh * 60 + fm && cur <= th * 60 + tm;
 }
 
+// Kategorisiert, priorisiert und markiert den laufenden Fall als gelöst – die Grundlage
+// für automatische Kategorisierung/Priorisierung, die im Backoffice (Chats) sichtbar wird
+function logAnswer(entry, contextUsed) {
+  const t = ensureLiveTicket();
+  updateLiveTicket({
+    category: entry.cat,
+    priority: t.priority === 'kritisch' ? 'kritisch' : 'niedrig',
+    status: 'gelöst',
+    assignedAgent: 'KI-Agent (automatisiert)'
+  });
+}
+
 function escalate(question) {
   stats.escalated++;
   registerGap(question);
-  const ticket = '#TK-2025-' + (ticketCounter++);
+  const t = ensureLiveTicket();
   const withinHours = isWithinBusinessHours();
   const messages = ROUTE_MESSAGES[escalationSettings.route];
   const hoursNote = withinHours ? messages.within : `Wir befinden uns aktuell außerhalb der Geschäftszeiten. ${messages.outside}`;
+  const routeAgent = { email: 'Support-Postfach', team: 'Nächstes freies Teammitglied', custom: 'Individueller Termin' }[escalationSettings.route];
+  updateLiveTicket({
+    priority: priorityForText(question), status: 'eskaliert', assignedAgent: routeAgent,
+    tags: [...t.tags, 'Automatisch eskaliert']
+  });
   const html = `
     <p>Für diese Frage benötige ich die Unterstützung unseres Support-Teams.</p>
     <div class="escalation-card">
       <div class="esc-header">
         <span class="esc-title">Support-Ticket erstellt</span>
-        <span class="esc-ticket">${ticket}</span>
+        <span class="esc-ticket">#${t.id}</span>
       </div>
       <div class="esc-text">
         <strong>Ihre Frage:</strong> „${question}"<br>
@@ -1162,8 +2255,8 @@ function escalate(question) {
         <button class="esc-btn esc-btn-secondary">Rückruf anfordern</button>
       </div>
     </div>`;
-  addBotMessage(traceHtml(['Wissensbasis durchsucht', 'Keine ausreichende Übereinstimmung', 'An Support-Team eskaliert']) + html);
-  logAgentAction('action', `Ticket ${ticket} selbstständig angelegt und ${escalationSettings.route === 'email' ? 'per E-Mail weitergeleitet' : escalationSettings.route === 'team' ? 'dem Team zugewiesen' : 'als Rückruf-Termin eingeplant'} – ohne manuelle Freigabe.`);
+  addBotMessage(html);
+  logAgentAction('action', `Fall ${t.id} selbstständig kategorisiert, priorisiert (${t.priority}) und ${escalationSettings.route === 'email' ? 'per E-Mail weitergeleitet' : escalationSettings.route === 'team' ? 'dem Team zugewiesen' : 'als Rückruf-Termin eingeplant'} – ohne manuelle Freigabe.`);
   updateStats();
 }
 
@@ -1172,14 +2265,15 @@ function escalate(question) {
 function handoff(entry) {
   stats.escalated++;
   registerGap(entry.title, true);
-  const ticket = '#TK-2025-' + (ticketCounter++);
+  const t = ensureLiveTicket();
+  updateLiveTicket({ category: entry.cat, priority: 'hoch', status: 'eskaliert', tags: [...t.tags, 'Individuelles Thema'] });
   const html = `
     <div class="handoff-card">
       <div class="handoff-header"><span class="handoff-title">Bewusst an einen Kollegen weitergeleitet</span></div>
       <div class="handoff-text">${entry.handoffText}</div>
-      <span class="esc-ticket" style="display:inline-block;margin-top:10px">${ticket}</span>
+      <span class="esc-ticket" style="display:inline-block;margin-top:10px">#${t.id}</span>
     </div>`;
-  addBotMessage(traceHtml(['Intent erkannt: ' + entry.cat, 'Als individuelles Thema eingestuft', 'An Support weitergeleitet']) + html);
+  addBotMessage(html);
   logAgentAction('handoff', `„${entry.title}" eigenständig als individuelles Thema erkannt und ohne Umweg über eine Fehlantwort direkt weitergeleitet.`);
   lastTopic = entry;
   updateStats();
@@ -1212,6 +2306,12 @@ function renderAgentLog() {
       <div><div class="agent-log-text">${e.text}</div><div class="agent-log-time">${e.time}</div></div>
     </div>`).join('');
   badge.textContent = agentLog.length;
+}
+
+// ─── AUDIT-LOG (Backoffice-weite Aktivität, nicht nur der KI-Agent) ───
+function logAudit(actor, action, category = 'System') {
+  auditLog.unshift({ actor, action, category, time: new Date() });
+  renderBoSectionIfActive('audit');
 }
 
 function registerGap(topic, isHandoff = false) {
@@ -1271,6 +2371,7 @@ function requestClosingFeedback() {
 function closingResolved(btn) {
   btn.closest('.closing-card').innerHTML = '<div class="closing-text">Danke für die Rückmeldung – schön, dass ich helfen konnte.</div>';
   stats.positive++;
+  if (liveTicket) updateLiveTicket({ status: 'geschlossen', csat: 5 });
   updateStats();
 }
 
