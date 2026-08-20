@@ -81,6 +81,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .chat-top-info{display:flex;align-items:center;gap:10px}
 .ai-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--dark-bg),var(--dark2));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--green);letter-spacing:.5px;border:2px solid var(--green)}
 .ai-name{font-size:14px;font-weight:700;color:var(--heading)}
+.live-call-status{font-size:11px;font-weight:600;color:var(--green-dark);margin-top:1px;min-height:14px}
 .chat-actions{display:flex;gap:8px}
 .action-btn{padding:7px 14px;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;transition:var(--spring);border:none}
 .action-btn-ghost{background:rgba(255,255,255,.6);border:1px solid var(--gray-light);color:var(--dark)}
@@ -137,14 +138,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .learning-note svg{width:12px;height:12px;flex-shrink:0}
 .multi-intent-divider{height:1px;background:var(--gray-light);margin:12px 0}
 .multi-intent-label{font-size:10.5px;font-weight:700;color:var(--gray);letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
-
-/* Closing / end-of-interaction feedback */
-.closing-card{background:rgba(255,255,255,.9);border:1.5px solid var(--gray-light);border-radius:12px;padding:14px 16px;margin-top:4px}
-.closing-text{font-size:12.5px;color:var(--dark);margin-bottom:10px}
-.closing-actions{display:flex;gap:8px}
-.closing-btn{flex:1;padding:8px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--gray-light);background:#fff;color:var(--dark);transition:var(--spring)}
-.closing-btn:hover{transform:translateY(-1px);border-color:var(--green)}
-.closing-btn.primary{background:linear-gradient(135deg,var(--green),var(--green-dark));border-color:transparent;color:#fff}
 
 /* Eskalationseinstellungen (Backoffice) */
 .modal-label{font-size:12px;font-weight:700;color:var(--dark);margin-bottom:8px;display:block}
@@ -442,10 +435,9 @@ html[data-theme="dark"] .stat-card,html[data-theme="dark"] .bo-kpi,html[data-the
 html[data-theme="dark"] .msg.bot .msg-bubble,html[data-theme="dark"] .typing-bubble{background:var(--surface);border-color:var(--surface-border)}
 html[data-theme="dark"] .action-btn-ghost{background:var(--surface);border-color:var(--surface-border)}
 html[data-theme="dark"] .chat-top,html[data-theme="dark"] .chat-input-area{background:var(--surface);border-color:var(--surface-border)}
-html[data-theme="dark"] .attach-btn,html[data-theme="dark"] .input-field textarea,html[data-theme="dark"] .closing-card{background:var(--surface-solid);border-color:var(--gray-light)}
+html[data-theme="dark"] .attach-btn,html[data-theme="dark"] .input-field textarea{background:var(--surface-solid);border-color:var(--gray-light)}
 html[data-theme="dark"] .roadmap-col{background:var(--surface);border-color:var(--gray-light)}
 html[data-theme="dark"] .search-wrap input,
-html[data-theme="dark"] .closing-btn,
 html[data-theme="dark"] .bo-toolbar input[type=text],
 html[data-theme="dark"] .bo-toolbar input[type=search],
 html[data-theme="dark"] .bo-toolbar select,
@@ -513,6 +505,7 @@ html[data-theme="dark"] .quick-q:hover{color:var(--heading)}
           <div class="ai-avatar">OK</div>
           <div>
             <div class="ai-name">OrKan-Assistent</div>
+            <div class="live-call-status" id="liveCallStatus"></div>
           </div>
         </div>
         <div class="chat-actions">
@@ -522,9 +515,7 @@ html[data-theme="dark"] .quick-q:hover{color:var(--heading)}
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
           </div>
-          <button class="action-btn action-btn-green" id="voiceModeBtn" onclick="toggleVoiceMode()" title="Sprachmodus: Assistent spricht Antworten laut vor (Voice-Kanal)">Sprachmodus</button>
-          <button class="action-btn action-btn-green" onclick="requestClosingFeedback()" title="Anliegen als gelöst oder ungelöst markieren">Anliegen abschließen</button>
-          <button class="action-btn action-btn-green" onclick="clearChat()">Chat leeren</button>
+          <button class="action-btn action-btn-green" id="voiceModeBtn" onclick="toggleLiveCall()" title="Live-Gespräch: frei sprechen, der Assistent antwortet direkt per Sprachausgabe">Live-Gespräch</button>
         </div>
       </div>
       <div class="lang-menu" id="langMenu"></div>
@@ -936,7 +927,8 @@ const KB = [
       <li><strong>Kopieren</strong>: übernimmt einen bestehenden, ähnlichen Artikel komplett inkl. Bild und Lager MIN/MAX – nur abweichende Felder müssen angepasst werden</li>
       <li><strong>Geteilter Artikel-Pool</strong> (historisch): war früher kundenübergreifend durchsuchbar, ist aktuell wegen unzureichender Datenqualität deaktiviert</li>
     </ul>
-    <p>Tipp: Mit der Option <strong>„Eingabe beibehalten"</strong> übernimmt das Formular nach dem Speichern alle Felder außer Artikelnummer und Lieferant in ein neues, leeres Formular – ideal, um z. B. mehrere Abmessungen derselben Schraube schnell hintereinander anzulegen.</p>`,
+    <p>Tipp: Mit der Option <strong>„Eingabe beibehalten"</strong> übernimmt das Formular nach dem Speichern alle Felder außer Artikelnummer und Lieferant in ein neues, leeres Formular – ideal, um z. B. mehrere Abmessungen derselben Schraube schnell hintereinander anzulegen.</p>
+    <p>Praxisbeispiel: Aus einer bereits angelegten Mutter M12 lässt sich per „Kopieren" + „Eingabe beibehalten" in kurzer Zeit erst eine M14, dann eine M16 erzeugen – jeweils inklusive Bild und Lagerort, ohne alle Felder erneut auszufüllen.</p>`,
     titleEN: 'Four ways to create an article',
     answerEN: `<h4>Manually, via import, by copying – or from the pool</h4>
     <ul>
@@ -945,7 +937,8 @@ const KB = [
       <li><strong>Copy</strong>: takes over an existing similar article completely, including image and stock MIN/MAX – only the differing fields need to be adjusted</li>
       <li><strong>Shared article pool</strong> (historical): used to be searchable across customers, currently deactivated due to insufficient data quality</li>
     </ul>
-    <p>Tip: the <strong>"Keep input"</strong> option carries over all fields except article number and supplier into a new, empty form after saving – ideal for quickly creating several sizes of the same screw in a row.</p>` },
+    <p>Tip: the <strong>"Keep input"</strong> option carries over all fields except article number and supplier into a new, empty form after saving – ideal for quickly creating several sizes of the same screw in a row.</p>
+    <p>Practical example: starting from an already-created M12 nut, "Copy" plus "Keep input" quickly produces an M14 and then an M16 – each including image and storage location, without re-entering every field.</p>` },
   { id: 'art5', cat: 'Artikel & Lagerplätze', keywords: ['interne artikelnummer','nummernkreis','artikelnummer automatisch','artikelnummer vergeben','artikelnummer frei wählen'],
     title: 'Interne Artikelnummer und Nummernkreis',
     answer: `<h4>Wie die interne Artikelnummer vergeben wird</h4>
@@ -1480,6 +1473,46 @@ const KB = [
     handoffText: 'Zu Quellcode, Systemarchitektur oder internen Schnittstellen gebe ich hier bewusst keine Details weiter. Ein Kollege aus der technischen Betreuung meldet sich bei Ihnen und klärt, welche Informationen für Ihr Anliegen tatsächlich notwendig sind.',
     titleEN: 'Technical internals',
     handoffTextEN: 'I deliberately don\'t share details on source code, system architecture or internal interfaces here. A colleague from technical support will contact you to clarify what information is actually needed for your request.' },
+  { id: 'gen4', cat: 'Allgemein', keywords: ['startseite individualisieren','kacheln umbenennen','kacheln farbe','startseite anpassen','shortcuts ändern','startbildschirm konfigurieren'],
+    title: 'Startseite individuell anpassen',
+    answer: `<h4>Die Startseite ist vollständig konfigurierbar</h4>
+    <ul>
+      <li>Über die Bearbeitungsfunktion lassen sich Hauptmenüfelder (Kacheln) <strong>hinzufügen oder entfernen</strong></li>
+      <li>Kacheln lassen sich <strong>farblich frei markieren</strong>, um wichtige Bereiche hervorzuheben</li>
+      <li>Die Textbezeichnung jeder Kachel ist <strong>frei editierbar</strong> – z. B. lässt sich „Artikel" in „Lagerartikel" umbenennen, falls ein anderer Begriff besser zu Ihrem Betrieb passt</li>
+      <li>Der Zugriff auf alle Menübereiche funktioniert alternativ jederzeit über das Sandwich-Menü (drei Striche) oben links</li>
+    </ul>
+    <p>Standardmäßig werden vier Schnellzugriffe angeboten: Artikel, Lieferanten, Bestellvorschläge erstellen und Einstellungen – diese Auswahl lässt sich jedoch vollständig anpassen.</p>`,
+    titleEN: 'Customizing the home screen',
+    answerEN: `<h4>The home screen is fully configurable</h4>
+    <ul>
+      <li>Use the edit function to <strong>add or remove</strong> main menu tiles</li>
+      <li>Tiles can be <strong>freely color-coded</strong> to highlight important areas</li>
+      <li>Each tile's label is <strong>freely editable</strong> – e.g. "Articles" can be renamed to "Warehouse items" if a different term fits your business better</li>
+      <li>All menu areas remain reachable at any time via the sandwich menu (three lines) top left</li>
+    </ul>
+    <p>By default four shortcuts are offered: articles, suppliers, create order proposal, and settings – but this selection can be fully customized.</p>` },
+  { id: 'gen5', cat: 'Allgemein', keywords: ['lohnt sich lageroptimierung','wirtschaftlichkeit','was bringt mir das','nutzen lageroptimierung','roi lageroptimierung','rechnet sich das'],
+    title: 'Wirtschaftlichkeit der Lageroptimierung',
+    answer: `<h4>Was strukturierte Lagerorganisation wirtschaftlich bringt</h4>
+    <p>Ein Monteur kostet denselben Lohn, ob er Material sucht oder produktiv arbeitet. Jede eingesparte Suchzeit erhöht den Umsatz, ohne zusätzliche Personalkosten – und ein produktiverer Monteur verbaut zugleich mehr Material.</p>
+    <ul>
+      <li>Durchschnittlicher Pro-Kopf-Umsatz im SHK-Handwerk: ca. <strong>155.000 €</strong></li>
+      <li>Typische EBIT-Marge je nach Betriebsgröße: <strong>3–9 %</strong></li>
+      <li>Durchschnittliche Produktivitätssteigerung durch Lageroptimierung: <strong>ca. 10 %</strong></li>
+      <li>Der Return on Investment liegt in der Praxis häufig <strong>unter 6 Monaten</strong></li>
+    </ul>
+    <p>Die konkrete Ersparnis hängt stark von Ihrer Betriebsgröße und Ausgangslage ab – dafür rechnen wir gerne gemeinsam mit Ihnen in einem persönlichen Gespräch Ihren individuellen Hebel durch.</p>`,
+    titleEN: 'The business case for warehouse optimization',
+    answerEN: `<h4>What structured warehouse organization delivers economically</h4>
+    <p>A technician costs the same wage whether they're searching for material or working productively. Every minute of search time saved increases revenue without added personnel cost – and a more productive technician also installs more material.</p>
+    <ul>
+      <li>Average revenue per employee in the HVAC/plumbing trade: approx. <strong>€155,000</strong></li>
+      <li>Typical EBIT margin depending on company size: <strong>3–9%</strong></li>
+      <li>Average productivity gain from warehouse optimization: <strong>approx. 10%</strong></li>
+      <li>Return on investment is often achieved <strong>within 6 months</strong> in practice</li>
+    </ul>
+    <p>The exact savings depend heavily on your company's size and starting point – we're happy to work out your specific numbers together in a personal conversation.</p>` },
 
   // Individuelle Prozesse – bewusst an Mitarbeitende weitergeleitet
   { id: 'spec1', cat: 'Individuelle Prozesse', keywords: ['mehrere lager','mehrere lagerorte','zweites lager','weiteres lager','mehrere standorte','lagerort verschieben zwischen lagern'],
@@ -1497,9 +1530,9 @@ const KB = [
   { id: 'spec3', cat: 'Individuelle Prozesse', keywords: ['lagerplanung','lager planen','lagerlayout','lagerplätze planen','wie funktioniert lagerplanung','lager einrichten'],
     title: 'Lagerplanung',
     handoff: true,
-    handoffText: 'Wie eine Lagerplanung im Detail abläuft, hängt sehr stark von Ihrem Betrieb ab – von der Anzahl und Größe der Lagerplätze über die Sortierlogik bis zu den Wegen Ihrer Mitarbeitenden. Deshalb lässt sich das nicht pauschal beantworten. Das klären wir am besten gemeinsam in einem persönlichen Gespräch, in dem wir uns Ihr Lager konkret ansehen.',
+    handoffText: 'Wie eine Lagerplanung im Detail abläuft, hängt sehr stark von Ihrem Betrieb ab – von der Anzahl und Größe der Lagerplätze über die Sortierlogik bis zu den Wegen Ihrer Mitarbeitenden. Grob orientieren wir uns an fünf Bausteinen: Ist-Aufnahme, Standards/Artikel, Layout/Lagerplätze, Umsetzung und Verstetigung. Wie genau das bei Ihnen aussieht, lässt sich aber nicht pauschal beantworten. Das klären wir am besten gemeinsam in einem persönlichen Gespräch, in dem wir uns Ihr Lager konkret ansehen.',
     titleEN: 'Warehouse layout planning',
-    handoffTextEN: 'How a warehouse layout is planned in detail depends heavily on your business – on the number and size of storage locations, the sorting logic, and the routes your staff take. That can\'t be answered in general terms. It\'s best clarified together in a personal conversation where we look at your warehouse specifically.' },
+    handoffTextEN: 'How a warehouse layout is planned in detail depends heavily on your business – on the number and size of storage locations, the sorting logic, and the routes your staff take. As a rough guide, we work through five building blocks: current-state assessment, standards/articles, layout/storage locations, implementation, and stabilization. But how that looks specifically for you can\'t be answered in general terms. It\'s best clarified together in a personal conversation where we look at your warehouse specifically.' },
   { id: 'spec4', cat: 'Individuelle Prozesse', keywords: ['bestellrhythmus','nur alle zwei wochen bestellen','bestellintervall festlegen','sammelbestellung rhythmus','festen bestelltag einrichten'],
     title: 'Festen Bestellrhythmus einrichten',
     handoff: true,
@@ -1523,7 +1556,7 @@ const CATEGORIES = [
   { name: 'Gebrauchsgut', icon: '', ids: ['geb1','geb2','geb3','geb4','geb5'] },
   { name: 'Projekte & Baustellen', icon: '', ids: ['proj1','proj2','proj3'] },
   { name: 'Benutzer & Module', icon: '', ids: ['usr1','usr2','usr3'] },
-  { name: 'Allgemein', icon: '', ids: ['gen1','gen2','gen3'] },
+  { name: 'Allgemein', icon: '', ids: ['gen1','gen2','gen3','gen4','gen5'] },
   { name: 'Individuelle Prozesse', icon: '', ids: ['spec1','spec2','spec3','spec4','spec5'] },
 ];
 
@@ -2653,7 +2686,12 @@ function addBotMessage(html, withFeedback = true) {
   wrap.appendChild(div);
   wrap.scrollTop = wrap.scrollHeight;
   if (liveTicket) ticketLog('bot', html);
-  if (voiceModeActive) speakText(stripHtml(html));
+  if (voiceModeActive) {
+    if (liveCallActive) setLiveCallStatus('Live-Gespräch aktiv – spricht Antwort …');
+    speakText(stripHtml(html), () => {
+      if (liveCallActive) startLiveListening();
+    });
+  }
 }
 
 function addUserMessage(text, imageDataUrl) {
@@ -2951,37 +2989,99 @@ async function handleImageQuery(caption, image) {
   updateStats();
 }
 
-// ─── SPRACHMODUS: echte Sprachausgabe (Web Speech Synthesis API) ───
-// Im Browser lauffähiger Voice-Kanal (Mikrofon-Eingabe + gesprochene Antwort). Für eine
-// echte Telefonannahme (PSTN) wäre zusätzlich ein Telefonie-Provider und ein Server
+// ─── LIVE-GESPRÄCH: durchgehende Sprachkonversation (Zuhören → Antwort → Vorlesen → erneut zuhören) ───
+// Im Browser lauffähiger Voice-Kanal auf Basis der Web Speech API (Erkennung + Sprachausgabe).
+// Für eine echte Telefonannahme (PSTN) wäre zusätzlich ein Telefonie-Provider und ein Server
 // nötig – das ist in einem statischen Prototyp ohne Backend nicht realisierbar
 // (siehe Hinweis bei der Integration „Telefonie / IVR").
 let voiceModeActive = false;
-function toggleVoiceMode() {
-  voiceModeActive = !voiceModeActive;
+let liveCallActive = false;
+let liveCallRecognition = null;
+function toggleLiveCall() {
   const btn = document.getElementById('voiceModeBtn');
-  btn.classList.toggle('voice-active', voiceModeActive);
-  if (voiceModeActive) {
-    if (liveTicket) updateLiveTicket({ channel: 'voice' });
-    else ensureLiveTicketChannel('voice');
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-    toast('Sprachmodus aktiv – Antworten werden vorgelesen.');
-  } else {
+  if (liveCallActive) {
+    liveCallActive = false;
+    voiceModeActive = false;
+    btn.classList.remove('voice-active');
+    stopLiveListening();
     if (window.speechSynthesis) window.speechSynthesis.cancel();
     if (liveTicket) updateLiveTicket({ channel: 'website' });
-    toast('Sprachmodus deaktiviert.');
+    setLiveCallStatus('');
+    toast('Live-Gespräch beendet.');
+    return;
   }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { toast('Live-Gespräch wird von diesem Browser nicht unterstützt.'); return; }
+  liveCallActive = true;
+  voiceModeActive = true;
+  btn.classList.add('voice-active');
+  if (liveTicket) updateLiveTicket({ channel: 'voice' });
+  else ensureLiveTicketChannel('voice');
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  toast('Live-Gespräch gestartet – sprechen Sie jetzt.');
+  startLiveListening();
+}
+function setLiveCallStatus(text) {
+  const el = document.getElementById('liveCallStatus');
+  if (el) el.textContent = text;
+}
+function startLiveListening() {
+  if (!liveCallActive) return;
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return;
+  liveCallRecognition = new SR();
+  liveCallRecognition.lang = currentLanguage === 'EN' ? 'en-US' : 'de-DE';
+  liveCallRecognition.continuous = false;
+  liveCallRecognition.interimResults = false;
+  let finalTranscript = '';
+  liveCallRecognition.onresult = event => {
+    for (let i = 0; i < event.results.length; i++) {
+      if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript;
+    }
+  };
+  liveCallRecognition.onerror = e => {
+    if (e.error === 'not-allowed' || e.error === 'audio-capture') {
+      toast('Mikrofonzugriff wurde nicht erlaubt – Live-Gespräch beendet.');
+      liveCallActive = false;
+      voiceModeActive = false;
+      document.getElementById('voiceModeBtn').classList.remove('voice-active');
+      setLiveCallStatus('');
+    }
+  };
+  liveCallRecognition.onend = () => {
+    liveCallRecognition = null;
+    if (!liveCallActive) return;
+    const text = finalTranscript.trim();
+    if (text) {
+      setLiveCallStatus('Live-Gespräch aktiv – Antwort wird vorbereitet …');
+      const input = document.getElementById('chatInput');
+      input.value = text;
+      sendMessage();
+    } else {
+      startLiveListening(); // Stille erkannt – weiter zuhören, solange das Gespräch aktiv ist
+    }
+  };
+  try {
+    liveCallRecognition.start();
+    setLiveCallStatus('Live-Gespräch aktiv – Hört zu …');
+  } catch (e) {
+    liveCallRecognition = null;
+  }
+}
+function stopLiveListening() {
+  if (liveCallRecognition) { try { liveCallRecognition.stop(); } catch (e) {} liveCallRecognition = null; }
 }
 function ensureLiveTicketChannel(channel) {
   const t = ensureLiveTicket();
   t.channel = channel;
 }
-function speakText(text) {
-  if (!window.speechSynthesis) return;
+function speakText(text, onEnd) {
+  if (!window.speechSynthesis) { if (onEnd) onEnd(); return; }
   window.speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = currentLanguage === 'EN' ? 'en-US' : 'de-DE';
   utter.rate = 1;
+  if (onEnd) utter.onend = onEnd;
   window.speechSynthesis.speak(utter);
 }
 
@@ -3195,30 +3295,6 @@ function feedback(msgId, type, btn) {
   updateStats();
 }
 
-// ─── ABSCHLUSS-FEEDBACK ───
-function requestClosingFeedback() {
-  addBotMessage(`
-    <div class="closing-card">
-      <div class="closing-text">Bevor Sie den Chat verlassen: Konnte ich Ihr Anliegen lösen?</div>
-      <div class="closing-actions">
-        <button class="closing-btn primary" onclick="closingResolved(this)">Ja, gelöst</button>
-        <button class="closing-btn" onclick="closingUnresolved(this)">Nein, noch offen</button>
-      </div>
-    </div>`, false);
-}
-
-function closingResolved(btn) {
-  btn.closest('.closing-card').innerHTML = '<div class="closing-text">Danke für die Rückmeldung – schön, dass ich helfen konnte.</div>';
-  stats.positive++;
-  if (liveTicket) updateLiveTicket({ status: 'geschlossen', csat: 5 });
-  updateStats();
-}
-
-function closingUnresolved(btn) {
-  btn.closest('.closing-card').innerHTML = '<div class="closing-text">Danke für die Rückmeldung. Ich verbinde Sie direkt mit unserem Support-Team.</div>';
-  escalate(lastTopic ? lastTopic.title : 'Offenes Anliegen aus dem Chat');
-}
-
 // ─── EINSTIEGSPUNKT-SIMULATION (Backoffice-Vorschau, K7: Schnittstellenfähigkeit) ───
 function renderContextPresetList() {
   const wrap = document.getElementById('contextPresetList');
@@ -3321,10 +3397,6 @@ function handleKey(e) {
 function autoResize(ta) {
   ta.style.height = 'auto';
   ta.style.height = Math.min(ta.scrollHeight, 120) + 'px';
-}
-
-function clearChat() {
-  if (confirm('Chat-Verlauf löschen?')) addWelcomeMessage();
 }
 
 initApp();
