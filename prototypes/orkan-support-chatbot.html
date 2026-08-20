@@ -76,8 +76,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .quick-chip:hover{background:var(--green);color:#fff}
 
 /* ─── CHAT AREA ─── */
-.chat-area{display:flex;flex-direction:column;overflow:hidden;background:transparent}
-.chat-top{padding:16px 20px 12px;background:rgba(255,255,255,.5);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.4);flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
+.chat-area{position:relative;display:flex;flex-direction:column;overflow:hidden;background:transparent}
+.chat-top{position:relative;z-index:41;padding:16px 20px 12px;background:rgba(255,255,255,.5);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.4);flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
 .chat-top-info{display:flex;align-items:center;gap:10px}
 .ai-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--dark-bg),var(--dark2));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--green);letter-spacing:.5px;border:2px solid var(--green)}
 .ai-name{font-size:14px;font-weight:700;color:var(--heading)}
@@ -92,6 +92,25 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .messages-wrap{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
 .messages-wrap::-webkit-scrollbar{width:4px}
 .messages-wrap::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:2px}
+
+/* ─── LIVE-GESPRÄCH OVERLAY / ORB ─── */
+.live-call-overlay{position:absolute;inset:0;z-index:40;display:none;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:radial-gradient(circle at 50% 40%,rgba(140,169,79,.14),transparent 70%),var(--surface-solid)}
+.live-call-overlay.active{display:flex}
+.live-orb-wrap{width:180px;height:180px;display:flex;align-items:center;justify-content:center}
+.live-orb{position:relative;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--green-light) 0%,var(--green) 55%,var(--green-dark) 100%);box-shadow:0 0 0 0 rgba(140,169,79,.5);transition:transform .09s ease-out;transform:scale(1);animation:liveOrbBreathe 2.6s ease-in-out infinite}
+.live-orb::after{content:'';position:absolute;inset:-14px;border-radius:50%;border:2px solid var(--green);opacity:.55;animation:liveOrbRing 1.8s ease-out infinite}
+.live-orb-core{position:absolute;inset:18%;border-radius:50%;background:rgba(255,255,255,.35);filter:blur(2px)}
+.live-orb.speaking{animation:liveOrbSpeak 1s ease-in-out infinite}
+.live-orb.speaking::after{animation:liveOrbRing 1.1s ease-out infinite}
+@keyframes liveOrbBreathe{0%,100%{filter:brightness(1)}50%{filter:brightness(1.08)}}
+@keyframes liveOrbSpeak{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes liveOrbRing{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.55);opacity:0}}
+.live-call-overlay-status{font-size:14px;font-weight:700;color:var(--heading);letter-spacing:.2px}
+.live-call-end-btn{padding:9px 20px;border-radius:24px;border:1px solid var(--gray-light);background:rgba(255,255,255,.7);color:var(--dark);font-size:12.5px;font-weight:600;cursor:pointer;transition:var(--transition)}
+.live-call-end-btn:hover{background:var(--surface-solid);transform:translateY(-1px)}
+html[data-theme="dark"] .live-call-overlay{background:radial-gradient(circle at 50% 40%,rgba(140,169,79,.18),transparent 70%),var(--dark-bg)}
+html[data-theme="dark"] .live-call-end-btn{background:rgba(255,255,255,.08);border-color:var(--surface-border);color:var(--dark)}
+html[data-theme="dark"] .live-call-end-btn:hover{background:rgba(255,255,255,.12)}
 
 /* Message bubbles */
 .msg{display:flex;gap:10px;animation:msgIn .3s cubic-bezier(.34,1.2,.64,1)}
@@ -571,6 +590,13 @@ html[data-theme="dark"] .quick-q:hover{color:var(--heading)}
         </div>
       </div>
       <div class="lang-menu" id="langMenu"></div>
+      <div class="live-call-overlay" id="liveCallOverlay">
+        <div class="live-orb-wrap">
+          <div class="live-orb" id="liveOrbCircle"><div class="live-orb-core"></div></div>
+        </div>
+        <div class="live-call-overlay-status" id="liveCallOverlayStatus">Hört zu …</div>
+        <button class="live-call-end-btn" onclick="toggleLiveCall()" title="Live-Gespräch beenden">Gespräch beenden</button>
+      </div>
       <div class="messages-wrap" id="messagesWrap"></div>
       <div class="chat-input-area">
         <div class="image-preview-bar" id="imagePreviewBar"></div>
@@ -2717,8 +2743,8 @@ function renderAnalyticsTabBody(tab) {
     for (let i = 1; i <= 5; i++) starsHtml += `<span class="${i <= filled ? 'star-filled' : 'star-empty'}">★</span>`;
     return `
       <div class="bo-kpi-row">
-        <div class="bo-kpi"><div class="bo-kpi-label">Gesamtfälle</div><div class="bo-kpi-val">${tickets.length}</div></div>
         <div class="bo-kpi"><div class="bo-kpi-label">Ø CSAT</div><div class="bo-kpi-val">${csatAvg}${csatVals.length ? '/5' : ''}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Ø Nachrichten je Fall</div><div class="bo-kpi-val">${tickets.length ? (tickets.reduce((sum, t) => sum + t.messages.length, 0) / tickets.length).toFixed(1) : '–'}</div></div>
         <div class="bo-kpi"><div class="bo-kpi-label">Positive Bewertungen</div><div class="bo-kpi-val green">${stats.positive}</div></div>
         <div class="bo-kpi"><div class="bo-kpi-label">Negative Bewertungen</div><div class="bo-kpi-val red">${stats.negative}</div></div>
       </div>
@@ -2754,9 +2780,9 @@ function renderAnalyticsTabBody(tab) {
     return `
       <div class="bo-kpi-row">
         <div class="bo-kpi"><div class="bo-kpi-label">Fragen beantwortet</div><div class="bo-kpi-val green">${stats.answered}</div></div>
-        <div class="bo-kpi"><div class="bo-kpi-label">Short-Head-Abdeckung</div><div class="bo-kpi-val green">92%</div><div class="bo-kpi-note">Wiederkehrende Themen, die die Wissensbasis abdeckt</div></div>
-        <div class="bo-kpi"><div class="bo-kpi-label">Wissenseinträge</div><div class="bo-kpi-val">${KB.length}</div></div>
         <div class="bo-kpi"><div class="bo-kpi-label">Aktive KI-Funktionen</div><div class="bo-kpi-val">${Object.values(agentConfig).filter(v => v === true).length}/3</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Agent-Aktionen protokolliert</div><div class="bo-kpi-val">${agentLog.length}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Davon per Reasoning abgeleitet</div><div class="bo-kpi-val">${agentLog.filter(e => e.kind === 'reasoning').length}</div><div class="bo-kpi-note">Antworten ohne direkten Stichwort-Treffer</div></div>
       </div>
       <div class="bo-grid" style="grid-template-columns:1fr 1fr;max-width:1280px;margin:0 auto">
         <div class="stat-card">
@@ -2827,8 +2853,8 @@ function renderAnalyticsTabBody(tab) {
       <div class="bo-kpi-row">
         <div class="bo-kpi"><div class="bo-kpi-label">Offene Fälle</div><div class="bo-kpi-val">${tickets.filter(t => t.status === 'offen' || t.status === 'in Bearbeitung').length}</div></div>
         <div class="bo-kpi"><div class="bo-kpi-label">Eskaliert</div><div class="bo-kpi-val red">${escalatedTix}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Kritische Fälle</div><div class="bo-kpi-val ${tickets.filter(t => t.priority === 'kritisch').length ? 'red' : 'green'}">${tickets.filter(t => t.priority === 'kritisch').length}</div></div>
         <div class="bo-kpi"><div class="bo-kpi-label">Rückruf-Wünsche</div><div class="bo-kpi-val ${callbackTix.length ? 'red' : 'green'}">${callbackTix.length}</div></div>
-        <div class="bo-kpi"><div class="bo-kpi-label">Ø CSAT</div><div class="bo-kpi-val">${csatAvg}${csatVals.length ? '/5' : ''}</div></div>
       </div>
       <div class="bo-grid" style="grid-template-columns:1fr 1fr;max-width:1280px;margin:0 auto">
         <div class="stat-card">
@@ -3551,6 +3577,7 @@ function toggleLiveCall() {
     voiceModeActive = false;
     btn.classList.remove('voice-active');
     stopLiveListening();
+    stopVoiceVisualizer();
     if (window.speechSynthesis) window.speechSynthesis.cancel();
     if (liveTicket) updateLiveTicket({ channel: 'website' });
     setLiveCallStatus('');
@@ -3567,10 +3594,25 @@ function toggleLiveCall() {
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   toast('Live-Gespräch gestartet – sprechen Sie jetzt.');
   startLiveListening();
+  startVoiceVisualizer();
 }
 function setLiveCallStatus(text) {
   const el = document.getElementById('liveCallStatus');
   if (el) el.textContent = text;
+  const overlay = document.getElementById('liveCallOverlay');
+  const overlayStatus = document.getElementById('liveCallOverlayStatus');
+  const orb = document.getElementById('liveOrbCircle');
+  if (!overlay) return;
+  if (!liveCallActive || !text) {
+    overlay.classList.remove('active');
+    if (orb) { orb.classList.remove('speaking'); orb.style.transform = ''; }
+    return;
+  }
+  overlay.classList.add('active');
+  const speaking = text.includes('spricht');
+  const preparing = text.includes('vorbereitet');
+  if (orb) orb.classList.toggle('speaking', speaking);
+  if (overlayStatus) overlayStatus.textContent = speaking ? 'Spricht Antwort …' : (preparing ? 'Antwort wird vorbereitet …' : 'Hört zu … einfach sprechen');
 }
 function startLiveListening() {
   if (!liveCallActive) return;
@@ -3592,6 +3634,7 @@ function startLiveListening() {
       liveCallActive = false;
       voiceModeActive = false;
       document.getElementById('voiceModeBtn').classList.remove('voice-active');
+      stopVoiceVisualizer();
       setLiveCallStatus('');
     }
   };
@@ -3617,6 +3660,51 @@ function startLiveListening() {
 }
 function stopLiveListening() {
   if (liveCallRecognition) { try { liveCallRecognition.stop(); } catch (e) {} liveCallRecognition = null; }
+}
+// Audio-reaktive Orb-Animation: misst die Mikrofonlautstärke per Web Audio API in Echtzeit
+// und skaliert den Kreis entsprechend, damit sofort sichtbar ist, dass der Assistent zuhört
+// und versteht (analog zu Voice-Modi wie bei ChatGPT). Fällt der Mikrofonzugriff für die
+// Visualisierung aus (z. B. weil nur einmal erlaubt), läuft die Spracherkennung unabhängig weiter.
+let liveVisualizerStream = null;
+let liveAudioCtx = null;
+let liveAnalyser = null;
+let liveVisualizerRAF = null;
+function startVoiceVisualizer() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+    if (!liveCallActive) { stream.getTracks().forEach(t => t.stop()); return; }
+    liveVisualizerStream = stream;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    liveAudioCtx = new AC();
+    const source = liveAudioCtx.createMediaStreamSource(stream);
+    liveAnalyser = liveAudioCtx.createAnalyser();
+    liveAnalyser.fftSize = 256;
+    source.connect(liveAnalyser);
+    const data = new Uint8Array(liveAnalyser.frequencyBinCount);
+    const orb = document.getElementById('liveOrbCircle');
+    const loop = () => {
+      if (!liveCallActive || !liveAnalyser) return;
+      liveAnalyser.getByteTimeDomainData(data);
+      let sumSq = 0;
+      for (let i = 0; i < data.length; i++) { const v = (data[i] - 128) / 128; sumSq += v * v; }
+      const rms = Math.sqrt(sumSq / data.length);
+      if (orb && !orb.classList.contains('speaking')) {
+        const scale = 1 + Math.min(rms * 4.5, 0.55);
+        orb.style.transform = `scale(${scale.toFixed(3)})`;
+      }
+      liveVisualizerRAF = requestAnimationFrame(loop);
+    };
+    loop();
+  }).catch(() => { /* Visualizer-Mikrofonzugriff nicht verfügbar – Spracherkennung läuft unabhängig weiter */ });
+}
+function stopVoiceVisualizer() {
+  if (liveVisualizerRAF) cancelAnimationFrame(liveVisualizerRAF);
+  liveVisualizerRAF = null;
+  liveAnalyser = null;
+  if (liveAudioCtx) { try { liveAudioCtx.close(); } catch (e) {} liveAudioCtx = null; }
+  if (liveVisualizerStream) { liveVisualizerStream.getTracks().forEach(t => t.stop()); liveVisualizerStream = null; }
+  const orb = document.getElementById('liveOrbCircle');
+  if (orb) orb.style.transform = '';
 }
 function ensureLiveTicketChannel(channel) {
   const t = ensureLiveTicket();
