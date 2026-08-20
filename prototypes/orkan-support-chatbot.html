@@ -89,6 +89,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .action-btn-ghost:hover{background:#fff;transform:translateY(-1px)}
 .action-btn-green{background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff}
 .action-btn-green:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(142,167,82,.35)}
+.action-btn-ghost.voice-active{background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;border-color:transparent}
 .messages-wrap{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
 .messages-wrap::-webkit-scrollbar{width:4px}
 .messages-wrap::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:2px}
@@ -375,6 +376,11 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .bo-transcript-msg{font-size:12px;line-height:1.5;padding:8px 10px;border-radius:8px;max-width:88%}
 .bo-transcript-msg.customer{background:var(--dark-bg);color:#fff;align-self:flex-end}
 .bo-transcript-msg.bot{background:var(--green-light);color:var(--dark);align-self:flex-start}
+.bo-transcript-msg.agent{background:var(--green-dark);color:#fff;align-self:flex-end}
+.bo-transcript-msg .role-label{display:block;font-size:9.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;opacity:.65;margin-bottom:2px}
+.bo-macro-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.bo-reply-textarea{width:100%;min-height:80px;padding:10px 12px;border:1.5px solid var(--gray-light);border-radius:9px;font-size:12.5px;font-family:'Inter',sans-serif;outline:none;resize:vertical;background:#fff}
+.bo-reply-textarea:focus{border-color:var(--green)}
 .bo-copilot-box{background:linear-gradient(135deg,rgba(142,167,82,.1),rgba(142,167,82,.03));border:1.5px solid rgba(142,167,82,.25);border-radius:10px;padding:12px}
 .bo-copilot-label{font-size:10.5px;font-weight:700;color:var(--green-dark);letter-spacing:.3px;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:5px}
 .bo-copilot-text{font-size:12.5px;color:var(--dark);line-height:1.55}
@@ -516,6 +522,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
           </div>
+          <button class="action-btn action-btn-ghost" id="voiceModeBtn" onclick="toggleVoiceMode()" title="Sprachmodus: Assistent spricht Antworten laut vor (Voice-Kanal)">Sprachmodus</button>
           <button class="action-btn action-btn-ghost" onclick="requestClosingFeedback()" title="Anliegen als gelöst oder ungelöst markieren">Anliegen abschließen</button>
           <button class="action-btn action-btn-ghost" onclick="clearChat()">Chat leeren</button>
           <button class="action-btn action-btn-green" onclick="exportChat()">Export</button>
@@ -846,6 +853,7 @@ function ensureLiveTicket() {
     };
     tickets.unshift(liveTicket);
     logAudit('KI-Agent', `Neuer Fall ${liveTicket.id} aus Live-Chat angelegt.`);
+    runWorkflows(liveTicket, 'created');
   }
   return liveTicket;
 }
@@ -868,7 +876,16 @@ function priorityForText(text) {
 function updateLiveTicket(fields) {
   const t = ensureLiveTicket();
   Object.assign(t, fields, { updatedAt: new Date() });
+  applyWorkflowsForChange(t, fields);
   renderBoSectionIfActive('chats');
+}
+function applyWorkflowsForChange(t, fields) {
+  if (fields.priority === 'kritisch') runWorkflows(t, 'priority-kritisch');
+  if (fields.category) {
+    runWorkflows(t, 'category-changed');
+    if (fields.category === 'Individuelle Prozesse') runWorkflows(t, 'category-individuell');
+  }
+  if (fields.status === 'geschlossen') runWorkflows(t, 'status-geschlossen');
 }
 
 const CONTEXT_PRESETS = [
@@ -894,7 +911,18 @@ const KB = [
       <li>Lieferant, Lieferanten-Artikelnummer, EK-Preis, Menge und VPE optional ergänzen</li>
       <li>Artikelbild per Drag & Drop unter „Dokumente" hinzufügen</li>
     </ul>
-    <p>Über „Kopieren" lassen sich ähnliche Artikel schnell ohne erneute Eingabe anlegen.</p>` },
+    <p>Über „Kopieren" lassen sich ähnliche Artikel schnell ohne erneute Eingabe anlegen.</p>`,
+    titleEN: 'Creating an article',
+    answerEN: `<h4>Create a new article</h4>
+    <p>Go to <strong>Warehouse management → Articles → Create</strong>.</p>
+    <ul>
+      <li>Required fields: <code>article group</code>, <code>internal article number</code>, <code>description 1–3</code></li>
+      <li>Define <strong>warehouse and building</strong> as well as <strong>storage location</strong> to specify where the article is physically stored</li>
+      <li>Set <strong>stock MIN</strong> (safety stock) and <strong>stock MAX</strong> (maximum stock)</li>
+      <li>Optionally add supplier, supplier article number, purchase price, quantity and unit pack size</li>
+      <li>Add an article image via drag & drop under "Documents"</li>
+    </ul>
+    <p>Use "Copy" to quickly create similar articles without re-entering all data.</p>` },
   { id: 'art2', cat: 'Artikel & Lagerplätze', keywords: ['lager min','lager max','mindestbestand','maximalbestand','bestellmenge berechnen'],
     title: 'Lager MIN und Lager MAX richtig setzen',
     answer: `<h4>Lager MIN / Lager MAX</h4>
@@ -903,7 +931,15 @@ const KB = [
       <li><strong>Lager MAX</strong>: gewünschter Höchstbestand am Lagerplatz</li>
       <li>Die vorgeschlagene Bestellmenge ergibt sich automatisch aus <strong>MAX minus MIN</strong></li>
     </ul>
-    <p>Beispiel: Bei Schraubenpäckchen mit MIN = 2 und MAX = 6 schlägt die OrKan Cloud automatisch <strong>4 Stück</strong> zur Nachbestellung vor.</p>` },
+    <p>Beispiel: Bei Schraubenpäckchen mit MIN = 2 und MAX = 6 schlägt die OrKan Cloud automatisch <strong>4 Stück</strong> zur Nachbestellung vor.</p>`,
+    titleEN: 'Setting stock MIN and stock MAX correctly',
+    answerEN: `<h4>Stock MIN / Stock MAX</h4>
+    <ul>
+      <li><strong>Stock MIN</strong>: safety stock level that triggers a reorder</li>
+      <li><strong>Stock MAX</strong>: desired maximum stock at the storage location</li>
+      <li>The suggested order quantity is calculated automatically as <strong>MAX minus MIN</strong></li>
+    </ul>
+    <p>Example: for a box of screws with MIN = 2 and MAX = 6, OrKan Cloud automatically suggests reordering <strong>4 units</strong>.</p>` },
   { id: 'art3', cat: 'Artikel & Lagerplätze', keywords: ['artikel löschen','artikel kopieren','artikel bearbeiten','artikel suchen'],
     title: 'Artikel bearbeiten, kopieren oder löschen',
     answer: `<h4>Artikel verwalten</h4>
@@ -912,6 +948,14 @@ const KB = [
       <li><strong>Löschen</strong> über das entsprechende Symbol in der Artikelübersicht</li>
       <li><strong>Kopieren</strong> spart Zeit bei ähnlichen Artikeln (z. B. gleicher Bohrer, andere Größe) – Beschreibung und Lieferant bleiben erhalten</li>
       <li>Über die Suchleiste lassen sich Artikel jederzeit schnell wiederfinden</li>
+    </ul>`,
+    titleEN: 'Editing, copying or deleting articles',
+    answerEN: `<h4>Managing articles</h4>
+    <ul>
+      <li>Click an article to <strong>edit</strong> it at any time</li>
+      <li><strong>Delete</strong> via the corresponding icon in the article overview</li>
+      <li><strong>Copy</strong> saves time for similar articles (e.g. same drill, different size) – description and supplier are kept</li>
+      <li>Use the search bar to quickly find articles again</li>
     </ul>` },
 
   // Import & Lieferanten-Anbindung
@@ -924,7 +968,16 @@ const KB = [
       <li>Optionen: „Importieren und aktualisieren", „nur importieren" oder „nur aktualisieren"</li>
       <li>Abgleich über <strong>Lieferanten-Artikelnummer</strong>, <strong>EAN-Nummer</strong> oder <strong>interne Artikelnummer</strong></li>
     </ul>
-    <p>Die Importvorlage enthält Werksnummer, EAN, Bezeichnung 1–3, Lager/Gebäude/Lagerort sowie Min-/Max-Bestände.</p>` },
+    <p>Die Importvorlage enthält Werksnummer, EAN, Bezeichnung 1–3, Lager/Gebäude/Lagerort sowie Min-/Max-Bestände.</p>`,
+    titleEN: 'Importing articles via Excel and ZIP',
+    answerEN: `<h4>Running an article import</h4>
+    <ul>
+      <li>The import consists of an <strong>Excel list</strong> (article data) plus a <strong>ZIP file</strong> (article images)</li>
+      <li>The image name in the Excel column must <strong>exactly</strong> match the file name inside the ZIP folder</li>
+      <li>Options: "import and update", "import only" or "update only"</li>
+      <li>Matching is done via <strong>supplier article number</strong>, <strong>EAN number</strong> or <strong>internal article number</strong></li>
+    </ul>
+    <p>The import template includes manufacturer number, EAN, description 1–3, warehouse/building/storage location as well as min/max stock levels.</p>` },
   { id: 'imp2', cat: 'Import & Lieferanten', keywords: ['zeichensatz','fehler import','encoding','sonderzeichen'],
     title: 'Import-Fehler und Zeichensatz beheben',
     answer: `<h4>Häufige Importprobleme</h4>
@@ -932,6 +985,13 @@ const KB = [
       <li>Bildname und Excel-Eintrag stimmen nicht exakt überein → Zuordnung schlägt fehl</li>
       <li>Doppelte interne Artikelnummern führen zu Abgleich-Konflikten</li>
       <li>Empfehlung: Vor dem Vollimport immer einen <strong>Testimport mit wenigen Zeilen</strong> durchführen</li>
+    </ul>`,
+    titleEN: 'Fixing import errors and encoding issues',
+    answerEN: `<h4>Common import problems</h4>
+    <ul>
+      <li>Image name and Excel entry don't match exactly → matching fails</li>
+      <li>Duplicate internal article numbers cause matching conflicts</li>
+      <li>Recommendation: always run a <strong>test import with a few rows</strong> before the full import</li>
     </ul>` },
   { id: 'lief1', cat: 'Import & Lieferanten', keywords: ['lieferant','shop-url','lieferanten shop','anbindung','lieferant wechseln'],
     title: 'Lieferanten-Shop anbinden',
@@ -942,6 +1002,15 @@ const KB = [
       <li>Pflichtfelder: Lieferantenname, Land, Kundennummer, Benutzer/Passwort</li>
       <li>Die <strong>Shop-URL</strong> ist entscheidend: Darüber greift die OrKan Cloud beim Bestellabschluss direkt auf den Lieferanten-Shop zu</li>
       <li>Gewünschte Liefertermine (z. B. „nur freitags") lassen sich hinterlegen</li>
+    </ul>`,
+    titleEN: 'Connecting a supplier shop',
+    answerEN: `<h4>Connecting a supplier shop</h4>
+    <p>OrKan Cloud is <strong>supplier-independent</strong> – you can change the supplier for any article at any time.</p>
+    <ul>
+      <li>Create a supplier under <strong>Warehouse management → Supplier → Create</strong></li>
+      <li>Required fields: supplier name, country, customer number, username/password</li>
+      <li>The <strong>shop URL</strong> is essential: OrKan Cloud uses it to access the supplier's shop directly when finalizing an order</li>
+      <li>Preferred delivery days (e.g. "Fridays only") can be stored</li>
     </ul>` },
 
   // Zwei-Etiketten-System & Bestellvorschlag
@@ -953,6 +1022,14 @@ const KB = [
       <li><strong>Weißes Etikett</strong>: wird bei Erreichen des Mindestbestands (Lager MIN) gezogen</li>
       <li>Das gezogene weiße Etikett wandert in die <strong>Bestellbox</strong></li>
       <li>Fehlt das weiße Etikett am Regal, ist der Artikel bereits im Bestellprozess</li>
+    </ul>`,
+    titleEN: 'Two-label system (blue/white)',
+    answerEN: `<h4>Blue and white label</h4>
+    <ul>
+      <li><strong>Blue label</strong>: stays fixed on the shelf, uniquely identifies the storage location</li>
+      <li><strong>White label</strong>: pulled once the minimum stock level (stock MIN) is reached</li>
+      <li>The pulled white label goes into the <strong>order box</strong></li>
+      <li>If the white label is missing from the shelf, the article is already in the ordering process</li>
     </ul>` },
   { id: 'etk2', cat: 'Etiketten & Bestellung', keywords: ['bestellvorschlag','bestellung erstellen','scannen','warenkorb','qr code'],
     title: 'Bestellvorschlag erstellen',
@@ -962,6 +1039,14 @@ const KB = [
       <li>Erfasste Artikel landen im <strong>Warenkorb</strong></li>
       <li>Über <strong>„Bestellungen erstellen" → „Senden"</strong> folgt eine Zusammenfassung: Ansprechpartner, Besteller, Liefertermin, Lieferadresse, Lieferant</li>
       <li>Nach „Bestellen" öffnen sich <strong>drei Fenster</strong>: Wareneingang-Bestätigung, Lieferschein und der Lieferanten-Shop zur finalen Bestellauslösung</li>
+    </ul>`,
+    titleEN: 'Creating an order proposal',
+    answerEN: `<h4>From label to order</h4>
+    <ul>
+      <li>Under <strong>Order proposal → Create</strong>, scan labels via QR code or add articles manually</li>
+      <li>Captured articles are added to the <strong>shopping cart</strong></li>
+      <li>Via <strong>"Create orders" → "Send"</strong> a summary follows: contact person, orderer, delivery date, delivery address, supplier</li>
+      <li>After "Order", <strong>three windows</strong> open: goods-receipt confirmation, delivery note, and the supplier's shop to finalize the order</li>
     </ul>` },
   { id: 'etk3', cat: 'Etiketten & Bestellung', keywords: ['etikett drucken','template','artikelkarte','etikettendrucker'],
     title: 'Etiketten-Template gestalten',
@@ -971,6 +1056,14 @@ const KB = [
       <li>Frei wählbar, welche Felder (Artikelnummer, Lagerort, Firmenlogo …) erscheinen</li>
       <li>Mehrere Templates parallel möglich</li>
       <li>Beim Drucken eines Artikels wird das passende Template gewählt → Ausgabe als <strong>PDF</strong> für den Laserdrucker</li>
+    </ul>`,
+    titleEN: 'Designing a label template',
+    answerEN: `<h4>Designing your own labels</h4>
+    <p>Under <strong>Settings → Warehouse management → Article card</strong>, design your label template freely via drag & drop.</p>
+    <ul>
+      <li>Freely choose which fields appear (article number, storage location, company logo, …)</li>
+      <li>Multiple templates can exist in parallel</li>
+      <li>When printing an article, the matching template is selected → output as <strong>PDF</strong> for the laser printer</li>
     </ul>` },
 
   // Wareneingang & Lagerbestand
@@ -982,12 +1075,24 @@ const KB = [
       <li>Gelieferte Artikel abhaken und mit dem <strong>Lieferschein</strong> abgleichen</li>
       <li>Der Lagerbestand wird nach Bestätigung <strong>sofort automatisch aktualisiert</strong></li>
       <li>Über <strong>Scan/Bestelleingang</strong> sehen Sie zusätzlich Bestellnummer und Kommission</li>
+    </ul>`,
+    titleEN: 'Confirming a goods receipt',
+    answerEN: `<h4>Recording a goods receipt</h4>
+    <ul>
+      <li>After completing an order, the goods-receipt window opens automatically with article image and description</li>
+      <li>Check off delivered articles and compare them against the <strong>delivery note</strong></li>
+      <li>Stock levels are <strong>updated immediately and automatically</strong> after confirmation</li>
+      <li>Via <strong>scan/order receipt</strong> you also see the order number and commission</li>
     </ul>` },
   { id: 'we2', cat: 'Wareneingang & Bestand', keywords: ['lagerbestand','warenwert','bestand prüfen','ist-bestand'],
     title: 'Lagerbestand & Warenwert prüfen',
     answer: `<h4>Lagerbestand im Überblick</h4>
     <p>Der Reiter <strong>„Lagerbestand"</strong> zeigt je Artikel den aktuellen Ist-Bestand sowie den Warenwert im Verhältnis zu Lager MIN und Lager MAX.</p>
-    <p>Der Reiter <strong>„Bestellung"</strong> liefert zusätzlich eine Übersicht aller getätigten Bestellungen.</p>` },
+    <p>Der Reiter <strong>„Bestellung"</strong> liefert zusätzlich eine Übersicht aller getätigten Bestellungen.</p>`,
+    titleEN: 'Checking stock levels & inventory value',
+    answerEN: `<h4>Stock levels at a glance</h4>
+    <p>The <strong>"Stock"</strong> tab shows, per article, the current actual stock as well as the inventory value relative to stock MIN and stock MAX.</p>
+    <p>The <strong>"Orders"</strong> tab additionally provides an overview of all orders placed.</p>` },
 
   // Gebrauchsgutverwaltung
   { id: 'geb1', cat: 'Gebrauchsgut', keywords: ['maschine','gebrauchsgut','werkzeug','fahrzeug zuordnen','buchung'],
@@ -998,6 +1103,14 @@ const KB = [
       <li>Über <strong>„Buchung"</strong> eine Maschine einem Standort, Mitarbeiter oder Fahrzeug zuordnen</li>
       <li><strong>„Reservierungen"</strong> für geplante künftige Nutzung anlegen</li>
       <li><strong>„Service und Wartung"</strong>: wiederkehrende Termine wie Jahresservice oder Pressencheck hinterlegen</li>
+    </ul>`,
+    titleEN: 'Equipment management (machines)',
+    answerEN: `<h4>Managing machines and tools</h4>
+    <ul>
+      <li>Shows which employee or vehicle currently has which machine</li>
+      <li>Use <strong>"Booking"</strong> to assign a machine to a location, employee or vehicle</li>
+      <li>Create <strong>"reservations"</strong> for planned future use</li>
+      <li><strong>"Service and maintenance"</strong>: store recurring appointments such as annual service or a hose-press check</li>
     </ul>` },
 
   // Benutzer & Module
@@ -1009,6 +1122,14 @@ const KB = [
       <li>Neue Mitarbeitende anlegen und Rollen zuweisen</li>
       <li>Zusätzlich lassen sich hier Kontakte und die Sprache verwalten</li>
       <li>Rollen können jederzeit geändert werden</li>
+    </ul>`,
+    titleEN: 'Creating users (tenant management)',
+    answerEN: `<h4>Adding users</h4>
+    <p>Under <strong>Settings → Tenant management → Users</strong>:</p>
+    <ul>
+      <li>Create new employees and assign roles</li>
+      <li>Contacts and the interface language can also be managed here</li>
+      <li>Roles can be changed at any time</li>
     </ul>` },
   { id: 'usr2', cat: 'Benutzer & Module', keywords: ['module buchen','modul kündigen','firma','rechnungsadresse','zusatzmodul'],
     title: 'Module buchen und verwalten',
@@ -1018,6 +1139,14 @@ const KB = [
       <li>Kernbereich: <strong>Lagerverwaltung</strong> (Artikel, Lieferant, Bestellvorschlag …)</li>
       <li>Häufig zusätzlich genutzt: <strong>Gebrauchsgutverwaltung</strong> (Maschinen)</li>
       <li>Weitere Module: Bestandsführung, Flaschenverwaltung, App, Schlüsselverwaltung – je nach Bedarf buchbar oder kündbar</li>
+    </ul>`,
+    titleEN: 'Booking and managing modules',
+    answerEN: `<h4>Managing modules</h4>
+    <p>Under <strong>Settings → Company</strong> you find the billing address and all bookable modules.</p>
+    <ul>
+      <li>Core area: <strong>warehouse management</strong> (articles, suppliers, order proposals, …)</li>
+      <li>Frequently used in addition: <strong>equipment management</strong> (machines)</li>
+      <li>Other modules: inventory management, gas-bottle management, app, key management – bookable or cancellable as needed</li>
     </ul>` },
   { id: 'usr3', cat: 'Benutzer & Module', keywords: ['passwort','kennwort','vergessen','reset','login','anmelden','einloggen'],
     title: 'Passwort zurücksetzen',
@@ -1026,6 +1155,13 @@ const KB = [
     <ul>
       <li>E-Mail-Adresse eingeben → Link kommt innerhalb weniger Minuten</li>
       <li>Als Admin: <strong>Einstellungen → Mandantenverwaltung → Benutzer</strong> → Benutzer auswählen → „Passwort zurücksetzen"</li>
+    </ul>`,
+    titleEN: 'Resetting your password',
+    answerEN: `<h4>Password reset</h4>
+    <p>On the login page, click <strong>"Forgot password"</strong>:</p>
+    <ul>
+      <li>Enter your e-mail address → a link arrives within a few minutes</li>
+      <li>As an admin: <strong>Settings → Tenant management → Users</strong> → select user → "Reset password"</li>
     </ul>` },
 
   // Allgemein / Fallback
@@ -1033,7 +1169,11 @@ const KB = [
     title: 'Lizenzmodelle & Preise',
     answer: `<h4>Lizenzoptionen</h4>
     <p>Der Funktionsumfang richtet sich nach den gebuchten Modulen (z. B. Lagerverwaltung, Gebrauchsgutverwaltung, Bestandsführung).</p>
-    <p>Für ein konkretes Angebot wenden Sie sich an <strong>vertrieb@orkan-system.de</strong>.</p>` },
+    <p>Für ein konkretes Angebot wenden Sie sich an <strong>vertrieb@orkan-system.de</strong>.</p>`,
+    titleEN: 'License plans & pricing',
+    answerEN: `<h4>License options</h4>
+    <p>The feature scope depends on the booked modules (e.g. warehouse management, equipment management, inventory management).</p>
+    <p>For a specific quote, please contact <strong>vertrieb@orkan-system.de</strong>.</p>` },
   { id: 'gen2', cat: 'Allgemein', keywords: ['hilfe','handbuch','dokumentation','anleitung','tutorial','schulung','startseite','kalender'],
     title: 'Startseite und Hilfe-Ressourcen',
     answer: `<h4>Startseite & Wissensressourcen</h4>
@@ -1041,21 +1181,34 @@ const KB = [
       <li>Die Startseite zeigt Ihren <strong>Kalender</strong> (Ampelsystem: Rot = Bestellung fällig) sowie vier Shortcuts</li>
       <li>Über die drei Striche oben links gelangen Sie jederzeit zur Hauptnavigation</li>
       <li><strong>Interaktive Lernplattform</strong>: 5 Module, ca. 60 Min. (empfohlen für Einsteiger)</li>
+    </ul>`,
+    titleEN: 'Home screen and help resources',
+    answerEN: `<h4>Home screen & knowledge resources</h4>
+    <ul>
+      <li>The home screen shows your <strong>calendar</strong> (traffic-light system: red = order due) plus four shortcuts</li>
+      <li>The three-line icon top left always takes you to the main navigation</li>
+      <li><strong>Interactive learning platform</strong>: 5 modules, approx. 60 min. (recommended for newcomers)</li>
     </ul>` },
   { id: 'gen3', cat: 'Allgemein', keywords: ['quellcode','source code','api dokumentation','technische architektur','datenbankschema','backend'],
     title: 'Technische Interna',
     handoff: true,
-    handoffText: 'Zu Quellcode, Systemarchitektur oder internen Schnittstellen gebe ich hier bewusst keine Details weiter. Ein Kollege aus der technischen Betreuung meldet sich bei Ihnen und klärt, welche Informationen für Ihr Anliegen tatsächlich notwendig sind.' },
+    handoffText: 'Zu Quellcode, Systemarchitektur oder internen Schnittstellen gebe ich hier bewusst keine Details weiter. Ein Kollege aus der technischen Betreuung meldet sich bei Ihnen und klärt, welche Informationen für Ihr Anliegen tatsächlich notwendig sind.',
+    titleEN: 'Technical internals',
+    handoffTextEN: 'I deliberately don\'t share details on source code, system architecture or internal interfaces here. A colleague from technical support will contact you to clarify what information is actually needed for your request.' },
 
   // Individuelle Prozesse – bewusst an Mitarbeitende weitergeleitet
   { id: 'spec1', cat: 'Individuelle Prozesse', keywords: ['mehrere lager','mehrere lagerorte','zweites lager','weiteres lager','mehrere standorte','lagerort verschieben zwischen lagern'],
     title: 'Mehrere Lagerorte verwalten',
     handoff: true,
-    handoffText: 'Wie mehrere Lagerorte sinnvoll strukturiert werden, hängt stark davon ab, wie Ihr Unternehmen Bestände, Zuständigkeiten und Wege organisiert. Damit die Einrichtung zu Ihrem Betrieb passt, übernimmt das ein Kollege persönlich mit Ihnen gemeinsam.' },
+    handoffText: 'Wie mehrere Lagerorte sinnvoll strukturiert werden, hängt stark davon ab, wie Ihr Unternehmen Bestände, Zuständigkeiten und Wege organisiert. Damit die Einrichtung zu Ihrem Betrieb passt, übernimmt das ein Kollege persönlich mit Ihnen gemeinsam.',
+    titleEN: 'Managing multiple storage locations',
+    handoffTextEN: 'How multiple storage locations should be structured depends heavily on how your company organizes stock, responsibilities and routes. To make sure the setup fits your business, a colleague will handle this together with you personally.' },
   { id: 'spec2', cat: 'Individuelle Prozesse', keywords: ['mehrere lieferanten gleichzeitig','unterschiedliche konditionen lieferant','individuelle lieferantenanbindung','lieferantenspezifische anbindung','mehrere shop-zugänge'],
     title: 'Individuelle Lieferantenanbindung',
     handoff: true,
-    handoffText: 'Die Anbindung mehrerer Lieferanten mit unterschiedlichen Konditionen und Shop-Zugängen ist von Betrieb zu Betrieb verschieden. Ein Kollege aus dem Support richtet das gemeinsam mit Ihnen passend zu Ihrem Einkaufsprozess ein.' },
+    handoffText: 'Die Anbindung mehrerer Lieferanten mit unterschiedlichen Konditionen und Shop-Zugängen ist von Betrieb zu Betrieb verschieden. Ein Kollege aus dem Support richtet das gemeinsam mit Ihnen passend zu Ihrem Einkaufsprozess ein.',
+    titleEN: 'Custom supplier connections',
+    handoffTextEN: 'Connecting multiple suppliers with different terms and shop access varies from business to business. A colleague from support will set this up together with you to match your purchasing process.' },
 ];
 
 // ─── CATEGORIES ───
@@ -1134,7 +1287,7 @@ function statusPill(s) {
   return `<span class="bo-pill pill-${map[s] || 'open'}">${s}</span>`;
 }
 function channelLabel(c) {
-  return { website: 'Website', email: 'E-Mail', whatsapp: 'WhatsApp', formular: 'Formular', api: 'API' }[c] || c;
+  return { website: 'Website', voice: 'Voice (Browser)', email: 'E-Mail', whatsapp: 'WhatsApp', formular: 'Formular', api: 'API' }[c] || c;
 }
 
 // ─── SEED-DATEN ───
@@ -1199,9 +1352,48 @@ const WORKFLOWS = [
   { id: 'wf5', name: 'Wiederkehrende Anfragen automatisch clustern', trigger: '≥ 3 ähnliche offene Fälle', action: 'Vorschlag für neuen FAQ-Eintrag erzeugen', enabled: false },
   { id: 'wf6', name: 'CSAT-Nachfrage nach Fallabschluss', trigger: 'Status = Geschlossen', action: 'Bewertungsanfrage automatisch versenden', enabled: true },
 ];
+const faqSuggestions = [];
+
+// ─── WORKFLOW-ENGINE ───
+// Die Regeln oben sind keine reine Anzeige: jede Zustandsänderung eines Falls läuft
+// hier durch und löst bei aktivierter Regel die beschriebene Aktion wirklich aus.
+function isWfEnabled(id) {
+  const w = WORKFLOWS.find(x => x.id === id);
+  return w ? w.enabled : false;
+}
+function runWorkflows(t, trigger) {
+  if (trigger === 'priority-kritisch' && isWfEnabled('wf1') && !t.tags.includes('Teamleiter eskaliert')) {
+    t.assignedAgent = 'Sarah Weber';
+    t.tags.push('Teamleiter eskaliert', 'Rückruf angefordert');
+    logAudit('Workflow-Engine', `„Kritische Anfragen sofort eskalieren" ausgelöst für ${t.id}: an Teamleiterin Sarah Weber eskaliert, Rückruf angefordert.`, 'Workflows');
+    renderBoSectionIfActive('chats');
+  }
+  if (trigger === 'category-individuell' && isWfEnabled('wf3') && t.assignedAgent !== 'Kundenprozesse-Team') {
+    t.assignedAgent = 'Kundenprozesse-Team';
+    logAudit('Workflow-Engine', `„Individuelle Prozesse an Fachbereich weiterleiten" ausgelöst für ${t.id}: Team Kundenprozesse zugewiesen.`, 'Workflows');
+    renderBoSectionIfActive('chats');
+  }
+  if (trigger === 'created' && isWfEnabled('wf4') && !isWithinBusinessHours() && !t.tags.includes('Nächster Werktag')) {
+    t.tags.push('Nächster Werktag');
+    logAudit('Workflow-Engine', `„Außerhalb der Geschäftszeiten sammeln" ausgelöst für ${t.id}: Fall für den nächsten Werktag vorgemerkt.`, 'Workflows');
+  }
+  if (trigger === 'status-geschlossen' && isWfEnabled('wf6')) {
+    logAudit('Workflow-Engine', `„CSAT-Nachfrage nach Fallabschluss" ausgelöst für ${t.id}: Bewertungsanfrage automatisch an ${t.customer} versendet.`, 'Workflows');
+  }
+  if (trigger === 'category-changed' && isWfEnabled('wf5')) {
+    const similar = tickets.filter(x => x.category === t.category && ['offen', 'in Bearbeitung', 'eskaliert'].includes(x.status));
+    if (similar.length >= 3 && !faqSuggestions.some(s => s.category === t.category)) {
+      faqSuggestions.push({ category: t.category, count: similar.length, created: new Date() });
+      logAudit('Workflow-Engine', `„Wiederkehrende Anfragen automatisch clustern" ausgelöst: ${similar.length} offene Fälle zu „${t.category}" – FAQ-Vorschlag erzeugt.`, 'Workflows');
+      renderBoSectionIfActive('kb');
+    }
+  }
+}
 
 const INTEGRATIONS = [
   { id: 'website', name: 'Website', desc: 'Support-Assistent eingebettet in die OrKan Cloud (orkan-system.de)', connected: true, lastSync: 'Live' },
+  { id: 'voice-browser', name: 'Sprachmodus (Browser)', desc: 'Kunden sprechen ihre Anfrage statt zu tippen; der Assistent antwortet per Sprachausgabe (Web Speech API, läuft direkt im Browser)', connected: true, lastSync: 'Live' },
+  { id: 'telephony', name: 'Telefonie / IVR (PSTN)', desc: 'Echte Anrufannahme über eine Telefonnummer erfordert einen Telefonie-Provider (z. B. Twilio/SIP-Trunk) und einen Server – außerhalb der statischen Prototyp-Architektur', connected: false, lastSync: 'benötigt Backend + Telefonie-Provider', requiresBackend: true },
   { id: 'email', name: 'E-Mail', desc: 'Support-Postfach support@orkan-system.de', connected: false, lastSync: 'vorerst nicht genutzt' },
   { id: 'whatsapp', name: 'WhatsApp Business', desc: 'Anfragen über die WhatsApp Business API', connected: false, lastSync: 'vorerst nicht genutzt' },
   { id: 'formular', name: 'Kontaktformular', desc: 'Formular auf orkan-system.de/kontakt', connected: false, lastSync: 'vorerst nicht genutzt' },
@@ -1372,7 +1564,7 @@ function renderChatsSection() {
         </select>
         <select onchange="chatsState.channel=this.value;renderChatsSection()">
           <option value="">Alle Kanäle</option>
-          ${['website', 'email', 'whatsapp', 'formular', 'api'].map(c => `<option value="${c}" ${chatsState.channel === c ? 'selected' : ''}>${channelLabel(c)}</option>`).join('')}
+          ${['website', 'voice', 'email', 'whatsapp', 'formular', 'api'].map(c => `<option value="${c}" ${chatsState.channel === c ? 'selected' : ''}>${channelLabel(c)}</option>`).join('')}
         </select>
         <select onchange="chatsState.priority=this.value;renderChatsSection()">
           <option value="">Alle Prioritäten</option>
@@ -1420,20 +1612,43 @@ function toggleAllChats(el) {
 function bulkChats(action) {
   const n = chatsState.selected.size;
   const labels = { assign: 'zugewiesen', close: 'geschlossen', tag: 'markiert' };
-  if (action === 'close') tickets.forEach(t => { if (chatsState.selected.has(t.id)) t.status = 'geschlossen'; });
+  if (action === 'close') tickets.forEach(t => { if (chatsState.selected.has(t.id)) { t.status = 'geschlossen'; runWorkflows(t, 'status-geschlossen'); } });
   if (action === 'assign') tickets.forEach(t => { if (chatsState.selected.has(t.id)) t.assignedAgent = 'Sarah Weber'; });
   if (action === 'tag') tickets.forEach(t => { if (chatsState.selected.has(t.id) && !t.tags.includes('Nachverfolgen')) t.tags.push('Nachverfolgen'); });
   logAudit('Sarah Weber', `${n} Fälle als „${labels[action]}" markiert.`, 'Chats');
   chatsState.selected.clear();
   renderChatsSection();
 }
+// Fasst den GESAMTEN Verlauf zusammen (nicht nur die letzte Nachricht) – Anzahl der
+// Wechsel, Erstanliegen, Dauer offen und der aktuelle Stand, für eine schnelle interne
+// Übergabe ohne den kompletten Thread lesen zu müssen.
 function summarizeTicket(t) {
-  const lastCustomer = [...t.messages].reverse().find(m => m.role === 'customer');
-  return `${t.customer} meldet sich über ${channelLabel(t.channel)} zu „${t.category}" (Priorität ${t.priority}). ${lastCustomer ? 'Zuletzt: „' + lastCustomer.text.slice(0, 110) + (lastCustomer.text.length > 110 ? '…' : '') + '"' : ''} Aktueller Status: ${t.status}.`;
+  const customerMsgs = t.messages.filter(m => m.role === 'customer');
+  const botMsgs = t.messages.filter(m => m.role !== 'customer');
+  const first = customerMsgs[0];
+  const last = [...t.messages].reverse().find(m => m.role === 'customer');
+  const ageMs = Date.now() - new Date(t.createdAt).getTime();
+  const ageH = ageMs / 3600000;
+  const ageText = ageH < 1 ? 'unter einer Stunde' : ageH < 24 ? `${Math.round(ageH)} Std.` : `${Math.round(ageH / 24)} Tg.`;
+  const threadInfo = t.messages.length > 2
+    ? `${customerMsgs.length} Kundennachrichten, ${botMsgs.length} Antworten seit Eröffnung vor ${ageText}. `
+    : `Einzelanfrage vor ${ageText}. `;
+  const firstText = first ? `Erstanliegen: „${first.text.slice(0, 90)}${first.text.length > 90 ? '…' : ''}". ` : '';
+  const changeText = (last && first && last !== first) ? `Zuletzt: „${last.text.slice(0, 90)}${last.text.length > 90 ? '…' : ''}". ` : '';
+  const tagsText = t.tags.length ? `Markiert: ${t.tags.join(', ')}. ` : '';
+  return `${t.customer} über ${channelLabel(t.channel)} zu „${t.category}" (Priorität ${t.priority}). ${threadInfo}${firstText}${changeText}${tagsText}Aktueller Status: ${t.status}, zuständig: ${t.assignedAgent}.`;
 }
+const REPLY_MACROS = [
+  { label: 'Rückfrage stellen', text: 'Vielen Dank für Ihre Nachricht. Damit wir Ihr Anliegen zügig bearbeiten können, benötigen wir noch eine kurze Rückmeldung: ' },
+  { label: 'Lösung bestätigen', text: 'Vielen Dank für Ihre Geduld. Wir konnten Ihr Anliegen lösen: ' },
+  { label: 'Eskalation ankündigen', text: 'Ihr Anliegen wurde an unser Fachteam weitergeleitet. Sie erhalten innerhalb von 2 Stunden eine Rückmeldung.' },
+  { label: 'Fall schließen', text: 'Da wir von Ihnen keine weitere Rückmeldung erhalten haben, schließen wir diesen Fall. Bei weiteren Fragen können Sie sich jederzeit erneut melden.' },
+];
 function suggestReply(t) {
   if (t.status === 'gelöst' || t.status === 'geschlossen') return 'Der Fall ist bereits gelöst. Vorschlag: kurze Rückfrage, ob die Lösung dauerhaft funktioniert, danach den Fall schließen.';
-  return `Vorschlag: Auf „${t.category}" eingehen, den passenden Lösungsschritt aus der Wissensbasis referenzieren und offene Rückfragen zur Konfiguration von ${t.customer} klären, bevor der Fall geschlossen wird.`;
+  const kbMatch = KB.find(k => k.cat === t.category && !k.handoff);
+  const kbHint = kbMatch ? ` Passender Wissensbasis-Eintrag: „${kbMatch.title}".` : '';
+  return `Vorschlag: Auf „${t.category}" eingehen, den passenden Lösungsschritt aus der Wissensbasis referenzieren und offene Rückfragen zur Konfiguration von ${t.customer} klären, bevor der Fall geschlossen wird.${kbHint}`;
 }
 function openTicketDetail(id) {
   const t = tickets.find(x => x.id === id);
@@ -1468,22 +1683,68 @@ function openTicketDetail(id) {
         </div>
         <div>
           <div class="bo-detail-section-label">Gesprächsverlauf</div>
-          <div class="bo-transcript">${t.messages.length === 0 ? '<div style="font-size:12px;color:var(--gray)">Noch keine Nachrichten</div>' : t.messages.map(m => `<div class="bo-transcript-msg ${m.role === 'customer' ? 'customer' : 'bot'}">${m.text}</div>`).join('')}</div>
+          <div class="bo-transcript">${t.messages.length === 0 ? '<div style="font-size:12px;color:var(--gray)">Noch keine Nachrichten</div>' : t.messages.map(m => {
+            const cls = m.role === 'customer' ? 'customer' : m.role === 'agent' ? 'agent' : 'bot';
+            const label = m.role === 'customer' ? 'Kunde' : m.role === 'agent' ? 'Mitarbeiter' : 'KI-Agent';
+            return `<div class="bo-transcript-msg ${cls}"><span class="role-label">${label}</span>${m.text}</div>`;
+          }).join('')}</div>
         </div>
         <div>
           <div class="bo-detail-section-label">Copilot – Antwortvorschlag für Mitarbeitende</div>
           <div class="bo-copilot-box">
             <div class="bo-copilot-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>Vorschlag</div>
-            <div class="bo-copilot-text">${suggestReply(t)}</div>
+            <div class="bo-copilot-text" id="copilotSuggestionText">${suggestReply(t)}</div>
             <div class="bo-copilot-actions">
-              <button class="bo-btn primary" onclick="toast('Antwortvorschlag übernommen.')">Übernehmen</button>
-              <button class="bo-btn" onclick="toast('Neuer Vorschlag würde generiert.')">Neu generieren</button>
+              <button class="bo-btn primary" onclick="applyCopilotSuggestion()">Übernehmen</button>
+              <button class="bo-btn" onclick="regenerateCopilotSuggestion('${t.id}')">Neu generieren</button>
             </div>
+          </div>
+        </div>
+        <div>
+          <div class="bo-detail-section-label">Antwort verfassen</div>
+          <div class="bo-macro-row">${REPLY_MACROS.map((m, i) => `<button class="bo-btn" onclick="insertMacro(${i})">${m.label}</button>`).join('')}</div>
+          <textarea id="replyComposer" class="bo-reply-textarea" placeholder="Antwort an ${t.customer}…"></textarea>
+          <div class="bo-copilot-actions">
+            <button class="bo-btn primary" onclick="sendAgentReply('${t.id}')">Antwort senden</button>
           </div>
         </div>
       </div>
     </div>`;
   overlay.classList.add('open');
+}
+function applyCopilotSuggestion() {
+  document.getElementById('replyComposer').value = document.getElementById('copilotSuggestionText').textContent;
+  toast('Vorschlag ins Antwortfeld übernommen.');
+}
+function regenerateCopilotSuggestion(id) {
+  const t = tickets.find(x => x.id === id);
+  if (!t) return;
+  const variants = [
+    suggestReply(t),
+    `Alternative Formulierung: Ihre Anfrage zu „${t.category}" wurde geprüft. ${t.status === 'gelöst' || t.status === 'geschlossen' ? 'Die Lösung ist in der Wissensbasis dokumentiert.' : 'Ein Kollege meldet sich mit den nächsten Schritten bei ' + t.customer + '.'}`
+  ];
+  const current = document.getElementById('copilotSuggestionText').textContent;
+  document.getElementById('copilotSuggestionText').textContent = variants.find(v => v !== current) || variants[0];
+}
+function insertMacro(i) {
+  const ta = document.getElementById('replyComposer');
+  ta.value = (ta.value.trim() ? ta.value.trim() + ' ' : '') + REPLY_MACROS[i].text;
+  ta.focus();
+}
+function sendAgentReply(id) {
+  const ta = document.getElementById('replyComposer');
+  const text = ta.value.trim();
+  if (!text) { toast('Bitte eine Antwort eingeben.'); return; }
+  const t = tickets.find(x => x.id === id);
+  if (!t) return;
+  t.messages.push({ role: 'agent', text, time: new Date() });
+  t.updatedAt = new Date();
+  if (t.status === 'offen') t.status = 'in Bearbeitung';
+  logAudit(t.assignedAgent && t.assignedAgent !== 'Nicht zugewiesen' ? t.assignedAgent : 'Sie', `Antwort an ${t.customer} in Fall ${t.id} gesendet.`, 'Chats');
+  applyWorkflowsForChange(t, { status: t.status });
+  renderChatsSection();
+  openTicketDetail(id);
+  toast('Antwort gesendet.');
 }
 function closeTicketDetail() { document.getElementById('ticketDetailOverlay').classList.remove('open'); }
 function updateTicketField(id, field, value) {
@@ -1491,6 +1752,7 @@ function updateTicketField(id, field, value) {
   if (!t) return;
   t[field] = value; t.updatedAt = new Date();
   logAudit('Sarah Weber', `Fall ${t.id}: ${field} geändert auf „${value}".`, 'Chats');
+  applyWorkflowsForChange(t, { [field]: value });
   renderChatsSection();
 }
 
@@ -1531,6 +1793,12 @@ function renderKbSection() {
       <div class="bo-toolbar"><strong style="font-size:12.5px">Fehlende Wissensinhalte</strong></div>
       <div class="gap-list" style="padding:14px 16px">
         ${knowledgeGaps.size === 0 ? '<div class="gap-empty">Noch keine ungelösten Themen erfasst</div>' : [...knowledgeGaps.entries()].sort((a, b) => b[1] - a[1]).map(([topic, count]) => `<div class="gap-item"><span class="gap-item-text">${topic}</span><span class="gap-item-count">${count}×</span></div>`).join('')}
+      </div>
+    </div>
+    <div class="bo-table-card" style="margin-top:16px">
+      <div class="bo-toolbar"><strong style="font-size:12.5px">FAQ-Vorschläge (Workflow „Wiederkehrende Anfragen automatisch clustern")</strong></div>
+      <div class="gap-list" style="padding:14px 16px">
+        ${faqSuggestions.length === 0 ? '<div class="gap-empty">Noch keine automatisch erkannten Häufungen</div>' : faqSuggestions.map(s => `<div class="gap-item"><span class="gap-item-text">„${s.category}" – ${s.count} offene Fälle mit gleicher Kategorie</span><span class="gap-item-count">${fmtRelative(s.created)}</span></div>`).join('')}
       </div>
     </div>`;
 }
@@ -1770,7 +2038,7 @@ function openNewTicketModal() {
   openBoModal('Neuer Fall', `
     <div class="bo-form-row"><label>Betreff</label><input type="text" id="newTicketSubject" placeholder="Worum geht es?"></div>
     <div class="bo-form-row"><label>Kunde</label><input type="text" id="newTicketCustomer" placeholder="Firma / Ansprechpartner"></div>
-    <div class="bo-form-row"><label>Kanal</label><select id="newTicketChannel">${['website', 'email', 'whatsapp', 'formular', 'api'].map(c => `<option value="${c}">${channelLabel(c)}</option>`).join('')}</select></div>
+    <div class="bo-form-row"><label>Kanal</label><select id="newTicketChannel">${['website', 'voice', 'email', 'whatsapp', 'formular', 'api'].map(c => `<option value="${c}">${channelLabel(c)}</option>`).join('')}</select></div>
     <div class="bo-form-row"><label>Kategorie</label><select id="newTicketCategory">${CATEGORY_POOL.map(c => `<option value="${c}">${c}</option>`).join('')}</select></div>
     <div class="bo-form-row"><label>Priorität</label><select id="newTicketPriority">${['niedrig', 'normal', 'hoch', 'kritisch'].map(p => `<option value="${p}">${p}</option>`).join('')}</select></div>
     <button class="bo-btn primary" style="width:100%" onclick="createTicket()">Fall anlegen</button>`);
@@ -1788,6 +2056,8 @@ function createTicket() {
   };
   tickets.unshift(t);
   logAudit('Sie', `Fall ${t.id} manuell angelegt.`, 'Chats');
+  runWorkflows(t, 'created');
+  applyWorkflowsForChange(t, { priority: t.priority, category: t.category });
   closeBoModal();
   renderChatsSection();
   toast(`Fall ${t.id} angelegt.`);
@@ -1860,13 +2130,17 @@ function renderIntegrationsSection() {
     <div class="bo-page-header"><div><div class="bo-page-title">Integrationen</div><div class="bo-page-sub">Zentrale Verwaltung aller Kommunikationskanäle</div></div></div>
     <div class="bo-int-grid">${INTEGRATIONS.map(i => `
       <div class="bo-int-card">
-        <div class="bo-int-header"><span class="bo-int-name">${i.name}</span><span class="bo-switch ${i.connected ? 'on' : ''}" onclick="toggleIntegration('${i.id}')"></span></div>
+        <div class="bo-int-header"><span class="bo-int-name">${i.name}</span><span class="bo-switch ${i.connected ? 'on' : ''}" style="${i.requiresBackend ? 'opacity:.4;cursor:not-allowed' : ''}" onclick="toggleIntegration('${i.id}')"></span></div>
         <div class="bo-int-desc">${i.desc}</div>
-        <div class="bo-int-status"><span class="freshness-dot" style="background:${i.connected ? '#4ade80' : '#d1d5db'}"></span>${i.connected ? 'Verbunden · ' + i.lastSync : 'Nicht verbunden'}</div>
+        <div class="bo-int-status"><span class="freshness-dot" style="background:${i.connected ? '#4ade80' : i.requiresBackend ? '#f59e0b' : '#d1d5db'}"></span>${i.connected ? 'Verbunden · ' + i.lastSync : i.requiresBackend ? i.lastSync : 'Nicht verbunden'}</div>
       </div>`).join('')}</div>`;
 }
 function toggleIntegration(id) {
   const i = INTEGRATIONS.find(x => x.id === id);
+  if (i.requiresBackend) {
+    toast(`„${i.name}" erfordert in Produktivbetrieb einen echten Telefonie-Provider und einen Server – das lässt sich in diesem statischen Prototyp nicht real verbinden.`);
+    return;
+  }
   i.connected = !i.connected;
   i.lastSync = i.connected ? 'gerade eben' : 'nicht verbunden';
   logAudit('Sie', `Integration „${i.name}" ${i.connected ? 'verbunden' : 'getrennt'}.`, 'Integrationen');
@@ -1913,9 +2187,9 @@ function renderAnalyticsSection() {
       <div class="stat-card">
         <div class="stat-card-header"><div class="stat-card-title">Verteilung nach Kanal</div></div>
         <p style="font-size:11px;color:var(--gray);margin:-6px 0 8px">Website ist aktiv im Einsatz · weitere Kanäle vorerst nicht genutzt</p>
-        <div class="bar-chart">${['website', 'email', 'whatsapp', 'formular', 'api'].map(c => {
+        <div class="bar-chart">${['website', 'voice', 'email', 'whatsapp', 'formular', 'api'].map(c => {
           const pct = Math.round(((channelCounts[c] || 0) / totalTix) * 100);
-          const active = c === 'website';
+          const active = c === 'website' || c === 'voice';
           return `<div class="bar-item"><span class="bar-label" style="${active ? '' : 'color:var(--gray)'}">${channelLabel(c)}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%;${active ? '' : 'background:var(--gray-light)'}"></div></div><span class="bar-val" style="${active ? '' : 'color:var(--gray)'}">${pct}%</span></div>`;
         }).join('')}</div>
       </div>
@@ -2037,6 +2311,44 @@ document.addEventListener('click', e => {
 
 // ─── MEHRSPRACHIGKEIT (Kundenchat) ───
 const LANGUAGES = { DE: 'Deutsch', EN: 'English' };
+
+// Echte Spracherkennung per Stoppwort-/Zeichen-Heuristik (deterministisch, kein Platzhalter):
+// deutsche Umlaute/ß sowie deutsche Funktionswörter vs. englische Funktionswörter werden
+// gegeneinander gewichtet. Ohne klares Signal (z. B. bei reinen Zahlen) wird nicht umgeschaltet.
+const DE_STOPWORDS = new Set(['der','die','das','und','ist','wie','ich','nicht','mit','für','einen','eine','ein','kann','wo','warum','bitte','sie','wir','haben','wird','einem','einer','auf','von','zu','im','am','sind','habe','mein','meine','ihr','ihre','was','wann','bei']);
+const EN_STOPWORDS = new Set(['the','is','are','how','what','where','why','please','can','my','your','with','not','have','has','does','do','you','we','it','this','that','when','who','will','would','could','a','an','of','to','for','in','on','i']);
+function detectLanguage(text) {
+  const t = (text || '').toLowerCase();
+  if (t.trim().length < 3) return null;
+  let deScore = (t.match(/[äöüß]/g) || []).length * 3;
+  let enScore = 0;
+  const words = t.split(/[^a-zäöüß]+/).filter(Boolean);
+  words.forEach(w => {
+    if (DE_STOPWORDS.has(w)) deScore++;
+    if (EN_STOPWORDS.has(w)) enScore++;
+  });
+  if (deScore === 0 && enScore === 0) return null;
+  return deScore >= enScore ? 'DE' : 'EN';
+}
+function localizedAnswer(entry) {
+  if (currentLanguage === 'EN') {
+    if (entry.answerEN) return entry.answerEN;
+    return entry.answer + '<p style="margin-top:6px;color:var(--gray);font-size:12px">This knowledge entry has not been translated yet; a colleague will follow up with you in English.</p>';
+  }
+  return entry.answer;
+}
+function localizedHandoffText(entry) {
+  return (currentLanguage === 'EN' && entry.handoffTextEN) ? entry.handoffTextEN : entry.handoffText;
+}
+// Automatischer, stiller Sprachwechsel (ausgelöst durch Spracherkennung) – im Unterschied zu
+// selectLanguage() (manuelle Auswahl über das Menü) ohne Bestätigungsnachricht im Chat.
+function setLanguageAuto(code) {
+  if (code === currentLanguage) return;
+  currentLanguage = code;
+  const label = document.getElementById('langLabel');
+  if (label) label.textContent = code;
+  if (liveTicket) liveTicket.language = code;
+}
 function toggleLangMenu() {
   const menu = document.getElementById('langMenu');
   if (!menu.classList.contains('open')) {
@@ -2126,6 +2438,7 @@ function addBotMessage(html, withFeedback = true) {
   wrap.appendChild(div);
   wrap.scrollTop = wrap.scrollHeight;
   if (liveTicket) ticketLog('bot', html);
+  if (voiceModeActive) speakText(stripHtml(html));
 }
 
 function addUserMessage(text, imageDataUrl) {
@@ -2248,7 +2561,7 @@ function askQuestion(id) {
   setTimeout(() => {
     removeTyping();
     if (entry.handoff) { handoff(entry); return; }
-    addBotMessage(entry.answer);
+    addBotMessage(localizedAnswer(entry));
     logAnswer(entry, false);
     lastTopic = entry;
     stats.answered++;
@@ -2266,6 +2579,8 @@ function sendMessage() {
   input.style.height = 'auto';
   addUserMessage(text, image ? image.dataUrl : null);
   clearPendingImage();
+  const detectedLang = detectLanguage(text);
+  if (detectedLang) setLanguageAuto(detectedLang);
   showTyping();
   setTimeout(() => {
     removeTyping();
@@ -2282,9 +2597,9 @@ function sendMessage() {
         if (i > 0) html += `<div class="multi-intent-divider"></div>`;
         html += `<div class="multi-intent-label">Anliegen ${i + 1} von ${result.entries.length}</div>`;
         if (entry.handoff) {
-          html += `<div class="handoff-card"><div class="handoff-header"><span class="handoff-title">Bewusst an einen Kollegen weitergeleitet</span></div><div class="handoff-text">${entry.handoffText}</div></div>`;
+          html += `<div class="handoff-card"><div class="handoff-header"><span class="handoff-title">${currentLanguage === 'EN' ? 'Deliberately routed to a colleague' : 'Bewusst an einen Kollegen weitergeleitet'}</span></div><div class="handoff-text">${localizedHandoffText(entry)}</div></div>`;
         } else {
-          html += entry.answer;
+          html += localizedAnswer(entry);
         }
       });
       addBotMessage(html);
@@ -2302,7 +2617,7 @@ function sendMessage() {
     if (result.entry.handoff) { handoff(result.entry); return; }
     const contextNote = result.contextUsed ? `<p style="font-size:12px;color:var(--gray);margin-top:6px">Bezogen auf Ihre vorherige Frage zu „${result.entry.title}".</p>` : '';
     if (result.contextUsed) logAgentAction('context', `Anschlussfrage ohne eigenes Stichwort eigenständig auf „${result.entry.title}" bezogen.`);
-    addBotMessage(result.entry.answer + contextNote);
+    addBotMessage(localizedAnswer(result.entry) + contextNote);
     logAnswer(result.entry, result.contextUsed);
     lastTopic = result.entry;
     stats.answered++;
@@ -2421,6 +2736,40 @@ async function handleImageQuery(caption, image) {
   updateStats();
 }
 
+// ─── SPRACHMODUS: echte Sprachausgabe (Web Speech Synthesis API) ───
+// Im Browser lauffähiger Voice-Kanal (Mikrofon-Eingabe + gesprochene Antwort). Für eine
+// echte Telefonannahme (PSTN) wäre zusätzlich ein Telefonie-Provider und ein Server
+// nötig – das ist in einem statischen Prototyp ohne Backend nicht realisierbar
+// (siehe Hinweis bei der Integration „Telefonie / IVR").
+let voiceModeActive = false;
+function toggleVoiceMode() {
+  voiceModeActive = !voiceModeActive;
+  const btn = document.getElementById('voiceModeBtn');
+  btn.classList.toggle('voice-active', voiceModeActive);
+  if (voiceModeActive) {
+    if (liveTicket) updateLiveTicket({ channel: 'voice' });
+    else ensureLiveTicketChannel('voice');
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    toast('Sprachmodus aktiv – Antworten werden vorgelesen.');
+  } else {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    if (liveTicket) updateLiveTicket({ channel: 'website' });
+    toast('Sprachmodus deaktiviert.');
+  }
+}
+function ensureLiveTicketChannel(channel) {
+  const t = ensureLiveTicket();
+  t.channel = channel;
+}
+function speakText(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = currentLanguage === 'EN' ? 'en-US' : 'de-DE';
+  utter.rate = 1;
+  window.speechSynthesis.speak(utter);
+}
+
 // ─── SPRACHEINGABE (Web Speech API) ───
 let voiceRecognition = null;
 let voiceActive = false;
@@ -2494,7 +2843,24 @@ function escalate(question) {
     priority: priorityForText(question), status: 'eskaliert', assignedAgent: routeAgent,
     tags: [...t.tags, 'Automatisch eskaliert']
   });
-  const html = `
+  const isEN = currentLanguage === 'EN';
+  const html = isEN ? `
+    <p>I need the support of our team for this question.</p>
+    <div class="escalation-card">
+      <div class="esc-header">
+        <span class="esc-title">Support ticket created</span>
+        <span class="esc-ticket">#${t.id}</span>
+      </div>
+      <div class="esc-text">
+        <strong>Your question:</strong> "${question}"<br>
+        <span style="margin-top:4px;display:block">${withinHours ? 'A colleague from our support team will get back to you by e-mail within 2 hours.' : 'We are currently outside business hours. Your request will be handled on the next business day.'}</span>
+      </div>
+      ${!withinHours ? `<div class="esc-hours">Business hours: ${escalationSettings.hoursFrom} – ${escalationSettings.hoursTo}</div>` : ''}
+      <div class="esc-contact">
+        <button class="esc-btn esc-btn-primary" onclick="this.textContent='Confirmed';this.disabled=true">Confirm follow-up</button>
+        <button class="esc-btn esc-btn-secondary">Request callback</button>
+      </div>
+    </div>` : `
     <p>Für diese Frage benötige ich die Unterstützung unseres Support-Teams.</p>
     <div class="escalation-card">
       <div class="esc-header">
@@ -2523,10 +2889,11 @@ function handoff(entry) {
   registerGap(entry.title, true);
   const t = ensureLiveTicket();
   updateLiveTicket({ category: entry.cat, priority: 'hoch', status: 'eskaliert', tags: [...t.tags, 'Individuelles Thema'] });
+  const isEN = currentLanguage === 'EN';
   const html = `
     <div class="handoff-card">
-      <div class="handoff-header"><span class="handoff-title">Bewusst an einen Kollegen weitergeleitet</span></div>
-      <div class="handoff-text">${entry.handoffText}</div>
+      <div class="handoff-header"><span class="handoff-title">${isEN ? 'Deliberately routed to a colleague' : 'Bewusst an einen Kollegen weitergeleitet'}</span></div>
+      <div class="handoff-text">${localizedHandoffText(entry)}</div>
       <span class="esc-ticket" style="display:inline-block;margin-top:10px">#${t.id}</span>
     </div>`;
   addBotMessage(html);
@@ -2597,9 +2964,10 @@ function feedback(msgId, type, btn) {
     stats.positive++;
   } else {
     stats.negative++;
-    if (lastTopic) {
+    if (lastTopic && isWfEnabled('wf2')) {
       registerGap(lastTopic.title + ' – negatives Feedback');
       logAgentAction('learn', `Negatives Feedback zu „${lastTopic.title}" registriert – Antwort wird zur Überarbeitung vorgemerkt (Lernschleife).`);
+      logAudit('Workflow-Engine', `„Negatives Feedback an Wissensmanagement melden" ausgelöst: „${lastTopic.title}" als Wissenslücke vorgemerkt.`, 'Workflows');
     }
     const bubble = parent.closest('.msg-bubble');
     if (bubble && !bubble.querySelector('.learning-note')) {
