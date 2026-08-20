@@ -8,20 +8,28 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --dark:#3D4044;--dark-bg:#1F2428;--dark2:#2E3438;--dark3:#262B2F;
-  --green:#8EA752;--green-dark:#6E8440;--green-light:#F1F6E8;--green-mid:#D4E4B0;
+  --dark:#3D4044;--dark-bg:#1F2428;--dark2:#2E3438;--dark3:#262B2F;--heading:#1F2428;
+  --green:#8CA94F;--green-dark:#6E8440;--green-light:#F1F6E8;--green-mid:#D4E4B0;
   --white:#FFFFFF;--bg:#F0F2EE;--gray:#6B7580;--gray-light:#E8EAE5;
+  --surface:rgba(255,255,255,.8);--surface-border:rgba(255,255,255,.7);--surface-solid:#FFFFFF;
+  --mesh:linear-gradient(135deg,#e8eed8 0%,#f0f2ee 30%,#dde8c8 60%,#f4f5f0 100%);
   --radius:14px;--radius-lg:20px;--shadow:0 4px 24px rgba(31,36,40,.10);
   --shadow-lg:0 12px 48px rgba(31,36,40,.16);
   --transition:all .28s cubic-bezier(.4,0,.2,1);
   --spring:all .35s cubic-bezier(.34,1.56,.64,1);
 }
-html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);background:var(--bg);overflow:hidden}
+html[data-theme="dark"]{
+  --dark:#E4E6E1;--heading:#F4F5F1;--bg:#181B1D;--gray:#9BA3A0;--gray-light:#3A403C;
+  --surface:rgba(38,43,47,.88);--surface-border:rgba(255,255,255,.08);--surface-solid:#262B2F;
+  --mesh:linear-gradient(135deg,#181c16 0%,#1a1d1f 30%,#1c2117 60%,#191c1a 100%);
+  --green-light:#26301c;
+}
+html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);background:var(--bg);overflow:hidden;transition:background .3s ease,color .3s ease}
 
 /* ─── ANIMATED BACKGROUND ─── */
 .bg-mesh{position:fixed;inset:0;z-index:0;
-  background:linear-gradient(135deg,#e8eed8 0%,#f0f2ee 30%,#dde8c8 60%,#f4f5f0 100%);
-  background-size:400% 400%;animation:gradShift 18s ease infinite}
+  background:var(--mesh);
+  background-size:400% 400%;animation:gradShift 18s ease infinite;transition:background .3s ease}
 @keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:orbFloat 12s ease-in-out infinite}
 .orb1{width:420px;height:420px;background:rgba(142,167,82,.18);top:-120px;left:-80px;animation-delay:0s}
@@ -49,7 +57,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 /* ─── LEFT SIDEBAR ─── */
 .sidebar-left{background:rgba(255,255,255,.72);backdrop-filter:blur(20px) saturate(1.6);border-right:1px solid rgba(255,255,255,.5);display:flex;flex-direction:column;overflow:hidden}
 .sidebar-header{padding:20px 20px 14px;border-bottom:1px solid var(--gray-light)}
-.sidebar-title{font-size:13px;font-weight:700;color:var(--dark-bg);letter-spacing:.3px;margin-bottom:10px}
+.sidebar-title{font-size:13px;font-weight:700;color:var(--heading);letter-spacing:.3px;margin-bottom:10px}
 .search-wrap{position:relative}
 .search-wrap input{width:100%;padding:9px 12px 9px 34px;border:1.5px solid var(--gray-light);border-radius:9px;font-size:13px;font-family:'Inter',sans-serif;outline:none;background:#fff;transition:var(--transition)}
 .search-wrap input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,167,82,.12)}
@@ -71,7 +79,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .cat-questions{display:none;flex-direction:column;gap:3px;padding:4px 0 4px 8px}
 .cat-questions.open{display:flex}
 .quick-q{padding:8px 12px;border-radius:8px;cursor:pointer;font-size:12px;color:var(--dark);transition:var(--transition);border-left:2px solid transparent;background:transparent}
-.quick-q:hover{background:var(--green-light);border-left-color:var(--green);color:var(--dark-bg);transform:translateX(2px)}
+.quick-q:hover{background:var(--green-light);border-left-color:var(--green);color:var(--heading);transform:translateX(2px)}
 .quick-chip{display:inline-block;padding:6px 12px;background:var(--green-light);color:var(--green-dark);border-radius:16px;font-size:11.5px;font-weight:600;cursor:pointer;transition:var(--transition);margin:2px 4px 2px 0}
 .quick-chip:hover{background:var(--green);color:#fff}
 
@@ -80,7 +88,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .chat-top{padding:16px 20px 12px;background:rgba(255,255,255,.5);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.4);flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
 .chat-top-info{display:flex;align-items:center;gap:10px}
 .ai-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--dark-bg),var(--dark2));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--green);letter-spacing:.5px;border:2px solid var(--green)}
-.ai-name{font-size:14px;font-weight:700;color:var(--dark-bg)}
+.ai-name{font-size:14px;font-weight:700;color:var(--heading)}
 .chat-actions{display:flex;gap:8px}
 .action-btn{padding:7px 14px;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;transition:var(--spring);border:none}
 .action-btn-ghost{background:rgba(255,255,255,.6);border:1px solid var(--gray-light);color:var(--dark)}
@@ -102,7 +110,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .msg-bubble{max-width:72%;padding:13px 16px;border-radius:16px;font-size:13.5px;line-height:1.6}
 .msg.bot .msg-bubble{background:rgba(255,255,255,.82);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.6);border-top-left-radius:4px;box-shadow:var(--shadow)}
 .msg.user .msg-bubble{background:linear-gradient(135deg,var(--dark-bg),var(--dark2));color:#fff;border-top-right-radius:4px}
-.msg-bubble h4{font-size:13px;font-weight:700;color:var(--dark-bg);margin-bottom:6px}
+.msg-bubble h4{font-size:13px;font-weight:700;color:var(--heading);margin-bottom:6px}
 .msg.user .msg-bubble h4{color:#fff}
 .msg-bubble ul{padding-left:16px;margin-top:4px}
 .msg-bubble ul li{margin-bottom:3px;font-size:13px}
@@ -156,7 +164,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .route-opt:hover{border-color:var(--green)}
 .route-opt.selected{border-color:var(--green);background:var(--green-light)}
 .route-opt input{margin-top:2px}
-.route-opt-title{font-size:12.5px;font-weight:700;color:var(--dark-bg)}
+.route-opt-title{font-size:12.5px;font-weight:700;color:var(--heading)}
 .route-opt-desc{font-size:11px;color:var(--gray);margin-top:1px}
 .modal-save{width:100%;padding:13px;background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;transition:var(--spring)}
 .modal-save:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(142,167,82,.35)}
@@ -231,17 +239,17 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .sidebar-right::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:2px}
 .stat-card{background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
 .stat-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.stat-card-title{font-size:12px;font-weight:700;color:var(--dark-bg);letter-spacing:.3px;text-transform:uppercase}
+.stat-card-title{font-size:12px;font-weight:700;color:var(--heading);letter-spacing:.3px;text-transform:uppercase}
 .stat-card-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px}
 .badge-green{background:var(--green-light);color:var(--green-dark)}
 .badge-blue{background:#EFF6FF;color:#1D4ED8}
 .big-stat{text-align:center;padding:8px 0}
-.big-num{font-size:42px;font-weight:900;color:var(--dark-bg);letter-spacing:-2px;line-height:1}
+.big-num{font-size:42px;font-weight:900;color:var(--heading);letter-spacing:-2px;line-height:1}
 .big-label{font-size:12px;color:var(--gray);margin-top:4px}
 .stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--gray-light)}
 .stat-row:last-child{border-bottom:none;padding-bottom:0}
 .stat-row-label{font-size:12px;color:var(--gray)}
-.stat-row-val{font-size:13px;font-weight:700;color:var(--dark-bg)}
+.stat-row-val{font-size:13px;font-weight:700;color:var(--heading)}
 .stat-row-val.green{color:var(--green-dark)}
 .stat-row-val.red{color:#dc2626}
 
@@ -251,7 +259,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .donut-bg{fill:none;stroke:var(--gray-light);stroke-width:12}
 .donut-fill{fill:none;stroke:var(--green);stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset 1s ease;stroke-dasharray:283;stroke-dashoffset:90}
 .donut-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.donut-pct{font-size:20px;font-weight:800;color:var(--dark-bg)}
+.donut-pct{font-size:20px;font-weight:800;color:var(--heading)}
 .donut-sub{font-size:9px;color:var(--gray);font-weight:600}
 
 /* Bar chart */
@@ -260,7 +268,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .bar-label{font-size:11px;color:var(--gray);text-align:right}
 .bar-track{background:var(--gray-light);border-radius:4px;height:8px;overflow:hidden}
 .bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--green-dark));transition:width 1.2s cubic-bezier(.4,0,.2,1)}
-.bar-val{font-size:11px;font-weight:700;color:var(--dark-bg)}
+.bar-val{font-size:11px;font-weight:700;color:var(--heading)}
 
 /* Rating widget */
 .rating-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
@@ -268,7 +276,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .stars-display{display:flex;gap:2px}
 .star-filled{color:var(--green);font-size:14px}
 .star-empty{color:var(--gray-light);font-size:14px}
-.rating-num{font-size:18px;font-weight:800;color:var(--dark-bg)}
+.rating-num{font-size:18px;font-weight:800;color:var(--heading)}
 
 /* Responsive hidden panels */
 @media(max-width:900px){.sidebar-left{display:none}.main-content{grid-template-columns:1fr}}
@@ -293,7 +301,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .bo-page.active{display:block}
 #boPage-dashboard.active{display:grid}
 .bo-page-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;max-width:1280px;margin-left:auto;margin-right:auto;gap:12px;flex-wrap:wrap}
-.bo-page-title{font-size:20px;font-weight:800;color:var(--dark-bg);letter-spacing:-.3px}
+.bo-page-title{font-size:20px;font-weight:800;color:var(--heading);letter-spacing:-.3px}
 .bo-page-sub{font-size:12.5px;color:var(--gray);margin-top:3px}
 .bo-kpi-row{max-width:1280px;margin:0 auto 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
 #boPage-dashboard.bo-grid{grid-column-gap:16px}
@@ -302,7 +310,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .bo-section-heading.first{border-top:none;margin-top:0;padding-top:0}
 .bo-kpi{background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
 .bo-kpi-label{font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.3px;text-transform:uppercase;margin-bottom:6px}
-.bo-kpi-val{font-size:26px;font-weight:900;color:var(--dark-bg);letter-spacing:-1px}
+.bo-kpi-val{font-size:26px;font-weight:900;color:var(--heading);letter-spacing:-1px}
 .bo-kpi-note{font-size:11px;color:var(--gray);margin-top:4px}
 .bo-kpi-val.green{color:var(--green-dark)}
 .bo-kpi-val.red{color:#dc2626}
@@ -318,6 +326,9 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .bo-btn:hover{border-color:var(--green);color:var(--green-dark)}
 .bo-btn.primary{background:linear-gradient(135deg,var(--green),var(--green-dark));border-color:transparent;color:#fff}
 .bo-btn.primary:hover{color:#fff;filter:brightness(1.06)}
+.theme-toggle-btn{padding:9px 20px;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--surface-solid);color:var(--dark);transition:var(--transition)}
+.theme-toggle-btn:hover{border-color:var(--green)}
+.theme-toggle-btn.active{background:linear-gradient(135deg,var(--green),var(--green-dark));border-color:transparent;color:#fff}
 .bo-btn:disabled{opacity:.45;cursor:default;pointer-events:none}
 .bo-bulk-bar{display:none;align-items:center;gap:10px;padding:10px 16px;background:var(--green-light);border-bottom:1px solid var(--gray-light);font-size:12.5px;color:var(--green-dark);font-weight:700}
 .bo-bulk-bar.active{display:flex}
@@ -358,7 +369,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .bo-detail-panel{width:480px;max-width:92vw;background:var(--bg);height:100%;overflow-y:auto;box-shadow:-12px 0 40px rgba(0,0,0,.15);animation:slideInPanel .3s cubic-bezier(.4,0,.2,1)}
 @keyframes slideInPanel{from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1}}
 .bo-detail-head{padding:20px 22px;border-bottom:1px solid var(--gray-light);background:#fff;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-.bo-detail-title{font-size:16px;font-weight:800;color:var(--dark-bg)}
+.bo-detail-title{font-size:16px;font-weight:800;color:var(--heading)}
 .bo-detail-sub{font-size:12px;color:var(--gray);margin-top:3px}
 .bo-detail-close{background:none;border:none;cursor:pointer;color:var(--gray);font-size:20px;line-height:1;padding:2px}
 .bo-detail-body{padding:20px 22px;display:flex;flex-direction:column;gap:16px}
@@ -389,7 +400,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .bo-modal-overlay.open{display:flex}
 .bo-modal-card{background:#fff;border-radius:18px;padding:26px;width:420px;max-width:92vw;max-height:86vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
 .bo-modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.bo-modal-title{font-size:16px;font-weight:800;color:var(--dark-bg)}
+.bo-modal-title{font-size:16px;font-weight:800;color:var(--heading)}
 .bo-modal-close{background:none;border:none;cursor:pointer;color:var(--gray);font-size:18px;line-height:1;padding:4px}
 
 /* Forms (Systemeinstellungen etc.) */
@@ -399,8 +410,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .bo-form-row input[type=text],.bo-form-row input[type=number],.bo-form-row select{width:100%;padding:10px 12px;border:1.5px solid var(--gray-light);border-radius:9px;font-size:13px;font-family:'Inter',sans-serif;outline:none;background:#fff}
 .bo-form-row input:focus,.bo-form-row select:focus{border-color:var(--green)}
 .bo-form-hint{font-size:11px;color:var(--gray);margin-top:5px}
-.bo-swatches{display:flex;gap:8px}
-.bo-swatch{width:32px;height:32px;border-radius:8px;border:2px solid rgba(255,255,255,.8);box-shadow:0 0 0 1px var(--gray-light)}
 
 /* Global search (header) */
 .bo-global-search{position:relative;width:260px}
@@ -415,17 +424,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .bo-search-item{padding:8px 12px;cursor:pointer;font-size:12.5px;color:var(--dark)}
 .bo-search-item:hover{background:var(--green-light)}
 .bo-search-empty{padding:16px;text-align:center;font-size:12px;color:var(--gray)}
-
-/* Tenant switcher */
-.bo-tenant-wrap{position:relative}
-.bo-tenant{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.7);font-size:12.5px;font-weight:600;cursor:pointer;padding:6px 10px;border-radius:8px;transition:var(--transition)}
-.bo-tenant:hover{background:rgba(255,255,255,.08);color:#fff}
-.bo-tenant svg{width:11px;height:11px;opacity:.6}
-.bo-tenant-menu{position:fixed;width:230px;background:#fff;border-radius:12px;box-shadow:var(--shadow-lg);border:1px solid var(--gray-light);padding:8px;display:none;z-index:260}
-.bo-tenant-menu.open{display:block}
-.bo-tenant-item{padding:9px 10px;border-radius:8px;cursor:pointer;font-size:12.5px;color:var(--dark)}
-.bo-tenant-item:hover{background:var(--green-light)}
-.bo-tenant-item.active{color:var(--green-dark);font-weight:700}
 
 /* Simple line/area chart for analytics */
 .bo-linechart{width:100%;height:140px}
@@ -445,6 +443,31 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .lang-item.active{color:var(--green-dark);font-weight:700}
 
 @media(max-width:1000px){.bo-shell{grid-template-columns:1fr}.bo-nav{display:flex;flex-wrap:nowrap;overflow-x:auto;padding:8px 10px;border-right:none;border-bottom:1px solid var(--gray-light)}.bo-nav-section-label{display:none}.bo-nav-item{white-space:nowrap;margin-bottom:0}.bo-detail-panel{width:100%}}
+
+/* ─── DARSTELLUNG: HELL / DUNKEL ─── */
+html[data-theme="dark"] .sidebar-left,html[data-theme="dark"] .sidebar-right,html[data-theme="dark"] .bo-nav{background:var(--surface);border-color:var(--surface-border)}
+html[data-theme="dark"] .stat-card,html[data-theme="dark"] .bo-kpi,html[data-theme="dark"] .bo-table-card,html[data-theme="dark"] .bo-form-card{background:var(--surface);border-color:var(--surface-border)}
+html[data-theme="dark"] .msg.bot .msg-bubble{background:var(--surface);border-color:var(--surface-border)}
+html[data-theme="dark"] .action-btn-ghost{background:var(--surface);border-color:var(--surface-border)}
+html[data-theme="dark"] .input-field textarea{background:var(--surface-solid)}
+html[data-theme="dark"] .search-wrap input,
+html[data-theme="dark"] .closing-btn,
+html[data-theme="dark"] .bo-toolbar input[type=text],
+html[data-theme="dark"] .bo-toolbar input[type=search],
+html[data-theme="dark"] .bo-toolbar select,
+html[data-theme="dark"] .bo-btn,
+html[data-theme="dark"] .bo-detail-head,
+html[data-theme="dark"] .bo-detail-field,
+html[data-theme="dark"] .bo-transcript,
+html[data-theme="dark"] .bo-reply-textarea,
+html[data-theme="dark"] .bo-modal-card,
+html[data-theme="dark"] .bo-form-row input,
+html[data-theme="dark"] .bo-form-row select,
+html[data-theme="dark"] .bo-search-results,
+html[data-theme="dark"] .lang-menu{background:var(--surface-solid);border-color:var(--surface-border);color:var(--dark)}
+html[data-theme="dark"] .bo-nav-item.active{color:#fff}
+html[data-theme="dark"] .bo-table tbody tr:hover{background:rgba(255,255,255,.05)}
+html[data-theme="dark"] .quick-q:hover{color:var(--heading)}
 </style>
 </head>
 <body>
@@ -459,11 +482,11 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
   <header class="app-header">
     <div class="header-logo">
       <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
-        <ellipse cx="50" cy="18" rx="36" ry="7" fill="#8EA752"/>
-        <ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8EA752"/>
-        <ellipse cx="54" cy="50" rx="21" ry="6" fill="#8EA752"/>
-        <ellipse cx="47" cy="65" rx="13" ry="5" fill="#8EA752"/>
-        <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/>
+        <ellipse cx="50" cy="18" rx="36" ry="7" fill="#8CA94F"/>
+        <ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8CA94F"/>
+        <ellipse cx="54" cy="50" rx="21" ry="6" fill="#8CA94F"/>
+        <ellipse cx="47" cy="65" rx="13" ry="5" fill="#8CA94F"/>
+        <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8CA94F"/>
       </svg>
       <div>
         <div class="logo-name">OrKan Cloud</div>
@@ -542,11 +565,11 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
   <header class="app-header">
     <div class="header-logo">
       <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
-        <ellipse cx="50" cy="18" rx="36" ry="7" fill="#8EA752"/>
-        <ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8EA752"/>
-        <ellipse cx="54" cy="50" rx="21" ry="6" fill="#8EA752"/>
-        <ellipse cx="47" cy="65" rx="13" ry="5" fill="#8EA752"/>
-        <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/>
+        <ellipse cx="50" cy="18" rx="36" ry="7" fill="#8CA94F"/>
+        <ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8CA94F"/>
+        <ellipse cx="54" cy="50" rx="21" ry="6" fill="#8CA94F"/>
+        <ellipse cx="47" cy="65" rx="13" ry="5" fill="#8CA94F"/>
+        <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8CA94F"/>
       </svg>
       <div>
         <div class="logo-name">OrKan Cloud</div>
@@ -554,12 +577,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
       </div>
     </div>
     <div class="header-divider"></div>
-    <div class="bo-tenant-wrap">
-      <div class="bo-tenant" onclick="toggleTenantMenu()">
-        <span id="tenantLabel">Sanitär Meier GmbH</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-    </div>
     <div class="header-spacer"></div>
     <div class="bo-global-search">
       <span class="bo-global-search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
@@ -756,7 +773,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 </div>
 
 <div class="bo-search-results" id="globalSearchResults"></div>
-<div class="bo-tenant-menu" id="tenantMenu"></div>
 <div class="bo-detail-overlay" id="ticketDetailOverlay" onclick="if(event.target===this) closeTicketDetail()"></div>
 <div class="bo-modal-overlay" id="boFormModal" onclick="if(event.target===this) closeBoModal()"></div>
 
@@ -1188,7 +1204,7 @@ const CATEGORIES = [
 
 // ─── INIT ───
 function initApp() {
-  applyBrandColor(systemSettings.brandColor, false);
+  applyTheme(systemSettings.theme, false);
   buildCategories();
   addWelcomeMessage();
   animateBars();
@@ -1360,9 +1376,10 @@ const ROUTING_RULES = [
   { category: 'Wareneingang & Bestand', team: 'Logistik-Support' },
   { category: 'Allgemein', team: 'First-Level-Support' },
 ];
-let systemSettings = { companyName: 'OrKan System GmbH', timezone: 'Europe/Berlin', retentionDays: 365, brandColor: localStorage.getItem('orkanBrandColor') || '#8EA752' };
+const ORKAN_GREEN = '#8CA94F';
+let systemSettings = { companyName: 'OrKan System GmbH', timezone: 'Europe/Berlin', retentionDays: 365, brandColor: ORKAN_GREEN, theme: localStorage.getItem('orkanTheme') || 'light' };
 
-// ─── MARKENFARBE: live auf das gesamte System (CSS-Variablen) anwenden ───
+// ─── MARKENFARBE (fest: OrKan Grün) + DARSTELLUNG (Hell/Dunkel) ───
 function hexToRgb(hex) {
   hex = hex.replace('#', '');
   if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
@@ -1378,19 +1395,24 @@ function shade(hex, amt) {
   const f = 1 + amt;
   return rgbToHex(r * f, g * f, b * f);
 }
-function applyBrandColor(hex, persist) {
+function applyBrandColor(hex) {
   const root = document.documentElement.style;
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
   root.setProperty('--green', hex);
   root.setProperty('--green-dark', shade(hex, -0.22));
-  root.setProperty('--green-light', shade(hex, 0.88));
-  root.setProperty('--green-mid', shade(hex, 0.55));
+  root.setProperty('--green-light', dark ? shade(hex, -0.78) : shade(hex, 0.88));
+  root.setProperty('--green-mid', shade(hex, dark ? -0.45 : 0.55));
   systemSettings.brandColor = hex;
-  if (persist) localStorage.setItem('orkanBrandColor', hex);
-  renderBrandPreview();
 }
-const TENANTS = ['Sanitär Meier GmbH', 'Elektro Hoffmann', 'Bau Schneider & Söhne'];
-let currentTenant = TENANTS[0];
-
+function applyTheme(theme, persist) {
+  document.documentElement.setAttribute('data-theme', theme);
+  systemSettings.theme = theme;
+  if (persist) localStorage.setItem('orkanTheme', theme);
+  applyBrandColor(systemSettings.brandColor);
+  const mount = document.getElementById('boPage-settings');
+  if (mount && mount.classList.contains('active')) renderSettingsSection();
+  if (persist) { logAudit('Sie', `Darstellung auf „${theme === 'dark' ? 'Dunkel' : 'Hell'}" gestellt.`, 'Systemeinstellungen'); toast(`Darstellung: ${theme === 'dark' ? 'Dunkel' : 'Hell'}`); }
+}
 // ─── NAVIGATION ───
 const BO_ICONS = {
   dashboard: '<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>',
@@ -1711,7 +1733,7 @@ function renderKbSection() {
   mount.innerHTML = `
     <div class="bo-page-header">
       <div><div class="bo-page-title">Wissensdatenbank</div><div class="bo-page-sub">${KB.length} Einträge · zuletzt aktualisiert heute</div></div>
-      <button class="bo-btn primary" onclick="toast('Neuer Wissenseintrag würde hier angelegt.')">+ Neuer Eintrag</button>
+      <button class="bo-btn primary" onclick="openNewKbModal()">+ Neuer Eintrag</button>
     </div>
     <div class="bo-table-card">
       <div class="bo-toolbar">
@@ -1964,6 +1986,53 @@ function openNewUserModal() {
     <div class="bo-form-row"><label>Rolle</label><select id="newUserRole">${ROLES.map(r => `<option value="${r.name}">${r.name}</option>`).join('')}</select></div>
     <button class="bo-btn primary" style="width:100%" onclick="createUser()">Nutzer einladen</button>`);
 }
+function openNewKbModal() {
+  openBoModal('Neuer Wissenseintrag', `
+    <div class="bo-form-row"><label>Titel</label><input type="text" id="newKbTitle" placeholder="z. B. Etikett neu drucken"></div>
+    <div class="bo-form-row"><label>Kategorie</label><select id="newKbCategory">${CATEGORY_POOL.map(c => `<option value="${c}">${c}</option>`).join('')}</select></div>
+    <div class="bo-form-row"><label>Inhalt</label><textarea id="newKbAnswer" class="bo-reply-textarea" placeholder="Antworttext, den der Chatbot künftig verwendet"></textarea></div>
+    <div class="bo-form-row"><label>Datei hochladen (optional)</label><input type="file" id="newKbFile" accept=".txt,.md,.csv,.json" onchange="handleKbFileUpload(event)">
+      <div class="bo-form-hint" id="newKbFileHint">Textdatei wird eingelesen und automatisch als Inhalt übernommen.</div>
+    </div>
+    <button class="bo-btn primary" style="width:100%" onclick="createKbEntry()">Eintrag anlegen</button>`);
+}
+function handleKbFileUpload(e) {
+  const file = e.target.files[0];
+  const hint = document.getElementById('newKbFileHint');
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const text = String(reader.result || '').trim();
+    const ta = document.getElementById('newKbAnswer');
+    if (text) {
+      ta.value = ta.value.trim() ? ta.value.trim() + '\n\n' + text : text;
+      hint.textContent = `„${file.name}" eingelesen (${text.length} Zeichen) und in den Inhalt übernommen.`;
+      const titleInput = document.getElementById('newKbTitle');
+      if (!titleInput.value.trim()) titleInput.value = file.name.replace(/\.[^.]+$/, '');
+    } else {
+      hint.textContent = `„${file.name}" enthält keinen lesbaren Text.`;
+    }
+  };
+  reader.onerror = () => { hint.textContent = `Fehler beim Lesen von „${file.name}".`; };
+  reader.readAsText(file);
+}
+function createKbEntry() {
+  const title = document.getElementById('newKbTitle').value.trim();
+  const catName = document.getElementById('newKbCategory').value;
+  const answerRaw = document.getElementById('newKbAnswer').value.trim();
+  if (!title || !answerRaw) { toast('Bitte Titel und Inhalt angeben.'); return; }
+  const id = 'kb-custom-' + (KB.length + 1);
+  const answerHtml = `<h4>${title}</h4>` + answerRaw.split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+  const keywords = [...new Set([title.toLowerCase(), ...title.toLowerCase().split(/\s+/).filter(w => w.length > 2)])];
+  KB.push({ id, cat: catName, keywords, title, answer: answerHtml });
+  const cat = CATEGORIES.find(c => c.name === catName);
+  if (cat) cat.ids.push(id);
+  logAudit('Sie', `Wissenseintrag „${title}" angelegt.`, 'Wissensdatenbank');
+  closeBoModal();
+  renderKbSection();
+  buildCategories();
+  toast('Wissenseintrag angelegt und im Kundenchat sofort verfügbar.');
+}
 function createUser() {
   const name = document.getElementById('newUserName').value.trim();
   const email = document.getElementById('newUserEmail').value.trim();
@@ -2059,33 +2128,25 @@ function renderSettingsSection() {
   const mount = document.getElementById('boPage-settings');
   if (!mount) return;
   mount.innerHTML = `
-    <div class="bo-page-header"><div><div class="bo-page-title">Systemeinstellungen</div><div class="bo-page-sub">Allgemeine Einstellungen für diesen Mandanten</div></div></div>
+    <div class="bo-page-header"><div><div class="bo-page-title">Systemeinstellungen</div><div class="bo-page-sub">Allgemeine Einstellungen für dieses System</div></div></div>
     <div class="bo-form-card">
       <div class="bo-form-row"><label>Firmenname</label><input type="text" id="setCompanyName" value="${systemSettings.companyName}"></div>
       <div class="bo-form-row"><label>Zeitzone</label><select id="setTimezone">${['Europe/Berlin', 'Europe/Vienna', 'Europe/Zurich'].map(tz => `<option ${systemSettings.timezone === tz ? 'selected' : ''}>${tz}</option>`).join('')}</select></div>
       <div class="bo-form-row"><label>Datenaufbewahrung (Tage)</label><input type="number" id="setRetention" value="${systemSettings.retentionDays}"><div class="bo-form-hint">Nach Ablauf werden abgeschlossene Fälle automatisch archiviert.</div></div>
-      <div class="bo-form-row"><label>Markenfarbe</label>
-        <div style="display:flex;align-items:center;gap:10px">
-          <input type="color" id="setBrandColor" value="${systemSettings.brandColor}" style="width:48px;height:38px;padding:2px;border:1.5px solid var(--gray-light);border-radius:9px;cursor:pointer">
-          <div class="bo-swatches" id="brandPreviewSwatches"></div>
+      <div class="bo-form-row"><label>Darstellung</label>
+        <div style="display:flex;gap:10px">
+          <button type="button" class="theme-toggle-btn ${systemSettings.theme === 'light' ? 'active' : ''}" onclick="applyTheme('light',true)">Hell</button>
+          <button type="button" class="theme-toggle-btn ${systemSettings.theme === 'dark' ? 'active' : ''}" onclick="applyTheme('dark',true)">Dunkel</button>
         </div>
-        <div class="bo-form-hint">Ändert die Akzentfarbe im gesamten System – Kundenchat und Backoffice – sofort bei Auswahl.</div>
+        <div class="bo-form-hint">Stellt Kundenchat und Backoffice sofort auf das gewählte Farbschema um.</div>
       </div>
       <button class="bo-btn primary" onclick="saveSystemSettings()">Einstellungen speichern</button>
     </div>`;
-  document.getElementById('setBrandColor').addEventListener('input', e => applyBrandColor(e.target.value, false));
-  renderBrandPreview();
-}
-function renderBrandPreview() {
-  const el = document.getElementById('brandPreviewSwatches');
-  if (!el) return;
-  el.innerHTML = ['--green', '--green-dark', '--green-light'].map(v => `<div class="bo-swatch" style="background:${getComputedStyle(document.documentElement).getPropertyValue(v).trim()}"></div>`).join('');
 }
 function saveSystemSettings() {
   systemSettings.companyName = document.getElementById('setCompanyName').value;
   systemSettings.timezone = document.getElementById('setTimezone').value;
   systemSettings.retentionDays = document.getElementById('setRetention').value;
-  applyBrandColor(document.getElementById('setBrandColor').value, true);
   logAudit('Sie', 'Systemeinstellungen aktualisiert.', 'Systemeinstellungen');
   toast('Einstellungen gespeichert.');
 }
@@ -2137,28 +2198,6 @@ document.addEventListener('click', e => {
   if (box && input && !box.contains(e.target) && e.target !== input) box.classList.remove('open');
 });
 
-// ─── MANDANTENFÄHIGKEIT (vorbereitet) ───
-function toggleTenantMenu() {
-  const menu = document.getElementById('tenantMenu');
-  if (!menu.classList.contains('open')) {
-    menu.innerHTML = TENANTS.map(t => `<div class="bo-tenant-item ${t === currentTenant ? 'active' : ''}" onclick="selectTenant('${t}')">${t}</div>`).join('');
-    const rect = document.querySelector('.bo-tenant').getBoundingClientRect();
-    menu.style.top = (rect.bottom + 8) + 'px';
-    menu.style.left = rect.left + 'px';
-  }
-  menu.classList.toggle('open');
-}
-function selectTenant(t) {
-  currentTenant = t;
-  document.getElementById('tenantLabel').textContent = t;
-  document.getElementById('tenantMenu').classList.remove('open');
-  toast(`Mandant gewechselt zu ${t}.`);
-}
-document.addEventListener('click', e => {
-  const wrap = document.querySelector('.bo-tenant-wrap');
-  const menu = document.getElementById('tenantMenu');
-  if (wrap && menu && !wrap.contains(e.target)) menu.classList.remove('open');
-});
 
 // ─── MEHRSPRACHIGKEIT (Kundenchat) ───
 const LANGUAGES = { DE: 'Deutsch', EN: 'English' };
@@ -2322,7 +2361,7 @@ function showTyping() {
   div.className = 'typing-indicator';
   div.id = 'typingIndicator';
   div.innerHTML = `
-    <div class="msg-avatar" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1F2428,#2E3438);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#8EA752;border:1.5px solid #8EA752">OK</div>
+    <div class="msg-avatar" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1F2428,#2E3438);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#8CA94F;border:1.5px solid #8CA94F">OK</div>
     <div class="typing-bubble">
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
