@@ -58,15 +58,15 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .categories-scroll{flex:1;overflow-y:auto;padding:12px 14px}
 .categories-scroll::-webkit-scrollbar{width:3px}
 .categories-scroll::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:2px}
-.category-block{margin-bottom:6px}
-.cat-header{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:var(--transition);user-select:none}
-.cat-header:hover{background:var(--green-light)}
-.cat-header.active{background:var(--green-light)}
-.cat-icon{width:28px;height:28px;border-radius:8px;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:var(--transition)}
-.cat-header.active .cat-icon{background:var(--green);filter:brightness(1.1)}
-.cat-name{font-size:12.5px;font-weight:600;color:var(--dark);flex:1}
-.cat-count{font-size:11px;font-weight:700;color:var(--gray);background:var(--gray-light);padding:2px 7px;border-radius:10px}
-.cat-arrow{font-size:10px;color:var(--gray);transition:transform .2s}
+.category-block{margin-bottom:8px}
+.cat-header{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:9px;cursor:pointer;transition:var(--spring);user-select:none;background:linear-gradient(135deg,var(--green),var(--green-dark));box-shadow:0 2px 8px rgba(142,167,82,.25)}
+.cat-header:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(142,167,82,.35)}
+.cat-header.active{background:linear-gradient(135deg,var(--green-dark),var(--dark-bg))}
+.cat-icon{width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:var(--transition)}
+.cat-header.active .cat-icon{background:rgba(255,255,255,.3)}
+.cat-name{font-size:12.5px;font-weight:600;color:#fff;flex:1}
+.cat-count{font-size:11px;font-weight:700;color:#fff;background:rgba(255,255,255,.25);padding:2px 7px;border-radius:10px}
+.cat-arrow{font-size:10px;color:rgba(255,255,255,.85);transition:transform .2s}
 .cat-header.active .cat-arrow{transform:rotate(90deg)}
 .cat-questions{display:none;flex-direction:column;gap:3px;padding:4px 0 4px 8px}
 .cat-questions.open{display:flex}
@@ -81,15 +81,13 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .chat-top-info{display:flex;align-items:center;gap:10px}
 .ai-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--dark-bg),var(--dark2));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--green);letter-spacing:.5px;border:2px solid var(--green)}
 .ai-name{font-size:14px;font-weight:700;color:var(--dark-bg)}
-.ai-status{font-size:11.5px;color:var(--gray);display:flex;align-items:center;gap:4px}
-.ai-status::before{content:'';display:inline-block;width:6px;height:6px;background:#4ade80;border-radius:50%}
 .chat-actions{display:flex;gap:8px}
 .action-btn{padding:7px 14px;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;transition:var(--spring);border:none}
 .action-btn-ghost{background:rgba(255,255,255,.6);border:1px solid var(--gray-light);color:var(--dark)}
 .action-btn-ghost:hover{background:#fff;transform:translateY(-1px)}
 .action-btn-green{background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff}
 .action-btn-green:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(142,167,82,.35)}
-.action-btn-ghost.voice-active{background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;border-color:transparent}
+.action-btn-green.voice-active{background:var(--dark-bg);box-shadow:0 0 0 2px var(--green) inset}
 .messages-wrap{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
 .messages-wrap::-webkit-scrollbar{width:4px}
 .messages-wrap::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:2px}
@@ -264,13 +262,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--green-dark));transition:width 1.2s cubic-bezier(.4,0,.2,1)}
 .bar-val{font-size:11px;font-weight:700;color:var(--dark-bg)}
 
-/* Zeitersparnis widget */
-.savings-widget{background:linear-gradient(135deg,var(--dark-bg),var(--dark2));border-radius:14px;padding:16px;color:#fff;text-align:center}
-.savings-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
-.savings-big{font-size:36px;font-weight:900;color:var(--green);line-height:1;letter-spacing:-1px}
-.savings-unit{font-size:13px;color:rgba(255,255,255,.5);margin-top:3px}
-.savings-note{font-size:11px;color:rgba(255,255,255,.4);margin-top:8px;line-height:1.4}
-
 /* Rating widget */
 .rating-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .rating-label{font-size:12px;color:var(--gray)}
@@ -305,6 +296,10 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .bo-page-title{font-size:20px;font-weight:800;color:var(--dark-bg);letter-spacing:-.3px}
 .bo-page-sub{font-size:12.5px;color:var(--gray);margin-top:3px}
 .bo-kpi-row{max-width:1280px;margin:0 auto 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+#boPage-dashboard.bo-grid{grid-column-gap:16px}
+#boPage-dashboard .bo-kpi-row{grid-column:1 / -1;margin-bottom:0}
+.bo-section-heading{grid-column:1 / -1;font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.6px;text-transform:uppercase;padding-top:14px;margin-top:6px;border-top:1px solid rgba(31,36,40,.08)}
+.bo-section-heading.first{border-top:none;margin-top:0;padding-top:0}
 .bo-kpi{background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
 .bo-kpi-label{font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.3px;text-transform:uppercase;margin-bottom:6px}
 .bo-kpi-val{font-size:26px;font-weight:900;color:var(--dark-bg);letter-spacing:-1px}
@@ -386,14 +381,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .bo-copilot-text{font-size:12.5px;color:var(--dark);line-height:1.55}
 .bo-copilot-actions{display:flex;gap:8px;margin-top:10px}
 
-/* Integrations */
-.bo-int-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
-.bo-int-card{background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
-.bo-int-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.bo-int-name{font-size:13.5px;font-weight:700;color:var(--dark-bg)}
-.bo-int-desc{font-size:11.5px;color:var(--gray);margin-bottom:12px;line-height:1.5;min-height:32px}
-.bo-int-status{font-size:11px;color:var(--gray);margin-top:10px;display:flex;align-items:center;gap:6px}
-
 /* Permission matrix */
 .bo-perm-check{width:16px;height:16px;accent-color:var(--green-dark);cursor:pointer}
 
@@ -449,8 +436,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 
 /* Customer chat: language selector */
 .lang-switch{position:relative}
-.lang-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.6);border:1px solid var(--gray-light);color:var(--dark);font-size:12px;font-weight:600;padding:7px 12px;border-radius:9px;cursor:pointer;transition:var(--spring)}
-.lang-btn:hover{background:#fff}
+.lang-btn{display:flex;align-items:center;gap:5px;background:linear-gradient(135deg,var(--green),var(--green-dark));border:none;color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:9px;cursor:pointer;transition:var(--spring)}
+.lang-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(142,167,82,.35)}
 .lang-menu{position:fixed;width:160px;background:#fff;border-radius:10px;box-shadow:var(--shadow-lg);border:1px solid var(--gray-light);padding:6px;display:none;z-index:150}
 .lang-menu.open{display:block}
 .lang-item{padding:8px 10px;border-radius:7px;cursor:pointer;font-size:12.5px;color:var(--dark)}
@@ -512,7 +499,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
           <div class="ai-avatar">OK</div>
           <div>
             <div class="ai-name">OrKan-Assistent</div>
-            <div class="ai-status">Online &amp; bereit</div>
           </div>
         </div>
         <div class="chat-actions">
@@ -522,10 +508,9 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
           </div>
-          <button class="action-btn action-btn-ghost" id="voiceModeBtn" onclick="toggleVoiceMode()" title="Sprachmodus: Assistent spricht Antworten laut vor (Voice-Kanal)">Sprachmodus</button>
-          <button class="action-btn action-btn-ghost" onclick="requestClosingFeedback()" title="Anliegen als gelöst oder ungelöst markieren">Anliegen abschließen</button>
-          <button class="action-btn action-btn-ghost" onclick="clearChat()">Chat leeren</button>
-          <button class="action-btn action-btn-green" onclick="exportChat()">Export</button>
+          <button class="action-btn action-btn-green" id="voiceModeBtn" onclick="toggleVoiceMode()" title="Sprachmodus: Assistent spricht Antworten laut vor (Voice-Kanal)">Sprachmodus</button>
+          <button class="action-btn action-btn-green" onclick="requestClosingFeedback()" title="Anliegen als gelöst oder ungelöst markieren">Anliegen abschließen</button>
+          <button class="action-btn action-btn-green" onclick="clearChat()">Chat leeren</button>
         </div>
       </div>
       <div class="lang-menu" id="langMenu"></div>
@@ -587,41 +572,17 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
     <nav class="bo-nav" id="boNav"></nav>
     <div class="bo-main">
     <div class="bo-page bo-grid active" id="boPage-dashboard">
-      <!-- Zeitersparnis -->
-      <div class="savings-widget">
-        <div class="savings-title">Mitarbeiterentlastung (Pilot)</div>
-        <div class="savings-big" id="savingsMin">0</div>
-        <div class="savings-unit">Minuten gespart</div>
-        <div class="savings-note">+4 Min. je automatisiert beantworteter Frage vs. manuellem Support</div>
+      <!-- Kennzahlen-Übersicht -->
+      <div class="bo-kpi-row">
+        <div class="bo-kpi"><div class="bo-kpi-label">Fragen beantwortet</div><div class="bo-kpi-val green" id="statAnswered">0</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Eskalationen</div><div class="bo-kpi-val red" id="statEscalated">0</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Eskalationsrate</div><div class="bo-kpi-val" id="statEscRate">–</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Ø Antwortzeit</div><div class="bo-kpi-val green">1,2 Sek.</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Short-Head-Abdeckung</div><div class="bo-kpi-val green">92%</div><div class="bo-kpi-note">Wiederkehrende Themen, die die Wissensbasis abdeckt</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Mitarbeiterentlastung</div><div class="bo-kpi-val green"><span id="savingsMin">0</span> Min.</div><div class="bo-kpi-note">+4 Min. je automatisiert beantworteter Frage</div></div>
       </div>
 
-      <!-- Hauptstatistik -->
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Pilot-Statistik</div>
-          <div class="stat-card-badge badge-green">LIVE</div>
-        </div>
-        <div class="stat-row">
-          <span class="stat-row-label">Fragen beantwortet</span>
-          <span class="stat-row-val green" id="statAnswered">0</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-row-label">Eskalationen</span>
-          <span class="stat-row-val red" id="statEscalated">0</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-row-label">Eskalationsrate</span>
-          <span class="stat-row-val" id="statEscRate">–</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-row-label">Ø Antwortzeit</span>
-          <span class="stat-row-val green">1,2 Sek.</span>
-        </div>
-        <div class="stat-row" title="Anteil der häufigsten wiederkehrenden Supportthemen, die die Wissensdatenbank abdeckt">
-          <span class="stat-row-label">Short-Head-Abdeckung</span>
-          <span class="stat-row-val green">92%</span>
-        </div>
-      </div>
+      <div class="bo-section-heading first">Auswertung</div>
 
       <!-- Lösungsrate Donut -->
       <div class="stat-card">
@@ -681,8 +642,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
         </div>
       </div>
 
-      <!-- Wissenslücken / Analyse-Dashboard -->
-      <div class="stat-card">
+      <!-- Wissenslücken -->
+      <div class="stat-card bo-wide">
         <div class="stat-card-header">
           <div class="stat-card-title">Erkannte Wissenslücken</div>
           <div class="stat-card-badge badge-blue" id="gapBadge">0</div>
@@ -696,6 +657,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
         </div>
       </div>
 
+      <div class="bo-section-heading">Live-Aktivität</div>
+
       <!-- KI-Agent Aktivitätsprotokoll -->
       <div class="stat-card bo-wide">
         <div class="stat-card-header">
@@ -707,6 +670,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
           <div class="gap-empty">Noch keine Aktivität in dieser Sitzung</div>
         </div>
       </div>
+
+      <div class="bo-section-heading">Konfiguration</div>
 
       <!-- Eskalationseinstellungen -->
       <div class="stat-card">
@@ -779,12 +744,10 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 
     <div class="bo-page" id="boPage-chats"></div>
     <div class="bo-page" id="boPage-kb"></div>
-    <div class="bo-page" id="boPage-docs"></div>
     <div class="bo-page" id="boPage-workflows"></div>
     <div class="bo-page" id="boPage-agents"></div>
     <div class="bo-page" id="boPage-users"></div>
     <div class="bo-page" id="boPage-roles"></div>
-    <div class="bo-page" id="boPage-integrations"></div>
     <div class="bo-page" id="boPage-analytics"></div>
     <div class="bo-page" id="boPage-settings"></div>
     <div class="bo-page" id="boPage-audit"></div>
@@ -1390,23 +1353,6 @@ function runWorkflows(t, trigger) {
   }
 }
 
-const INTEGRATIONS = [
-  { id: 'website', name: 'Website', desc: 'Support-Assistent eingebettet in die OrKan Cloud (orkan-system.de)', connected: true, lastSync: 'Live' },
-  { id: 'voice-browser', name: 'Sprachmodus (Browser)', desc: 'Kunden sprechen ihre Anfrage statt zu tippen; der Assistent antwortet per Sprachausgabe (Web Speech API, läuft direkt im Browser)', connected: true, lastSync: 'Live' },
-  { id: 'telephony', name: 'Telefonie / IVR (PSTN)', desc: 'Echte Anrufannahme über eine Telefonnummer erfordert einen Telefonie-Provider (z. B. Twilio/SIP-Trunk) und einen Server – außerhalb der statischen Prototyp-Architektur', connected: false, lastSync: 'benötigt Backend + Telefonie-Provider', requiresBackend: true },
-  { id: 'email', name: 'E-Mail', desc: 'Support-Postfach support@orkan-system.de', connected: false, lastSync: 'vorerst nicht genutzt' },
-  { id: 'whatsapp', name: 'WhatsApp Business', desc: 'Anfragen über die WhatsApp Business API', connected: false, lastSync: 'vorerst nicht genutzt' },
-  { id: 'formular', name: 'Kontaktformular', desc: 'Formular auf orkan-system.de/kontakt', connected: false, lastSync: 'vorerst nicht genutzt' },
-  { id: 'api', name: 'API / Webhooks', desc: 'Externe Systeme per REST-Schnittstelle anbinden', connected: false, lastSync: 'vorerst nicht genutzt' },
-];
-
-const DOCS = [
-  { id: 'd1', name: 'Prozessdokumentation OrKan Cloud v3.pdf', type: 'PDF', size: '2.4 MB', owner: 'Michael Seiler', updated: daysAgoDate(6) },
-  { id: 'd2', name: 'Etiketten-Templates Übersicht.xlsx', type: 'XLSX', size: '640 KB', owner: 'Sarah Weber', updated: daysAgoDate(2) },
-  { id: 'd3', name: 'Onboarding-Leitfaden Neukunden.docx', type: 'DOCX', size: '1.1 MB', owner: 'Julia Hoffmann', updated: daysAgoDate(15) },
-  { id: 'd4', name: 'API-Dokumentation Wareneingang.pdf', type: 'PDF', size: '890 KB', owner: 'Thomas Klein', updated: daysAgoDate(30) },
-];
-
 let agentConfig = { autoCategorize: true, autoPriority: true, autoKbExpand: true, languages: ['DE', 'EN'] };
 const ROUTING_RULES = [
   { category: 'Individuelle Prozesse', team: 'Kundenprozesse-Team' },
@@ -1462,9 +1408,9 @@ const BO_ICONS = {
 };
 const BO_NAV = [
   { section: 'Übersicht', items: [{ id: 'dashboard', label: 'Dashboard' }] },
-  { section: 'Kundenservice', items: [{ id: 'chats', label: 'Chats' }, { id: 'kb', label: 'Wissensdatenbank' }, { id: 'docs', label: 'Dokumente' }] },
+  { section: 'Kundenservice', items: [{ id: 'chats', label: 'Chats' }, { id: 'kb', label: 'Wissensdatenbank' }] },
   { section: 'Automatisierung', items: [{ id: 'workflows', label: 'Workflows' }, { id: 'agents', label: 'KI-Agenten' }] },
-  { section: 'Verwaltung', items: [{ id: 'users', label: 'Nutzerverwaltung' }, { id: 'roles', label: 'Rollen & Berechtigungen' }, { id: 'integrations', label: 'Integrationen' }] },
+  { section: 'Verwaltung', items: [{ id: 'users', label: 'Nutzerverwaltung' }, { id: 'roles', label: 'Rollen & Berechtigungen' }] },
   { section: 'Einblicke', items: [{ id: 'analytics', label: 'Analysen & Reports' }] },
   { section: 'System', items: [{ id: 'settings', label: 'Systemeinstellungen' }, { id: 'audit', label: 'Audit-Logs' }] },
 ];
@@ -1486,12 +1432,10 @@ const BO_RENDERERS = {
   dashboard: function () {},
   chats: function () { renderChatsSection(); },
   kb: function () { renderKbSection(); },
-  docs: function () { renderDocsSection(); },
   workflows: function () { renderWorkflowsSection(); },
   agents: function () { renderAgentsSection(); },
   users: function () { renderUsersSection(); },
   roles: function () { renderRolesSection(); },
-  integrations: function () { renderIntegrationsSection(); },
   analytics: function () { renderAnalyticsSection(); },
   settings: function () { renderSettingsSection(); },
   audit: function () { renderAuditSection(); },
@@ -1829,75 +1773,6 @@ function openKbDetail(id) {
   overlay.classList.add('open');
 }
 
-// ─── DOKUMENTE ───
-let docsState = { search: '' };
-function renderDocsSection() {
-  const mount = document.getElementById('boPage-docs');
-  if (!mount) return;
-  const rows = DOCS.filter(d => !docsState.search || d.name.toLowerCase().includes(docsState.search.toLowerCase()));
-  mount.innerHTML = `
-    <div class="bo-page-header">
-      <div><div class="bo-page-title">Dokumente</div><div class="bo-page-sub">${DOCS.length} Dateien in der zentralen Dokumentenverwaltung</div></div>
-      <button class="bo-btn primary" onclick="document.getElementById('docUploadInput').click()">+ Datei hochladen</button>
-      <input type="file" id="docUploadInput" style="display:none" onchange="handleDocUpload(event)">
-    </div>
-    <div class="bo-table-card">
-      <div class="bo-toolbar">
-        <input type="text" placeholder="Dokumente durchsuchen…" value="${docsState.search}" oninput="docsState.search=this.value;renderDocsSection()">
-        <div class="bo-toolbar-spacer"></div>
-        <span style="font-size:11.5px;color:var(--gray)">${rows.length} Treffer</span>
-      </div>
-      <div class="bo-table-wrap">
-        <table class="bo-table">
-          <thead><tr><th>Name</th><th>Typ</th><th>Größe</th><th>Hochgeladen von</th><th>Aktualisiert</th></tr></thead>
-          <tbody>${rows.map(d => `<tr onclick="toast('Vorschau für „${d.name}“ würde hier geöffnet.')"><td>${d.name}</td><td>${d.type}</td><td>${d.size}</td><td>${d.owner}</td><td>${fmtRelative(d.updated)}</td></tr>`).join('')}</tbody>
-        </table>
-      </div>
-    </div>`;
-}
-// Hochgeladene Dokumente werden nicht nur gelistet, sondern auch als durchsuchbarer
-// Wissenseintrag registriert – der Chatbot kann Kundenfragen damit direkt beantworten.
-function handleDocUpload(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const isText = /\.(txt|md|csv)$/i.test(file.name) || file.type.startsWith('text/');
-  DOCS.unshift({ id: 'd' + (DOCS.length + 1), name: file.name, type: (file.name.split('.').pop() || 'DAT').toUpperCase(), size: (file.size / 1024).toFixed(0) + ' KB', owner: 'Sie', updated: new Date() });
-  logAudit('Sie', `Dokument „${file.name}" hochgeladen.`, 'Dokumente');
-
-  const DOC_STOPWORDS = new Set(['dass', 'diese', 'dieser', 'dieses', 'dabei', 'damit', 'einer', 'eines', 'einem', 'einen', 'sowie', 'sowohl', 'werden', 'wurde', 'wurden', 'haben', 'sind', 'auch', 'oder', 'aber', 'nicht', 'kann', 'können', 'über', 'unter', 'nach', 'ohne', 'jede', 'jeder', 'jedes']);
-  const registerDocKnowledge = (contentText) => {
-    const nameWords = file.name.toLowerCase().replace(/\.[a-z0-9]+$/, '').split(/[^a-zäöüß0-9]+/).filter(w => w.length > 3);
-    const contentWords = contentText
-      ? [...new Set(contentText.toLowerCase().split(/[^a-zäöüß0-9]+/).filter(w => w.length > 3 && !DOC_STOPWORDS.has(w)))].slice(0, 25)
-      : [];
-    const words = [...new Set([...nameWords, ...contentWords])];
-    const kbId = 'doc' + Date.now();
-    const preview = contentText
-      ? contentText.slice(0, 600)
-      : 'Dieses Dokument liegt in einem Binärformat vor – der Prototyp durchsucht daher Dateiname und Metadaten, nicht den Volltext.';
-    KB.push({
-      id: kbId, cat: 'Dokumente', keywords: words.length ? words : ['dokument'],
-      title: file.name,
-      answer: `<h4>${file.name}</h4><p>Dieses Dokument wurde im Backoffice hochgeladen und ist jetzt auch im Support-Chat auffindbar.</p><p style="margin-top:6px;color:var(--gray);font-size:12px">${preview}</p>`
-    });
-    let docCat = CATEGORIES.find(c => c.name === 'Dokumente');
-    if (!docCat) { docCat = { name: 'Dokumente', icon: '', ids: [] }; CATEGORIES.push(docCat); }
-    docCat.ids.push(kbId);
-    buildCategories();
-    toast(`„${file.name}" ist jetzt im Support-Chat durchsuchbar.`);
-  };
-
-  if (isText) {
-    const reader = new FileReader();
-    reader.onload = ev => registerDocKnowledge(ev.target.result);
-    reader.readAsText(file);
-  } else {
-    registerDocKnowledge(null);
-  }
-  e.target.value = '';
-  renderDocsSection();
-}
-
 // ─── WORKFLOWS ───
 function renderWorkflowsSection() {
   const mount = document.getElementById('boPage-workflows');
@@ -2122,30 +1997,6 @@ function togglePermission(roleName, perm, el) {
   logAudit('Sie', `Berechtigung „${perm}" für Rolle „${roleName}" ${el.checked ? 'erteilt' : 'entzogen'}.`, 'Rollen & Berechtigungen');
 }
 
-// ─── INTEGRATIONEN ───
-function renderIntegrationsSection() {
-  const mount = document.getElementById('boPage-integrations');
-  if (!mount) return;
-  mount.innerHTML = `
-    <div class="bo-page-header"><div><div class="bo-page-title">Integrationen</div><div class="bo-page-sub">Zentrale Verwaltung aller Kommunikationskanäle</div></div></div>
-    <div class="bo-int-grid">${INTEGRATIONS.map(i => `
-      <div class="bo-int-card">
-        <div class="bo-int-header"><span class="bo-int-name">${i.name}</span><span class="bo-switch ${i.connected ? 'on' : ''}" style="${i.requiresBackend ? 'opacity:.4;cursor:not-allowed' : ''}" onclick="toggleIntegration('${i.id}')"></span></div>
-        <div class="bo-int-desc">${i.desc}</div>
-        <div class="bo-int-status"><span class="freshness-dot" style="background:${i.connected ? '#4ade80' : i.requiresBackend ? '#f59e0b' : '#d1d5db'}"></span>${i.connected ? 'Verbunden · ' + i.lastSync : i.requiresBackend ? i.lastSync : 'Nicht verbunden'}</div>
-      </div>`).join('')}</div>`;
-}
-function toggleIntegration(id) {
-  const i = INTEGRATIONS.find(x => x.id === id);
-  if (i.requiresBackend) {
-    toast(`„${i.name}" erfordert in Produktivbetrieb einen echten Telefonie-Provider und einen Server – das lässt sich in diesem statischen Prototyp nicht real verbinden.`);
-    return;
-  }
-  i.connected = !i.connected;
-  i.lastSync = i.connected ? 'gerade eben' : 'nicht verbunden';
-  logAudit('Sie', `Integration „${i.name}" ${i.connected ? 'verbunden' : 'getrennt'}.`, 'Integrationen');
-  renderIntegrationsSection();
-}
 
 // ─── ANALYSEN & REPORTS ───
 function buildSparkline(values, w = 560, h = 120) {
@@ -3110,21 +2961,6 @@ function autoResize(ta) {
 
 function clearChat() {
   if (confirm('Chat-Verlauf löschen?')) addWelcomeMessage();
-}
-
-function exportChat() {
-  let text = `OrKan Cloud – Support-Chat Export\nDatum: ${new Date().toLocaleString('de-DE')}\n${'─'.repeat(50)}\n\n`;
-  document.querySelectorAll('#messagesWrap .msg').forEach(m => {
-    const speaker = m.classList.contains('user') ? 'Kunde' : 'Assistent';
-    const bubble = m.querySelector('.msg-bubble');
-    text += speaker + ': ' + bubble.innerText.split('\n').filter(l => l.trim()).join(' ').substring(0, 200) + '\n\n';
-  });
-  text += `\n${'─'.repeat(50)}\nStatistiken:\n- Fragen beantwortet: ${stats.answered}\n- Eskalationen: ${stats.escalated}`;
-  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `orkan-chat-${Date.now()}.txt`;
-  a.click();
 }
 
 initApp();
