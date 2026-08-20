@@ -927,6 +927,44 @@ const KB = [
       <li><strong>Copy</strong> saves time for similar articles (e.g. same drill, different size) – description and supplier are kept</li>
       <li>Use the search bar to quickly find articles again</li>
     </ul>` },
+  { id: 'art4', cat: 'Artikel & Lagerplätze', keywords: ['artikel anlegen wege','eingabe beibehalten','artikelserie anlegen','mehrere ähnliche artikel','artikel schnell hintereinander anlegen'],
+    title: 'Vier Wege, einen Artikel anzulegen',
+    answer: `<h4>Manuell, per Import, per Kopie – oder aus dem Pool</h4>
+    <ul>
+      <li><strong>Manuell erstellen</strong>: Pflichtfelder sind mit einem Stern (*) markiert, alle anderen Felder sind optional</li>
+      <li><strong>Excel-Import</strong>: geeignet für große Datenmengen (siehe Importvorlage)</li>
+      <li><strong>Kopieren</strong>: übernimmt einen bestehenden, ähnlichen Artikel komplett inkl. Bild und Lager MIN/MAX – nur abweichende Felder müssen angepasst werden</li>
+      <li><strong>Geteilter Artikel-Pool</strong> (historisch): war früher kundenübergreifend durchsuchbar, ist aktuell wegen unzureichender Datenqualität deaktiviert</li>
+    </ul>
+    <p>Tipp: Mit der Option <strong>„Eingabe beibehalten"</strong> übernimmt das Formular nach dem Speichern alle Felder außer Artikelnummer und Lieferant in ein neues, leeres Formular – ideal, um z. B. mehrere Abmessungen derselben Schraube schnell hintereinander anzulegen.</p>`,
+    titleEN: 'Four ways to create an article',
+    answerEN: `<h4>Manually, via import, by copying – or from the pool</h4>
+    <ul>
+      <li><strong>Create manually</strong>: required fields are marked with an asterisk (*), all other fields are optional</li>
+      <li><strong>Excel import</strong>: suited for large volumes of data</li>
+      <li><strong>Copy</strong>: takes over an existing similar article completely, including image and stock MIN/MAX – only the differing fields need to be adjusted</li>
+      <li><strong>Shared article pool</strong> (historical): used to be searchable across customers, currently deactivated due to insufficient data quality</li>
+    </ul>
+    <p>Tip: the <strong>"Keep input"</strong> option carries over all fields except article number and supplier into a new, empty form after saving – ideal for quickly creating several sizes of the same screw in a row.</p>` },
+  { id: 'art5', cat: 'Artikel & Lagerplätze', keywords: ['interne artikelnummer','nummernkreis','artikelnummer automatisch','artikelnummer vergeben','artikelnummer frei wählen'],
+    title: 'Interne Artikelnummer und Nummernkreis',
+    answer: `<h4>Wie die interne Artikelnummer vergeben wird</h4>
+    <ul>
+      <li>Im Standard vergibt die OrKan Cloud automatisch eine vierstellige interne Artikelnummer</li>
+      <li>Über <strong>Einstellungen → Lageroptionen</strong> lässt sich ein eigener Nummernkreis definieren, z. B. „LAG-(0000)" – alles außerhalb der Klammer ist ein fester Prefix, innerhalb läuft die Ziffernfolge automatisch hoch (Stellenzahl frei wählbar)</li>
+      <li>Ist ein Klammer-Muster hinterlegt, kann die Nummer bei manueller Neuanlage <strong>nicht frei vergeben</strong> werden – ohne Muster ist sie frei editierbar</li>
+      <li>Die interne Artikelnummer ist kein Pflichtfeld, wird in der Praxis aber empfohlen</li>
+      <li>Der Zähler läuft nur aufsteigend: eine übersprungene Nummer kann später nicht nachträglich vergeben werden</li>
+    </ul>`,
+    titleEN: 'Internal article number and number ranges',
+    answerEN: `<h4>How the internal article number is assigned</h4>
+    <ul>
+      <li>By default, OrKan Cloud automatically assigns a four-digit internal article number</li>
+      <li>Under <strong>Settings → Warehouse options</strong> you can define your own number range, e.g. "LAG-(0000)" – everything outside the brackets is a fixed prefix, the digits inside count up automatically (digit count is configurable)</li>
+      <li>If a bracket pattern is set, the number <strong>cannot be freely assigned</strong> on manual creation – without a pattern it is fully editable</li>
+      <li>The internal article number isn't a required field, but is recommended in practice</li>
+      <li>The counter only ever increases: a skipped number cannot be assigned retroactively</li>
+    </ul>` },
 
   // Import & Lieferanten-Anbindung
   { id: 'imp1', cat: 'Import & Lieferanten', keywords: ['import','excel','zip','artikel importieren','bilder importieren'],
@@ -982,6 +1020,96 @@ const KB = [
       <li>The <strong>shop URL</strong> is essential: OrKan Cloud uses it to access the supplier's shop directly when finalizing an order</li>
       <li>Preferred delivery days (e.g. "Fridays only") can be stored</li>
     </ul>` },
+  { id: 'lief2', cat: 'Import & Lieferanten', keywords: ['shop-url','schnittstellen url','ids schnittstelle','sak-connect','lieferant url finden','url encoding umlaute'],
+    title: 'Shop-URL vs. Schnittstellen-URL',
+    answer: `<h4>Was hinter der „Shop-URL" wirklich steckt</h4>
+    <p>Die „Shop-URL" beim Lieferanten ist <strong>nicht</strong> die normale Website-Adresse, sondern die URL der <strong>IDS-/SAK-Connect-Schnittstelle</strong>.</p>
+    <ul>
+      <li>Über das Lupe-Symbol lässt sich in der bestehenden Schnittstellendatenbank nach dem Händlernamen suchen</li>
+      <li>Kein Treffer? Dann entweder die IDS-URL aus einer bereits genutzten Branchensoftware übernehmen, oder den Händler direkt danach fragen</li>
+      <li>Bei Problemen mit Sonderzeichen/Umlauten in der Datenübermittlung hilft oft die Option <strong>„URL-Encoding"</strong> als erster Schritt</li>
+    </ul>`,
+    titleEN: 'Shop URL vs. interface URL',
+    answerEN: `<h4>What the "shop URL" really is</h4>
+    <p>A supplier's "shop URL" is <strong>not</strong> the regular website address, but the URL of the <strong>IDS/SAK-Connect interface</strong>.</p>
+    <ul>
+      <li>Use the search icon to look up the retailer's name in the existing interface database</li>
+      <li>No match? Either reuse the IDS URL from a branch software already in use, or ask the retailer directly</li>
+      <li>For issues with special characters/umlauts in data transfer, enabling <strong>"URL encoding"</strong> is often the first fix to try</li>
+    </ul>` },
+  { id: 'lief3', cat: 'Import & Lieferanten', keywords: ['liefertage','offset lieferzeit','lieferant liefertag','vorlaufzeit bestellung','wann kommt die lieferung'],
+    title: 'Liefertage und Offset (Vorlaufzeit) einstellen',
+    answer: `<h4>Liefertage und Vorlaufzeit je Lieferant</h4>
+    <p>Pro Lieferant wird hinterlegt, an welchen Wochentagen geliefert wird sowie ein <strong>Offset</strong> in Tagen – die Vorlaufzeit zwischen Bestellung und Lieferung.</p>
+    <ul>
+      <li>Offset 0: Bestellung heute → Lieferung morgen</li>
+      <li>Offset 1: Bestellung heute → Lieferung übermorgen</li>
+      <li>Fällt der errechnete Termin auf einen Tag ohne Lieferung, verschiebt sich der Termin automatisch auf den nächsten passenden Liefertag</li>
+    </ul>
+    <p>Hinweis: Ein fester Bestellrhythmus (z. B. „nur alle zwei Wochen sammeln und bestellen") lässt sich technisch nicht erzwingen – das ist eine organisatorische Absprache, die am besten persönlich mit uns abgestimmt wird.</p>`,
+    titleEN: 'Setting delivery days and offset (lead time)',
+    answerEN: `<h4>Delivery days and lead time per supplier</h4>
+    <p>Each supplier stores which weekdays it delivers on, plus an <strong>offset</strong> in days – the lead time between order and delivery.</p>
+    <ul>
+      <li>Offset 0: order today → delivery tomorrow</li>
+      <li>Offset 1: order today → delivery the day after tomorrow</li>
+      <li>If the calculated date falls on a non-delivery day, it automatically shifts to the next matching delivery day</li>
+    </ul>
+    <p>Note: a fixed ordering rhythm (e.g. "only collect and order every two weeks") cannot be enforced technically – that's an organizational arrangement best worked out with us personally.</p>` },
+  { id: 'imp3', cat: 'Import & Lieferanten', keywords: ['importieren aktualisieren unterschied','nur import','nur aktualisieren','import logik','was macht importieren und aktualisieren'],
+    title: 'Importieren, Aktualisieren oder beides?',
+    answer: `<h4>Die drei Import-Optionen im Detail</h4>
+    <ul>
+      <li><strong>Importieren</strong>: Es werden ausschließlich <strong>neue</strong> Artikel angelegt. Bereits bestehende Datensätze werden niemals verändert, selbst wenn sich z. B. Min/Max geändert hat.</li>
+      <li><strong>Aktualisieren</strong>: Es werden ausschließlich <strong>bestehende</strong> Datensätze verändert. Es wird niemals ein neuer Artikel angelegt, auch wenn kein Treffer gefunden wird.</li>
+      <li><strong>Importieren und Aktualisieren</strong>: beides gleichzeitig – neue Datensätze werden angelegt, bestehende aktualisiert.</li>
+    </ul>
+    <p>Die Aktualisierung lässt sich zusätzlich einschränken, z. B. „nur Preise aktualisieren" oder „nur Min/Max aktualisieren" – alle anderen Felder bleiben dann unangetastet.</p>`,
+    titleEN: 'Import, update, or both?',
+    answerEN: `<h4>The three import options in detail</h4>
+    <ul>
+      <li><strong>Import</strong>: only <strong>new</strong> articles are created. Existing records are never changed, even if e.g. min/max has changed.</li>
+      <li><strong>Update</strong>: only <strong>existing</strong> records are changed. A new article is never created, even if no match is found.</li>
+      <li><strong>Import and update</strong>: both at once – new records are created, existing ones are updated.</li>
+    </ul>
+    <p>Updates can be further restricted, e.g. "update prices only" or "update min/max only" – all other fields remain untouched.</p>` },
+  { id: 'imp4', cat: 'Import & Lieferanten', keywords: ['abgleichsfeld','lieferantenwechsel import','interne artikelnummer abgleich','doppelte artikel import','lieferant wechseln import'],
+    title: 'Abgleichsfeld beim Import – besonders bei Lieferantenwechsel wichtig',
+    answer: `<h4>Worüber die Cloud prüft, ob ein Artikel schon existiert</h4>
+    <p>Beim Import wird angegeben, anhand welches Feldes geprüft wird, ob ein Datensatz bereits existiert: interne Artikelnummer, Lieferanten-Artikelnummer oder EAN.</p>
+    <p><strong>Wichtig bei einem Lieferantenwechsel:</strong> Der Abgleich sollte dann immer über die <strong>interne Artikelnummer</strong> erfolgen. Wird stattdessen über die Lieferanten-Artikelnummer abgeglichen, findet die Cloud den bestehenden Artikel nicht (die neue Nummer existiert ja noch nicht) und legt fälschlicherweise einen doppelten, neuen Artikel an – der alte Bestand bleibt dann am ursprünglichen Datensatz hängen.</p>`,
+    titleEN: 'The matching field on import – especially important when switching suppliers',
+    answerEN: `<h4>What the Cloud checks to see whether an article already exists</h4>
+    <p>On import you specify which field is used to check whether a record already exists: internal article number, supplier article number, or EAN.</p>
+    <p><strong>Important when switching suppliers:</strong> matching should always use the <strong>internal article number</strong>. If matching is done via the supplier article number instead, the Cloud won't find the existing article (the new number doesn't exist yet) and incorrectly creates a duplicate new article – the old stock then stays stuck on the original record.</p>` },
+  { id: 'imp5', cat: 'Import & Lieferanten', keywords: ['satzart','st la sf','gesperrter artikel','lieferantenalternative','artikel löschen import','massenlöschung'],
+    title: 'Satzarten beim Import (ST, LA, SF, LÖ)',
+    answer: `<h4>Was die Satzarten bedeuten</h4>
+    <ul>
+      <li><strong>ST – Standardlieferant</strong>: normaler, frei bearbeitbarer Artikel-Import</li>
+      <li><strong>LA – Lieferantenalternative</strong>: hinterlegt einen Zweit-/Alternativlieferanten zu einem Artikel; beim Bestellen wird zunächst immer der Standardlieferant verwendet</li>
+      <li><strong>SF – gesperrter Artikel</strong>: wird verwendet, wenn ein Großhändler Artikel für Sie bereitstellt. Lieferant und Import lassen sich dann nicht überschreiben, nur Min/Max bleiben änderbar</li>
+      <li><strong>LÖ/DE – Löschen</strong>: kennzeichnet Datensätze, die per Import in einer Massenlöschung entfernt werden sollen</li>
+    </ul>`,
+    titleEN: 'Record types on import (ST, LA, SF, LÖ)',
+    answerEN: `<h4>What the record types mean</h4>
+    <ul>
+      <li><strong>ST – standard supplier</strong>: normal, freely editable article import</li>
+      <li><strong>LA – alternative supplier</strong>: stores a secondary/alternative supplier for an article; ordering always uses the standard supplier first</li>
+      <li><strong>SF – locked article</strong>: used when a wholesaler provides articles for you. Supplier and import can't be overwritten, only min/max stay editable</li>
+      <li><strong>LÖ/DE – delete</strong>: marks records to be removed in a bulk deletion via import</li>
+    </ul>` },
+  { id: 'imp6', cat: 'Import & Lieferanten', keywords: ['export nur gefilterte artikel','drucken filter','falsche artikel exportiert','export bezieht sich auf filter','warum fehlen artikel beim export'],
+    title: 'Export und Drucken beziehen sich immer auf den aktuellen Filter',
+    answer: `<h4>Häufige Fehlerquelle: aktiver Filter</h4>
+    <p>Export und Drucken beziehen sich <strong>immer auf die aktuell gefilterte/angezeigte Artikelmenge</strong>, nicht automatisch auf den Gesamtbestand.</p>
+    <p>Ist z. B. gerade nach „Fittings" gefiltert (154 von 1.220 Artikeln), exportiert oder druckt ein Klick nur diese 154 Artikel. Gesuchte Artikel außerhalb des Filters tauchen dabei nicht auf.</p>
+    <p><strong>Tipp:</strong> Vor dem Export/Druck immer prüfen, ob der Filter korrekt gesetzt bzw. entfernt ist.</p>`,
+    titleEN: 'Export and print always use the current filter',
+    answerEN: `<h4>A common source of errors: an active filter</h4>
+    <p>Export and print <strong>always apply to the currently filtered/displayed set of articles</strong>, not automatically to the entire stock.</p>
+    <p>If, for example, you're currently filtered to "fittings" (154 of 1,220 articles), a click on export or print only affects those 154. Articles outside the filter won't show up.</p>
+    <p><strong>Tip:</strong> always check that the filter is set or cleared correctly before exporting or printing.</p>` },
 
   // Zwei-Etiketten-System & Bestellvorschlag
   { id: 'etk1', cat: 'Etiketten & Bestellung', keywords: ['etikett','blaues etikett','weißes etikett','kanban','zwei etiketten'],
@@ -1035,6 +1163,38 @@ const KB = [
       <li>Multiple templates can exist in parallel</li>
       <li>When printing an article, the matching template is selected → output as <strong>PDF</strong> for the laser printer</li>
     </ul>` },
+  { id: 'etk4', cat: 'Etiketten & Bestellung', keywords: ['scanner bestellung','scan artikelnummer','scanner funktioniert nicht','cursor scan feld','scanner konfiguration','return enter scanner'],
+    title: 'Bestellung per Scanner erfassen',
+    answer: `<h4>So funktioniert der Scanner-Workflow</h4>
+    <ul>
+      <li>Nach Klick auf <strong>„Erstellen"</strong> springt der Cursor automatisch in das blinkende Scan-Feld</li>
+      <li>Ein korrekt konfigurierter OrKan-Scanner sendet nach jedem Scan automatisch ein Enter-Signal – ein zusätzliches manuelles Enter ist nicht nötig und kann sogar Fehlfunktionen verursachen</li>
+      <li>Landen gescannte Artikel nicht in der Liste, liegt meist ein Konfigurationsfehler vor: Der Scanner muss über einen speziellen Reset-QR-Code aus der Anleitung zurückgesetzt werden</li>
+      <li>Springt der Cursor nach einem System-Update nicht mehr automatisch ins Scan-Feld, ist das zuerst zu prüfen, bevor ein Scanner-Defekt vermutet wird</li>
+    </ul>`,
+    titleEN: 'Capturing an order via scanner',
+    answerEN: `<h4>How the scanner workflow works</h4>
+    <ul>
+      <li>After clicking <strong>"Create"</strong>, the cursor automatically jumps into the blinking scan field</li>
+      <li>A correctly configured OrKan scanner automatically sends an Enter signal after each scan – an extra manual Enter isn't needed and can even cause malfunctions</li>
+      <li>If scanned articles don't appear in the list, it's usually a scanner configuration issue: reset it using the special reset QR code from the manual</li>
+      <li>If the cursor no longer jumps into the scan field automatically after a system update, check that first before assuming a scanner defect</li>
+    </ul>` },
+  { id: 'etk5', cat: 'Etiketten & Bestellung', keywords: ['kommissionsbestellung','projektbezogene bestellung','bestellung für baustelle','k bestellung','material für projekt bestellen'],
+    title: 'Kommissionsbestellung für ein Projekt',
+    answer: `<h4>Bestellung speziell für eine Baustelle</h4>
+    <p>Kommissionsbestellungen betreffen Artikel, die gezielt für ein Projekt bzw. eine Baustelle bestellt werden – auch wenn derselbe Artikel grundsätzlich im eigenen Lager geführt wird.</p>
+    <ul>
+      <li><strong>Direkt in der Cloud</strong>: als eigene Kommissionsbestellung mit Projektbezug – in der Praxis derzeit nicht immer zuverlässig (z. B. bei der Anzeige von Artikelbildern im Wareneingang)</li>
+      <li><strong>Empfohlener Weg</strong>: Die Bestellung wird ganz normal über die eigene Branchensoftware ausgelöst und das Ergebnis (z. B. als PDF) direkt in den OrKan-Kalender gezogen – sie erscheint dann am erwarteten Liefertag und kann dort wie eine normale Bestellung bestätigt werden, ohne den Artikel doppelt zu pflegen</li>
+    </ul>`,
+    titleEN: 'Commission order for a project',
+    answerEN: `<h4>An order placed specifically for a job site</h4>
+    <p>Commission orders concern articles ordered specifically for a project or job site – even if the same article is generally kept in your own warehouse.</p>
+    <ul>
+      <li><strong>Directly in the Cloud</strong>: as a dedicated commission order linked to a project – in practice not always fully reliable yet (e.g. article images not showing during goods receipt)</li>
+      <li><strong>Recommended way</strong>: place the order as usual through your branch software and pull the result (e.g. as a PDF) directly into the OrKan calendar – it then appears on the expected delivery day and can be confirmed there like a normal order, without maintaining the article twice</li>
+    </ul>` },
 
   // Wareneingang & Lagerbestand
   { id: 'we1', cat: 'Wareneingang & Bestand', keywords: ['wareneingang','einbuchen','anlieferung','lieferschein'],
@@ -1063,6 +1223,58 @@ const KB = [
     answerEN: `<h4>Stock levels at a glance</h4>
     <p>The <strong>"Stock"</strong> tab shows, per article, the current actual stock as well as the inventory value relative to stock MIN and stock MAX.</p>
     <p>The <strong>"Orders"</strong> tab additionally provides an overview of all orders placed.</p>` },
+  { id: 'we3', cat: 'Wareneingang & Bestand', keywords: ['lagerwert berechnung','warenwert schätzen','näherungswert lagerwert','bestandsführung nicht aktiv','wie wird der lagerwert berechnet'],
+    title: 'Lagerwert ohne aktive Bestandsführung',
+    answer: `<h4>Wie der Lagerwert geschätzt wird</h4>
+    <p>Auch ohne aktivierte Bestandsführung liefert die OrKan Cloud einen groben Näherungswert, sofern EK-Preise sowie Lager MIN/MAX gepflegt sind: Für jeden Artikel wird der Mittelwert aus Min und Max mit dem Einkaufspreis multipliziert und über alle Artikel summiert.</p>
+    <p>Beispiel: Bei Min 1, Max 2 und EK-Preis 0,70 € ergibt sich ein angenommener Warenwert von 1,5 × 0,70 € = 1,05 € pro Artikel. Diese Schätzung liegt erfahrungsgemäß bereits nahe am tatsächlichen Wert.</p>`,
+    titleEN: 'Inventory value without active stock tracking',
+    answerEN: `<h4>How the inventory value is estimated</h4>
+    <p>Even without active stock tracking, OrKan Cloud provides a rough estimate as long as purchase prices and stock MIN/MAX are maintained: for each article, the average of min and max is multiplied by the purchase price, then summed across all articles.</p>
+    <p>Example: with min 1, max 2 and a purchase price of €0.70, the estimated value is 1.5 × €0.70 = €1.05 per article. In practice this estimate is usually already fairly close to the actual value.</p>` },
+  { id: 'we4', cat: 'Wareneingang & Bestand', keywords: ['inventur','bestand zählen','inventurliste','app inventur scannen','jahresinventur'],
+    title: 'Inventur durchführen',
+    answer: `<h4>Zwei Wege zur Inventur</h4>
+    <ul>
+      <li><strong>Manuell, ohne App</strong>: Artikelliste nach Lagerort sortieren/filtern und mit den Spalten Lagerort, Lagereinheit, Lager MIN/MAX exportieren. In der Excel-Liste wird die gezählte Menge handschriftlich nachgetragen.</li>
+      <li><strong>Digital über die App</strong>: bei aktivierter Bestandsführung kann im App-Menüpunkt „Inventur" jeder Artikel durchgescannt werden – die gescannte Menge wird direkt als aktueller Bestand übernommen. Anschließend ist wieder ein Gesamtexport möglich.</li>
+    </ul>`,
+    titleEN: 'Performing a stock count',
+    answerEN: `<h4>Two ways to run an inventory count</h4>
+    <ul>
+      <li><strong>Manually, without the app</strong>: sort/filter the article list by storage location and export it with the columns location, unit, and stock MIN/MAX. The counted quantity is then noted by hand in the Excel list.</li>
+      <li><strong>Digitally via the app</strong>: with active stock tracking, every article can be scanned under the app's "Inventory" menu – the scanned quantity is taken directly as the current stock. A full export is possible afterwards.</li>
+    </ul>` },
+
+  // Kalender & Statussystem
+  { id: 'kal1', cat: 'Wareneingang & Bestand', keywords: ['kalender farben','ampelsystem','rot gelb grün grau','kalender kürzel','b k s bedeutung','statusfarben kalender'],
+    title: 'Farben und Kürzel im Kalender (B, K, S)',
+    answer: `<h4>Einheitliches Farb- und Kürzelsystem</h4>
+    <ul>
+      <li><strong>B</strong> = Bestellung, <strong>K</strong> = Kommissionsbestellung (nur bei aktivem Projekte-Modul), <strong>S</strong> = Service-/Wartungstermin (nur bei aktiver Maschinenverwaltung)</li>
+      <li><strong>Grün</strong>: Vorgang offen, Termin liegt noch in der Zukunft</li>
+      <li><strong>Gelb</strong>: Vorgang offen, Termin ist heute</li>
+      <li><strong>Rot</strong>: Vorgang offen und überfällig</li>
+      <li><strong>Grau</strong>: Vorgang bestätigt/abgeschlossen, wandert ins Archiv</li>
+    </ul>`,
+    titleEN: 'Calendar colors and abbreviations (B, K, S)',
+    answerEN: `<h4>One consistent color and abbreviation system</h4>
+    <ul>
+      <li><strong>B</strong> = order, <strong>K</strong> = commission order (only with the projects module active), <strong>S</strong> = service/maintenance appointment (only with machine management active)</li>
+      <li><strong>Green</strong>: open, due date still in the future</li>
+      <li><strong>Yellow</strong>: open, due date is today</li>
+      <li><strong>Red</strong>: open and overdue</li>
+      <li><strong>Grey</strong>: confirmed/completed, moves to the archive</li>
+    </ul>` },
+  { id: 'kal2', cat: 'Wareneingang & Bestand', keywords: ['wareneingangsdatum ändert sich','verspätete lieferung datum','rote bestellung bestätigen','datum ändert sich bei bestätigung'],
+    title: 'Warum sich das Wareneingangsdatum bei einer verspäteten Lieferung ändert',
+    answer: `<h4>Bestätigung setzt immer das aktuelle Datum</h4>
+    <p>Wird ein rotes (überfälliges) B bestätigt, wird der Eintrag grau und wandert ins Archiv – gleichzeitig wird das Wareneingangsdatum automatisch auf den <strong>Tag der Bestätigung</strong> gesetzt, nicht auf das ursprünglich geplante Datum.</p>
+    <p>Beispiel: War eine Lieferung für letzten Montag geplant, trifft aber erst heute ein, wird beim Bestätigen auch der Wareneingangstag auf „heute" gesetzt.</p>`,
+    titleEN: 'Why the goods-receipt date changes on a late delivery',
+    answerEN: `<h4>Confirmation always sets the current date</h4>
+    <p>Confirming a red (overdue) B turns the entry grey and moves it to the archive – at the same time, the goods-receipt date is automatically set to the <strong>day of confirmation</strong>, not the originally planned date.</p>
+    <p>Example: if a delivery was planned for last Monday but only arrives today, confirming it also sets the goods-receipt date to "today".</p>` },
 
   // Gebrauchsgutverwaltung
   { id: 'geb1', cat: 'Gebrauchsgut', keywords: ['maschine','gebrauchsgut','werkzeug','fahrzeug zuordnen','buchung'],
@@ -1082,6 +1294,109 @@ const KB = [
       <li>Create <strong>"reservations"</strong> for planned future use</li>
       <li><strong>"Service and maintenance"</strong>: store recurring appointments such as annual service or a hose-press check</li>
     </ul>` },
+  { id: 'geb2', cat: 'Gebrauchsgut', keywords: ['maschine buchen','rollenlogik buchung','monteur bucht maschine','administrator buchung','wer darf maschine buchen'],
+    title: 'Maschinen buchen – wer darf was?',
+    answer: `<h4>Buchungsrechte je Rolle</h4>
+    <ul>
+      <li>Maschinen können ohne App durch einen Lageristen über die Web-Oberfläche gebucht werden: Maschine auswählen → „Buchen" → Zielort wählen → bestätigen</li>
+      <li>Ein <strong>Administrator</strong> kann jede Maschine auf jeden beliebigen Standort oder jede Person buchen</li>
+      <li>Ein <strong>normaler Monteur</strong> kann über die App ausschließlich Maschinen zu sich selbst buchen („Entnahme") – niemals im Namen einer anderen Person</li>
+      <li>Eine vollständige Buchungshistorie ist jederzeit einsehbar und als Excel-Liste exportierbar</li>
+    </ul>`,
+    titleEN: 'Booking machines – who can do what?',
+    answerEN: `<h4>Booking rights per role</h4>
+    <ul>
+      <li>Machines can be booked without the app by a warehouse worker via the web interface: select machine → "Book" → choose destination → confirm</li>
+      <li>An <strong>administrator</strong> can book any machine to any location or person</li>
+      <li>A <strong>regular technician</strong> can only book machines to themselves via the app ("withdrawal") – never on behalf of someone else</li>
+      <li>A complete booking history is available at any time and can be exported as an Excel list</li>
+    </ul>` },
+  { id: 'geb3', cat: 'Gebrauchsgut', keywords: ['service wartung','wartungsintervall','e-check','vde prüfung','wartungstermin kalender','folgetermin wartung'],
+    title: 'Service- und Wartungstermine für Maschinen',
+    answer: `<h4>Wiederkehrende Wartung planen</h4>
+    <ul>
+      <li>Pro Wartungsart werden Art, Intervall und ggf. Dauer festgelegt (z. B. jährliche VDE-Prüfung/E-Check)</li>
+      <li>Nach dem Speichern erscheint der Termin farbcodiert im Kalender (grün/gelb/rot, analog zu Bestellungen)</li>
+      <li>Bei Bestätigung einer Wartung wird automatisch ein <strong>Folgetermin</strong> auf Basis des Intervalls angelegt</li>
+      <li>Standarddokumente wie Prüfberichte lassen sich vor und nach der Wartung digital hinterlegen</li>
+      <li>Für einmalige Vorfälle ohne festes Intervall kann ein Eintrag ganz ohne Intervall angelegt werden</li>
+    </ul>`,
+    titleEN: 'Service and maintenance appointments for machines',
+    answerEN: `<h4>Planning recurring maintenance</h4>
+    <ul>
+      <li>For each maintenance type you define type, interval, and optionally duration (e.g. annual VDE/electrical safety inspection)</li>
+      <li>After saving, the appointment appears color-coded in the calendar (green/yellow/red, same as orders)</li>
+      <li>Confirming a maintenance appointment automatically creates a <strong>follow-up appointment</strong> based on the interval</li>
+      <li>Standard documents such as inspection reports can be stored digitally before and after maintenance</li>
+      <li>For one-off incidents without a fixed interval, an entry can be created without any interval</li>
+    </ul>` },
+  { id: 'geb4', cat: 'Gebrauchsgut', keywords: ['schlüsselverwaltung','schlüssel etikett','schlüsselanhänger','schlüssel suche adresse','schlüssel sicherheit'],
+    title: 'Schlüsselverwaltung – Sicherheit und Suche',
+    answer: `<h4>Warum Schlüssel anders behandelt werden als Maschinen</h4>
+    <p>OrKan bietet spezielle, in der Mitte gefaltete Schlüsselanhänger:</p>
+    <ul>
+      <li><strong>Außenseite</strong> (sichtbar): nur eine Nummer und ein QR-Code – bewusst ohne jede Adress- oder Kundeninformation</li>
+      <li><strong>Innenseite</strong> (nur beim Öffnen sichtbar): die tatsächliche Kundenadresse</li>
+      <li>Grund: Ein gestohlener Schlüsselkasten darf niemals sofortigen Zugang zur zugehörigen Adresse offenbaren</li>
+      <li>Da im Alltag meist über die Adresse gesucht wird (nicht über die interne Schlüsselnummer), sollte die Adresse als Suchkriterium in der Standardansicht verfügbar sein</li>
+      <li>Optional lässt sich ein Finderlohn-Hinweis mit Kontaktinformation aufdrucken</li>
+    </ul>`,
+    titleEN: 'Key management – security and search',
+    answerEN: `<h4>Why keys are handled differently from machines</h4>
+    <p>OrKan offers special key tags that fold in the middle:</p>
+    <ul>
+      <li><strong>Outside</strong> (visible): only a number and a QR code – deliberately without any address or customer information</li>
+      <li><strong>Inside</strong> (only visible when unfolded): the actual customer address</li>
+      <li>Reason: a stolen key box must never reveal immediate access to the associated address</li>
+      <li>Since day-to-day searches are usually done by address (not the internal key number), address should be available as a search criterion in the default view</li>
+      <li>A "finder's reward" note with contact information can optionally be printed</li>
+    </ul>` },
+  { id: 'geb5', cat: 'Gebrauchsgut', keywords: ['anlage buchen','mehrere geräte zusammen','kernbohrset','flightcase','gebrauchsgüter bündeln'],
+    title: 'Anlagen – mehrere Gebrauchsgüter gemeinsam buchen',
+    answer: `<h4>Mehrere Geräte als eine Einheit</h4>
+    <p>„Anlagen" fassen mehrere Einzel-Gebrauchsgüter zu einer gemeinsam buchbaren Einheit zusammen, wenn diese praktisch immer zusammen benötigt werden.</p>
+    <p>Beispiel: Ein Kernbohrset aus Kernbohrgerät, Befestigungsset, Staubsauger und Stromumwandler wird als eine „Anlage" definiert – statt vier Einzelbuchungen genügt ein einziger Scan. Jedes Einzelteil bleibt dabei technisch ein eigenständiges Gebrauchsgut mit eigener Wartungshistorie.</p>`,
+    titleEN: 'Kits – booking several pieces of equipment together',
+    answerEN: `<h4>Several devices as one unit</h4>
+    <p>"Kits" bundle several individual pieces of equipment into one jointly bookable unit when they're practically always needed together.</p>
+    <p>Example: a core-drilling set made up of the drill, mounting set, vacuum and power converter is defined as one "kit" – instead of four separate bookings, a single scan is enough. Each individual item still remains a standalone piece of equipment with its own maintenance history.</p>` },
+
+  // Projekte & Baustellen
+  { id: 'proj1', cat: 'Projekte & Baustellen', keywords: ['projekte modul','baustellen verwaltung','material für baustelle buchen','aufmaß digital','was ist das projekte modul'],
+    title: 'Was ist das Projekte-Modul und wofür wird es benötigt?',
+    answer: `<h4>Materialflüsse auf der Baustelle digital abbilden</h4>
+    <p>Das Modul „Projekte" bildet Baustellen ab (Name, Auftragsnummer, Anschrift, optional Hauptmitarbeiter) und löst ein typisches Problem im Handwerksbetrieb:</p>
+    <p>Entnimmt ein Monteur zusätzliches Material aus dem eigenen Lager, das im Angebot nicht kalkuliert war, wird das oft nur handschriftlich auf einem Aufmaß-Zettel notiert – wird das vergessen, wird das Material dem Kunden nie in Rechnung gestellt. Über das Projekte-Modul wird jede Entnahme direkt dem Projekt zugeordnet und fließt so in die Nachkalkulation ein.</p>`,
+    titleEN: 'What is the Projects module for?',
+    answerEN: `<h4>Tracking material flow on the job site digitally</h4>
+    <p>The "Projects" module represents job sites (name, order number, address, optionally a lead employee) and solves a common problem in trade businesses:</p>
+    <p>When a technician takes extra material from the warehouse that wasn't calculated in the quote, it's often only noted by hand on a slip of paper – if that's forgotten, the material is never billed to the customer. The Projects module assigns every withdrawal directly to the project so it flows into the follow-up billing.</p>` },
+  { id: 'proj2', cat: 'Projekte & Baustellen', keywords: ['materialentnahme app','entnahme buchen baustelle','einlagerung projekt','app lagerverwaltung entnahme','material auf baustelle buchen'],
+    title: 'Materialentnahme für ein Projekt über die App buchen',
+    answer: `<h4>Buchung ausschließlich über die mobile App</h4>
+    <p>Die sinnvolle Nutzung des Projekte-Moduls für Materialbuchungen setzt die mobile App voraus – über die Desktop-Oberfläche ist keine Buchung im Feld möglich.</p>
+    <ul>
+      <li>In der App: <strong>Lagerverwaltung → Entnahme</strong> – Artikel scannen, Menge angeben, optional Freitext, Projekt auswählen, speichern</li>
+      <li>Würde eine Entnahme zu einem negativen Bestand führen, warnt die App, erlaubt die Buchung aber trotzdem</li>
+      <li>Für nicht verbrauchtes, zurückgebrachtes Material existiert die Gegenfunktion <strong>„Einlagerung"</strong></li>
+    </ul>`,
+    titleEN: 'Booking material withdrawal for a project via the app',
+    answerEN: `<h4>Booking is only possible through the mobile app</h4>
+    <p>Meaningful use of the Projects module for material bookings requires the mobile app – bookings in the field aren't possible through the desktop interface.</p>
+    <ul>
+      <li>In the app: <strong>Warehouse management → Withdrawal</strong> – scan the article, enter the quantity, optionally add free text, select the project, save</li>
+      <li>If a withdrawal would result in negative stock, the app warns but still allows the booking</li>
+      <li>For unused material brought back, the counterpart function <strong>"Restocking"</strong> exists</li>
+    </ul>` },
+  { id: 'proj3', cat: 'Projekte & Baustellen', keywords: ['projektstatistik','nachkalkulation export','buchungsliste projekt exportieren','projekt abrechnung'],
+    title: 'Projektstatistik und Nachkalkulation exportieren',
+    answer: `<h4>Vollständige Buchungsliste je Projekt</h4>
+    <p>Ist ein Projekt abgeschlossen, lässt sich über <strong>Projekte → Statistik/Export</strong> eine vollständige Buchungsliste für den gewählten Zeitraum bzw. das Projekt als Excel-Datei exportieren – inklusive aller Lagerentnahmen und -zubuchungen. Diese Liste kann direkt an die Nachkalkulation übergeben werden.</p>
+    <p>Voraussetzung für eine aussagekräftige Statistik ist eine gepflegte Artikelbezeichnung im Artikelstamm.</p>`,
+    titleEN: 'Exporting project statistics for follow-up billing',
+    answerEN: `<h4>A complete booking list per project</h4>
+    <p>Once a project is finished, <strong>Projects → Statistics/Export</strong> lets you export a complete booking list for the chosen period or project as an Excel file – including all withdrawals and restockings. This list can be handed directly to follow-up billing.</p>
+    <p>A properly maintained article description in the article master data is required for meaningful statistics.</p>` },
 
   // Benutzer & Module
   { id: 'usr1', cat: 'Benutzer & Module', keywords: ['benutzer','user','mitarbeiter','anlegen','einladen','zugang','rolle','mandant'],
@@ -1179,18 +1494,37 @@ const KB = [
     handoffText: 'Die Anbindung mehrerer Lieferanten mit unterschiedlichen Konditionen und Shop-Zugängen ist von Betrieb zu Betrieb verschieden. Ein Kollege aus dem Support richtet das gemeinsam mit Ihnen passend zu Ihrem Einkaufsprozess ein.',
     titleEN: 'Custom supplier connections',
     handoffTextEN: 'Connecting multiple suppliers with different terms and shop access varies from business to business. A colleague from support will set this up together with you to match your purchasing process.' },
+  { id: 'spec3', cat: 'Individuelle Prozesse', keywords: ['lagerplanung','lager planen','lagerlayout','lagerplätze planen','wie funktioniert lagerplanung','lager einrichten'],
+    title: 'Lagerplanung',
+    handoff: true,
+    handoffText: 'Wie eine Lagerplanung im Detail abläuft, hängt sehr stark von Ihrem Betrieb ab – von der Anzahl und Größe der Lagerplätze über die Sortierlogik bis zu den Wegen Ihrer Mitarbeitenden. Deshalb lässt sich das nicht pauschal beantworten. Das klären wir am besten gemeinsam in einem persönlichen Gespräch, in dem wir uns Ihr Lager konkret ansehen.',
+    titleEN: 'Warehouse layout planning',
+    handoffTextEN: 'How a warehouse layout is planned in detail depends heavily on your business – on the number and size of storage locations, the sorting logic, and the routes your staff take. That can\'t be answered in general terms. It\'s best clarified together in a personal conversation where we look at your warehouse specifically.' },
+  { id: 'spec4', cat: 'Individuelle Prozesse', keywords: ['bestellrhythmus','nur alle zwei wochen bestellen','bestellintervall festlegen','sammelbestellung rhythmus','festen bestelltag einrichten'],
+    title: 'Festen Bestellrhythmus einrichten',
+    handoff: true,
+    handoffText: 'Ein fester Bestellrhythmus (z. B. „nur alle zwei Wochen sammeln und bestellen") lässt sich technisch nicht automatisch erzwingen – das erfordert einen zu Ihrem Betrieb passenden organisatorischen Prozess. Wie das am sinnvollsten aufgesetzt wird, besprechen wir gerne persönlich mit Ihnen.',
+    titleEN: 'Setting up a fixed ordering rhythm',
+    handoffTextEN: 'A fixed ordering rhythm (e.g. "only collect and order every two weeks") cannot be enforced automatically by the system – it requires an organizational process that fits your business. We\'re happy to work out the best approach together with you personally.' },
+  { id: 'spec5', cat: 'Individuelle Prozesse', keywords: ['projekte modul oder branchensoftware','welche integration passt','app oder schnittstelle material','wie material in erp integrieren'],
+    title: 'Projekte-Modul oder Integration über die Branchensoftware?',
+    handoff: true,
+    handoffText: 'Für die Abbildung von Materialentnahmen auf Baustellen gibt es zwei grundsätzliche Wege: das Projekte-Modul mit App, oder eine Integration über gemeinsame Artikelnummern mit Ihrer bestehenden Branchensoftware. Welcher Weg zu Ihrem System und Ihren Abläufen passt, hängt stark von Ihrer eingesetzten Software und Ihrem Prozess ab – das klären wir am besten in einem persönlichen Gespräch.',
+    titleEN: 'Projects module or integration via branch software?',
+    handoffTextEN: 'There are two fundamental ways to track material withdrawals on job sites: the Projects module with the app, or an integration using shared article numbers with your existing branch software. Which approach fits your system and workflow depends heavily on the software you use – best clarified in a personal conversation.' },
 ];
 
 // ─── CATEGORIES ───
 const CATEGORIES = [
-  { name: 'Artikel & Lagerplätze', icon: '', ids: ['art1','art2','art3'] },
-  { name: 'Import & Lieferanten', icon: '', ids: ['imp1','imp2','lief1'] },
-  { name: 'Etiketten & Bestellung', icon: '', ids: ['etk1','etk2','etk3'] },
-  { name: 'Wareneingang & Bestand', icon: '', ids: ['we1','we2'] },
-  { name: 'Gebrauchsgut', icon: '', ids: ['geb1'] },
+  { name: 'Artikel & Lagerplätze', icon: '', ids: ['art1','art2','art3','art4','art5'] },
+  { name: 'Import & Lieferanten', icon: '', ids: ['imp1','imp2','imp3','imp4','imp5','imp6','lief1','lief2','lief3'] },
+  { name: 'Etiketten & Bestellung', icon: '', ids: ['etk1','etk2','etk3','etk4','etk5'] },
+  { name: 'Wareneingang & Bestand', icon: '', ids: ['we1','we2','we3','we4','kal1','kal2'] },
+  { name: 'Gebrauchsgut', icon: '', ids: ['geb1','geb2','geb3','geb4','geb5'] },
+  { name: 'Projekte & Baustellen', icon: '', ids: ['proj1','proj2','proj3'] },
   { name: 'Benutzer & Module', icon: '', ids: ['usr1','usr2','usr3'] },
   { name: 'Allgemein', icon: '', ids: ['gen1','gen2','gen3'] },
-  { name: 'Individuelle Prozesse', icon: '', ids: ['spec1','spec2'] },
+  { name: 'Individuelle Prozesse', icon: '', ids: ['spec1','spec2','spec3','spec4','spec5'] },
 ];
 
 // ─── INIT ───
