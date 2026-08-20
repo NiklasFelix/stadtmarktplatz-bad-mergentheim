@@ -292,15 +292,58 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .bo-main::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:2px}
 .bo-page{display:none}
 .bo-page.active{display:block}
-#boPage-dashboard.active{display:grid}
 .bo-page-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;max-width:1280px;margin-left:auto;margin-right:auto;gap:12px;flex-wrap:wrap}
 .bo-page-title{font-size:20px;font-weight:800;color:var(--heading);letter-spacing:-.3px}
 .bo-page-sub{font-size:12.5px;color:var(--gray);margin-top:3px}
 .bo-kpi-row{max-width:1280px;margin:0 auto 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
-#boPage-dashboard.bo-grid{grid-column-gap:16px}
-#boPage-dashboard .bo-kpi-row{grid-column:1 / -1;margin-bottom:0}
 .bo-section-heading{grid-column:1 / -1;font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.6px;text-transform:uppercase;padding-top:14px;margin-top:6px;border-top:1px solid rgba(31,36,40,.08)}
 .bo-section-heading.first{border-top:none;margin-top:0;padding-top:0}
+
+/* ─── DASHBOARD: konfigurierbare Widgets ─── */
+.dash-widget{position:relative;cursor:pointer;transition:var(--transition)}
+.dash-widget:hover{box-shadow:0 8px 24px rgba(31,36,40,.14);transform:translateY(-1px)}
+.dash-widget-drag{position:absolute;top:10px;right:10px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--gray);opacity:0;cursor:grab;transition:opacity .15s;border-radius:6px;z-index:2}
+.dash-widget:hover .dash-widget-drag{opacity:.55}
+.dash-widget-drag:hover{opacity:1 !important;background:var(--gray-light)}
+.dash-widget-drag:active{cursor:grabbing}
+.dash-widget.dragging{opacity:.35}
+.dash-widget.drop-target{outline:2px dashed var(--green);outline-offset:3px}
+.dash-widget-linkhint{font-size:10px;font-weight:700;color:var(--green-dark);opacity:0;transition:opacity .15s;display:inline-flex;align-items:center;gap:2px}
+.dash-widget:hover .dash-widget-linkhint{opacity:1}
+.dash-empty{grid-column:1/-1;text-align:center;padding:56px 20px;color:var(--gray);font-size:13px}
+.dash-empty button{margin-top:12px}
+.dash-toolbar-btn{display:flex;align-items:center;gap:6px}
+.dash-widget-picker{display:flex;flex-direction:column;gap:4px;max-height:60vh;overflow-y:auto;margin:-4px 0 14px}
+.dash-widget-picker-group{font-size:10.5px;font-weight:700;color:var(--gray);letter-spacing:.4px;text-transform:uppercase;margin:12px 0 4px}
+.dash-widget-picker-group:first-child{margin-top:0}
+.dash-widget-picker-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 4px;border-bottom:1px solid var(--gray-light)}
+.dash-widget-picker-row:last-child{border-bottom:none}
+.dash-widget-picker-label{font-size:12.5px;font-weight:600;color:var(--dark)}
+.dash-widget-picker-desc{font-size:11px;color:var(--gray);margin-top:1px}
+
+/* ─── KPI-Entwicklungstrend (auf Dashboard und in Analysen) ─── */
+.metric-trend{display:inline-flex;align-items:center;gap:2px;font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:6px;margin-left:6px;vertical-align:middle}
+.metric-trend.up{background:var(--green-light);color:var(--green-dark)}
+.metric-trend.down{background:#FEE2E2;color:#DC2626}
+.metric-trend.flat{background:var(--gray-light);color:var(--gray)}
+
+/* ─── ANALYSEN & REPORTS: Tabs, Zeitraum-Filter, Kennzahlen-Kontext ─── */
+.an-tabs{display:flex;gap:4px;flex-wrap:wrap;max-width:1280px;margin:0 auto 18px;padding-bottom:0;border-bottom:1px solid var(--gray-light)}
+.an-tab{display:flex;align-items:center;gap:6px;background:none;border:none;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--gray);cursor:pointer;border-radius:8px 8px 0 0;transition:var(--transition);white-space:nowrap;position:relative}
+.an-tab:hover{color:var(--dark);background:var(--green-light)}
+.an-tab.active{color:var(--green-dark)}
+.an-tab.active::after{content:'';position:absolute;left:8px;right:8px;bottom:-1px;height:2px;background:var(--green)}
+.an-filter-bar{display:flex;align-items:center;gap:10px;max-width:1280px;margin:0 auto 18px;flex-wrap:wrap}
+.an-filter-label{font-size:11px;color:var(--gray);font-weight:600}
+.an-period-btn{padding:6px 13px;border-radius:20px;font-size:11.5px;font-weight:600;border:1px solid var(--gray-light);background:var(--surface-solid);color:var(--gray);cursor:pointer;transition:var(--transition)}
+.an-period-btn:hover{border-color:var(--green)}
+.an-period-btn.active{background:linear-gradient(135deg,var(--green),var(--green-dark));border-color:transparent;color:#fff}
+.an-section-title{max-width:1280px;margin:22px auto 12px;font-size:13px;font-weight:800;color:var(--heading)}
+.an-section-title:first-of-type{margin-top:0}
+.metric-meta{font-size:11px;color:var(--gray);line-height:1.55;margin:-2px 0 12px;padding-bottom:10px;border-bottom:1px dashed var(--gray-light)}
+.metric-meta strong{color:var(--dark);font-weight:600}
+.metric-insight{display:flex;gap:8px;align-items:flex-start;background:var(--green-light);border-radius:9px;padding:9px 11px;margin-top:12px;font-size:11.5px;color:var(--green-dark);line-height:1.5}
+.metric-insight svg{flex-shrink:0;margin-top:2px}
 .bo-kpi{background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
 .bo-kpi-label{font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.3px;text-transform:uppercase;margin-bottom:6px}
 .bo-kpi-val{font-size:26px;font-weight:900;color:var(--heading);letter-spacing:-1px}
@@ -579,176 +622,7 @@ html[data-theme="dark"] .quick-q:hover{color:var(--heading)}
   <div class="bo-shell">
     <nav class="bo-nav" id="boNav"></nav>
     <div class="bo-main">
-    <div class="bo-page bo-grid active" id="boPage-dashboard">
-      <!-- Kennzahlen-Übersicht -->
-      <div class="bo-kpi-row">
-        <div class="bo-kpi"><div class="bo-kpi-label">Fragen beantwortet</div><div class="bo-kpi-val green" id="statAnswered">0</div></div>
-        <div class="bo-kpi"><div class="bo-kpi-label">Eskalationen</div><div class="bo-kpi-val red" id="statEscalated">0</div></div>
-        <div class="bo-kpi"><div class="bo-kpi-label">Eskalationsrate</div><div class="bo-kpi-val" id="statEscRate">–</div></div>
-        <div class="bo-kpi"><div class="bo-kpi-label">Ø Antwortzeit</div><div class="bo-kpi-val green">1,2 Sek.</div></div>
-        <div class="bo-kpi"><div class="bo-kpi-label">Short-Head-Abdeckung</div><div class="bo-kpi-val green">92%</div><div class="bo-kpi-note">Wiederkehrende Themen, die die Wissensbasis abdeckt</div></div>
-        <div class="bo-kpi"><div class="bo-kpi-label">Mitarbeiterentlastung</div><div class="bo-kpi-val green"><span id="savingsMin">0</span> Min.</div><div class="bo-kpi-note">+4 Min. je automatisiert beantworteter Frage</div></div>
-      </div>
-
-      <div class="bo-section-heading first">Auswertung</div>
-
-      <!-- Lösungsrate Donut -->
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Lösungsrate</div>
-          <div class="stat-card-badge badge-green">ZIEL &lt;20%</div>
-        </div>
-        <div class="donut-wrap">
-          <svg width="100" height="100" viewBox="0 0 100 100">
-            <circle class="donut-bg" cx="50" cy="50" r="45"/>
-            <circle class="donut-fill" id="donutFill" cx="50" cy="50" r="45"/>
-          </svg>
-          <div class="donut-label">
-            <div class="donut-pct" id="donutPct">–</div>
-            <div class="donut-sub">GELÖST</div>
-          </div>
-        </div>
-        <div style="text-align:center;font-size:11.5px;color:var(--gray);margin-top:4px">
-          <span id="donutDesc">Noch keine Daten</span>
-        </div>
-      </div>
-
-      <!-- Bewertung -->
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Nutzerbewertung</div>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Durchschnitt</span>
-          <span class="rating-num" id="ratingAvg">–</span>
-        </div>
-        <div class="stars-display" id="starsDisplay">
-          <span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span>
-        </div>
-        <div class="stat-row" style="margin-top:10px">
-          <span class="stat-row-label">Positiv</span>
-          <span class="stat-row-val green" id="statPositive">0</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-row-label">Negativ</span>
-          <span class="stat-row-val red" id="statNegative">0</span>
-        </div>
-      </div>
-
-      <!-- Top-Themen -->
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Top-Themen</div>
-          <div class="stat-card-badge badge-blue">Heute</div>
-        </div>
-        <div class="bar-chart" id="topicsChart">
-          <div class="bar-item"><span class="bar-label">Lager MIN/MAX</span><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div><span class="bar-val">75%</span></div>
-          <div class="bar-item"><span class="bar-label">Artikelimport</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span class="bar-val">62%</span></div>
-          <div class="bar-item"><span class="bar-label">Zwei-Etiketten</span><div class="bar-track"><div class="bar-fill" style="width:54%"></div></div><span class="bar-val">54%</span></div>
-          <div class="bar-item"><span class="bar-label">Lieferanten-Shop</span><div class="bar-track"><div class="bar-fill" style="width:41%"></div></div><span class="bar-val">41%</span></div>
-          <div class="bar-item"><span class="bar-label">Gebrauchsgut</span><div class="bar-track"><div class="bar-fill" style="width:28%"></div></div><span class="bar-val">28%</span></div>
-        </div>
-      </div>
-
-      <!-- Wissenslücken -->
-      <div class="stat-card bo-wide">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Erkannte Wissenslücken</div>
-          <div class="stat-card-badge badge-blue" id="gapBadge">0</div>
-        </div>
-        <div class="gap-list" id="gapList">
-          <div class="gap-empty">Noch keine ungelösten Themen erfasst</div>
-        </div>
-        <div class="freshness-row" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--gray-light)">
-          <span class="freshness-dot"></span>
-          <span>Wissensbasis aktualisiert: heute · <strong id="kbCoverage">17</strong> Einträge</span>
-        </div>
-      </div>
-
-      <div class="bo-section-heading">Live-Aktivität</div>
-
-      <!-- KI-Agent Aktivitätsprotokoll -->
-      <div class="stat-card bo-wide">
-        <div class="stat-card-header">
-          <div class="stat-card-title">KI-Agent – Aktivitätsprotokoll</div>
-          <div class="stat-card-badge badge-blue" id="agentLogBadge">0</div>
-        </div>
-        <p style="font-size:11.5px;color:var(--gray);margin:-4px 0 10px">Protokolliert, wann der Agent selbstständig entscheidet, handelt oder aus Feedback lernt – nicht nur, wann er antwortet.</p>
-        <div class="agent-log" id="agentLog">
-          <div class="gap-empty">Noch keine Aktivität in dieser Sitzung</div>
-        </div>
-      </div>
-
-      <div class="bo-section-heading">Konfiguration</div>
-
-      <!-- Eskalationseinstellungen -->
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Eskalationseinstellungen</div>
-        </div>
-        <p style="font-size:11.5px;color:var(--gray);margin:-4px 0 12px">Legt fest, wann und wie ungelöste Anliegen an Ihr Team weitergegeben werden.</p>
-        <label class="modal-label">Geschäftszeiten</label>
-        <div class="modal-hours" style="margin-bottom:16px">
-          <input type="time" id="hoursFrom" value="08:00">
-          <span>bis</span>
-          <input type="time" id="hoursTo" value="17:00">
-          <span>Uhr</span>
-        </div>
-        <label class="modal-label">Eskalationsweg</label>
-        <div class="route-options" id="routeOptions">
-          <label class="route-opt selected" data-route="email">
-            <input type="radio" name="escRoute" value="email" checked>
-            <div><div class="route-opt-title">Weiterleitung per E-Mail</div><div class="route-opt-desc">Ticket geht an eine hinterlegte Support-Adresse</div></div>
-          </label>
-          <label class="route-opt" data-route="team">
-            <input type="radio" name="escRoute" value="team">
-            <div><div class="route-opt-title">An Support-Team zuweisen</div><div class="route-opt-desc">Nächster verfügbarer Mitarbeiter übernimmt das Ticket</div></div>
-          </label>
-          <label class="route-opt" data-route="custom">
-            <input type="radio" name="escRoute" value="custom">
-            <div><div class="route-opt-title">Individuelle Aktion</div><div class="route-opt-desc">Z. B. Rückruf-Anfrage direkt im Kalender des Ansprechpartners anlegen</div></div>
-          </label>
-        </div>
-        <button class="modal-save" style="margin-top:14px" onclick="saveEscalationSettings()">Einstellungen übernehmen</button>
-      </div>
-
-      <!-- Einstiegspunkt-Simulation -->
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Einstiegspunkt-Simulation</div>
-        </div>
-        <p style="font-size:11.5px;color:var(--gray);margin:-4px 0 12px">Der Assistent ist über denselben Button auf jeder Seite und jeder Detailseite der OrKan Cloud erreichbar. Vorschau, welche Themen er dort vorschlägt:</p>
-        <div id="contextPresetList" style="display:flex;flex-direction:column;gap:6px"></div>
-        <div id="contextPreview" style="margin-top:10px"></div>
-      </div>
-
-      <!-- Technologie-Roadmap -->
-      <div class="stat-card bo-wide">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Technologie-Roadmap</div>
-        </div>
-        <div class="roadmap-row">
-          <div class="roadmap-col">
-            <div class="roadmap-label">Heute – Pilot</div>
-            <ul class="roadmap-list">
-              <li>Kuratierte Wissensbasis mit intentbasierter Zuordnung</li>
-              <li>Feste Antworttexte je erkanntem Thema</li>
-              <li>Eskalation bei fehlender Übereinstimmung</li>
-            </ul>
-          </div>
-          <div class="roadmap-arrow">→</div>
-          <div class="roadmap-col">
-            <div class="roadmap-label">Geplant – LLM-basiert</div>
-            <ul class="roadmap-list">
-              <li>Antworten werden aus dem Gesprächskontext frei formuliert statt aus Vorlagen zusammengesetzt</li>
-              <li>Der Agent löst wiederkehrende Schritte eigenständig aus (z. B. Ticket anlegen, Kalendertermin buchen)</li>
-              <li>Kontinuierliches Lernen aus Feedback und Support-Historie ohne manuelle Pflege der Wissensbasis</li>
-              <li>Entlastet Mitarbeitende zusätzlich bei komplexeren, mehrstufigen Anliegen</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="bo-page active" id="boPage-dashboard"></div>
 
     <div class="bo-page" id="boPage-chats"></div>
     <div class="bo-page" id="boPage-kb"></div>
@@ -1807,6 +1681,42 @@ const BO_NAV = [
 let activeBoSection = 'dashboard';
 let boInitialized = false;
 
+// ─── DASHBOARD: konfigurierbare Widgets ───
+// Jedes Widget ist einer Analysen-&-Reports-Kategorie zugeordnet (tab), damit ein Klick auf dem
+// Dashboard direkt zur passenden Detailauswertung führt. „defaultVisible" hält die Standardansicht
+// bewusst knapp – alles andere ist über „Dashboard anpassen" jederzeit dazuschaltbar.
+const DASHBOARD_WIDGET_CATALOG = [
+  { id: 'kpi-answered', kind: 'kpi', tab: 'chatbot', title: 'Fragen beantwortet', group: 'Kennzahlen', defaultVisible: true },
+  { id: 'kpi-escalated', kind: 'kpi', tab: 'support', title: 'Eskalationen', group: 'Kennzahlen', defaultVisible: true },
+  { id: 'kpi-escrate', kind: 'kpi', tab: 'performance', title: 'Eskalationsrate', group: 'Kennzahlen', defaultVisible: true },
+  { id: 'kpi-savings', kind: 'kpi', tab: 'performance', title: 'Mitarbeiterentlastung', group: 'Kennzahlen', defaultVisible: true },
+  { id: 'kpi-responsetime', kind: 'kpi', tab: 'performance', title: 'Ø Antwortzeit', group: 'Kennzahlen', defaultVisible: false },
+  { id: 'kpi-shorthead', kind: 'kpi', tab: 'wissensdatenbank', title: 'Short-Head-Abdeckung', group: 'Kennzahlen', defaultVisible: false },
+  { id: 'kpi-callback', kind: 'kpi', tab: 'support', title: 'Rückruf-Wünsche', group: 'Kennzahlen', defaultVisible: false },
+  { id: 'solve-rate', kind: 'chart', tab: 'performance', title: 'Lösungsrate', wide: false, group: 'Auswertungen', defaultVisible: true },
+  { id: 'knowledge-gaps', kind: 'chart', tab: 'wissensdatenbank', title: 'Erkannte Wissenslücken', wide: true, group: 'Auswertungen', defaultVisible: true },
+  { id: 'user-rating', kind: 'chart', tab: 'kunden', title: 'Nutzerbewertung', wide: false, group: 'Auswertungen', defaultVisible: false },
+  { id: 'top-topics', kind: 'chart', tab: 'chatbot', title: 'Top-Themen', wide: false, group: 'Auswertungen', defaultVisible: false },
+  { id: 'agent-log', kind: 'chart', tab: 'chatbot', title: 'KI-Agent – Aktivitätsprotokoll', wide: true, group: 'Live-Aktivität', defaultVisible: false },
+];
+function loadDashboardConfig() {
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem('orkanDashboardWidgets') || 'null'); } catch (e) { saved = null; }
+  const allIds = DASHBOARD_WIDGET_CATALOG.map(w => w.id);
+  let order = saved && Array.isArray(saved.order) ? saved.order.filter(id => allIds.includes(id)) : [];
+  allIds.forEach(id => { if (!order.includes(id)) order.push(id); }); // neue Katalog-Widgets ergänzen
+  const visible = {};
+  allIds.forEach(id => {
+    const catalogEntry = DASHBOARD_WIDGET_CATALOG.find(w => w.id === id);
+    visible[id] = saved && saved.visible && Object.prototype.hasOwnProperty.call(saved.visible, id) ? !!saved.visible[id] : catalogEntry.defaultVisible;
+  });
+  return { order, visible };
+}
+let dashboardConfig = loadDashboardConfig();
+function saveDashboardConfig() {
+  localStorage.setItem('orkanDashboardWidgets', JSON.stringify(dashboardConfig));
+}
+
 function renderBoNav() {
   const nav = document.getElementById('boNav');
   nav.innerHTML = BO_NAV.map(group => `
@@ -1819,7 +1729,7 @@ function renderBoNav() {
 }
 
 const BO_RENDERERS = {
-  dashboard: function () {},
+  dashboard: function () { renderDashboardSection(); },
   chats: function () { renderChatsSection(); },
   kb: function () { renderKbSection(); },
   workflows: function () { renderWorkflowsSection(); },
@@ -1847,6 +1757,211 @@ function initBackoffice() {
   renderBoNav();
   Object.keys(BO_RENDERERS).forEach(renderBoSection);
   boInitialized = true;
+}
+
+// ─── DASHBOARD: Rendering, Drag & Drop, Anpassen-Dialog ───
+// Beispieldaten für die Themenverteilung – dieselbe Quelle wird sowohl vom Dashboard-Widget
+// als auch vom Analysen-Tab „Chatbot" verwendet, damit keine widersprüchlichen Zahlen entstehen.
+const TOP_TOPICS_DEMO = [['Lager MIN/MAX', 75], ['Artikelimport', 62], ['Zwei-Etiketten', 54], ['Lieferanten-Shop', 41], ['Gebrauchsgut', 28]];
+const WIDGET_DESCRIPTIONS = {
+  'kpi-answered': 'Automatisiert beantwortete Fragen in dieser Sitzung',
+  'kpi-escalated': 'An das Support-Team weitergegebene Fälle',
+  'kpi-escrate': 'Anteil eskalierter an allen bearbeiteten Anfragen',
+  'kpi-savings': 'Geschätzte Zeitersparnis für Ihr Team',
+  'kpi-responsetime': 'Durchschnittliche Reaktionszeit des Assistenten',
+  'kpi-shorthead': 'Anteil wiederkehrender Themen, die die Wissensbasis abdeckt',
+  'kpi-callback': 'Anzahl der Fälle mit angefordertem Rückruf',
+  'solve-rate': 'Anteil automatisiert gelöster Anfragen als Donut-Diagramm',
+  'knowledge-gaps': 'Themen ohne passende Wissensbasis-Antwort',
+  'user-rating': 'Durchschnittliche Kundenbewertung aus dem Chat-Feedback',
+  'top-topics': 'Am häufigsten nachgefragte Themenbereiche',
+  'agent-log': 'Protokoll aller selbstständigen Entscheidungen des KI-Agenten',
+};
+
+function renderDashboardSection() {
+  const mount = document.getElementById('boPage-dashboard');
+  if (!mount) return;
+  const visibleWidgets = dashboardConfig.order.map(id => DASHBOARD_WIDGET_CATALOG.find(w => w.id === id)).filter(w => w && dashboardConfig.visible[w.id]);
+  mount.innerHTML = `
+    <div class="bo-page-header">
+      <div><div class="bo-page-title">Dashboard</div><div class="bo-page-sub">Kompakte Übersicht – Details in Analysen &amp; Reports</div></div>
+      <button class="bo-btn primary dash-toolbar-btn" onclick="openDashboardCustomizer()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        Dashboard anpassen
+      </button>
+    </div>
+    <div class="bo-grid">
+      ${visibleWidgets.length === 0 ? `
+        <div class="dash-empty">
+          Keine Widgets ausgewählt.
+          <div><button class="bo-btn primary" onclick="openDashboardCustomizer()">Widgets hinzufügen</button></div>
+        </div>` : visibleWidgets.map(w => renderDashboardWidget(w)).join('')}
+    </div>`;
+  animateBars();
+}
+
+function renderDashboardWidget(w) {
+  const shellClass = w.kind === 'kpi' ? 'bo-kpi' : `stat-card${w.wide ? ' bo-wide' : ''}`;
+  const dragAttrs = `draggable="true" ondragstart="dashDragStart(event,'${w.id}')" ondragover="dashDragOver(event)" ondragleave="dashDragLeave(event)" ondrop="dashDrop(event,'${w.id}')" ondragend="dashDragEnd(event)"`;
+  const dragHandle = `<span class="dash-widget-drag" onclick="event.stopPropagation()" title="Verschieben"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>`;
+  if (w.kind === 'kpi') {
+    const kpi = buildKpiWidget(w.id);
+    return `<div class="${shellClass} dash-widget" data-widget-id="${w.id}" ${dragAttrs} onclick="handleWidgetClick(event,'${w.tab}')">
+      ${dragHandle}
+      <div class="bo-kpi-label">${w.title}</div>
+      <div class="bo-kpi-val ${kpi.cls || ''}">${kpi.value}</div>
+      ${kpi.note ? `<div class="bo-kpi-note">${kpi.note}</div>` : ''}
+    </div>`;
+  }
+  const chart = buildChartWidget(w.id);
+  return `<div class="${shellClass} dash-widget" data-widget-id="${w.id}" ${dragAttrs} onclick="handleWidgetClick(event,'${w.tab}')">
+    ${dragHandle}
+    <div class="stat-card-header">
+      <div class="stat-card-title">${w.title}</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        ${chart.badge ? `<span class="stat-card-badge badge-blue">${chart.badge}</span>` : ''}
+        <span class="dash-widget-linkhint">Details →</span>
+      </div>
+    </div>
+    ${chart.body}
+  </div>`;
+}
+
+function buildKpiWidget(id) {
+  const total = stats.answered + stats.escalated;
+  const escRate = total > 0 ? Math.round((stats.escalated / total) * 100) : null;
+  switch (id) {
+    case 'kpi-answered': return { value: stats.answered, cls: 'green' };
+    case 'kpi-escalated': return { value: stats.escalated, cls: 'red' };
+    case 'kpi-escrate': return { value: escRate === null ? '–' : escRate + '%', cls: escRate !== null && escRate > 20 ? 'red' : 'green' };
+    case 'kpi-savings': return { value: `${stats.savings} Min.`, cls: 'green', note: '+4 Min. je automatisiert beantworteter Frage' };
+    case 'kpi-responsetime': return { value: '1,2 Sek.', cls: 'green' };
+    case 'kpi-shorthead': return { value: '92%', cls: 'green', note: 'Wiederkehrende Themen, die die Wissensbasis abdeckt' };
+    case 'kpi-callback': return { value: tickets.filter(t => t.callbackRequested).length, note: 'Offene Rückruf-Wünsche aus dem Chat' };
+    default: return { value: '–' };
+  }
+}
+
+function buildChartWidget(id) {
+  const total = stats.answered + stats.escalated;
+  const solveRate = total > 0 ? Math.round((stats.answered / total) * 100) : null;
+  const offset = solveRate === null ? 283 : 283 - (283 * solveRate / 100);
+  switch (id) {
+    case 'solve-rate':
+      return { body: `
+        <div class="donut-wrap">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="donut-bg" cx="50" cy="50" r="45"/>
+            <circle class="donut-fill" style="stroke-dashoffset:${offset}" cx="50" cy="50" r="45"/>
+          </svg>
+          <div class="donut-label"><div class="donut-pct">${solveRate === null ? '–' : solveRate + '%'}</div><div class="donut-sub">GELÖST</div></div>
+        </div>
+        <div style="text-align:center;font-size:11.5px;color:var(--gray);margin-top:4px">${total === 0 ? 'Noch keine Daten' : `${stats.answered} von ${total} Fragen gelöst`}</div>` };
+    case 'user-rating': {
+      const totalFb = stats.positive + stats.negative;
+      const avg = totalFb > 0 ? (stats.positive / totalFb * 5).toFixed(1) : '–';
+      const filled = totalFb > 0 ? Math.round(parseFloat(avg)) : 0;
+      let starsHtml = '';
+      for (let i = 1; i <= 5; i++) starsHtml += `<span class="${i <= filled ? 'star-filled' : 'star-empty'}">★</span>`;
+      return { body: `
+        <div class="rating-row"><span class="rating-label">Durchschnitt</span><span class="rating-num">${avg}</span></div>
+        <div class="stars-display">${starsHtml}</div>
+        <div class="stat-row" style="margin-top:10px"><span class="stat-row-label">Positiv</span><span class="stat-row-val green">${stats.positive}</span></div>
+        <div class="stat-row"><span class="stat-row-label">Negativ</span><span class="stat-row-val red">${stats.negative}</span></div>` };
+    }
+    case 'top-topics':
+      return { badge: 'Heute', body: `<div class="bar-chart">${TOP_TOPICS_DEMO.map(([label, pct]) => `<div class="bar-item"><span class="bar-label">${label}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-val">${pct}%</span></div>`).join('')}</div>` };
+    case 'knowledge-gaps': {
+      const entries = [...knowledgeGaps.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5);
+      return { badge: String(knowledgeGaps.size), body: `
+        <div class="gap-list">${entries.length === 0 ? '<div class="gap-empty">Noch keine ungelösten Themen erfasst</div>' : entries.map(([topic, count]) => `<div class="gap-item"><span class="gap-item-text">${topic}</span><span class="gap-item-count">${count}×</span></div>`).join('')}</div>
+        <div class="freshness-row" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--gray-light)"><span class="freshness-dot"></span><span>Wissensbasis aktualisiert: heute · <strong>${KB.length}</strong> Einträge</span></div>` };
+    }
+    case 'agent-log': {
+      const entries = agentLog.slice(0, 6);
+      return { badge: String(agentLog.length), body: `
+        <p style="font-size:11.5px;color:var(--gray);margin:-4px 0 10px">Protokolliert, wann der Agent selbstständig entscheidet, handelt oder aus Feedback lernt.</p>
+        <div class="agent-log">${entries.length === 0 ? '<div class="gap-empty">Noch keine Aktivität in dieser Sitzung</div>' : entries.map(e => `
+          <div class="agent-log-item">
+            <div class="agent-log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${AGENT_LOG_ICONS[e.kind] || AGENT_LOG_ICONS.action}</svg></div>
+            <div><div class="agent-log-text">${e.text}</div><div class="agent-log-time">${e.time}</div></div>
+          </div>`).join('')}</div>` };
+    }
+    default: return { body: '' };
+  }
+}
+
+function handleWidgetClick(e, tab) {
+  if (dashDidDrag) { dashDidDrag = false; return; }
+  jumpToAnalytics(tab);
+}
+function jumpToAnalytics(tab) {
+  showBoSection('analytics');
+  showAnalyticsTab(tab);
+}
+
+// Natives HTML5-Drag&Drop zum freien Anordnen der Widgets
+let dashDragId = null;
+let dashDidDrag = false;
+function dashDragStart(e, id) {
+  dashDragId = id;
+  dashDidDrag = true;
+  e.dataTransfer.effectAllowed = 'move';
+  e.currentTarget.classList.add('dragging');
+}
+function dashDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  e.currentTarget.classList.add('drop-target');
+}
+function dashDragLeave(e) {
+  e.currentTarget.classList.remove('drop-target');
+}
+function dashDrop(e, targetId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drop-target');
+  if (!dashDragId || dashDragId === targetId) return;
+  const order = dashboardConfig.order;
+  const from = order.indexOf(dashDragId);
+  const to = order.indexOf(targetId);
+  if (from === -1 || to === -1) return;
+  order.splice(from, 1);
+  order.splice(to, 0, dashDragId);
+  saveDashboardConfig();
+  renderDashboardSection();
+  logAudit('Sie', 'Dashboard-Widgets neu angeordnet.', 'Dashboard');
+}
+function dashDragEnd() {
+  document.querySelectorAll('.dash-widget.dragging').forEach(el => el.classList.remove('dragging'));
+  document.querySelectorAll('.dash-widget.drop-target').forEach(el => el.classList.remove('drop-target'));
+  dashDragId = null;
+  // Kurze Verzögerung, damit ein Klick, der als Teil derselben Drag-Geste unmittelbar danach
+  // feuert, noch unterdrückt wird – ein späterer, echter Klick auf ein Widget navigiert normal
+  setTimeout(() => { dashDidDrag = false; }, 50);
+}
+
+function openDashboardCustomizer() {
+  const groups = [...new Set(DASHBOARD_WIDGET_CATALOG.map(w => w.group))];
+  const body = `
+    <p class="bo-form-hint" style="margin:-4px 0 12px">Widgets ein-/ausblenden. Die Reihenfolge lässt sich direkt auf dem Dashboard per Ziehen am Griffsymbol anpassen.</p>
+    <div class="dash-widget-picker">
+      ${groups.map(g => `
+        <div class="dash-widget-picker-group">${g}</div>
+        ${DASHBOARD_WIDGET_CATALOG.filter(w => w.group === g).map(w => `
+          <div class="dash-widget-picker-row">
+            <div><div class="dash-widget-picker-label">${w.title}</div><div class="dash-widget-picker-desc">${WIDGET_DESCRIPTIONS[w.id] || ''}</div></div>
+            <span class="bo-switch ${dashboardConfig.visible[w.id] ? 'on' : ''}" onclick="toggleDashboardWidget('${w.id}')"></span>
+          </div>`).join('')}`).join('')}
+    </div>
+    <button class="bo-btn primary" style="width:100%" onclick="closeBoModal()">Fertig</button>`;
+  openBoModal('Dashboard anpassen', body);
+}
+function toggleDashboardWidget(id) {
+  dashboardConfig.visible[id] = !dashboardConfig.visible[id];
+  saveDashboardConfig();
+  renderDashboardSection();
+  logAudit('Sie', `Dashboard-Widget „${DASHBOARD_WIDGET_CATALOG.find(w => w.id === id)?.title}" ${dashboardConfig.visible[id] ? 'eingeblendet' : 'ausgeblendet'}.`, 'Dashboard');
+  if (document.getElementById('boFormModal').classList.contains('open')) openDashboardCustomizer();
 }
 
 // ─── CHATS (Ticket-/Fallmanagement) ───
@@ -2218,11 +2333,51 @@ function renderAgentsSection() {
       <div class="bo-detail-section-label" style="margin-bottom:10px">Unterstützte Sprachen</div>
       <div>${['DE', 'EN', 'FR', 'IT'].map(l => `<span class="quick-chip" style="${agentConfig.languages.includes(l) ? '' : 'opacity:.4'}" onclick="toggleAgentLanguage('${l}')">${l}</span>`).join('')}</div>
     </div>
-    <div class="bo-table-card">
+    <div class="bo-table-card" style="margin-bottom:16px">
       <div class="bo-toolbar"><strong style="font-size:12.5px">Intelligente Weiterleitung nach Kategorie</strong></div>
       <div class="bo-table-wrap"><table class="bo-table"><thead><tr><th>Kategorie</th><th>Zuständiges Team</th></tr></thead>
       <tbody>${ROUTING_RULES.map(r => `<tr><td>${r.category}</td><td>${r.team}</td></tr>`).join('')}</tbody></table></div>
+    </div>
+    <div class="bo-grid" style="grid-template-columns:1fr 1fr">
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-card-title">Eskalationseinstellungen</div>
+        </div>
+        <p style="font-size:11.5px;color:var(--gray);margin:-4px 0 12px">Legt fest, wann und wie ungelöste Anliegen an Ihr Team weitergegeben werden.</p>
+        <label class="modal-label">Geschäftszeiten</label>
+        <div class="modal-hours" style="margin-bottom:16px">
+          <input type="time" id="hoursFrom" value="${escalationSettings.hoursFrom}">
+          <span>bis</span>
+          <input type="time" id="hoursTo" value="${escalationSettings.hoursTo}">
+          <span>Uhr</span>
+        </div>
+        <label class="modal-label">Eskalationsweg</label>
+        <div class="route-options" id="routeOptions">
+          <label class="route-opt ${escalationSettings.route === 'email' ? 'selected' : ''}" data-route="email">
+            <input type="radio" name="escRoute" value="email" ${escalationSettings.route === 'email' ? 'checked' : ''}>
+            <div><div class="route-opt-title">Weiterleitung per E-Mail</div><div class="route-opt-desc">Ticket geht an eine hinterlegte Support-Adresse</div></div>
+          </label>
+          <label class="route-opt ${escalationSettings.route === 'team' ? 'selected' : ''}" data-route="team">
+            <input type="radio" name="escRoute" value="team" ${escalationSettings.route === 'team' ? 'checked' : ''}>
+            <div><div class="route-opt-title">An Support-Team zuweisen</div><div class="route-opt-desc">Nächster verfügbarer Mitarbeiter übernimmt das Ticket</div></div>
+          </label>
+          <label class="route-opt ${escalationSettings.route === 'custom' ? 'selected' : ''}" data-route="custom">
+            <input type="radio" name="escRoute" value="custom" ${escalationSettings.route === 'custom' ? 'checked' : ''}>
+            <div><div class="route-opt-title">Individuelle Aktion</div><div class="route-opt-desc">Z. B. Rückruf-Anfrage direkt im Kalender des Ansprechpartners anlegen</div></div>
+          </label>
+        </div>
+        <button class="modal-save" style="margin-top:14px" onclick="saveEscalationSettings()">Einstellungen übernehmen</button>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-card-title">Einstiegspunkt-Simulation</div>
+        </div>
+        <p style="font-size:11.5px;color:var(--gray);margin:-4px 0 12px">Der Assistent ist über denselben Button auf jeder Seite und jeder Detailseite der OrKan Cloud erreichbar. Vorschau, welche Themen er dort vorschlägt:</p>
+        <div id="contextPresetList" style="display:flex;flex-direction:column;gap:6px"></div>
+        <div id="contextPreview" style="margin-top:10px"></div>
+      </div>
     </div>`;
+  renderContextPresetList();
 }
 function toggleAgentConfig(key) {
   agentConfig[key] = !agentConfig[key];
@@ -2445,50 +2600,351 @@ function buildSparkline(values, w = 560, h = 120) {
   const fill = line + ` L${w},${h} L0,${h} Z`;
   return `<svg class="bo-linechart" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><path class="fill" d="${fill}"/><path class="line" d="${line}"/>${pts.map(p => `<circle class="dot" cx="${p[0]}" cy="${p[1]}" r="3"/>`).join('')}</svg>`;
 }
+// ─── ANALYSEN & REPORTS: thematisch gruppierte Detailauswertungen ───
+const ANALYTICS_TABS = [
+  { id: 'performance', label: 'Performance' },
+  { id: 'kunden', label: 'Kunden & Gespräche' },
+  { id: 'chatbot', label: 'Chatbot' },
+  { id: 'voice', label: 'Voice / Live-Gespräche' },
+  { id: 'wissensdatenbank', label: 'Wissensdatenbank' },
+  { id: 'support', label: 'Support' },
+  { id: 'trends', label: 'Trends & Entwicklungen' },
+  { id: 'reports', label: 'Reports' },
+];
+let analyticsState = { tab: 'performance', period: 7 };
+// Illustrative Zeitreihen (Prototyp ohne Backend-Historie) – 30/90-Tage-Werte leiten sich
+// deterministisch aus derselben 7-Tage-Basis ab, damit die Größenordnung konsistent bleibt.
+const TREND_DATA_7 = [62, 68, 71, 66, 74, 58, 54];
+const TREND_DATA_30 = [58, 60, 55, 62, 64, 59, 61, 66, 70, 68, 65, 63, 67, 71, 74, 69, 66, 64, 68, 72, 75, 70, 68, 66, 69, 73, 76, 71, 69, 67];
+const TREND_DATA_90 = [...TREND_DATA_30.map(v => Math.max(30, v - 8)), ...TREND_DATA_30.map(v => Math.max(30, v - 3)), ...TREND_DATA_30];
+function trendForPeriod(days) { return days === 30 ? TREND_DATA_30 : days === 90 ? TREND_DATA_90 : TREND_DATA_7; }
+
+function showAnalyticsTab(tab) {
+  analyticsState.tab = tab;
+  renderAnalyticsSection();
+}
+function setAnalyticsPeriod(days) {
+  analyticsState.period = days;
+  renderAnalyticsSection();
+}
+
+function metricMeta(was, warum, zeitraum) {
+  return `<div class="metric-meta"><strong>Was:</strong> ${was} &nbsp;·&nbsp; <strong>Warum relevant:</strong> ${warum} &nbsp;·&nbsp; <strong>Zeitraum:</strong> ${zeitraum}</div>`;
+}
+function metricInsight(text) {
+  return `<div class="metric-insight"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2Z"/></svg><span><strong>Erkenntnis:</strong> ${text}</span></div>`;
+}
+
 function renderAnalyticsSection() {
   const mount = document.getElementById('boPage-analytics');
   if (!mount) return;
-  const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-  const trend = [62, 68, 71, 66, 74, 58, 54];
+  mount.innerHTML = `
+    <div class="bo-page-header"><div><div class="bo-page-title">Analysen &amp; Reports</div><div class="bo-page-sub">Detaillierte Auswertungen – nach Themenbereich gruppiert</div></div></div>
+    <div class="an-tabs">${ANALYTICS_TABS.map(t => `<button class="an-tab ${analyticsState.tab === t.id ? 'active' : ''}" onclick="showAnalyticsTab('${t.id}')">${t.label}</button>`).join('')}</div>
+    <div id="analyticsTabBody"></div>`;
+  document.getElementById('analyticsTabBody').innerHTML = renderAnalyticsTabBody(analyticsState.tab);
+  animateBars();
+}
+
+function renderAnalyticsTabBody(tab) {
+  const totalTix = tickets.length || 1;
   const channelCounts = {};
   tickets.forEach(t => { channelCounts[t.channel] = (channelCounts[t.channel] || 0) + 1; });
-  const totalTix = tickets.length || 1;
   const catCounts = {};
   tickets.forEach(t => { catCounts[t.category] = (catCounts[t.category] || 0) + 1; });
   const topCats = Object.entries(catCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
   const csatVals = tickets.filter(t => t.csat != null).map(t => t.csat);
   const csatAvg = csatVals.length ? (csatVals.reduce((a, b) => a + b, 0) / csatVals.length).toFixed(1) : '–';
-  mount.innerHTML = `
-    <div class="bo-page-header"><div><div class="bo-page-title">Analysen & Reports</div><div class="bo-page-sub">Auswertungen über alle Kanäle und Fälle</div></div></div>
-    <div class="bo-kpi-row">
-      <div class="bo-kpi"><div class="bo-kpi-label">Gesamtfälle</div><div class="bo-kpi-val">${tickets.length}</div></div>
-      <div class="bo-kpi"><div class="bo-kpi-label">Automatisiert gelöst</div><div class="bo-kpi-val green">${tickets.filter(t => t.status === 'gelöst' || t.status === 'geschlossen').length}</div></div>
-      <div class="bo-kpi"><div class="bo-kpi-label">Eskaliert</div><div class="bo-kpi-val red">${tickets.filter(t => t.status === 'eskaliert').length}</div></div>
-      <div class="bo-kpi"><div class="bo-kpi-label">Ø CSAT</div><div class="bo-kpi-val">${csatAvg}${csatVals.length ? '/5' : ''}</div></div>
-    </div>
-    <div class="bo-table-card" style="padding:18px 20px;margin-bottom:16px">
-      <div class="bo-detail-section-label">Lösungsquote – letzte 7 Tage</div>
-      ${buildSparkline(trend)}
-      <div class="bo-chart-axis">${days.map(d => `<span>${d}</span>`).join('')}</div>
-    </div>
-    <div class="bo-grid" style="grid-template-columns:1fr 1fr;max-width:1280px;margin:0 auto">
-      <div class="stat-card">
-        <div class="stat-card-header"><div class="stat-card-title">Verteilung nach Kanal</div></div>
-        <p style="font-size:11px;color:var(--gray);margin:-6px 0 8px">Website ist aktiv im Einsatz · weitere Kanäle vorerst nicht genutzt</p>
-        <div class="bar-chart">${['website', 'voice', 'email', 'whatsapp', 'formular', 'api'].map(c => {
-          const pct = Math.round(((channelCounts[c] || 0) / totalTix) * 100);
-          const active = c === 'website' || c === 'voice';
-          return `<div class="bar-item"><span class="bar-label" style="${active ? '' : 'color:var(--gray)'}">${channelLabel(c)}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%;${active ? '' : 'background:var(--gray-light)'}"></div></div><span class="bar-val" style="${active ? '' : 'color:var(--gray)'}">${pct}%</span></div>`;
-        }).join('')}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card-header"><div class="stat-card-title">Häufigste Kategorien</div></div>
-        <div class="bar-chart">${topCats.map(([cat, count]) => {
-          const pct = Math.round((count / totalTix) * 100);
-          return `<div class="bar-item"><span class="bar-label">${cat}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-val">${count}</span></div>`;
-        }).join('')}</div>
-      </div>
+  const solved = tickets.filter(t => t.status === 'gelöst' || t.status === 'geschlossen').length;
+  const escalatedTix = tickets.filter(t => t.status === 'eskaliert').length;
+  const total = stats.answered + stats.escalated;
+  const escRate = total > 0 ? Math.round((stats.escalated / total) * 100) : null;
+  const solveRate = total > 0 ? Math.round((stats.answered / total) * 100) : null;
+  const days = analyticsState.period === 30 ? Array.from({ length: 30 }, (_, i) => i + 1 + '.') : analyticsState.period === 90 ? Array.from({ length: 90 }, (_, i) => i + 1) : ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+  const trendVals = trendForPeriod(analyticsState.period);
+  const periodPicker = `
+    <div class="an-filter-bar">
+      <span class="an-filter-label">Zeitraum:</span>
+      ${[7, 30, 90].map(d => `<button class="an-period-btn ${analyticsState.period === d ? 'active' : ''}" onclick="setAnalyticsPeriod(${d})">${d} Tage</button>`).join('')}
     </div>`;
+
+  if (tab === 'performance') {
+    return `
+      <div class="bo-kpi-row">
+        <div class="bo-kpi"><div class="bo-kpi-label">Gesamtfälle</div><div class="bo-kpi-val">${tickets.length}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Automatisiert gelöst</div><div class="bo-kpi-val green">${solved}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Eskalationsrate</div><div class="bo-kpi-val ${escRate !== null && escRate > 20 ? 'red' : 'green'}">${escRate === null ? '–' : escRate + '%'}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Ø Antwortzeit</div><div class="bo-kpi-val green">1,2 Sek.</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Mitarbeiterentlastung</div><div class="bo-kpi-val green">${stats.savings} Min.</div></div>
+      </div>
+      <div class="an-section-title">Lösungsquote im Zeitverlauf</div>
+      ${periodPicker}
+      <div class="bo-table-card" style="padding:18px 20px;margin-bottom:16px">
+        ${metricMeta('Anteil automatisiert gelöster Anfragen je Tag', 'zeigt, ob der Assistent Kundenanliegen zuverlässig ohne menschliches Zutun löst', `letzte ${analyticsState.period} Tage`)}
+        ${buildSparkline(trendVals)}
+        <div class="bo-chart-axis">${(analyticsState.period === 7 ? days : days.filter((_, i) => i % Math.ceil(days.length / 9) === 0)).map(d => `<span>${d}</span>`).join('')}</div>
+        ${metricInsight(trendVals[trendVals.length - 1] >= trendVals[0] ? `Die Lösungsquote ist über den Zeitraum leicht gestiegen (${trendVals[0]}% → ${trendVals[trendVals.length - 1]}%) – die Wissensbasis deckt aktuelle Anfragen gut ab.` : `Die Lösungsquote ist über den Zeitraum leicht gesunken (${trendVals[0]}% → ${trendVals[trendVals.length - 1]}%) – ein Blick in die erkannten Wissenslücken lohnt sich.`)}
+      </div>
+      <div class="bo-grid" style="grid-template-columns:1fr 1fr;max-width:1280px;margin:0 auto">
+        <div class="stat-card">
+          <div class="stat-card-header"><div class="stat-card-title">Lösungsrate aktuell</div><div class="stat-card-badge badge-green">ZIEL &lt;20% Eskalation</div></div>
+          ${metricMeta('Anteil der laufenden Sitzung, der automatisiert beantwortet statt eskaliert wurde', 'Kernindikator für die Entlastung des Support-Teams', 'laufende Sitzung')}
+          <div class="donut-wrap">
+            <svg width="100" height="100" viewBox="0 0 100 100">
+              <circle class="donut-bg" cx="50" cy="50" r="45"/>
+              <circle class="donut-fill" style="stroke-dashoffset:${solveRate === null ? 283 : 283 - (283 * solveRate / 100)}" cx="50" cy="50" r="45"/>
+            </svg>
+            <div class="donut-label"><div class="donut-pct">${solveRate === null ? '–' : solveRate + '%'}</div><div class="donut-sub">GELÖST</div></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-header"><div class="stat-card-title">Fallstatus (alle Fälle)</div></div>
+          ${metricMeta('Verteilung aller Fälle nach Bearbeitungsstatus', 'zeigt, wie viel noch offen bzw. in Bearbeitung ist', 'gesamter Datenbestand')}
+          <div class="bar-chart">${['offen', 'in Bearbeitung', 'eskaliert', 'gelöst', 'geschlossen'].map(s => {
+            const c = tickets.filter(t => t.status === s).length;
+            const pct = Math.round((c / totalTix) * 100);
+            return `<div class="bar-item"><span class="bar-label">${s}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-val">${c}</span></div>`;
+          }).join('')}</div>
+        </div>
+      </div>`;
+  }
+
+  if (tab === 'kunden') {
+    const totalFb = stats.positive + stats.negative;
+    const avg = totalFb > 0 ? (stats.positive / totalFb * 5).toFixed(1) : '–';
+    const filled = totalFb > 0 ? Math.round(parseFloat(avg)) : 0;
+    let starsHtml = '';
+    for (let i = 1; i <= 5; i++) starsHtml += `<span class="${i <= filled ? 'star-filled' : 'star-empty'}">★</span>`;
+    return `
+      <div class="bo-kpi-row">
+        <div class="bo-kpi"><div class="bo-kpi-label">Gesamtfälle</div><div class="bo-kpi-val">${tickets.length}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Ø CSAT</div><div class="bo-kpi-val">${csatAvg}${csatVals.length ? '/5' : ''}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Positive Bewertungen</div><div class="bo-kpi-val green">${stats.positive}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Negative Bewertungen</div><div class="bo-kpi-val red">${stats.negative}</div></div>
+      </div>
+      <div class="bo-grid" style="grid-template-columns:1fr 1fr;max-width:1280px;margin:0 auto">
+        <div class="stat-card">
+          <div class="stat-card-header"><div class="stat-card-title">Verteilung nach Kanal</div></div>
+          ${metricMeta('Über welchen Kanal Kunden den Support kontaktieren', 'zeigt, wo Ressourcen und Qualitätssicherung Priorität haben sollten', 'gesamter Datenbestand')}
+          <p style="font-size:11px;color:var(--gray);margin:-2px 0 8px">Website ist aktiv im Einsatz · weitere Kanäle vorerst nicht genutzt</p>
+          <div class="bar-chart">${['website', 'voice', 'email', 'whatsapp', 'formular', 'api'].map(c => {
+            const pct = Math.round(((channelCounts[c] || 0) / totalTix) * 100);
+            const active = c === 'website' || c === 'voice';
+            return `<div class="bar-item"><span class="bar-label" style="${active ? '' : 'color:var(--gray)'}">${channelLabel(c)}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%;${active ? '' : 'background:var(--gray-light)'}"></div></div><span class="bar-val" style="${active ? '' : 'color:var(--gray)'}">${pct}%</span></div>`;
+          }).join('')}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-header"><div class="stat-card-title">Häufigste Anliegen-Kategorien</div></div>
+          ${metricMeta('Themenbereiche mit den meisten Fällen', 'hilft, die Wissensbasis gezielt an echtem Bedarf auszurichten', 'gesamter Datenbestand')}
+          <div class="bar-chart">${topCats.length === 0 ? '<div class="gap-empty">Noch keine Fälle erfasst</div>' : topCats.map(([cat, count]) => {
+            const pct = Math.round((count / totalTix) * 100);
+            return `<div class="bar-item"><span class="bar-label">${cat}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-val">${count}</span></div>`;
+          }).join('')}</div>
+        </div>
+      </div>
+      <div class="stat-card bo-wide" style="max-width:1280px;margin:16px auto 0">
+        <div class="stat-card-header"><div class="stat-card-title">Nutzerbewertung</div></div>
+        ${metricMeta('Sternebewertung aus dem Daumen-hoch/-runter-Feedback im Chat', 'unmittelbares Signal zur wahrgenommenen Antwortqualität', 'laufende Sitzung')}
+        <div class="rating-row"><span class="rating-label">Durchschnitt</span><span class="rating-num">${avg}</span></div>
+        <div class="stars-display">${starsHtml}</div>
+      </div>`;
+  }
+
+  if (tab === 'chatbot') {
+    return `
+      <div class="bo-kpi-row">
+        <div class="bo-kpi"><div class="bo-kpi-label">Fragen beantwortet</div><div class="bo-kpi-val green">${stats.answered}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Short-Head-Abdeckung</div><div class="bo-kpi-val green">92%</div><div class="bo-kpi-note">Wiederkehrende Themen, die die Wissensbasis abdeckt</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Wissenseinträge</div><div class="bo-kpi-val">${KB.length}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Aktive KI-Funktionen</div><div class="bo-kpi-val">${Object.values(agentConfig).filter(v => v === true).length}/3</div></div>
+      </div>
+      <div class="bo-grid" style="grid-template-columns:1fr 1fr;max-width:1280px;margin:0 auto">
+        <div class="stat-card">
+          <div class="stat-card-header"><div class="stat-card-title">Top-Themen</div><div class="stat-card-badge badge-blue">Heute</div></div>
+          ${metricMeta('Am häufigsten nachgefragte Themenbereiche im Chat', 'zeigt, wofür die meiste Zeit automatisiert eingespart wird', 'heute')}
+          <div class="bar-chart">${TOP_TOPICS_DEMO.map(([label, pct]) => `<div class="bar-item"><span class="bar-label">${label}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-val">${pct}%</span></div>`).join('')}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-header"><div class="stat-card-title">KI-Agent – Aktivitätsprotokoll</div><div class="stat-card-badge badge-blue">${agentLog.length}</div></div>
+          ${metricMeta('Jeder selbstständige Entscheidungsschritt des Agenten (Kategorisierung, Reasoning, Eskalation, Lernen)', 'macht automatisierte Entscheidungen nachvollziehbar statt Black-Box', 'laufende Sitzung')}
+          <div class="agent-log" style="max-height:220px">${agentLog.length === 0 ? '<div class="gap-empty">Noch keine Aktivität in dieser Sitzung</div>' : agentLog.slice(0, 20).map(e => `
+            <div class="agent-log-item">
+              <div class="agent-log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${AGENT_LOG_ICONS[e.kind] || AGENT_LOG_ICONS.action}</svg></div>
+              <div><div class="agent-log-text">${e.text}</div><div class="agent-log-time">${e.time}</div></div>
+            </div>`).join('')}</div>
+        </div>
+      </div>`;
+  }
+
+  if (tab === 'voice') {
+    const voiceTix = tickets.filter(t => t.channel === 'voice');
+    const voiceEscalated = voiceTix.filter(t => t.status === 'eskaliert').length;
+    const avgMsgs = voiceTix.length ? (voiceTix.reduce((sum, t) => sum + t.messages.length, 0) / voiceTix.length).toFixed(1) : '–';
+    return `
+      <div class="bo-kpi-row">
+        <div class="bo-kpi"><div class="bo-kpi-label">Voice-/Live-Gespräche</div><div class="bo-kpi-val">${voiceTix.length}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Davon eskaliert</div><div class="bo-kpi-val ${voiceEscalated ? 'red' : 'green'}">${voiceEscalated}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Ø Nachrichten je Gespräch</div><div class="bo-kpi-val">${avgMsgs}</div></div>
+      </div>
+      <div class="stat-card bo-wide" style="max-width:1280px;margin:0 auto">
+        <div class="stat-card-header"><div class="stat-card-title">Gespräche über den Sprachkanal</div></div>
+        ${metricMeta('Alle Fälle, die über „Live-Gespräch" (Spracheingabe + Sprachausgabe) geführt wurden', 'zeigt die tatsächliche Nutzung der Voice-Funktion getrennt vom Text-Chat', 'gesamter Datenbestand')}
+        <div class="bo-table-wrap"><table class="bo-table"><thead><tr><th>Fall</th><th>Betreff</th><th>Priorität</th><th>Status</th><th>Nachrichten</th></tr></thead>
+        <tbody>${voiceTix.length === 0 ? '<tr class="bo-empty-row"><td colspan="5">Noch keine Gespräche über den Sprachkanal</td></tr>' : voiceTix.map(t => `<tr onclick="showBoSection('chats');openTicketDetail('${t.id}')"><td class="mono">${t.id}</td><td>${t.subject}</td><td>${priorityPill(t.priority)}</td><td>${statusPill(t.status)}</td><td>${t.messages.length}</td></tr>`).join('')}</tbody></table></div>
+        ${metricInsight(voiceTix.length === 0 ? 'Der Sprachkanal wurde in dieser Sitzung noch nicht genutzt – über den Button „Live-Gespräch" im Kundenchat testbar.' : `${voiceTix.length} Gespräch(e) über „Live-Gespräch" geführt, davon ${voiceEscalated} eskaliert.`)}
+      </div>`;
+  }
+
+  if (tab === 'wissensdatenbank') {
+    const gapEntries = [...knowledgeGaps.entries()].sort((a, b) => b[1] - a[1]);
+    return `
+      <div class="bo-kpi-row">
+        <div class="bo-kpi"><div class="bo-kpi-label">Wissenseinträge</div><div class="bo-kpi-val">${KB.length}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Short-Head-Abdeckung</div><div class="bo-kpi-val green">92%</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Erkannte Wissenslücken</div><div class="bo-kpi-val ${knowledgeGaps.size ? 'red' : 'green'}">${knowledgeGaps.size}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">FAQ-Vorschläge</div><div class="bo-kpi-val">${faqSuggestions.length}</div></div>
+      </div>
+      <div class="bo-grid" style="grid-template-columns:1fr 1fr;max-width:1280px;margin:0 auto">
+        <div class="stat-card">
+          <div class="stat-card-header"><div class="stat-card-title">Erkannte Wissenslücken</div><div class="stat-card-badge badge-blue">${knowledgeGaps.size}</div></div>
+          ${metricMeta('Themen, zu denen keine passende Antwort in der Wissensbasis gefunden wurde', 'direkte Grundlage für neue Wissensdatenbank-Einträge', 'laufende Sitzung')}
+          <div class="gap-list">${gapEntries.length === 0 ? '<div class="gap-empty">Noch keine ungelösten Themen erfasst</div>' : gapEntries.map(([topic, count]) => `<div class="gap-item"><span class="gap-item-text">${topic}</span><span class="gap-item-count">${count}×</span></div>`).join('')}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-header"><div class="stat-card-title">FAQ-Vorschläge (Workflow „Wiederkehrende Anfragen automatisch clustern")</div></div>
+          ${metricMeta('Kategorien mit ≥3 ähnlichen offenen Fällen', 'schlägt vor, wo sich ein neuer FAQ-Eintrag lohnt', 'gesamter Datenbestand')}
+          <div class="gap-list">${faqSuggestions.length === 0 ? '<div class="gap-empty">Noch keine automatisch erkannten Häufungen</div>' : faqSuggestions.map(s => `<div class="gap-item"><span class="gap-item-text">„${s.category}" – ${s.count} offene Fälle</span><span class="gap-item-count">${fmtRelative(s.created)}</span></div>`).join('')}</div>
+        </div>
+      </div>
+      <div style="max-width:1280px;margin:14px auto 0;text-align:right"><button class="bo-btn" onclick="showBoSection('kb')">→ Zur Wissensdatenbank</button></div>`;
+  }
+
+  if (tab === 'support') {
+    const callbackTix = tickets.filter(t => t.callbackRequested);
+    const agentCounts = {};
+    tickets.forEach(t => { agentCounts[t.assignedAgent] = (agentCounts[t.assignedAgent] || 0) + 1; });
+    return `
+      <div class="bo-kpi-row">
+        <div class="bo-kpi"><div class="bo-kpi-label">Offene Fälle</div><div class="bo-kpi-val">${tickets.filter(t => t.status === 'offen' || t.status === 'in Bearbeitung').length}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Eskaliert</div><div class="bo-kpi-val red">${escalatedTix}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Rückruf-Wünsche</div><div class="bo-kpi-val ${callbackTix.length ? 'red' : 'green'}">${callbackTix.length}</div></div>
+        <div class="bo-kpi"><div class="bo-kpi-label">Ø CSAT</div><div class="bo-kpi-val">${csatAvg}${csatVals.length ? '/5' : ''}</div></div>
+      </div>
+      <div class="bo-grid" style="grid-template-columns:1fr 1fr;max-width:1280px;margin:0 auto">
+        <div class="stat-card">
+          <div class="stat-card-header"><div class="stat-card-title">Priorität der Fälle</div></div>
+          ${metricMeta('Verteilung aller Fälle nach zugewiesener Priorität', 'zeigt, ob kritische Fälle rechtzeitig priorisiert werden', 'gesamter Datenbestand')}
+          <div class="bar-chart">${['niedrig', 'normal', 'hoch', 'kritisch'].map(p => {
+            const c = tickets.filter(t => t.priority === p).length;
+            const pct = Math.round((c / totalTix) * 100);
+            return `<div class="bar-item"><span class="bar-label">${p}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-val">${c}</span></div>`;
+          }).join('')}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-header"><div class="stat-card-title">Auslastung nach Zuständigkeit</div></div>
+          ${metricMeta('Wie viele Fälle je Mitarbeitendem bzw. dem KI-Agenten zugewiesen sind', 'hilft, Arbeitslast im Team auszubalancieren', 'gesamter Datenbestand')}
+          <div class="bar-chart">${AGENTS.map(a => {
+            const c = agentCounts[a] || 0;
+            const pct = Math.round((c / totalTix) * 100);
+            return `<div class="bar-item"><span class="bar-label">${a}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-val">${c}</span></div>`;
+          }).join('')}</div>
+        </div>
+      </div>
+      <div class="stat-card bo-wide" style="max-width:1280px;margin:16px auto 0">
+        <div class="stat-card-header"><div class="stat-card-title">Offene Rückruf-Wünsche</div><div class="stat-card-badge badge-blue">${callbackTix.length}</div></div>
+        ${metricMeta('Fälle, in denen der Kunde im Chat aktiv „Rückruf anfordern" gewählt hat', 'diese Kunden erwarten aktiv eine Kontaktaufnahme', 'gesamter Datenbestand')}
+        <div class="bo-table-wrap"><table class="bo-table"><thead><tr><th>Fall</th><th>Kunde</th><th>Betreff</th><th>Zuständig</th></tr></thead>
+        <tbody>${callbackTix.length === 0 ? '<tr class="bo-empty-row"><td colspan="4">Aktuell keine offenen Rückruf-Wünsche</td></tr>' : callbackTix.map(t => `<tr onclick="showBoSection('chats');openTicketDetail('${t.id}')"><td class="mono">${t.id}</td><td>${t.customer}</td><td>${t.subject}</td><td>${t.assignedAgent}</td></tr>`).join('')}</tbody></table></div>
+      </div>`;
+  }
+
+  if (tab === 'trends') {
+    return `
+      <div class="stat-card bo-wide" style="max-width:1280px;margin:0 auto 16px">
+        <div class="stat-card-header"><div class="stat-card-title">Entwicklung der Lösungsquote</div></div>
+        ${metricMeta('Trendverlauf der automatisierten Lösungsquote', 'zeigt, ob die Wissensbasis mit dem Anfragevolumen Schritt hält', 'letzte 7 Tage')}
+        <p style="font-size:12.5px;color:var(--dark);line-height:1.6">In den letzten 7 Tagen bewegte sich die Lösungsquote zwischen <strong>${Math.min(...TREND_DATA_7)}%</strong> und <strong>${Math.max(...TREND_DATA_7)}%</strong>. Der aktuelle Wert liegt bei <strong>${TREND_DATA_7[TREND_DATA_7.length - 1]}%</strong> – Details und ein einstellbarer Zeitraum stehen im Tab „Performance" zur Verfügung.</p>
+        ${metricInsight('Schwankungen korrelieren meist mit neu auftretenden Themen, die noch nicht in der Wissensbasis abgedeckt sind – siehe Tab „Wissensdatenbank".')}
+      </div>
+      <div class="stat-card bo-wide" style="max-width:1280px;margin:0 auto">
+        <div class="stat-card-header"><div class="stat-card-title">Technologie-Roadmap</div></div>
+        ${metricMeta('Geplante Weiterentwicklung des Assistenten', 'ordnet den heutigen Funktionsstand gegenüber der Zielausbaustufe ein', 'Ausblick')}
+        <div class="roadmap-row">
+          <div class="roadmap-col">
+            <div class="roadmap-label">Heute – Pilot</div>
+            <ul class="roadmap-list">
+              <li>Kuratierte Wissensbasis mit intentbasierter Zuordnung</li>
+              <li>Mehrstufiges Reasoning über verwandte Wissensbeiträge</li>
+              <li>Eskalation bei fehlender Übereinstimmung</li>
+            </ul>
+          </div>
+          <div class="roadmap-arrow">→</div>
+          <div class="roadmap-col">
+            <div class="roadmap-label">Geplant – LLM-basiert</div>
+            <ul class="roadmap-list">
+              <li>Antworten werden aus dem Gesprächskontext frei formuliert statt aus Vorlagen zusammengesetzt</li>
+              <li>Der Agent löst wiederkehrende Schritte eigenständig aus (z. B. Ticket anlegen, Kalendertermin buchen)</li>
+              <li>Kontinuierliches Lernen aus Feedback und Support-Historie ohne manuelle Pflege der Wissensbasis</li>
+              <li>Entlastet Mitarbeitende zusätzlich bei komplexeren, mehrstufigen Anliegen</li>
+            </ul>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  if (tab === 'reports') {
+    return `
+      <div class="stat-card bo-wide" style="max-width:1280px;margin:0 auto">
+        <div class="stat-card-header"><div class="stat-card-title">Wochenbericht</div></div>
+        ${metricMeta('Zusammenfassung aller Kennzahlen aus diesem Backoffice als Textdatei', 'zum Ablegen, Weiterleiten oder Archivieren außerhalb des Systems', 'laufende Sitzung')}
+        <p style="font-size:12.5px;color:var(--dark);line-height:1.6;margin-bottom:14px">Der Export enthält Fallzahlen, Eskalationsrate, Nutzerbewertung, Kanalverteilung, Wissenslücken und die Zuständigkeits-Auslastung im aktuellen Stand.</p>
+        <button class="bo-btn primary" onclick="downloadWeeklyReport()">Bericht herunterladen (.txt)</button>
+      </div>`;
+  }
+
+  return '';
+}
+
+function downloadWeeklyReport() {
+  const total = stats.answered + stats.escalated;
+  const escRate = total > 0 ? Math.round((stats.escalated / total) * 100) : 0;
+  const channelCounts = {};
+  tickets.forEach(t => { channelCounts[t.channel] = (channelCounts[t.channel] || 0) + 1; });
+  const lines = [
+    `OrKan Cloud Support – Bericht vom ${fmtDate(new Date())}`,
+    '='.repeat(48),
+    '',
+    'PERFORMANCE',
+    `Fragen beantwortet: ${stats.answered}`,
+    `Eskalationen: ${stats.escalated}`,
+    `Eskalationsrate: ${escRate}%`,
+    `Mitarbeiterentlastung: ${stats.savings} Min.`,
+    '',
+    'KUNDEN & GESPRÄCHE',
+    `Gesamtfälle: ${tickets.length}`,
+    `Positive Bewertungen: ${stats.positive}`,
+    `Negative Bewertungen: ${stats.negative}`,
+    ...Object.entries(channelCounts).map(([c, n]) => `Kanal ${channelLabel(c)}: ${n}`),
+    '',
+    'WISSENSDATENBANK',
+    `Einträge: ${KB.length}`,
+    `Erkannte Wissenslücken: ${knowledgeGaps.size}`,
+    ...[...knowledgeGaps.entries()].map(([topic, count]) => `  – ${topic} (${count}×)`),
+    '',
+    'SUPPORT',
+    `Rückruf-Wünsche offen: ${tickets.filter(t => t.callbackRequested).length}`,
+  ];
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `orkan-wochenbericht-${new Date().toISOString().slice(0, 10)}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  logAudit('Sie', 'Wochenbericht exportiert.', 'Analysen & Reports');
+  toast('Bericht wurde heruntergeladen.');
 }
 
 // ─── SYSTEMEINSTELLUNGEN ───
@@ -3351,23 +3807,8 @@ const AGENT_LOG_ICONS = {
 function logAgentAction(kind, text) {
   const time = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   agentLog.unshift({ kind, text, time });
-  renderAgentLog();
-}
-function renderAgentLog() {
-  const list = document.getElementById('agentLog');
-  const badge = document.getElementById('agentLogBadge');
-  if (!list) return;
-  if (agentLog.length === 0) {
-    list.innerHTML = '<div class="gap-empty">Noch keine Aktivität in dieser Sitzung</div>';
-    badge.textContent = '0';
-    return;
-  }
-  list.innerHTML = agentLog.slice(0, 20).map(e => `
-    <div class="agent-log-item">
-      <div class="agent-log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${AGENT_LOG_ICONS[e.kind] || AGENT_LOG_ICONS.action}</svg></div>
-      <div><div class="agent-log-text">${e.text}</div><div class="agent-log-time">${e.time}</div></div>
-    </div>`).join('');
-  badge.textContent = agentLog.length;
+  renderBoSectionIfActive('dashboard');
+  renderBoSectionIfActive('analytics');
 }
 
 // ─── AUDIT-LOG (Backoffice-weite Aktivität, nicht nur der KI-Agent) ───
@@ -3383,16 +3824,9 @@ function registerGap(topic, isHandoff = false) {
 }
 
 function renderGaps() {
-  const list = document.getElementById('gapList');
-  const badge = document.getElementById('gapBadge');
-  if (knowledgeGaps.size === 0) {
-    list.innerHTML = '<div class="gap-empty">Noch keine ungelösten Themen erfasst</div>';
-    badge.textContent = '0';
-    return;
-  }
-  const entries = [...knowledgeGaps.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5);
-  list.innerHTML = entries.map(([topic, count]) => `<div class="gap-item"><span class="gap-item-text">${topic}</span><span class="gap-item-count">${count}×</span></div>`).join('');
-  badge.textContent = knowledgeGaps.size;
+  renderBoSectionIfActive('dashboard');
+  renderBoSectionIfActive('analytics');
+  renderBoSectionIfActive('kb');
 }
 
 function feedback(msgId, type, btn) {
@@ -3457,47 +3891,24 @@ function saveEscalationSettings() {
   }
 }
 
-document.getElementById('routeOptions')?.addEventListener('click', e => {
-  const opt = e.target.closest('.route-opt');
+// Delegierter Listener statt direkter Bindung, da #routeOptions Teil einer dynamisch
+// gerenderten Backoffice-Seite ist und bei jedem Aufruf neu im DOM entsteht
+document.addEventListener('click', e => {
+  const opt = e.target.closest('#routeOptions .route-opt');
   if (!opt) return;
-  document.querySelectorAll('.route-opt').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('#routeOptions .route-opt').forEach(o => o.classList.remove('selected'));
   opt.classList.add('selected');
   const input = opt.querySelector('input');
   if (input) input.checked = true;
 });
 
 // ─── STATS ───
+// Werte selbst leben ausschließlich im `stats`-Objekt; Dashboard und Analysen berechnen ihre
+// Darstellung bei jedem Aufruf frisch daraus (siehe renderDashboardSection/renderAnalyticsSection) –
+// diese Funktion stößt nur den Re-Render der gerade sichtbaren Seiten an.
 function updateStats() {
-  document.getElementById('statAnswered').textContent = stats.answered;
-  document.getElementById('statEscalated').textContent = stats.escalated;
-  document.getElementById('savingsMin').textContent = stats.savings;
-  document.getElementById('statPositive').textContent = stats.positive;
-  document.getElementById('statNegative').textContent = stats.negative;
-
-  const total = stats.answered + stats.escalated;
-  if (total > 0) {
-    const escRate = Math.round((stats.escalated / total) * 100);
-    const solveRate = 100 - escRate;
-    document.getElementById('statEscRate').textContent = escRate + '%';
-    document.getElementById('statEscRate').style.color = escRate > 20 ? '#dc2626' : getComputedStyle(document.documentElement).getPropertyValue('--green-dark').trim();
-    document.getElementById('donutPct').textContent = solveRate + '%';
-    document.getElementById('donutDesc').textContent = `${stats.answered} von ${total} Fragen gelöst`;
-    // Update donut: circumference = 2π×45 ≈ 283
-    const offset = 283 - (283 * solveRate / 100);
-    document.getElementById('donutFill').style.strokeDashoffset = offset;
-  }
-
-  const totalFeedback = stats.positive + stats.negative;
-  if (totalFeedback > 0) {
-    const avg = (stats.positive / totalFeedback * 5).toFixed(1);
-    document.getElementById('ratingAvg').textContent = avg;
-    const filledStars = Math.round(parseFloat(avg));
-    let starsHtml = '';
-    for (let i = 1; i <= 5; i++) {
-      starsHtml += `<span class="${i <= filledStars ? 'star-filled' : 'star-empty'}">★</span>`;
-    }
-    document.getElementById('starsDisplay').innerHTML = starsHtml;
-  }
+  renderBoSectionIfActive('dashboard');
+  renderBoSectionIfActive('analytics');
 }
 
 function animateBars() {
