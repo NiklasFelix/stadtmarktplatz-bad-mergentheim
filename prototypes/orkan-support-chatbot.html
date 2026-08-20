@@ -142,6 +142,10 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);backgroun
 .learning-note svg{width:12px;height:12px;flex-shrink:0}
 .multi-intent-divider{height:1px;background:var(--gray-light);margin:12px 0}
 .multi-intent-label{font-size:10.5px;font-weight:700;color:var(--gray);letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.reasoning-note{font-size:11.5px;color:var(--gray);font-style:italic;margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed var(--gray-light)}
+.reasoning-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid var(--gray-light);font-size:11.5px;color:var(--gray)}
+.reasoning-escalate-btn{background:none;border:1px solid var(--gray-light);color:var(--green-dark);font-size:11px;font-weight:600;padding:5px 10px;border-radius:7px;cursor:pointer;transition:var(--transition);white-space:nowrap}
+.reasoning-escalate-btn:hover{border-color:var(--green);background:var(--green-light)}
 
 /* Eskalationseinstellungen (Backoffice) */
 .modal-label{font-size:12px;font-weight:700;color:var(--dark);margin-bottom:8px;display:block}
@@ -769,6 +773,7 @@ let stats = { answered: 0, escalated: 0, positive: 0, negative: 0, savings: 0 };
 let msgCounter = 0;
 let ticketCounter = 1001;
 let lastTopic = null;
+let lastReasonedQuestion = '';
 let pendingImage = null;
 const FOLLOWUP_WORDS = ['das','es','damit','dazu','dafür','davon','dabei','wieso','warum','wie lange','und wenn','was noch'];
 
@@ -2751,11 +2756,25 @@ function normalizeText(s) {
   return s.toLowerCase().replace(/[.,!?;:„"()–\-]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 function stemWord(w) {
+  if (w.length > 6 && w.endsWith('ungen')) return w.slice(0, -5);
+  if (w.length > 5 && w.endsWith('ung')) return w.slice(0, -3);
   if (w.length > 4) return w.replace(/(ern|en|em|er|es|e|s)$/, '');
   return w;
 }
+// Domain-Synonyme: normalisiert gängige Umschreibungen auf denselben Begriff, den die
+// Wissensdatenbank tatsächlich verwendet – erhöht die Trefferquote bei natürlicher Sprache,
+// ohne dass für jede Formulierung ein eigenes Stichwort gepflegt werden muss.
+const SYNONYM_MAP = {
+  'kaufen': 'bestellen', 'einkaufen': 'bestellen', 'order': 'bestellen',
+  'hinzufügen': 'anlegen', 'ergänzen': 'anlegen', 'einrichten': 'anlegen',
+  'ändern': 'bearbeiten', 'anpassen': 'bearbeiten', 'editieren': 'bearbeiten',
+  'defekt': 'fehler', 'kaputt': 'fehler', 'störung': 'fehler', 'klappt': 'funktioniert',
+  'entfernen': 'löschen', 'streichen': 'löschen',
+  'liefertermin': 'liefertag', 'lieferdatum': 'liefertag',
+  'firma': 'lieferant', 'grossist': 'lieferant', 'händler': 'lieferant',
+};
 function toWords(s) {
-  return normalizeText(s).split(' ').filter(w => w.length > 2).map(stemWord);
+  return normalizeText(s).split(' ').filter(w => w.length > 2).map(w => SYNONYM_MAP[w] || w).map(stemWord);
 }
 
 function scoreEntry(entry, qWords) {
@@ -2776,14 +2795,41 @@ function scoreEntry(entry, qWords) {
   return best;
 }
 
+const HIGH_CONFIDENCE = 4;   // eindeutiger Treffer – direkte, sichere Antwort
+const MEDIUM_CONFIDENCE = 2.4; // ausreichendes Signal, um eine begründete Antwort abzuleiten
+const LOW_CONFIDENCE = 1.1;    // schwaches, aber nicht beliebiges Signal – nur mit Einordnung nutzbar
+
+// Bewertet alle Wissensbeiträge gegen die Anfrage und liefert sie nach Score sortiert zurück –
+// Grundlage sowohl für den direkten Treffer als auch für das mehrstufige Reasoning weiter unten.
+function rankMatches(qWords) {
+  return KB.map(entry => ({ entry, score: scoreEntry(entry, qWords) }))
+    .filter(m => m.score > 0)
+    .sort((a, b) => b.score - a.score);
+}
+
 function bestMatchFor(qFragment) {
-  const qWords = toWords(qFragment);
-  let best = null, bestScore = 0;
-  KB.forEach(entry => {
-    const score = scoreEntry(entry, qWords);
-    if (score > bestScore) { bestScore = score; best = entry; }
-  });
-  return bestScore >= 4 ? { entry: best, score: bestScore } : null;
+  const ranked = rankMatches(toWords(qFragment));
+  if (!ranked.length || ranked[0].score < HIGH_CONFIDENCE) return null;
+  return ranked[0];
+}
+
+// Mehrstufiges Reasoning: Bevor eskaliert wird, prüft der Agent, ob sich aus verwandten
+// Wissensbeiträgen – auch ohne exakten Stichwort-Treffer – mit ausreichender Plausibilität eine
+// Antwort ableiten lässt. Dazu werden mehrere Kandidaten verglichen (statt nur der eine beste),
+// thematisch verwandte Zweiteinträge ergänzend herangezogen, und das Ergebnis nur ausgegeben,
+// wenn es ein Mindestmaß an inhaltlicher Nähe zur Frage aufweist (Plausibilitätsprüfung).
+function reasonFromRelatedKnowledge(qWords) {
+  const ranked = rankMatches(qWords);
+  if (!ranked.length) return null;
+  const top = ranked[0];
+  if (top.score < LOW_CONFIDENCE) return null; // zu schwaches Signal für eine seriöse Aussage
+
+  // Zweiten, thematisch verwandten Beitrag suchen (gleiche Kategorie, eigenständiges Signal) –
+  // so lässt sich die Antwort logisch ergänzen statt isoliert einen einzelnen Treffer zu zeigen
+  const related = ranked.find(m => m.entry.id !== top.entry.id && m.entry.cat === top.entry.cat && m.score >= 1 && !m.entry.handoff);
+
+  const confidence = top.score >= MEDIUM_CONFIDENCE ? 'medium' : 'low';
+  return { reasoned: true, primary: top.entry, secondary: related ? related.entry : null, confidence, primaryScore: top.score };
 }
 
 // KI-Agent: erkennt, wenn eine Nachricht mehrere Anliegen gleichzeitig enthält,
@@ -2808,6 +2854,10 @@ function findAnswer(query) {
   if (isShortFollowup && lastTopic && !lastTopic.handoff) {
     return { entry: lastTopic, contextUsed: true };
   }
+  // Bevor eskaliert wird: prüfen, ob sich aus verwandtem Wissen mit ausreichender
+  // Plausibilität dennoch eine fundierte Antwort herleiten lässt (siehe Kommentar oben)
+  const reasoned = reasonFromRelatedKnowledge(toWords(q));
+  if (reasoned) return reasoned;
   return null;
 }
 
@@ -2872,6 +2922,20 @@ function sendMessage() {
       return;
     }
 
+    if (result.reasoned) {
+      lastReasonedQuestion = text;
+      addBotMessage(renderReasonedAnswer(result));
+      logAgentAction('reasoning', result.secondary
+        ? `Keine direkte Stichwort-Übereinstimmung gefunden – verwandte Wissensbeiträge „${result.primary.title}" und „${result.secondary.title}" logisch kombiniert, Plausibilität geprüft (Signalstärke ${result.primaryScore.toFixed(1)}) und daraus eine begründete Antwort abgeleitet, statt sofort zu eskalieren.`
+        : `Keine direkte Stichwort-Übereinstimmung gefunden – auf Basis von „${result.primary.title}" (Signalstärke ${result.primaryScore.toFixed(1)}) nach Plausibilitätsprüfung eine begründete Antwort abgeleitet, statt sofort zu eskalieren.`);
+      logAnswer(result.primary, false);
+      lastTopic = result.primary;
+      stats.answered++;
+      stats.savings += 3;
+      updateStats();
+      return;
+    }
+
     if (result.entry.handoff) { handoff(result.entry); return; }
     const contextNote = result.contextUsed ? `<p style="font-size:12px;color:var(--gray);margin-top:6px">Bezogen auf Ihre vorherige Frage zu „${result.entry.title}".</p>` : '';
     if (result.contextUsed) logAgentAction('context', `Anschlussfrage ohne eigenes Stichwort eigenständig auf „${result.entry.title}" bezogen.`);
@@ -2882,6 +2946,28 @@ function sendMessage() {
     stats.savings += 4;
     updateStats();
   }, 900 + Math.random() * 700);
+}
+
+// Baut die Antwort für den Reasoning-Pfad: transparente Einordnung der Sicherheit,
+// die abgeleitete Antwort selbst, optional ein thematisch verwandter Zweitbeitrag,
+// und ein unaufdringlicher Ausweg zum Support-Team für den Fall einer Fehleinschätzung.
+function renderReasonedAnswer(result) {
+  const isEN = currentLanguage === 'EN';
+  const intro = result.confidence === 'medium'
+    ? (isEN ? 'There is no exact match for this in the knowledge base – but based on related information, the following applies:' : 'Dazu gibt es keinen exakt passenden Wissenseintrag – aus verwandten Informationen lässt sich aber Folgendes ableiten:')
+    : (isEN ? 'I don\'t have a precise answer to this. The closest related topic is:' : 'Eine eindeutige Antwort liegt mir dazu nicht vor. Das nächstgelegene verwandte Thema ist:');
+  let html = `<div class="reasoning-note">${intro}</div>` + localizedAnswer(result.primary);
+  if (result.secondary) {
+    html += `<div class="multi-intent-divider"></div><div class="multi-intent-label">${isEN ? 'Also relevant' : 'Ebenfalls relevant'}</div>` + localizedAnswer(result.secondary);
+  }
+  html += `<div class="reasoning-footer">
+    <span>${isEN ? 'Not quite what you meant?' : 'Trifft das nicht genau Ihr Anliegen?'}</span>
+    <button class="reasoning-escalate-btn" onclick="escalateReasonedQuestion()">${isEN ? 'Connect me with the team' : 'Mit Support-Team verbinden'}</button>
+  </div>`;
+  return html;
+}
+function escalateReasonedQuestion() {
+  escalate(lastReasonedQuestion || (currentLanguage === 'EN' ? 'Open request from the chat' : 'Offene Anfrage aus dem Chat'));
 }
 
 // ─── MULTIMODALITÄT: Foto- oder Video-Upload (z. B. Fehlermeldung oder defektes Bauteil) ───
@@ -3259,7 +3345,8 @@ const AGENT_LOG_ICONS = {
   action: '<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/>',
   learn: '<path d="M12 20v-6M12 4v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
   context: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>',
-  handoff: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'
+  handoff: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  reasoning: '<path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2Z"/>'
 };
 function logAgentAction(kind, text) {
   const time = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
