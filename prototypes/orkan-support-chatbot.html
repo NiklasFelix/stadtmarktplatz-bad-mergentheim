@@ -144,7 +144,8 @@ html[data-theme="dark"] .live-call-end-btn:hover{background:rgba(255,255,255,.12
 .esc-contact{display:flex;gap:8px;margin-top:10px}
 .esc-btn{flex:1;padding:8px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:var(--spring);border:none;text-align:center}
 .esc-btn-primary{background:var(--dark-bg);color:#fff}
-.esc-btn-secondary{background:var(--gray-light);color:var(--dark)}
+.esc-btn-secondary{background:var(--gray-light);color:var(--dark);display:flex;flex-direction:column;align-items:center;gap:3px}
+.esc-agent-tip{display:block;font-size:9.5px;font-weight:700;color:var(--green-dark);letter-spacing:.2px}
 .esc-email-compose{display:flex;flex-direction:column;gap:8px;margin-top:4px}
 .esc-email-textarea{width:100%;min-height:64px;padding:8px 10px;border:1.5px solid var(--gray-light);border-radius:8px;font-size:12.5px;font-family:'Inter',sans-serif;outline:none;resize:vertical;background:var(--surface-solid);color:var(--dark)}
 .esc-email-textarea:focus{border-color:var(--green)}
@@ -2356,6 +2357,22 @@ function renderAgentsSection() {
         </div>`).join('')}
     </div>
     <div class="bo-table-card" style="padding:18px 20px;margin-bottom:16px;max-width:1280px;margin-left:auto;margin-right:auto">
+      <div class="bo-detail-section-label" style="margin-bottom:4px">Fallbearbeitung durch KI-Agent (Zielarchitektur)</div>
+      <p style="font-size:11.5px;color:var(--gray);margin:0 0 12px;max-width:760px">Für die Fallbearbeitung nach einer Eskalation ist ein an die Claude-API angebundener KI-Agent vorgesehen, der je Fall eigenständig entscheidet, welche der folgenden Werkzeuge er einsetzt – statt einen zuvor definierten Regelpfad abzuarbeiten.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:14px">
+        ${CASE_AGENT_TOOLS.map(tool => `
+        <div style="border:1px solid var(--gray-light);border-radius:10px;padding:10px 12px">
+          <div style="font-size:11.5px;font-weight:700;color:var(--dark)">${tool.label}</div>
+          <div style="font-size:10.5px;color:var(--gray);margin-top:2px;font-family:monospace">${tool.name}</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:4px">${tool.description}</div>
+        </div>`).join('')}
+      </div>
+      <div style="background:var(--green-light);border-radius:10px;padding:10px 12px;font-size:11.5px;color:var(--green-dark);line-height:1.5">
+        <strong>Status: Als Code hinterlegt, im Prototyp jedoch nicht funktionsfähig.</strong>
+        Ein direkter Aufruf der Anthropic-API aus dem Browser heraus ist aus Sicherheitsgründen nicht möglich – der API-Key dürfte nicht im Frontend-Code liegen – und würde zusätzlich einen eigenen Backend-Proxy voraussetzen, der im Rahmen dieser Arbeit nicht umgesetzt wurde. Der Prototyp stellt die Entscheidung des Agenten deshalb provisorisch über einfache Kriterien dar und protokolliert sie im Aktivitätsprotokoll, einschließlich einer kurzen Begründung je Fall.
+      </div>
+    </div>
+    <div class="bo-table-card" style="padding:18px 20px;margin-bottom:16px;max-width:1280px;margin-left:auto;margin-right:auto">
       <div class="bo-detail-section-label" style="margin-bottom:10px">Unterstützte Sprachen</div>
       <div>${['DE', 'EN', 'FR', 'IT'].map(l => `<span class="quick-chip" style="${agentConfig.languages.includes(l) ? '' : 'opacity:.4'}" onclick="toggleAgentLanguage('${l}')">${l}</span>`).join('')}</div>
     </div>
@@ -3781,6 +3798,48 @@ function logAnswer(entry, contextUsed) {
   });
 }
 
+// ─── KI-AGENT ZUR FALLBEARBEITUNG (Zielarchitektur) ───
+// Für die Fallbearbeitung nach einer Eskalation sieht der Prototyp konzeptionell einen an die
+// Claude-API angebundenen KI-Agenten vor, der anhand des jeweiligen Falltexts eigenständig
+// auswählt, welche der folgenden vier Werkzeuge er einsetzt, statt einen zuvor definierten
+// Regelpfad abzuarbeiten. Diese Werkzeugdefinitionen sind bereits als Code hinterlegt, im
+// vorliegenden Prototyp jedoch nicht funktionsfähig: Ein direkter Aufruf der Anthropic-API aus
+// dem Browser heraus ist aus Sicherheitsgründen nicht möglich (der API-Key dürfte nicht im
+// Frontend-Code liegen) und würde zusätzlich einen eigenen Backend-Proxy voraussetzen, der im
+// Rahmen dieser Arbeit nicht umgesetzt wurde. Der Prototyp stellt die Entscheidung des Agenten
+// deshalb provisorisch über einfache Kriterien dar (siehe simulateCaseAgentDecision) und
+// protokolliert sie im Aktivitätsprotokoll des Backoffice so, wie es eine produktive Anbindung
+// an die Claude-API sichtbar machen würde – einschließlich einer kurzen Begründung je Fall.
+const CASE_AGENT_TOOLS = [
+  { name: 'set_priority', label: 'Priorität setzen', description: 'Legt die Priorität des Falls fest (niedrig, normal, kritisch).' },
+  { name: 'assign_team', label: 'Team zuordnen', description: 'Ordnet den Fall dem fachlich zuständigen Team zu.' },
+  { name: 'flag_knowledge_gap', label: 'Als Wissenslücke markieren', description: 'Markiert das Thema als Wissenslücke zur Erweiterung der Wissensdatenbank.' },
+  { name: 'request_callback', label: 'Rückruf anfordern', description: 'Fordert für den Kunden einen Rückruf an, statt auf eine E-Mail-Antwort zu warten.' }
+];
+// Provisorische Simulation der Agenten-Entscheidung anhand einfacher Kriterien (siehe Hinweis oben).
+function simulateCaseAgentDecision(question, category) {
+  const priority = priorityForText(question);
+  const rule = ROUTING_RULES.find(r => r.category === category);
+  const team = rule ? rule.team : 'First-Level-Support';
+  const usedTools = ['set_priority', 'assign_team'];
+  let reasoning = priority === 'kritisch'
+    ? `Priorität „kritisch" gesetzt, da die Formulierung auf einen dringenden Ausfall hindeutet, und an „${team}" zugeordnet.`
+    : `Priorität „normal" gesetzt und an „${team}" zugeordnet, passend zur Kategorie „${category}".`;
+  const gapKey = question.length > 42 ? question.slice(0, 42) + '…' : question;
+  const gapCount = knowledgeGaps.get(gapKey) || 0;
+  if (gapCount >= 2) {
+    usedTools.push('flag_knowledge_gap');
+    reasoning += ` Thema zusätzlich als Wissenslücke markiert, da bereits ${gapCount} ähnliche Anfragen nicht direkt beantwortet werden konnten.`;
+  }
+  let recommendCallback = false;
+  if (priority === 'kritisch') {
+    usedTools.push('request_callback');
+    recommendCallback = true;
+    reasoning += ` Da eine E-Mail-Antwort hier zu langsam wäre, empfiehlt der Agent zusätzlich einen Rückruf.`;
+  }
+  return { priority, team, usedTools, reasoning, recommendCallback };
+}
+
 function escalate(question) {
   stats.escalated++;
   registerGap(question);
@@ -3789,8 +3848,9 @@ function escalate(question) {
   const messages = ROUTE_MESSAGES[escalationSettings.route];
   const hoursNote = withinHours ? messages.within : `Wir befinden uns aktuell außerhalb der Geschäftszeiten. ${messages.outside}`;
   const routeAgent = { email: 'Support-Postfach', team: 'Nächstes freies Teammitglied', custom: 'Individueller Termin' }[escalationSettings.route];
+  const decision = simulateCaseAgentDecision(question, t.category);
   updateLiveTicket({
-    priority: priorityForText(question), status: 'eskaliert', assignedAgent: routeAgent,
+    priority: decision.priority, status: 'eskaliert', assignedAgent: routeAgent,
     tags: [...t.tags, 'Automatisch eskaliert']
   });
   const isEN = currentLanguage === 'EN';
@@ -3808,7 +3868,7 @@ function escalate(question) {
       ${!withinHours ? `<div class="esc-hours">Business hours: ${escalationSettings.hoursFrom} – ${escalationSettings.hoursTo}</div>` : ''}
       <div class="esc-contact">
         <button class="esc-btn esc-btn-primary" onclick="showEmailComposer(this,true)">Write an e-mail</button>
-        <button class="esc-btn esc-btn-secondary" onclick="requestCallback(this,true)">Request callback</button>
+        <button class="esc-btn esc-btn-secondary" onclick="requestCallback(this,true)">Request callback${decision.recommendCallback ? ' <span class="esc-agent-tip">Recommended by the agent</span>' : ''}</button>
       </div>
     </div>` : `
     <p>Für diese Frage benötige ich die Unterstützung unseres Support-Teams.</p>
@@ -3824,11 +3884,11 @@ function escalate(question) {
       ${!withinHours ? `<div class="esc-hours">Geschäftszeiten: ${escalationSettings.hoursFrom} – ${escalationSettings.hoursTo} Uhr</div>` : ''}
       <div class="esc-contact">
         <button class="esc-btn esc-btn-primary" onclick="showEmailComposer(this,false)">Per E-Mail schreiben</button>
-        <button class="esc-btn esc-btn-secondary" onclick="requestCallback(this,false)">Rückruf anfordern</button>
+        <button class="esc-btn esc-btn-secondary" onclick="requestCallback(this,false)">Rückruf anfordern${decision.recommendCallback ? ' <span class="esc-agent-tip">Vom Agenten empfohlen</span>' : ''}</button>
       </div>
     </div>`;
   addBotMessage(html);
-  logAgentAction('action', `Fall ${t.id} selbstständig kategorisiert, priorisiert (${t.priority}) und ${escalationSettings.route === 'email' ? 'per E-Mail weitergeleitet' : escalationSettings.route === 'team' ? 'dem Team zugewiesen' : 'als Rückruf-Termin eingeplant'} – ohne manuelle Freigabe.`);
+  logAgentAction('action', `Fall ${t.id} ${escalationSettings.route === 'email' ? 'per E-Mail weitergeleitet' : escalationSettings.route === 'team' ? 'dem Team zugewiesen' : 'als Rückruf-Termin eingeplant'} – ${decision.reasoning}`);
   updateStats();
 }
 
