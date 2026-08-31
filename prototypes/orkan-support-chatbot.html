@@ -1824,7 +1824,7 @@ function buildKpiWidget(id) {
     case 'kpi-answered': return { value: stats.answered, cls: 'green' };
     case 'kpi-escalated': return { value: stats.escalated, cls: 'red' };
     case 'kpi-escrate': return { value: escRate === null ? '–' : escRate + '%', cls: escRate !== null && escRate > 20 ? 'red' : 'green' };
-    case 'kpi-savings': return { value: `${stats.savings} Min.`, cls: 'green', note: '+4 Min. je automatisiert beantworteter Frage' };
+    case 'kpi-savings': return { value: `${stats.savings} Min.`, cls: 'green' };
     case 'kpi-responsetime': return { value: '1,2 Sek.', cls: 'green' };
     case 'kpi-shorthead': return { value: '92%', cls: 'green', note: 'Wiederkehrende Themen, die die Wissensbasis abdeckt' };
     case 'kpi-callback': return { value: tickets.filter(t => t.callbackRequested).length, note: 'Offene Rückruf-Wünsche aus dem Chat' };
