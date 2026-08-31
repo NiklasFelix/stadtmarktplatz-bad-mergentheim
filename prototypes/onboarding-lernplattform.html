@@ -752,7 +752,7 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 <script>
 /* ============ DATA ============ */
 const MODULES = [
-  { id:1, phase:1, title:'Grundlagen OrKan Cloud', time:'12 Min.', diff:1,
+  { id:1, phase:1, title:'Grundlagen der OrKan Cloud', time:'12 Min.', diff:1,
     points:[
       'Die Startseite zeigt Ihren Kalender sowie vier Shortcuts: Artikel, Lieferant, Bestellvorschläge erstellen und Meine Einstellungen.',
       'Über die drei Striche oben links gelangen Sie jederzeit zurück zum Home-Bereich und zur Hauptnavigation.',
@@ -776,7 +776,7 @@ const MODULES = [
     summary:{ kern:['Die Startseite bündelt Kalender und vier Shortcuts für die häufigsten Aufgaben.','Das Ampelsystem im Kalender priorisiert fällige Bestellungen visuell.','Die Lagerverwaltung ist der zentrale Hauptbereich mit acht klar gegliederten Unterpunkten.'],
       funk:['Startseite mit Kalender','Lagerverwaltung als Hauptbereich'], hand:['Kalender täglich als ersten Schritt prüfen','Sich mit den acht Unterpunkten der Lagerverwaltung vertraut machen'] }
   },
-  { id:2, phase:1, title:'Artikel & Lagerplätze', time:'15 Min.', diff:1,
+  { id:2, phase:1, title:'Artikel- und Lagerplatzverwaltung', time:'15 Min.', diff:1,
     points:[
       'Ein Artikel wird mit Artikelgruppe, interner Artikelnummer, Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort angelegt.',
       'Lager MIN definiert den Sicherheitsbestand, Lager MAX den gewünschten Höchstbestand am Lagerplatz.',
@@ -800,7 +800,7 @@ const MODULES = [
     summary:{ kern:['Artikel werden mit Artikelgruppe, interner Artikelnummer, Bezeichnung 1–3 sowie Lager/Gebäude/Lagerort angelegt.','Lager MIN und Lager MAX steuern automatisch die vorgeschlagene Bestellmenge (MAX minus MIN).','Ähnliche Artikel lassen sich per Kopierfunktion effizient anlegen statt neu einzugeben.'],
       funk:['Lager MIN / Lager MAX','Artikel kopieren'], hand:['Lager MIN/MAX realistisch anhand des Verbrauchs festlegen','Bei ähnlichen Artikeln konsequent die Kopierfunktion nutzen'] }
   },
-  { id:3, phase:2, title:'Zwei-Etiketten-System & Bestellvorschlag', time:'10 Min.', diff:2,
+  { id:3, phase:2, title:'Zwei-Etiketten-System mit Bestellvorschlag', time:'10 Min.', diff:2,
     points:[
       'An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, zur Kennzeichnung des Lagerplatzes) und ein weißes (Bestellauslöser).',
       'Wird der Mindestbestand erreicht, zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox.',
@@ -824,7 +824,7 @@ const MODULES = [
     summary:{ kern:['Das Zwei-Etiketten-System (blau/weiß) macht den Bestellstatus jedes Lagerplatzes ohne Systemzugriff sichtbar.','Das weiße Etikett wandert bei Mindestbestand in die Bestellbox und wird gesammelt eingescannt.','Der Bestellvorschlag fasst alle erfassten Artikel zu einer Bestellung mit vollständigen Lieferdaten zusammen.'],
       funk:['Zwei-Etiketten-System','Bestellvorschlag per Scan'], hand:['Bestellbox täglich zur festen Uhrzeit leeren','Weißes Etikett nach Wareneingang wieder ans Regal anbringen'] }
   },
-  { id:4, phase:2, title:'Artikelimport & Lieferanten-Anbindung', time:'18 Min.', diff:3,
+  { id:4, phase:2, title:'Artikelimport und Lieferantenanbindung', time:'18 Min.', diff:3,
     points:[
       'Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei mit den zugehörigen Artikelbildern.',
       'Beim Import stehen drei Optionen zur Wahl: „Importieren und aktualisieren", „nur importieren" oder „nur aktualisieren".',
@@ -848,7 +848,7 @@ const MODULES = [
     summary:{ kern:['Der Artikelimport kombiniert eine Excel-Liste mit einer ZIP-Datei für Bilder über eine Dateinamen-Zuordnung.','Drei Importoptionen und drei Abgleichfelder ermöglichen einen flexiblen, wiederholbaren Importprozess.','Die Shop-URL im Lieferantenstamm ist die technische Grundlage für die spätere automatische Bestellweiterleitung.'],
       funk:['Excel + ZIP-Import','Lieferanten-Shop-Anbindung'], hand:['Vor dem Vollimport Bildzuordnung an wenigen Testartikeln prüfen','Shop-URL bei jedem neuen Lieferanten sofort hinterlegen'] }
   },
-  { id:5, phase:3, title:'Wareneingang, Lagerbestand & Gebrauchsgut', time:'8 Min.', diff:2,
+  { id:5, phase:3, title:'Wareneingang und Lagerbestand', time:'8 Min.', diff:2,
     points:[
       'Beim Bestellabschluss öffnen sich drei Fenster: Wareneingang-Bestätigung, Lieferschein und der Lieferanten-Shop zur finalen Bestellung.',
       'Unter „Scan / Bestelleingang" sehen Sie, wann Ware angekommen ist – inklusive Bestellnummer und Kommission.',
@@ -920,7 +920,7 @@ const MODULES = [
     summary:{ kern:['Schlüssel-Etiketten trennen aus Sicherheitsgründen Nummer/QR-Code (außen) von der Adresse (innen).','Die Adresssuche ist bei größeren Schlüsselbeständen essenziell und muss in der Standardansicht verfügbar sein.','Buchung und Rückgabe folgen derselben Logik wie bei der Maschinenverwaltung.'],
       funk:['Gefaltetes Sicherheits-Etikett','Adresssuche als Standard'], hand:['Adressfilter bei der täglichen Schlüsselsuche konsequent nutzen','Nie Adressinformationen sichtbar am Schlüsselkasten anbringen'] }
   },
-  { id:8, phase:3, title:'Projekte & Baustellen', time:'10 Min.', diff:2,
+  { id:8, phase:3, title:'Projekte und Baustellen', time:'10 Min.', diff:2,
     points:[
       'Das Projekte-Modul dokumentiert Materialentnahmen auf Baustellen, die sonst nur handschriftlich per „Aufmaß" erfasst und leicht vergessen werden.',
       'Wird eine Entnahme vergessen, entsteht ein realer Verlust: Das Material wird dem Kunden nie in Rechnung gestellt.',
