@@ -189,6 +189,11 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .mc-badge.open{background:var(--gray-light);color:var(--gray)}
 .mc-badge.progress{background:#FEF3D8;color:#a6720f}
 .mc-badge.done{background:var(--green-light);color:var(--green-dark)}
+.mc-badge.locked{background:var(--gray-light);color:var(--gray)}
+.module-card-locked{opacity:.6;cursor:not-allowed;background:rgba(240,242,238,.6)}
+.module-card-locked:hover{transform:none;box-shadow:var(--shadow)}
+.module-card-locked .mc-btn{background:var(--gray-light);color:var(--gray)}
+.module-card-locked .mc-btn:hover{background:var(--gray-light)}
 .mc-title{font-size:14.5px;font-weight:700;margin-bottom:4px}
 .mc-time{font-size:12px;color:var(--gray);margin-bottom:14px}
 .mc-track{background:var(--gray-light);height:5px;border-radius:4px;overflow:hidden;margin-bottom:14px}
@@ -422,6 +427,11 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .sig-line{border-top:1px solid var(--dark-bg);padding-top:8px;font-size:12px;color:var(--gray);width:180px}
 .cert-actions{display:flex;gap:10px;justify-content:center;margin-top:28px}
 .cert-renewal-note{max-width:700px;margin:18px auto 0;text-align:center;font-size:12px;color:var(--gray);background:rgba(255,255,255,.7);border:1px solid var(--border);border-radius:10px;padding:12px 16px}
+.cert-discount{max-width:520px;margin:16px auto 0;display:flex;gap:14px;align-items:flex-start;background:var(--green-light);border:1px solid var(--green-mid);border-radius:12px;padding:16px 18px}
+.cert-discount-icon{width:36px;height:36px;border-radius:9px;background:var(--dark-bg);color:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cert-discount strong{font-size:13px;color:var(--dark-bg)}
+.cert-discount p{font-size:12px;color:var(--gray);margin:2px 0 8px}
+.cert-discount-code{display:inline-block;font-family:monospace;font-size:13px;font-weight:700;letter-spacing:.5px;background:#fff;border:1.5px dashed var(--green);border-radius:8px;padding:6px 12px;color:var(--green-dark)}
 
 /* Team-Fortschritt */
 .team-list{display:flex;flex-direction:column;gap:10px}
@@ -1072,7 +1082,7 @@ let state = {
   totalTime:0, aiOpen:false, quizAnswers:{}, kbFilter:'Alle', kbSearch:'', currentArticle:null, currentBP:null,
   weakTopics:{}, adaptiveLog:[],
   integrationOptions:{ behavioral:false, help:false, central:false },
-  moduleVideos:{}, videoManagerModuleId:null
+  moduleVideos:{}, videoManagerModuleId:null, discountCode:null
 };
 
 /* ============ ONBOARDING ============ */
@@ -1136,6 +1146,15 @@ function buildModuleSubNav(){
 /* ============ DASHBOARD ============ */
 function completedCount(){ return Object.values(state.moduleProgress).filter(p=>p.completed).length; }
 function progressPct(){ return Math.round(completedCount()/MODULES.length*100); }
+function isModuleLocked(m){
+  if(m.phase===1) return false;
+  const prevPhaseModules = MODULES.filter(x=>x.phase===m.phase-1);
+  return !prevPhaseModules.every(x=>state.moduleProgress[x.id].completed);
+}
+function lockedPhaseLabel(m){
+  const names = {1:'Grundlagen',2:'Prozesse & Integration'};
+  return names[m.phase-1] || 'die vorherige Phase';
+}
 
 function renderDashboard(){
   const done = completedCount();
@@ -1213,15 +1232,16 @@ function renderDashboard(){
 
 function moduleCardHtml(m, isPriority){
   const p = state.moduleProgress[m.id];
-  const badge = p.completed?'done':(p.started?'progress':'open');
-  const badgeText = p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen');
+  const locked = isModuleLocked(m);
+  const badge = locked?'locked':(p.completed?'done':(p.started?'progress':'open'));
+  const badgeText = locked?'Gesperrt':(p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen'));
   const pct = p.completed?100:(p.started?45:0);
-  return `<div class="module-card" onclick="openModule(${m.id})">
-    <div class="mc-top"><span class="mc-badge ${badge}">${badgeText}</span>${isPriority?'<span class="mc-badge" style="background:var(--dark-bg);color:var(--green)">Für Sie</span>':''}</div>
+  return `<div class="module-card ${locked?'module-card-locked':''}" onclick="openModule(${m.id})">
+    <div class="mc-top"><span class="mc-badge ${badge}">${locked?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:inline;vertical-align:-1px;margin-right:3px"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':''}${badgeText}</span>${isPriority&&!locked?'<span class="mc-badge" style="background:var(--dark-bg);color:var(--green)">Für Sie</span>':''}</div>
     <div class="mc-title">${m.title}</div>
     <div class="mc-time">${m.time}</div>
     <div class="mc-track"><div class="mc-fill" style="width:${pct}%"></div></div>
-    <button class="mc-btn" onclick="event.stopPropagation();openModule(${m.id})">${p.completed?'Erneut ansehen':(p.started?'Fortsetzen':'Starten')}</button>
+    <button class="mc-btn" onclick="event.stopPropagation();openModule(${m.id})">${locked?`Phase „${lockedPhaseLabel(m)}" abschließen`:(p.completed?'Erneut ansehen':(p.started?'Fortsetzen':'Starten'))}</button>
   </div>`;
 }
 
@@ -1274,6 +1294,11 @@ function renderModulesList(){
 }
 
 function openModule(id){
+  const m = MODULES.find(x=>x.id===id);
+  if(isModuleLocked(m)){
+    showToast(`Dieses Modul ist noch gesperrt. Schließen Sie zuerst alle Module der Phase „${lockedPhaseLabel(m)}" ab.`);
+    return;
+  }
   const wasStarted = state.moduleProgress[id].started;
   state.currentModule = id;
   state.currentTab = 'content';
@@ -1591,17 +1616,32 @@ function renderCert(){
         <div class="cert-heading">OrKan Cloud Onboarding</div>
         <div class="cert-name">${state.name}</div>
         <div class="cert-company">${state.company}</div>
-        <div class="cert-body">hat alle 5 Pflichtmodule der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen und die zugehörigen Wissenschecks bestanden.</div>
+        <div class="cert-body">hat alle ${MODULES.length} Pflichtmodule der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen und die zugehörigen Wissenschecks bestanden.</div>
         <div style="font-size:12px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')} &middot; Gültig für 24 Monate</div>
         <div class="cert-sigs"><div class="sig-line">Gerhard Sprügel<br>Geschäftsführer</div><div class="sig-line">OrKan System GmbH</div></div>
       </div>
       <div class="cert-actions"><button class="btn btn-primary" onclick="window.print()">Zertifikat drucken</button><button class="btn btn-outline" onclick="downloadCert()">Als Text herunterladen</button></div>
       <div class="cert-renewal-note">Sie erhalten automatisch 60 Tage vor Ablauf eine Erinnerung zur Auffrischung – z. B. bei neuen OrKan-Cloud-Funktionen aus dem Update-Center.</div>
+      <div class="cert-discount">
+        <div class="cert-discount-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41 11 3.83A2 2 0 0 0 9.59 3.24L3.24 9.59A2 2 0 0 0 3.83 11l9.58 9.59a2 2 0 0 0 2.83 0l6.35-6.35a2 2 0 0 0 0-2.83Z"/><circle cx="8.5" cy="8.5" r="1.5"/></svg></div>
+        <div>
+          <strong>Ihre Belohnung fürs Lernen</strong>
+          <p>Ihr Abschlusszertifikat schaltet einen Rabattcode für den SPRÜGEL-Onlineshop frei.</p>
+          <div class="cert-discount-code" id="certDiscountCode">${getDiscountCode()}</div>
+        </div>
+      </div>
     `;
   }
 }
+function getDiscountCode(){
+  if(!state.discountCode){
+    const rand = Math.random().toString(36).slice(2,6).toUpperCase();
+    state.discountCode = `SPRUEGEL-ORKAN-${rand}`;
+  }
+  return state.discountCode;
+}
 function downloadCert(){
-  const text = `OrKan Cloud – Zertifikat der Absolvierung\n\n${state.name}\n${state.company}\n\nhat alle 5 Pflichtmodule der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen.\n\nAusgestellt am ${new Date().toLocaleDateString('de-DE')}\nGerhard Sprügel, Geschäftsführer – OrKan System GmbH`;
+  const text = `OrKan Cloud – Zertifikat der Absolvierung\n\n${state.name}\n${state.company}\n\nhat alle ${MODULES.length} Pflichtmodule der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen.\n\nAusgestellt am ${new Date().toLocaleDateString('de-DE')}\nGerhard Sprügel, Geschäftsführer – OrKan System GmbH\n\nRabattcode für den SPRÜGEL-Onlineshop: ${getDiscountCode()}`;
   const blob = new Blob([text],{type:'text/plain;charset=utf-8'});
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='orkan-zertifikat.txt'; a.click();
 }
