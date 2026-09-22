@@ -188,6 +188,7 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .appointment-form-actions{display:flex;gap:10px;margin-top:16px}
 .appointment-form-actions .btn{flex:1}
 .appointment-send-status{font-size:12px;color:var(--green-dark);font-weight:600;margin-top:10px;text-align:center;min-height:14px}
+.appointment-send-status.appointment-send-error{color:#dc2626}
 .dash-toggle-row:last-child{border-bottom:none}
 .dash-toggle-row input{width:16px;height:16px;accent-color:var(--green-dark);cursor:pointer}
 .coach-widget{background:linear-gradient(155deg,var(--dark-bg),var(--dark2));border-radius:18px;padding:26px 28px;margin-bottom:22px;color:#fff;position:relative;overflow:hidden}
@@ -842,7 +843,6 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
     </form>
   </div>
 </div>
-<iframe name="appointmentSendFrame" id="appointmentSendFrame" style="display:none"></iframe>
 
 <script>
 /* ============ IMPORT-TEMPLATE ============ */
@@ -2278,14 +2278,11 @@ document.getElementById('appointmentMsgForm').addEventListener('submit', functio
   const message = document.getElementById('appointmentMessage').value.trim();
   if(!name || !email || !message) return;
   const btn = document.getElementById('appointmentSendBtn');
+  const statusEl = document.getElementById('appointmentSendStatus');
   btn.disabled = true; btn.textContent = 'Wird gesendet…';
-  document.getElementById('appointmentSendStatus').textContent = '';
+  statusEl.textContent = '';
+  statusEl.classList.remove('appointment-send-error');
 
-  const form = document.createElement('form');
-  form.action = `https://formsubmit.co/${appointmentSelected.email}`;
-  form.method = 'POST';
-  form.target = 'appointmentSendFrame';
-  form.style.display = 'none';
   const fields = {
     Name: name, 'E-Mail': email, Nachricht: message,
     _subject: `Persönlicher Termin – OrKan Cloud Onboarding (${name})`,
@@ -2296,20 +2293,25 @@ document.getElementById('appointmentMsgForm').addEventListener('submit', functio
     Rolle: state.role || '',
     Unternehmen: state.company || ''
   };
-  Object.entries(fields).forEach(([k,v])=>{
-    const input = document.createElement('input');
-    input.type = 'hidden'; input.name = k; input.value = v;
-    form.appendChild(input);
-  });
-  document.body.appendChild(form);
-  form.submit();
-  setTimeout(()=>{
-    document.body.removeChild(form);
-    btn.disabled = false; btn.textContent = 'Nachricht senden';
-    document.getElementById('appointmentSendStatus').textContent = `Nachricht an ${appointmentSelected.name} wurde gesendet.`;
+
+  fetch(`https://formsubmit.co/ajax/${appointmentSelected.email}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(fields)
+  })
+  .then(res => { if(!res.ok) throw new Error('HTTP '+res.status); return res.json(); })
+  .then(() => {
+    statusEl.textContent = `Nachricht an ${appointmentSelected.name} wurde gesendet.`;
     showToast(`Ihre Nachricht an ${appointmentSelected.name} wurde gesendet.`);
     setTimeout(closeAppointmentModal, 1800);
-  }, 1200);
+  })
+  .catch(() => {
+    statusEl.textContent = 'Senden fehlgeschlagen. Bitte prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut, oder schreiben Sie direkt an ' + appointmentSelected.email + '.';
+    statusEl.classList.add('appointment-send-error');
+  })
+  .finally(() => {
+    btn.disabled = false; btn.textContent = 'Nachricht senden';
+  });
 });
 function openCloudLink(mid){
   const target = CLOUD_DEEPLINKS[mid] || {label:'OrKan Cloud'};
