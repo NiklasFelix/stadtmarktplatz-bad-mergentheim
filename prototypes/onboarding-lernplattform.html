@@ -177,6 +177,13 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .dash-widget-hide{width:24px;height:24px;border-radius:7px;border:none;background:transparent;color:var(--gray);font-size:16px;line-height:1;cursor:pointer;transition:var(--spring)}
 .dash-widget-hide:hover{background:var(--green-light);color:var(--dark-bg)}
 .dash-toggle-row{display:flex;align-items:center;gap:10px;padding:10px 4px;font-size:13.5px;cursor:pointer;border-bottom:1px solid var(--border)}
+.appointment-contact{display:flex;align-items:center;gap:12px;padding:12px 8px;border-radius:10px;cursor:pointer;transition:var(--ease)}
+.appointment-contact:hover{background:var(--green-light)}
+.appointment-contact-avatar{width:38px;height:38px;border-radius:50%;background:var(--dark-bg);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.appointment-contact-info{flex:1;min-width:0}
+.appointment-contact-name{font-size:13.5px;font-weight:700;color:var(--dark-bg)}
+.appointment-contact-org{font-size:11.5px;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.appointment-contact-arrow{color:var(--gray);flex-shrink:0}
 .dash-toggle-row:last-child{border-bottom:none}
 .dash-toggle-row input{width:16px;height:16px;accent-color:var(--green-dark);cursor:pointer}
 .coach-widget{background:linear-gradient(155deg,var(--dark-bg),var(--dark2));border-radius:18px;padding:26px 28px;margin-bottom:22px;color:#fff;position:relative;overflow:hidden}
@@ -802,6 +809,19 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
     </div>
     <div id="dashCustomizeList"></div>
     <button class="btn btn-outline" style="width:100%;margin-top:14px" onclick="resetDashboardPrefs()">Auf Standard zurücksetzen</button>
+  </div>
+</div>
+
+<div class="vm-overlay" id="appointmentModal">
+  <div class="vm-modal">
+    <div class="vm-head">
+      <div>
+        <h3>Persönlichen Termin vereinbaren</h3>
+        <p style="font-size:12.5px;color:var(--gray)">Wählen Sie Ihren Ansprechpartner aus, um direkt eine E-Mail-Anfrage zu senden.</p>
+      </div>
+      <span class="close-x" onclick="closeAppointmentModal()">&times;</span>
+    </div>
+    <div id="appointmentContactList"></div>
   </div>
 </div>
 
@@ -2184,8 +2204,30 @@ const CLOUD_DEEPLINKS = {
   8:{label:'Projekte'}
 };
 const ORKAN_CLOUD_BASE = 'https://cloud.orkan-system.de/';
+const APPOINTMENT_CONTACTS = [
+  {name:'Michael Seiler', org:'OrKan System', email:'Michael.Seiler@orkan-system.de'},
+  {name:'Andreas Lebert', org:'SPRÜGEL', email:'Andreas.Lebert@spruegel.com'},
+  {name:'Niklas Pietsch', org:'SPRÜGEL', email:'Niklas.Pietsch@spruegel.com'}
+];
 function bookAppointment(){
-  showToast(`Anfrage an Ihren SPRÜGEL-Ansprechpartner gesendet — Sie erhalten in Kürze einen Terminvorschlag für Ihre individuellen Fragen zur OrKan Cloud.`);
+  document.getElementById('appointmentContactList').innerHTML = APPOINTMENT_CONTACTS.map(c=>`
+    <div class="appointment-contact" onclick="selectAppointmentContact('${c.email}','${c.name.replace(/'/g,"\\'")}')">
+      <div class="appointment-contact-avatar">${c.name.split(' ').map(n=>n[0]).join('')}</div>
+      <div class="appointment-contact-info"><div class="appointment-contact-name">${c.name}</div><div class="appointment-contact-org">${c.org} &middot; ${c.email}</div></div>
+      <svg class="appointment-contact-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>`).join('');
+  document.getElementById('profileMenu').classList.remove('open');
+  document.getElementById('appointmentModal').classList.add('open');
+}
+function closeAppointmentModal(){
+  document.getElementById('appointmentModal').classList.remove('open');
+}
+function selectAppointmentContact(email, name){
+  const subject = encodeURIComponent('Persönlicher Termin – OrKan Cloud Onboarding');
+  const body = encodeURIComponent(`Hallo ${name},\n\nich würde gerne einen persönlichen Termin zu meinen individuellen Fragen zur OrKan Cloud vereinbaren.\n\nViele Grüße\n${state.name || ''}`);
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  closeAppointmentModal();
+  showToast(`E-Mail-Anfrage an ${name} wird geöffnet.`);
 }
 function openCloudLink(mid){
   const target = CLOUD_DEEPLINKS[mid] || {label:'OrKan Cloud'};
