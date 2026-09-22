@@ -184,6 +184,10 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .appointment-contact-name{font-size:13.5px;font-weight:700;color:var(--dark-bg)}
 .appointment-contact-org{font-size:11.5px;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .appointment-contact-arrow{color:var(--gray);flex-shrink:0}
+.appointment-selected-contact{display:flex;align-items:center;gap:12px;padding:10px 8px;margin-bottom:14px;border-radius:10px;background:var(--green-light)}
+.appointment-form-actions{display:flex;gap:10px;margin-top:16px}
+.appointment-form-actions .btn{flex:1}
+.appointment-send-status{font-size:12px;color:var(--green-dark);font-weight:600;margin-top:10px;text-align:center;min-height:14px}
 .dash-toggle-row:last-child{border-bottom:none}
 .dash-toggle-row input{width:16px;height:16px;accent-color:var(--green-dark);cursor:pointer}
 .coach-widget{background:linear-gradient(155deg,var(--dark-bg),var(--dark2));border-radius:18px;padding:26px 28px;margin-bottom:22px;color:#fff;position:relative;overflow:hidden}
@@ -816,14 +820,29 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
   <div class="vm-modal">
     <div class="vm-head">
       <div>
-        <h3>Persönlichen Termin vereinbaren</h3>
-        <p style="font-size:12.5px;color:var(--gray)">Wählen Sie Ihren Ansprechpartner aus, um direkt eine E-Mail-Anfrage zu senden.</p>
+        <h3 id="appointmentTitle">Persönlichen Termin vereinbaren</h3>
+        <p style="font-size:12.5px;color:var(--gray)" id="appointmentSubtitle">Wählen Sie Ihren Ansprechpartner aus.</p>
       </div>
       <span class="close-x" onclick="closeAppointmentModal()">&times;</span>
     </div>
     <div id="appointmentContactList"></div>
+    <form id="appointmentMsgForm" style="display:none">
+      <div class="appointment-selected-contact" id="appointmentSelectedContact"></div>
+      <label class="field-label">Ihr Name</label>
+      <input type="text" id="appointmentName" class="profile-input" required>
+      <label class="field-label" style="margin-top:10px">Ihre E-Mail-Adresse (für die Antwort)</label>
+      <input type="email" id="appointmentEmail" class="profile-input" placeholder="name@firma.de" required>
+      <label class="field-label" style="margin-top:10px">Ihre Nachricht</label>
+      <textarea id="appointmentMessage" class="profile-input" rows="4" style="resize:vertical" placeholder="Ihre Frage oder Ihr Terminwunsch..." required></textarea>
+      <div class="appointment-form-actions">
+        <button type="button" class="btn btn-outline" onclick="backToContactList()">Zurück</button>
+        <button type="submit" class="btn btn-primary" id="appointmentSendBtn">Nachricht senden</button>
+      </div>
+      <p id="appointmentSendStatus" class="appointment-send-status"></p>
+    </form>
   </div>
 </div>
+<iframe name="appointmentSendFrame" id="appointmentSendFrame" style="display:none"></iframe>
 
 <script>
 /* ============ IMPORT-TEMPLATE ============ */
@@ -2209,26 +2228,89 @@ const APPOINTMENT_CONTACTS = [
   {name:'Andreas Lebert', org:'SPRÜGEL', email:'Andreas.Lebert@spruegel.com'},
   {name:'Niklas Pietsch', org:'SPRÜGEL', email:'Niklas.Pietsch@spruegel.com'}
 ];
+let appointmentSelected = null;
 function bookAppointment(){
-  document.getElementById('appointmentContactList').innerHTML = APPOINTMENT_CONTACTS.map(c=>`
-    <div class="appointment-contact" onclick="selectAppointmentContact('${c.email}','${c.name.replace(/'/g,"\\'")}')">
+  renderAppointmentContactList();
+  document.getElementById('appointmentContactList').style.display = '';
+  document.getElementById('appointmentMsgForm').style.display = 'none';
+  document.getElementById('appointmentTitle').textContent = 'Persönlichen Termin vereinbaren';
+  document.getElementById('appointmentSubtitle').textContent = 'Wählen Sie Ihren Ansprechpartner aus.';
+  document.getElementById('profileMenu').classList.remove('open');
+  document.getElementById('appointmentModal').classList.add('open');
+}
+function renderAppointmentContactList(){
+  document.getElementById('appointmentContactList').innerHTML = APPOINTMENT_CONTACTS.map((c,i)=>`
+    <div class="appointment-contact" onclick="selectAppointmentContact(${i})">
       <div class="appointment-contact-avatar">${c.name.split(' ').map(n=>n[0]).join('')}</div>
       <div class="appointment-contact-info"><div class="appointment-contact-name">${c.name}</div><div class="appointment-contact-org">${c.org} &middot; ${c.email}</div></div>
       <svg class="appointment-contact-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
     </div>`).join('');
-  document.getElementById('profileMenu').classList.remove('open');
-  document.getElementById('appointmentModal').classList.add('open');
 }
 function closeAppointmentModal(){
   document.getElementById('appointmentModal').classList.remove('open');
+  document.getElementById('appointmentSendStatus').textContent = '';
+  const btn = document.getElementById('appointmentSendBtn');
+  btn.disabled = false; btn.textContent = 'Nachricht senden';
 }
-function selectAppointmentContact(email, name){
-  const subject = encodeURIComponent('Persönlicher Termin – OrKan Cloud Onboarding');
-  const body = encodeURIComponent(`Hallo ${name},\n\nich würde gerne einen persönlichen Termin zu meinen individuellen Fragen zur OrKan Cloud vereinbaren.\n\nViele Grüße\n${state.name || ''}`);
-  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-  closeAppointmentModal();
-  showToast(`E-Mail-Anfrage an ${name} wird geöffnet.`);
+function selectAppointmentContact(idx){
+  appointmentSelected = APPOINTMENT_CONTACTS[idx];
+  document.getElementById('appointmentContactList').style.display = 'none';
+  document.getElementById('appointmentMsgForm').style.display = 'block';
+  document.getElementById('appointmentTitle').textContent = `Nachricht an ${appointmentSelected.name}`;
+  document.getElementById('appointmentSubtitle').textContent = `${appointmentSelected.org} · ${appointmentSelected.email}`;
+  document.getElementById('appointmentSelectedContact').innerHTML = `<div class="appointment-contact-avatar">${appointmentSelected.name.split(' ').map(n=>n[0]).join('')}</div><div class="appointment-contact-info"><div class="appointment-contact-name">${appointmentSelected.name}</div><div class="appointment-contact-org">${appointmentSelected.org}</div></div>`;
+  document.getElementById('appointmentName').value = state.name || '';
+  document.getElementById('appointmentEmail').value = '';
+  document.getElementById('appointmentMessage').value = `Hallo ${appointmentSelected.name.split(' ')[0]},\n\nich würde gerne einen persönlichen Termin zu meinen individuellen Fragen zur OrKan Cloud vereinbaren.\n\nViele Grüße`;
+  document.getElementById('appointmentSendStatus').textContent = '';
 }
+function backToContactList(){
+  document.getElementById('appointmentContactList').style.display = '';
+  document.getElementById('appointmentMsgForm').style.display = 'none';
+  document.getElementById('appointmentTitle').textContent = 'Persönlichen Termin vereinbaren';
+  document.getElementById('appointmentSubtitle').textContent = 'Wählen Sie Ihren Ansprechpartner aus.';
+}
+document.getElementById('appointmentMsgForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  if(!appointmentSelected) return;
+  const name = document.getElementById('appointmentName').value.trim();
+  const email = document.getElementById('appointmentEmail').value.trim();
+  const message = document.getElementById('appointmentMessage').value.trim();
+  if(!name || !email || !message) return;
+  const btn = document.getElementById('appointmentSendBtn');
+  btn.disabled = true; btn.textContent = 'Wird gesendet…';
+  document.getElementById('appointmentSendStatus').textContent = '';
+
+  const form = document.createElement('form');
+  form.action = `https://formsubmit.co/${appointmentSelected.email}`;
+  form.method = 'POST';
+  form.target = 'appointmentSendFrame';
+  form.style.display = 'none';
+  const fields = {
+    Name: name, 'E-Mail': email, Nachricht: message,
+    _subject: `Persönlicher Termin – OrKan Cloud Onboarding (${name})`,
+    _template: 'table',
+    _captcha: 'false',
+    _replyto: email,
+    Ansprechpartner: appointmentSelected.name,
+    Rolle: state.role || '',
+    Unternehmen: state.company || ''
+  };
+  Object.entries(fields).forEach(([k,v])=>{
+    const input = document.createElement('input');
+    input.type = 'hidden'; input.name = k; input.value = v;
+    form.appendChild(input);
+  });
+  document.body.appendChild(form);
+  form.submit();
+  setTimeout(()=>{
+    document.body.removeChild(form);
+    btn.disabled = false; btn.textContent = 'Nachricht senden';
+    document.getElementById('appointmentSendStatus').textContent = `Nachricht an ${appointmentSelected.name} wurde gesendet.`;
+    showToast(`Ihre Nachricht an ${appointmentSelected.name} wurde gesendet.`);
+    setTimeout(closeAppointmentModal, 1800);
+  }, 1200);
+});
 function openCloudLink(mid){
   const target = CLOUD_DEEPLINKS[mid] || {label:'OrKan Cloud'};
   showToast(`Die OrKan Cloud öffnet sich in einem neuen Tab. Melden Sie sich dort an und navigieren Sie zu „${target.label}", um das Gelernte direkt anzuwenden.`);
