@@ -764,200 +764,223 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
   </div>
 </div>
 
+<div class="vm-overlay" id="dashCustomizeModal">
+  <div class="vm-modal">
+    <div class="vm-head">
+      <div>
+        <h3>Dashboard anpassen</h3>
+        <p style="font-size:12.5px;color:var(--gray)">Blenden Sie Kacheln ein oder aus und ziehen Sie sie per Drag &amp; Drop in Ihre gewünschte Reihenfolge.</p>
+      </div>
+      <span class="close-x" onclick="closeDashCustomize()">&times;</span>
+    </div>
+    <div id="dashCustomizeList"></div>
+    <button class="btn btn-outline" style="width:100%;margin-top:14px" onclick="resetDashboardPrefs()">Auf Standard zurücksetzen</button>
+  </div>
+</div>
+
 <script>
 /* ============ DATA ============ */
 const MODULES = [
   { id:1, phase:1, title:'Grundlagen der OrKan Cloud', time:'12 Min.', diff:1,
     points:[
-      'Die Startseite zeigt Ihren Kalender sowie vier Shortcuts: Artikel, Lieferant, Bestellvorschläge erstellen und Meine Einstellungen.',
-      'Über die drei Striche oben links gelangen Sie jederzeit zurück zum Home-Bereich und zur Hauptnavigation.',
-      'Der Kalender arbeitet mit einem Ampelsystem: Rot markierte Einträge zeigen fällige Bestellungen an.',
-      'Die Lagerverwaltung gliedert sich in Artikel, Lieferant, Standorte, Bestellvorschlag, Bestellungen, Scan, Bestelleingang und Lagerbestand.'
+      'Die Startseite ist individuell anpassbar: Kacheln wie Artikel, Lieferant, Bestellvorschläge erstellen oder Meine Einstellungen lassen sich im Bearbeitungsmodus (Stift-Symbol) verschieben, umbenennen, farblich anpassen oder entfernen.',
+      'Über die drei Striche oben links gelangen Sie jederzeit zurück zum Home-Bereich und zur Hauptnavigation; das Fragezeichen-Symbol öffnet die Hilfe, das Smiley-Symbol dient dem Feedback an SPRÜGEL.',
+      'Der Kalender arbeitet mit einem vierstufigen Ampelsystem: Grau (bestätigt/erledigt), Grün (künftig fällig), Gelb (heute fällig) und Rot (überfällig) – Buchstaben wie „B" (Bestellung) oder „S" (Service/Wartung) zeigen zusätzlich die Art des Termins.',
+      'Die Lagerverwaltung gliedert sich in Artikel, Lieferant, Standorte, Bestellvorschlag, Bestellungen, Scan, Bestelleingang und Lagerbestand.',
+      'OrKan Cloud ist modular lizenziert: Zusatzbereiche wie Gebrauchsgut-, Maschinen- oder Schlüsselverwaltung werden in den Einstellungen einzeln freigeschaltet und sind sonst im Menü gar nicht sichtbar.'
     ],
     features:[
-      {t:'Startseite mit Kalender',d:'Fällige Bestellungen auf einen Blick, Ampelsystem zur Priorisierung'},
-      {t:'Vier Schnellzugriffe',d:'Artikel, Lieferant, Bestellvorschläge erstellen, Meine Einstellungen'},
-      {t:'Lagerverwaltung als Hauptbereich',d:'Acht Unterpunkte von Artikel bis Lagerbestand'}
+      {t:'Individuell anpassbare Startseite',d:'Kacheln per Bearbeitungsmodus frei verschieben, umbenennen und einfärben'},
+      {t:'Vierstufiges Kalender-Ampelsystem',d:'Grau/Grün/Gelb/Rot zeigen den Status, Buchstaben wie B oder S die Terminart'},
+      {t:'Modulare Lizenzierung',d:'Zusatzbereiche wie Gebrauchsgut- oder Schlüsselverwaltung werden gezielt freigeschaltet'}
     ],
-    practice:'Ein Lagerleiter meldet sich morgens an und sieht auf der Startseite sofort im Kalender, welche Bestellungen heute fällig sind (rot markiert) – ohne eine einzige Excel-Liste zu öffnen.',
-    task:'Melden Sie sich testweise an und erkunden Sie die Startseite mit Kalender und den vier Shortcuts.',
-    checklist:['Kalender öffnen und Ampelsystem prüfen','Die vier Shortcuts einmal anklicken','Über die drei Striche in die Lagerverwaltung wechseln','Die acht Unterpunkte der Lagerverwaltung einmal durchklicken'],
-    tip:'Rot markierte Kalendereinträge haben Priorität – prüfen Sie diese jeden Morgen zuerst, bevor Sie mit anderen Aufgaben starten.',
+    practice:'Ein Lagerleiter meldet sich morgens an und sieht auf der Startseite sofort im Kalender, welche Bestellungen heute fällig sind (gelb) und welche bereits überfällig sind (rot) – ohne eine einzige Excel-Liste zu öffnen.',
+    task:'Melden Sie sich testweise an und erkunden Sie die Startseite mit Kalender und den Schnellzugriffs-Kacheln.',
+    checklist:['Kalender öffnen und die vier Ampelfarben unterscheiden','Eine Kachel im Bearbeitungsmodus verschieben oder umbenennen','Über die drei Striche in die Lagerverwaltung wechseln','Die acht Unterpunkte der Lagerverwaltung einmal durchklicken'],
+    tip:'Rot markierte Kalendereinträge sind überfällig und haben Priorität – prüfen Sie diese jeden Morgen zuerst, bevor Sie mit anderen Aufgaben starten.',
     quiz:[
-      {q:'Was zeigt ein rot markierter Eintrag im Kalender der OrKan Cloud?',o:['Einen Urlaubstag','Eine fällige Bestellung','Einen neuen Artikel','Eine abgeschlossene Lieferung'],a:1,t:'Systemgrundlagen'},
-      {q:'Wie gelangen Sie zur Hauptnavigation zurück?',o:['Über die drei Striche oben links','Nur über die Browser-Zurück-Taste','Über das Firmenlogo','Gar nicht, Neuanmeldung nötig'],a:0,t:'Navigation'},
-      {q:'Welcher Bereich gehört NICHT zu den acht Unterpunkten der Lagerverwaltung?',o:['Bestellvorschlag','Scan','Lagerbestand','Rechnungsstellung'],a:3,t:'Lagerverwaltung-Struktur'}
+      {q:'Wie viele unterschiedliche Farben nutzt das Ampelsystem im OrKan-Cloud-Kalender?',o:['2','3','4','5'],a:2,t:'Kalender-Ampelsystem'},
+      {q:'Wofür steht der Buchstabe „S" bei einem Kalendereintrag?',o:['Standort','Service/Wartung','Standardbestellung','Sammelbestellung'],a:1,t:'Kalender-Kennzeichnung'},
+      {q:'Was passiert, wenn ein Kunde ein Zusatzmodul wie die Schlüsselverwaltung nicht gebucht hat?',o:['Die Funktionen sind trotzdem nutzbar, aber eingeschränkt','Die zugehörigen Menüpunkte sind nicht verfügbar, da OrKan Cloud modular lizenziert ist','Der Support schaltet es automatisch nach 30 Tagen frei','Alle Module sind grundsätzlich immer enthalten'],a:1,t:'Modulare Lizenzierung'}
     ],
-    summary:{ kern:['Die Startseite bündelt Kalender und vier Shortcuts für die häufigsten Aufgaben.','Das Ampelsystem im Kalender priorisiert fällige Bestellungen visuell.','Die Lagerverwaltung ist der zentrale Hauptbereich mit acht klar gegliederten Unterpunkten.'],
-      funk:['Startseite mit Kalender','Lagerverwaltung als Hauptbereich'], hand:['Kalender täglich als ersten Schritt prüfen','Sich mit den acht Unterpunkten der Lagerverwaltung vertraut machen'] }
+    summary:{ kern:['Die Startseite ist frei anpassbar und bündelt Kalender sowie individuell konfigurierbare Schnellzugriffs-Kacheln.','Das vierstufige Ampelsystem (Grau/Grün/Gelb/Rot) priorisiert Kalendereinträge visuell, Buchstaben zeigen die Terminart.','Die Lagerverwaltung ist der zentrale Hauptbereich mit acht klar gegliederten Unterpunkten; Zusatzmodule werden separat lizenziert.'],
+      funk:['Individuell anpassbare Startseite','Vierstufiges Kalender-Ampelsystem','Lagerverwaltung als Hauptbereich'], hand:['Kalender täglich als ersten Schritt prüfen','Sich mit den acht Unterpunkten der Lagerverwaltung vertraut machen'] }
   },
   { id:2, phase:1, title:'Artikel- und Lagerplatzverwaltung', time:'15 Min.', diff:1,
     points:[
-      'Ein Artikel wird mit Artikelgruppe, interner Artikelnummer, Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort angelegt.',
-      'Lager MIN definiert den Sicherheitsbestand, Lager MAX den gewünschten Höchstbestand am Lagerplatz.',
-      'Die Bestellmenge im Bestellvorschlag ergibt sich automatisch aus der Differenz zwischen Lager MAX und Lager MIN.',
-      'Zu jedem Artikel werden Lagereinheit, Lieferant, Lieferanten-Artikelnummer, EK-Preis sowie Menge und VPE hinterlegt.'
+      'Ein Artikel wird mit Artikelgruppe, interner Artikelnummer, Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort angelegt – es gibt vier Wege dorthin: manuelle Neuanlage, Serienanlage über „Eingabe behalten", Kopieren eines bestehenden Artikels oder Excel-Import.',
+      'Bei der Serienanlage mit „Eingabe behalten" übernimmt die OrKan Cloud automatisch alle Felder des vorherigen Artikels – außer der internen Artikelnummer und der Artikelnummer des Lieferanten, die für jeden Artikel individuell bleiben.',
+      'Die interne Artikelnummer wird standardmäßig automatisch fortlaufend vergeben (höchste vergebene Nummer +1); ungenutzte niedrigere Nummern werden dabei nicht rückwirkend aufgefüllt, wenn versehentlich eine hohe Nummer importiert wurde.',
+      'Lager MIN definiert den Sicherheitsbestand, Lager MAX den gewünschten Höchstbestand am Lagerplatz – die Bestellmenge im Bestellvorschlag ergibt sich automatisch aus der Differenz zwischen Lager MAX und Lager MIN.',
+      'Zu jedem Artikel werden Lagereinheit, Lieferant, Lieferanten-Artikelnummer, EK-Preis sowie Menge und VPE hinterlegt. Das erste hochgeladene Dokument erscheint automatisch als Bild auf dem Etikett, weitere Dokumente (z. B. Sicherheitsdatenblätter) bleiben reine Anhänge.'
     ],
     features:[
-      {t:'Vollständiger Artikelstamm',d:'Artikelgruppe, Bezeichnung 1–3, Lager/Gebäude/Lagerort in einer Maske'},
+      {t:'Vier Wege der Artikelanlage',d:'Neuanlage, Serienanlage per „Eingabe behalten", Kopieren oder Import'},
       {t:'Lager MIN / Lager MAX',d:'Sicherheitsbestand und Höchstbestand steuern die Bestellmenge automatisch'},
-      {t:'Artikel erstellen, kopieren, bearbeiten',d:'Ähnliche Artikel per Kopie statt Neuanlage anlegen'}
+      {t:'Erstes Dokument = Etikettenbild',d:'Weitere Dokumente wie Sicherheitsdatenblätter bleiben reine Anhänge'}
     ],
     practice:'Für ein Schraubenpäckchen wird Lager MIN = 2 und Lager MAX = 6 hinterlegt. Sobald der Mindestbestand von 2 erreicht ist, schlägt die OrKan Cloud automatisch die Differenz von 4 Päckchen zur Nachbestellung vor.',
-    task:'Legen Sie einen Artikel mit Lager MIN/MAX nach dem Schraubenpäckchen-Beispiel an.',
-    checklist:['Artikelgruppe und interne Artikelnummer vergeben','Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort eintragen','Lager MIN und Lager MAX festlegen (z. B. 2 / 6)','Lieferant, Lieferanten-Artikelnummer und Lagereinheit hinterlegen','Artikelbild per Drag & Drop unter „Dokumente" hinzufügen'],
-    tip:'Nutzen Sie die „Kopieren"-Funktion für ähnliche Artikel (z. B. gleicher Bohrer in anderer Größe) – Beschreibung und Lieferant müssen dann nicht erneut gepflegt werden.',
+    task:'Legen Sie einen Artikel mit Lager MIN/MAX nach dem Schraubenpäckchen-Beispiel an und legen Sie per „Eingabe behalten" eine ähnliche Variante nach.',
+    checklist:['Artikelgruppe und interne Artikelnummer vergeben','Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort eintragen','Lager MIN und Lager MAX festlegen (z. B. 2 / 6)','Einen zweiten, ähnlichen Artikel per „Eingabe behalten" oder „Kopieren" anlegen','Artikelbild per Drag & Drop unter „Dokumente" hinzufügen'],
+    tip:'Nutzen Sie „Eingabe behalten" oder „Kopieren" für ähnliche Artikel (z. B. gleicher Bohrer in anderer Größe) – nur die interne Artikelnummer und die Lieferanten-Artikelnummer müssen Sie dann noch anpassen.',
     quiz:[
-      {q:'Wofür steht „Lager MIN" bei einem Artikel?',o:['Der maximale Lagerbestand','Der Sicherheitsbestand, ab dem nachbestellt wird','Der Einkaufspreis','Die kleinste Verpackungseinheit'],a:1,t:'Lager MIN/MAX'},
-      {q:'Bei Lager MIN = 2 und Lager MAX = 6 – wie viele Stück werden im Bestellvorschlag vorgeschlagen?',o:['2','6','4','8'],a:2,t:'Bestellmengen-Berechnung'},
-      {q:'Wozu dient die „Kopieren"-Funktion bei Artikeln?',o:['Zum Löschen mehrerer Artikel','Um ähnliche Artikel ohne erneute Dateneingabe anzulegen','Nur für den Export','Für die Passwortänderung'],a:1,t:'Artikel-Pflichtfelder'}
+      {q:'Welche zwei Felder werden bei der Serienanlage per „Eingabe behalten" NICHT automatisch vom vorherigen Artikel übernommen?',o:['Bild und Artikelgruppe','Interne Artikelnummer und Artikelnummer des Lieferanten','Lager MIN/MAX und Lagerort','Bezeichnung 1–3 und EK-Preis'],a:1,t:'Serienanlage'},
+      {q:'Ein Artikel hat Lager MIN = 2 und Lager MAX = 6. Welche Menge schlägt die OrKan Cloud bei Erreichen des Mindestbestands automatisch zur Bestellung vor?',o:['2','6','4','8'],a:2,t:'Bestellmengen-Berechnung'},
+      {q:'Welches Dokument eines Artikels wird automatisch auf dem Etikett gedruckt?',o:['Das zuletzt hochgeladene Dokument','Das erste hochgeladene Dokument','Alle Dokumente gleichzeitig','Keines automatisch – der Druck erfolgt manuell'],a:1,t:'Dokumente & Etikett'}
     ],
-    summary:{ kern:['Artikel werden mit Artikelgruppe, interner Artikelnummer, Bezeichnung 1–3 sowie Lager/Gebäude/Lagerort angelegt.','Lager MIN und Lager MAX steuern automatisch die vorgeschlagene Bestellmenge (MAX minus MIN).','Ähnliche Artikel lassen sich per Kopierfunktion effizient anlegen statt neu einzugeben.'],
-      funk:['Lager MIN / Lager MAX','Artikel kopieren'], hand:['Lager MIN/MAX realistisch anhand des Verbrauchs festlegen','Bei ähnlichen Artikeln konsequent die Kopierfunktion nutzen'] }
+    summary:{ kern:['Artikel lassen sich auf vier Wegen anlegen – am effizientesten per „Eingabe behalten" oder „Kopieren" für ähnliche Artikel.','Lager MIN und Lager MAX steuern automatisch die vorgeschlagene Bestellmenge (MAX minus MIN).','Das zuerst hochgeladene Dokument eines Artikels wird automatisch als Etikettenbild verwendet.'],
+      funk:['Vier Wege der Artikelanlage','Lager MIN / Lager MAX'], hand:['Lager MIN/MAX realistisch anhand des Verbrauchs festlegen','Bei ähnlichen Artikeln konsequent „Eingabe behalten" oder „Kopieren" nutzen'] }
   },
   { id:3, phase:2, title:'Zwei-Etiketten-System mit Bestellvorschlag', time:'10 Min.', diff:2,
     points:[
-      'An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, zur Kennzeichnung des Lagerplatzes) und ein weißes (Bestellauslöser).',
-      'Wird der Mindestbestand erreicht, zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox.',
-      'Abends nimmt ein Lagermitarbeiter die Bestellbox und erfasst die Artikel unter „Bestellvorschlag → Erstellen" – per QR-Code-Scan oder manuell.',
-      'Nach „Bestellungen erstellen" und „Senden" folgt die Zusammenfassung mit Ansprechpartner, Liefertermin, Lieferadresse und Lieferant.'
+      'An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, zur Kennzeichnung des Lagerplatzes) und ein weißes, das davor liegt und bei Mindestbestand als Bestellauslöser entnommen wird.',
+      'Wird der Mindestbestand erreicht, zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox – fehlt das weiße Etikett am Regal, sieht jeder sofort, dass der Artikel bereits bestellt ist.',
+      'Abends nimmt ein Lagermitarbeiter die Bestellbox und erfasst die Artikel unter „Bestellvorschlag → Erstellen": Ein Klick auf „Erstellen" springt automatisch ins Scan-Feld, jeder OrKan-Scanner löst nach dem Scan selbstständig „Enter" aus – ein manuelles Bestätigen ist nicht nötig.',
+      'Enthält der Bestellvorschlag Artikel mehrerer Lieferanten, muss für jeden Lieferanten die Teilbestellung einzeln über „Bestellungen erstellen" und „Senden" abgeschickt werden; Mengen lassen sich vorher per Doppelklick korrigieren.',
+      'Beim finalen „Bestellen" öffnen sich drei Fenster – Wareneingang, Lieferschein und der Onlineshop des Lieferanten –, denn die eigentliche Bestellung wird technisch erst im Lieferanten-Shop ausgelöst; OrKan Cloud bereitet sie mit Ansprechpartner, Liefertermin und Lieferadresse vollständig vor.'
     ],
     features:[
-      {t:'Blaues Etikett',d:'Bleibt dauerhaft am Regal – eindeutige Lagerplatzkennzeichnung'},
-      {t:'Weißes Etikett',d:'Wird bei Mindestbestand gezogen und signalisiert laufende Bestellung'},
-      {t:'Bestellvorschlag per Scan',d:'QR-Code scannen oder Artikel manuell erfassen und in den Warenkorb legen'}
+      {t:'Blaues und weißes Etikett',d:'Blau kennzeichnet dauerhaft den Lagerplatz, Weiß signalisiert eine laufende Bestellung'},
+      {t:'Scan mit Auto-Enter',d:'Cursor springt automatisch ins Scan-Feld, jeder Scan löst selbstständig „Enter" aus'},
+      {t:'Bestellung je Lieferant',d:'Teilbestellungen werden pro Lieferant einzeln erstellt und abgeschickt'}
     ],
-    practice:'Ein Lagermitarbeiter zieht am Nachmittag das weiße Etikett vom leeren Schrauben-Fach und legt es in die Bestellbox. Abends scannt ein Kollege alle Etiketten aus der Box unter „Bestellvorschlag" ein – die Bestellung ist in wenigen Minuten fertig zusammengestellt.',
-    task:'Simulieren Sie den Ablauf vom weißen Etikett bis zum fertigen Bestellvorschlag.',
-    checklist:['Zwei-Etiketten-System am Testregal nachvollziehen (blau vs. weiß)','Weißes Etikett in die Bestellbox legen','Unter „Bestellvorschlag → Erstellen" den Artikel scannen oder manuell erfassen','„Bestellungen erstellen" und Zusammenfassung prüfen (Ansprechpartner, Liefertermin, Lieferadresse)'],
-    tip:'Fehlt am Regal das weiße Etikett, ist der Artikel bereits im Bestellprozess – so weiß jeder Mitarbeiter auf einen Blick, ob schon bestellt wurde, ohne im System nachschauen zu müssen.',
+    practice:'Ein Lagermitarbeiter zieht am Nachmittag das weiße Etikett vom leeren Schrauben-Fach und legt es in die Bestellbox. Abends scannt ein Kollege alle Etiketten aus der Box unter „Bestellvorschlag" ein – die Bestellung ist in wenigen Minuten fertig zusammengestellt und wird im letzten Schritt im Shop des Lieferanten final ausgelöst.',
+    task:'Simulieren Sie den Ablauf vom weißen Etikett bis zum fertigen, im Lieferanten-Shop ausgelösten Bestellvorschlag.',
+    checklist:['Zwei-Etiketten-System am Testregal nachvollziehen (blau vs. weiß)','Weißes Etikett in die Bestellbox legen','Unter „Bestellvorschlag → Erstellen" den Artikel scannen oder manuell erfassen','„Bestellungen erstellen" und Zusammenfassung prüfen (Ansprechpartner, Liefertermin, Lieferadresse)','Die drei sich öffnenden Fenster nach „Bestellen" nachvollziehen (Wareneingang, Lieferschein, Lieferanten-Shop)'],
+    tip:'Landen gescannte Artikel nicht in der Liste, liegt meist ein Scanner vor, bei dem die Auto-Enter-Funktion nicht aktiv ist – ein Reset über den beiliegenden QR-Code in der Scanner-Anleitung behebt das meist, bevor Sie den Support kontaktieren.',
     quiz:[
       {q:'Wofür steht das blaue Etikett am Lagerplatz?',o:['Für den Bestellauslöser','Für die dauerhafte Lagerplatzkennzeichnung','Für den Lieferantenpreis','Für die Inventur'],a:1,t:'Zwei-Etiketten-System'},
       {q:'Was passiert, wenn der Mindestbestand erreicht ist?',o:['Nichts, das System merkt es automatisch','Das weiße Etikett wird gezogen und in die Bestellbox gelegt','Der Artikel wird gelöscht','Der Lieferant wird automatisch gewechselt'],a:1,t:'Bestellauslösung'},
-      {q:'Was folgt nach „Bestellungen erstellen" und „Senden"?',o:['Die Bestellung wird sofort ohne Kontrolle verschickt','Eine Zusammenfassung mit Ansprechpartner, Liefertermin und Lieferadresse','Der Artikel wird automatisch gelöscht','Nichts, der Vorgang ist bereits beendet'],a:1,t:'Bestellvorschlag-Ablauf'}
+      {q:'Wo wird eine OrKan-Cloud-Bestellung letztlich technisch ausgelöst?',o:['Direkt in OrKan Cloud, ohne weiteren Schritt','Im Onlineshop des Lieferanten, den OrKan Cloud automatisch öffnet','Per automatischem Fax an den Lieferanten','Über eine separate SAP-Schnittstelle'],a:1,t:'Bestellabschluss'}
     ],
-    summary:{ kern:['Das Zwei-Etiketten-System (blau/weiß) macht den Bestellstatus jedes Lagerplatzes ohne Systemzugriff sichtbar.','Das weiße Etikett wandert bei Mindestbestand in die Bestellbox und wird gesammelt eingescannt.','Der Bestellvorschlag fasst alle erfassten Artikel zu einer Bestellung mit vollständigen Lieferdaten zusammen.'],
-      funk:['Zwei-Etiketten-System','Bestellvorschlag per Scan'], hand:['Bestellbox täglich zur festen Uhrzeit leeren','Weißes Etikett nach Wareneingang wieder ans Regal anbringen'] }
+    summary:{ kern:['Das Zwei-Etiketten-System (blau/weiß) macht den Bestellstatus jedes Lagerplatzes ohne Systemzugriff sichtbar.','Das weiße Etikett wandert bei Mindestbestand in die Bestellbox und wird gesammelt per Auto-Enter-Scan eingescannt.','Die eigentliche Bestellung wird erst im Onlineshop des Lieferanten final ausgelöst – OrKan Cloud bereitet sie vollständig vor.'],
+      funk:['Zwei-Etiketten-System','Bestellvorschlag per Scan mit Auto-Enter'], hand:['Bestellbox täglich zur festen Uhrzeit leeren','Weißes Etikett nach Wareneingang wieder ans Regal anbringen'] }
   },
   { id:4, phase:2, title:'Artikelimport und Lieferantenanbindung', time:'18 Min.', diff:3,
     points:[
-      'Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei mit den zugehörigen Artikelbildern.',
-      'Beim Import stehen drei Optionen zur Wahl: „Importieren und aktualisieren", „nur importieren" oder „nur aktualisieren".',
-      'Der Abgleich läuft wahlweise über die Lieferanten-Artikelnummer, die EAN-Nummer oder die interne Artikelnummer.',
-      'Die Shop-URL im Lieferantenstamm ist die Grundlage der Anbindung: Die OrKan Cloud greift darüber später direkt auf den Lieferanten-Shop zu.'
+      'Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei (max. 40 MB) mit den zugehörigen Artikelbildern – der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen.',
+      'Die drei Import-Modi verhalten sich klar unterschiedlich: „Nur importieren" legt ausschließlich neue Artikel an und verändert nie bestehende; „Nur aktualisieren" verändert ausschließlich bestehende Artikel und legt nie neue an; „Importieren und aktualisieren" kombiniert beides.',
+      'Der Abgleich läuft wahlweise über die Lieferanten-Artikelnummer, die EAN-Nummer oder die interne Artikelnummer – bei einem Lieferantenwechsel für einen bestehenden Artikel muss zwingend über die interne Artikelnummer abgeglichen werden, sonst legt die OrKan Cloud den Artikel fälschlich doppelt neu an und Bestandsdaten gehen verloren.',
+      'Die Shop-URL im Lieferantenstamm ist NICHT die normale Webadresse des Onlineshops, sondern die URL der IDS-Schnittstelle – sie ist die technische Grundlage dafür, dass die OrKan Cloud Bestellungen automatisiert an den Lieferanten übermitteln kann.',
+      'Über den separaten Reiter „DATANORM Preis Import" lassen sich Preise und Daten vieler Artikel eines Lieferanten in einem Schritt aktualisieren, statt jeden Artikel einzeln zu pflegen.'
     ],
     features:[
       {t:'Excel + ZIP-Import',d:'Artikeldaten und Bilder werden gemeinsam über Dateiname-Zuordnung importiert'},
-      {t:'Drei Abgleich-Optionen',d:'Lieferanten-Artikelnummer, EAN-Nummer oder interne Artikelnummer'},
-      {t:'Lieferanten-Shop-Anbindung',d:'Shop-URL verknüpft die OrKan Cloud direkt mit dem Bestellshop des Lieferanten'}
+      {t:'Drei Import-Modi mit klarer Trennung',d:'„Nur importieren" legt ausschließlich Neues an, „nur aktualisieren" ändert ausschließlich Bestehendes'},
+      {t:'Lieferanten-Shop-Anbindung per IDS-URL',d:'Shop-URL verknüpft die OrKan Cloud direkt mit der Bestellschnittstelle des Lieferanten'}
     ],
     practice:'Beim Wechsel von einer Excel-basierten Lagerverwaltung werden mehrere hundert Artikel per Excel-Import angelegt: Die Artikeldaten liegen in der Excel-Liste, die passenden Produktbilder in einer ZIP-Datei – der Dateiname im Ordner entspricht dabei exakt dem Bildnamen in der Excel-Spalte.',
-    task:'Bereiten Sie eine Excel-Importvorlage inklusive Bilderordner vor.',
-    checklist:['Pflichtfelder der Importvorlage prüfen (Werksnummer, EAN, Bezeichnung 1–3, Lager/Gebäude/Lagerort)','Artikelbilder in einem Ordner sammeln und als ZIP vorbereiten','Bildnamen in der Excel-Spalte exakt dem Dateinamen im Ordner zuordnen','Passende Import-Option wählen (importieren/aktualisieren) und Abgleichfeld festlegen'],
-    tip:'Bei der Lieferantenanlage unbedingt die Shop-URL pflegen – ohne sie kann die OrKan Cloud die Bestellung später nicht automatisch zum Lieferanten-Shop weiterleiten.',
+    task:'Bereiten Sie eine Excel-Importvorlage inklusive Bilderordner vor und überlegen Sie für einen Lieferantenwechsel, welches Abgleichfeld zwingend nötig ist.',
+    checklist:['Pflichtfelder der Importvorlage prüfen (Werksnummer, EAN, Bezeichnung 1–3, Lager/Gebäude/Lagerort)','Artikelbilder in einem Ordner sammeln und als ZIP vorbereiten (max. 40 MB)','Bildnamen in der Excel-Spalte exakt dem Dateinamen im Ordner zuordnen','Passenden Import-Modus wählen und bei Lieferantenwechsel die interne Artikelnummer als Abgleichfeld setzen'],
+    tip:'Bei der Lieferantenanlage unbedingt die Shop-URL (IDS-Schnittstelle) pflegen – ohne sie kann die OrKan Cloud die Bestellung später nicht automatisch zum Lieferanten-Shop weiterleiten.',
     quiz:[
-      {q:'Was wird zusätzlich zur Excel-Liste beim Artikelimport hochgeladen?',o:['Eine PDF-Datei','Eine ZIP-Datei mit den Artikelbildern','Ein Word-Dokument','Nichts weiter'],a:1,t:'Import-Datenformat'},
-      {q:'Über welches Feld läuft die Anbindung an den Lieferanten-Shop?',o:['Die Postleitzahl','Die Shop-URL im Lieferantenstamm','Den Firmennamen','Das Bestelldatum'],a:1,t:'Lieferanten-Shop-Anbindung'},
-      {q:'Welche Option gibt es NICHT beim Artikelimport?',o:['Importieren und aktualisieren','Nur importieren','Nur aktualisieren','Automatisch übersetzen'],a:3,t:'Import-Optionen'}
+      {q:'Ein Kunde wechselt für einen bestehenden Artikel den Lieferanten. Wonach MUSS beim Import zwingend abgeglichen werden, damit kein doppelter Artikel entsteht?',o:['Über die Artikelnummer des neuen Lieferanten','Über die interne Artikelnummer','Über die EAN-Nummer','Über den Artikelnamen'],a:1,t:'Lieferantenwechsel beim Import'},
+      {q:'Was passiert, wenn der Import-Modus „Nur importieren" auf eine Excel-Liste mit reinen Preisänderungen zu bereits bestehenden Artikeln angewendet wird?',o:['Alle Preise werden automatisch aktualisiert','Nichts wird geändert, da „Nur importieren" ausschließlich neue Artikel anlegt','Die Artikel werden dupliziert','Der Import bricht mit einer Fehlermeldung ab'],a:1,t:'Import-Modi'},
+      {q:'Ist die im Lieferantenstamm hinterlegte „Shop-URL" die normale Webadresse des Onlineshops?',o:['Ja, genau diese Adresse','Nein, es ist die URL der IDS-Schnittstelle für den automatisierten Bestellversand','Sie wird nie benötigt','Sie dient nur der Anzeige des Lieferantenlogos'],a:1,t:'Shop-URL & IDS-Schnittstelle'}
     ],
-    summary:{ kern:['Der Artikelimport kombiniert eine Excel-Liste mit einer ZIP-Datei für Bilder über eine Dateinamen-Zuordnung.','Drei Importoptionen und drei Abgleichfelder ermöglichen einen flexiblen, wiederholbaren Importprozess.','Die Shop-URL im Lieferantenstamm ist die technische Grundlage für die spätere automatische Bestellweiterleitung.'],
-      funk:['Excel + ZIP-Import','Lieferanten-Shop-Anbindung'], hand:['Vor dem Vollimport Bildzuordnung an wenigen Testartikeln prüfen','Shop-URL bei jedem neuen Lieferanten sofort hinterlegen'] }
+    summary:{ kern:['Der Artikelimport kombiniert eine Excel-Liste mit einer ZIP-Datei für Bilder über eine Dateinamen-Zuordnung.','Die drei Import-Modi unterscheiden strikt zwischen Neuanlage und Aktualisierung – bei Lieferantenwechsel zählt nur die interne Artikelnummer als Abgleichfeld.','Die Shop-URL im Lieferantenstamm ist die IDS-Schnittstellen-Adresse für die automatische Bestellweiterleitung, nicht die normale Shop-Webadresse.'],
+      funk:['Excel + ZIP-Import','Drei Import-Modi','Lieferanten-Shop-Anbindung per IDS-URL'], hand:['Vor dem Vollimport Bildzuordnung an wenigen Testartikeln prüfen','Bei Lieferantenwechsel immer über die interne Artikelnummer abgleichen'] }
   },
   { id:5, phase:3, title:'Wareneingang und Lagerbestand', time:'8 Min.', diff:2,
     points:[
       'Beim Bestellabschluss öffnen sich drei Fenster: Wareneingang-Bestätigung, Lieferschein und der Lieferanten-Shop zur finalen Bestellung.',
-      'Unter „Scan / Bestelleingang" sehen Sie, wann Ware angekommen ist – inklusive Bestellnummer und Kommission.',
-      'Der Reiter „Lagerbestand" zeigt je Artikel den aktuellen Bestand sowie den Warenwert auf Basis von Lager MIN und Lager MAX.',
-      'Die Gebrauchsgutverwaltung (Maschinenverwaltung) zeigt, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine führt.'
+      'Der Scan-Bestelleingang zeigt offene Bestellungen eines Lieferanten nach Ampelfarbe (Rot = überfällig, Gelb = heute fällig, Grün = zukünftig) – Positionen lassen sich einzeln oder als komplette Liste auf einmal bestätigen, Mengenabweichungen werden dabei sichtbar gemacht.',
+      'Ist keine Bestandsführung aktiviert, lässt sich der Warenwert näherungsweise schätzen: Mittelwert aus Lager MIN und Lager MAX × Einkaufspreis, aufsummiert über alle Artikel – trifft in der Praxis zu rund 90 % zu.',
+      'Der Reiter „Lagerbestand" zeigt je Artikel den aktuellen Bestand, Lager MIN/MAX sowie den geschätzten Warenwert; über „Buchungen" lässt sich die komplette Bewegungshistorie eines Artikels einsehen.',
+      'Für die Inventur gibt es zwei Wege: Export als Excel-Liste mit manuell ergänzter Zählmenge, oder – mit aktivierter (kostenpflichtiger) Bestandsführung – die App-Funktion „Inventur" mit direkter Scan-Erfassung.'
     ],
     features:[
       {t:'Drei-Fenster-Bestellabschluss',d:'Wareneingang, Lieferschein und Lieferanten-Shop in einem Schritt'},
-      {t:'Lagerbestand mit Warenwert',d:'Ist-Bestand je Artikel im Verhältnis zu Lager MIN/MAX'},
-      {t:'Gebrauchsgutverwaltung',d:'Maschinen und Werkzeuge Mitarbeitern oder Fahrzeugen zuordnen'}
+      {t:'Scan-Bestelleingang mit Ampelfarben',d:'Offene Bestellungen nach Rot/Gelb/Grün filtern, Mengenabweichungen werden sichtbar'},
+      {t:'Warenwert-Näherung ohne Bestandsführung',d:'Mittelwert aus Lager MIN/MAX × Einkaufspreis, ca. 90 % Trefferquote'}
     ],
-    practice:'Nach Abschluss einer Bestellung hakt ein Lagermitarbeiter im Wareneingangs-Fenster die gelieferten Artikel ab, prüft sie gegen den Lieferschein und aktualisiert damit automatisch den Lagerbestand – ganz ohne separate Excel-Erfassung.',
-    task:'Prüfen Sie den Lagerbestand eines Testartikels und ordnen Sie ein Gebrauchsgut einem Mitarbeiter zu.',
-    checklist:['Bestellabschluss mit den drei Fenstern nachvollziehen','Wareneingang für einen Testartikel bestätigen','Lagerbestand und Warenwert eines Artikels prüfen','Ein Gebrauchsgut über „Buchung" einem Mitarbeiter zuordnen'],
-    tip:'Nutzen Sie bei der Gebrauchsgutverwaltung die Funktion „Service und Wartung", um wiederkehrende Prüftermine (z. B. Jahresservice) direkt an der Maschine zu hinterlegen.',
+    practice:'Nach Abschluss einer Bestellung hakt ein Lagermitarbeiter im Scan-Bestelleingang die gelieferten Artikel ab, prüft sie gegen den Lieferschein und aktualisiert damit automatisch den Lagerbestand – ganz ohne separate Excel-Erfassung.',
+    task:'Prüfen Sie den Lagerbestand, Lager MIN/MAX und den geschätzten Warenwert eines Testartikels und bestätigen Sie einen Wareneingang über den Scan-Bestelleingang.',
+    checklist:['Bestellabschluss mit den drei Fenstern nachvollziehen','Wareneingang für einen Testartikel über den Scan-Bestelleingang bestätigen','Lagerbestand, Lager MIN/MAX und geschätzten Warenwert eines Artikels prüfen','Buchungshistorie eines Artikels über „Buchungen" einsehen'],
+    tip:'Zeigt der Scan-Bestelleingang eine Mengenabweichung zwischen Bestellung und Lieferung an, klären Sie diese sofort mit dem Lieferanten – erst danach sollten Sie den Wareneingang endgültig bestätigen.',
     quiz:[
       {q:'Welche drei Fenster öffnen sich nach Abschluss einer Bestellung?',o:['Rechnung, Mahnung, Gutschrift','Wareneingang, Lieferschein, Lieferanten-Shop','Kalender, Kontakte, Einstellungen','Nur ein Bestätigungsfenster'],a:1,t:'Bestellabschluss-Fenster'},
-      {q:'Was zeigt der Reiter „Lagerbestand" zusätzlich zum aktuellen Bestand an?',o:['Den Warenwert auf Basis von Lager MIN/MAX','Die Urlaubstage der Mitarbeiter','Das Wetter am Lagerstandort','Nichts weiter'],a:0,t:'Lagerbestand & Warenwert'},
-      {q:'Wofür wird die Gebrauchsgutverwaltung genutzt?',o:['Für die Buchhaltung','Um zu erfassen, welcher Mitarbeiter welche Maschine hat','Für den Artikelimport','Für die Passwortverwaltung'],a:1,t:'Gebrauchsgutverwaltung'}
+      {q:'Mit welcher Näherungsformel lässt sich der Warenwert schätzen, wenn keine Bestandsführung aktiviert ist?',o:['Lager MAX × Einkaufspreis','Mittelwert aus Lager MIN und Lager MAX × Einkaufspreis','Lager MIN × Verkaufspreis','Aktueller Bestand × Verkaufspreis'],a:1,t:'Warenwert-Näherung'},
+      {q:'Welche zwei Möglichkeiten zur Inventur bietet die OrKan Cloud?',o:['Nur die kostenpflichtige App-Funktion mit Scan-Erfassung','Excel-Export mit manueller Zählmenge oder die App-Funktion „Inventur" mit Scan-Erfassung','Nur manuelles Nachzählen ohne jede Software-Unterstützung','Eine vollautomatische Inventur ohne jede manuelle Beteiligung'],a:1,t:'Inventur'}
     ],
-    summary:{ kern:['Der Bestellabschluss verbindet Wareneingang, Lieferschein und Lieferanten-Shop in einem durchgängigen Drei-Fenster-Prozess.','Der Lagerbestand zeigt den aktuellen Warenwert stets im Verhältnis zu Lager MIN und Lager MAX.','Die Gebrauchsgutverwaltung schafft Transparenz darüber, wer welche Maschine oder welches Werkzeug aktuell nutzt.'],
-      funk:['Drei-Fenster-Bestellabschluss','Gebrauchsgutverwaltung'], hand:['Wareneingang zeitnah bestätigen, um den Lagerbestand aktuell zu halten','Service- und Wartungstermine für Maschinen konsequent hinterlegen'] }
+    summary:{ kern:['Der Bestellabschluss verbindet Wareneingang, Lieferschein und Lieferanten-Shop in einem durchgängigen Drei-Fenster-Prozess.','Der Scan-Bestelleingang bestätigt Lieferungen per Ampelfarbe und macht Mengenabweichungen direkt sichtbar.','Ohne Bestandsführung lässt sich der Warenwert über Lager MIN/MAX und Einkaufspreis mit rund 90 % Genauigkeit schätzen.'],
+      funk:['Drei-Fenster-Bestellabschluss','Scan-Bestelleingang mit Ampelfarben','Warenwert-Näherung'], hand:['Wareneingang zeitnah über den Scan-Bestelleingang bestätigen, um den Lagerbestand aktuell zu halten','Bei größeren Beständen regelmäßig per Excel-Export oder App-Inventur zählen'] }
   },
   { id:6, phase:3, title:'Maschinenverwaltung', time:'12 Min.', diff:2,
     points:[
-      'Maschinen werden mit Name, Seriennummer, Wert, Heimatstandort (Fahrzeug, Lagerort, Gebäude oder Person) und Anschaffungsdatum angelegt.',
+      'Maschinen werden mit Name, Seriennummer, Wert, Heimatstandort (Fahrzeug, Lagerort, Gebäude oder Person) und Anschaffungsdatum angelegt – was als „Maschine" geführt wird, definiert der Kunde selbst, auch eine Leiter kann so erfasst sein.',
       'Das erste hochgeladene Dokument erscheint auf dem Etikett, weitere Dokumente wie der Kaufbeleg werden nicht gedruckt, sind aber entscheidend für Garantiefälle.',
-      'Ein Administrator kann jede Maschine auf jeden Standort buchen; ein Monteur kann über die App ausschließlich Maschinen zu sich selbst buchen.',
-      'Für Service & Wartung werden Intervalle hinterlegt (z. B. jährliche VDE-Prüfung) – bei Bestätigung wird automatisch ein Folgetermin angelegt.'
+      'Ein Administrator kann jede Maschine auf jeden Standort buchen; ein Monteur kann über die App ausschließlich Maschinen zu sich selbst buchen, nicht stellvertretend auf andere Personen.',
+      'Service & Wartung muss als Zusatzfunktion separat aktiviert werden (verursacht aber keine Zusatzkosten) – erst dann lassen sich Intervalle wie eine jährliche VDE-Prüfung hinterlegen, bei deren Bestätigung automatisch ein Folgetermin angelegt wird.',
+      'Mehrere Einzelteile lassen sich zu einer „Anlage" bündeln (z. B. Kernbohrgerät, Befestigungsset und Staubsauger): Ein einziger Scan bucht alle Teile gemeinsam, jedes bleibt aber ein eigener Artikel mit eigener Wartungshistorie. Eine „Reservierung" ist dabei keine technische Sperre, sondern nur ein Hinweis in einer Liste.'
     ],
     features:[
       {t:'Vollständige Maschinen-Stammdaten',d:'Inkl. Electronic ID als Alternative zum QR-Code-Scan (NFC/RFID)'},
       {t:'Rollenbasierte Buchungslogik',d:'Admin bucht für alle, Monteur nur für sich selbst'},
-      {t:'Service & Wartung mit Automatik',d:'Folgetermin wird nach Bestätigung automatisch angelegt'}
+      {t:'Anlagen & Service/Wartung',d:'Mehrere Einzelteile per Sammel-Scan buchen, separat aktivierbare Wartungsintervalle mit Automatik'}
     ],
     practice:'Bei 16 baugleichen Pressmaschinen für 20 Monteure lässt sich im Reparaturfall nur dank des digital hinterlegten Kaufbelegs pro Seriennummer zweifelsfrei klären, welche Maschine noch Garantie hat – ohne diese Zuordnung würden berechtigte Garantieansprüche abgelehnt.',
-    task:'Legen Sie eine Testmaschine mit Kaufbeleg an und hinterlegen Sie ein Wartungsintervall.',
-    checklist:['Maschine mit Name, Seriennummer und Heimatstandort anlegen','Kaufbeleg als zusätzliches Dokument hochladen','Service-&-Wartung-Intervall festlegen (z. B. Jahresservice)','Buchung der Maschine auf eine Testperson durchführen'],
+    task:'Legen Sie eine Testmaschine mit Kaufbeleg an, aktivieren Sie Service & Wartung und hinterlegen Sie ein Wartungsintervall.',
+    checklist:['Maschine mit Name, Seriennummer und Heimatstandort anlegen','Kaufbeleg als zusätzliches Dokument hochladen','Service & Wartung aktivieren und ein Intervall festlegen (z. B. Jahresservice)','Buchung der Maschine auf eine Testperson durchführen'],
     tip:'Prüfen Sie vor dem Kauf zusätzlicher Werkzeuge wie Entfernungsmesser, ob diese bereits in der Maschinenverwaltung erfasst sind — gerade kleinere, wertvolle Geräte werden bei Versicherungsfällen sonst leicht vergessen.',
     quiz:[
-      {q:'Wer kann über die App eine Maschine auf eine andere Person buchen?',o:['Jeder Monteur','Nur ein Administrator oder Lagerist mit Adminrechten','Niemand, das geht nur am Desktop','Nur der Maschinenhersteller'],a:1,t:'Maschinen-Buchungslogik'},
+      {q:'Darf ein Monteur über die App eine Maschine auf einen Kollegen buchen?',o:['Ja, uneingeschränkt','Nein, ein Monteur kann eine Maschine nur auf sich selbst buchen','Nur mit Zustimmung des Kollegen per App','Nur der Administrator darf überhaupt buchen'],a:1,t:'Maschinen-Buchungslogik'},
       {q:'Warum ist der digital hinterlegte Kaufbeleg pro Maschine wichtig?',o:['Für die Farbwahl des Etiketts','Für die eindeutige Zuordnung im Garantiefall bei baugleichen Geräten','Er ist nicht wichtig','Nur für die Buchhaltung relevant'],a:1,t:'Kaufbeleg & Garantie'},
-      {q:'Was passiert bei Bestätigung eines Wartungstermins?',o:['Nichts weiter','Automatisch wird ein Folgetermin auf Basis des Intervalls angelegt','Die Maschine wird gelöscht','Der Standort wird zurückgesetzt'],a:1,t:'Service & Wartung'}
+      {q:'Aktiviert sich „Service & Wartung" automatisch, sobald die Maschinenverwaltung genutzt wird?',o:['Ja, automatisch inklusive','Nein, es muss separat aktiviert werden, verursacht aber keine Zusatzkosten','Nein, es ist kostenpflichtig extra','Ja, aber nur für Fahrzeuge'],a:1,t:'Service & Wartung'},
+      {q:'Ist eine „Reservierung" eines Gebrauchsguts eine technische Sperre gegen die Entnahme?',o:['Ja, das Gerät kann dann nicht mehr gescannt werden','Nein, es ist nur ein Hinweis in einer Liste – physisch lässt sich das Gerät trotzdem entnehmen','Ja, aber nur für Administratoren aufhebbar','Nein, Reservierungen gibt es in OrKan Cloud nicht'],a:1,t:'Reservierung'}
     ],
-    summary:{ kern:['Maschinen werden mit vollständigen Stammdaten inkl. Heimatstandort und Kaufbeleg erfasst.','Die Buchungslogik ist rollenabhängig: Admins buchen für alle, Monteure nur für sich selbst.','Service-&-Wartung-Intervalle erzeugen automatisch Folgetermine und sichern gesetzlich vorgeschriebene Prüfungen ab.'],
-      funk:['Maschinen-Stammdaten & Electronic ID','Service & Wartung mit Automatik'], hand:['Kaufbelege konsequent bei jeder Maschine hinterlegen','Wartungsintervalle für prüfpflichtige Geräte sofort bei Anlage festlegen'] }
+    summary:{ kern:['Maschinen werden mit vollständigen Stammdaten inkl. Heimatstandort und Kaufbeleg erfasst; was als „Maschine" gilt, bestimmt der Betrieb selbst.','Die Buchungslogik ist rollenabhängig: Admins buchen für alle, Monteure nur für sich selbst.','Service & Wartung ist separat aktivierbar und erzeugt nach Bestätigung automatisch Folgetermine; Anlagen bündeln mehrere Teile zu einer Sammelbuchung.'],
+      funk:['Maschinen-Stammdaten & Electronic ID','Rollenbasierte Buchungslogik','Anlagen & Service/Wartung mit Automatik'], hand:['Kaufbelege konsequent bei jeder Maschine hinterlegen','Wartungsintervalle für prüfpflichtige Geräte sofort bei Anlage festlegen'] }
   },
   { id:7, phase:3, title:'Schlüsselverwaltung', time:'8 Min.', diff:1,
     points:[
       'Schlüssel-Etiketten sind spezielle gefaltete Anhänger: außen nur eine Nummer und ein QR-Code, innen (nur beim Öffnen sichtbar) die Kundenadresse.',
-      'Diese Trennung ist ein Sicherheitsprinzip: Bei Diebstahl eines Schlüsselkastens darf niemals sofort erkennbar sein, zu welcher Adresse ein Schlüssel gehört.',
-      'Die Adresse muss als Suchkriterium in der Standardansicht verfügbar sein, da im Alltag primär über die Adresse gesucht wird, nicht über die Schlüsselnummer.',
-      'Buchen funktioniert wie bei Maschinen: Schlüssel scannen, Zielperson wählen, speichern – Rückgabe erfolgt durch erneutes Buchen auf den Schlüsselkasten.'
+      'Diese Trennung ist ein Sicherheitsprinzip: Beim traditionellen Schlüsselkasten mit Nummern 1 bis n und separatem Zuordnungsordner werden bei einem Einbruch meist beide zusammen entwendet – die Adressliste liegt dann offen. Bei OrKan steckt die Adresse digital hinter der Nummer und bleibt bei Diebstahl geschützt.',
+      'Die Adresse muss als Suchkriterium in der Standardansicht verfügbar sein, da im Alltag primär über die Adresse gesucht wird (z. B. „Lerchenweg"), nicht über die interne Schlüsselnummer.',
+      'Ein Finderlohn-Hinweis auf dem Etikett (Richtwert ca. 50 €) erhöht die Rückgabewahrscheinlichkeit – wichtig, da die Erneuerung hochwertiger Schließanlagen im Verlustfall deutlich teurer wird.',
+      'Buchen funktioniert wie bei Maschinen: Schlüssel scannen, Zielperson (auch temporäre Trupps möglich) wählen, speichern – Rückgabe erfolgt durch erneutes Buchen auf den Schlüsselkasten.'
     ],
     features:[
       {t:'Gefaltetes Sicherheits-Etikett',d:'Nummer und QR-Code außen, Adresse nur innen sichtbar'},
       {t:'Adresssuche als Standard',d:'Wichtig bei mehreren hundert Schlüsseln im Bestand'},
-      {t:'Finderlohn-Option',d:'Optionaler Hinweis auf dem Etikett erhöht die Rückgabewahrscheinlichkeit'}
+      {t:'Finderlohn-Option',d:'Hinweis auf dem Etikett (Richtwert ca. 50 €) erhöht die Rückgabewahrscheinlichkeit'}
     ],
-    practice:'Bei rund 600 verwalteten Schlüsseln wäre eine Suche ausschließlich über die interne Schlüsselnummer praktisch unbrauchbar – ein Mitarbeiter sucht typischerweise nach „Lerchenweg" oder „Kindergarten Lerchenstraße", nicht nach einer vierstelligen Nummer.',
+    practice:'Bei einem Einbruch in eine Bankfiliale wird traditionell der komplette, unbeschriftete Schlüsselkasten samt separatem Zuordnungsordner entwendet – die Täter haben dann Zeit, anhand der Adressliste gezielt weitere Objekte aufzusuchen. Mit dem OrKan-Etikettenkonzept bleibt die Adresse digital geschützt, da sie nicht auf einem mitgeführten Zettel steht.',
     task:'Legen Sie einen Testschlüssel an und buchen Sie ihn auf eine Testperson.',
     checklist:['Schlüssel mit Adresse als Suchkriterium anlegen','Sicherheitsprinzip des gefalteten Etiketts nachvollziehen (außen anonym, innen Adresse)','Schlüssel auf eine Testperson buchen','Rückgabe durch erneutes Buchen auf den Schlüsselkasten simulieren'],
     tip:'Schlüsselkästen dürfen niemals mit sichtbaren Adressangaben versehen sein — weder am Schlüssel selbst noch in einem danebenliegenden Zuordnungs-Ordner. Das ist kein Detail, sondern ein zentrales Sicherheitsprinzip.',
     quiz:[
       {q:'Was ist auf der Außenseite eines OrKan-Schlüsselanhängers sichtbar?',o:['Die vollständige Kundenadresse','Nur eine Nummer und ein QR-Code','Name des Monteurs','Nichts, das Etikett ist blanko'],a:1,t:'Schlüssel-Etikett'},
-      {q:'Warum ist die Trennung von Nummer (außen) und Adresse (innen) sicherheitsrelevant?',o:['Aus optischen Gründen','Damit bei Diebstahl des Schlüsselkastens keine Adresse sofort erkennbar ist','Weil QR-Codes keine Adressen speichern können','Das ist reiner Zufall'],a:1,t:'Sicherheitsprinzip'},
+      {q:'Was war beim traditionellen Schlüsselkasten (Nummern 1 bis n + separater Zuordnungsordner daneben) das Sicherheitsproblem?',o:['Es gab kein Problem','Bei einem Einbruch werden Kasten und Zuordnungsordner meist gemeinsam entwendet, wodurch die Adresszuordnung offenliegt','Die Schlüssel waren nicht nummeriert','Der Ordner war ohnehin digital gesichert'],a:1,t:'Sicherheitsprinzip'},
       {q:'Wonach wird bei der Schlüsselsuche im Alltag primär gesucht?',o:['Nach der internen Schlüsselnummer','Nach der Adresse','Nach dem Anschaffungsdatum','Nach der Farbe des Anhängers'],a:1,t:'Adresssuche'}
     ],
-    summary:{ kern:['Schlüssel-Etiketten trennen aus Sicherheitsgründen Nummer/QR-Code (außen) von der Adresse (innen).','Die Adresssuche ist bei größeren Schlüsselbeständen essenziell und muss in der Standardansicht verfügbar sein.','Buchung und Rückgabe folgen derselben Logik wie bei der Maschinenverwaltung.'],
+    summary:{ kern:['Schlüssel-Etiketten trennen aus Sicherheitsgründen Nummer/QR-Code (außen) von der Adresse (innen) – anders als beim klassischen Kasten mit offenliegendem Zuordnungsordner.','Die Adresssuche ist bei größeren Schlüsselbeständen essenziell und muss in der Standardansicht verfügbar sein.','Buchung und Rückgabe folgen derselben Logik wie bei der Maschinenverwaltung, inklusive Finderlohn-Option auf dem Etikett.'],
       funk:['Gefaltetes Sicherheits-Etikett','Adresssuche als Standard'], hand:['Adressfilter bei der täglichen Schlüsselsuche konsequent nutzen','Nie Adressinformationen sichtbar am Schlüsselkasten anbringen'] }
   },
   { id:8, phase:3, title:'Projekte und Baustellen', time:'10 Min.', diff:2,
     points:[
       'Das Projekte-Modul dokumentiert Materialentnahmen auf Baustellen, die sonst nur handschriftlich per „Aufmaß" erfasst und leicht vergessen werden.',
-      'Wird eine Entnahme vergessen, entsteht ein realer Verlust: Das Material wird dem Kunden nie in Rechnung gestellt.',
-      'Die Nutzung für Materialbuchungen erfordert zwingend die mobile App – über die Desktop-Oberfläche ist keine Buchung im Feld möglich.',
-      'Alternative zur App: Der OrKan-Artikelstamm wird per Matchcode (interne Artikelnummer) direkt in die Branchensoftware importiert, sodass Entnahmen dort gebucht werden.'
+      'Wird eine Entnahme vergessen, entsteht ein realer Verlust: Beispiel Armatur mit Einkaufspreis 200 € und Verkaufspreis 600 € – ohne dokumentiertes Aufmaß gehen dem Betrieb die 400 € Differenz verloren.',
+      'Übersteigt eine gebuchte Entnahme den verfügbaren Lagerbestand, warnt die App zwar, lässt die Buchung aber trotzdem zu – so bleibt die physische Entnahme in jedem Fall dokumentiert.',
+      'Die volle Nutzung erfordert drei zusammenwirkende Module (Projekte, Bestandsführung, OrKan-App) für zusammen ca. 25–30 €/Monat – über die Desktop-Oberfläche ist keine Materialbuchung im Feld möglich.',
+      'Meist sinnvoller: Der OrKan-Artikelstamm wird per Matchcode (interne Artikelnummer) direkt in die Branchensoftware importiert, sodass Monteure Entnahmen dort buchen, wo sie ohnehin schon für Baustellen und Zeiterfassung arbeiten – ohne zusätzliche OrKan-Modulkosten.'
     ],
     features:[
-      {t:'Entnahme & Einlagerung per App',d:'Artikel scannen, Menge angeben, Projekt auswählen, speichern'},
+      {t:'Entnahme & Einlagerung per App',d:'Artikel scannen, Menge angeben, Projekt auswählen – Buchung auch bei Bestandsüberschreitung mit Warnhinweis möglich'},
       {t:'Projekt-Statistik & Export',d:'Vollständige Buchungsliste je Projekt für die Nachkalkulation'},
-      {t:'Alternative Matchcode-Integration',d:'Nummern-Abgleich mit der Branchensoftware statt eigenem App-Workflow'}
+      {t:'Alternative Matchcode-Integration',d:'Nummern-Abgleich mit der Branchensoftware statt eigenem App-Workflow und Zusatzkosten'}
     ],
     practice:'Ein Monteur baut ungeplant eine zusätzliche Infrarotheizung aus dem eigenen Lager statt vom Großhändler ein. Ohne App-Buchung fehlt der Beleg komplett – das Material wird nie nachkalkuliert und der Verkaufspreis geht verloren.',
-    task:'Simulieren Sie eine Materialentnahme für ein Testprojekt.',
-    checklist:['Projekt mit Name und Auftragsnummer anlegen','Materialentnahme über die App simulieren (Artikel, Menge, Projekt)','Projekt-Statistik/Export für die Nachkalkulation aufrufen','Alternative Matchcode-Integration mit der Branchensoftware nachvollziehen'],
+    task:'Simulieren Sie eine Materialentnahme für ein Testprojekt, auch mit einer Menge über dem verfügbaren Bestand.',
+    checklist:['Projekt mit Name und Auftragsnummer anlegen','Materialentnahme über die App simulieren (Artikel, Menge, Projekt)','Eine Entnahme über dem verfügbaren Bestand testen und den Warnhinweis beobachten','Projekt-Statistik/Export für die Nachkalkulation aufrufen','Alternative Matchcode-Integration mit der Branchensoftware nachvollziehen'],
     tip:'Achten Sie bei der Projekt-Statistik darauf, dass jeder gebuchte Artikel eine gepflegte Bezeichnung im Artikelstamm hat — sonst erscheint in der Auswertung nur eine bedeutungslose Artikelnummer statt eines lesbaren Namens.',
     quiz:[
-      {q:'Was ist die zentrale Voraussetzung für Materialbuchungen im Projekte-Modul?',o:['Ein Excel-Import','Die mobile App','Ein zweiter Bildschirm','Nichts Besonderes'],a:1,t:'Projekte-App-Pflicht'},
-      {q:'Was passiert, wenn eine Materialentnahme auf der Baustelle vergessen wird?',o:['Nichts, das System merkt es automatisch','Das Material wird dem Kunden nie in Rechnung gestellt','Der Artikel wird automatisch storniert','Der Monteur erhält eine Mahnung'],a:1,t:'Nachkalkulations-Risiko'},
-      {q:'Was ist die genannte Alternative zur App-basierten Projektbuchung?',o:['Gar keine, es gibt keine Alternative','Matchcode-Integration des Artikelstamms in die Branchensoftware','Ein Anruf beim Support','Papierlisten per Fax'],a:1,t:'Matchcode-Integration'}
+      {q:'Was passiert, wenn eine über die App gebuchte Materialentnahme den tatsächlichen Lagerbestand übersteigt?',o:['Die Buchung wird komplett blockiert','Die App warnt, lässt die Buchung aber trotzdem zu, damit die Entnahme dokumentiert bleibt','Die überschüssige Menge wird automatisch storniert','Es erfolgt keine Warnung'],a:1,t:'Materialentnahme-Warnung'},
+      {q:'Ein Monteur vergisst, eine entnommene Armatur (EK 200 €, VK 600 €) für eine Baustelle zu dokumentieren. Welcher finanzielle Verlust entsteht dem Betrieb dadurch?',o:['Kein Verlust, nur ein Formfehler','200 € (der Einkaufspreis)','400 € (die Differenz zwischen Verkaufs- und Einkaufspreis)','600 € (der volle Verkaufspreis)'],a:2,t:'Nachkalkulations-Risiko'},
+      {q:'Welche Alternative zur App-basierten Projektbuchung wird in der Praxis meist als sinnvoller empfohlen?',o:['Gar keine, es gibt keine Alternative','Matchcode-Integration des Artikelstamms in die Branchensoftware, da keine zusätzlichen OrKan-Modulkosten anfallen','Ein Anruf beim Support','Papierlisten per Fax'],a:1,t:'Matchcode-Integration'}
     ],
-    summary:{ kern:['Das Projekte-Modul verhindert, dass Materialentnahmen auf Baustellen unkalkuliert bleiben.','Für Materialbuchungen im Feld ist zwingend die mobile App erforderlich.','Als zukunftsträchtige Alternative gilt die direkte Matchcode-Integration mit der Branchensoftware, ohne zusätzliche OrKan-Module.'],
-      funk:['Entnahme & Einlagerung per App','Alternative Matchcode-Integration'], hand:['Vor Projektstart sicherstellen, dass Artikelbezeichnungen im Stamm gepflegt sind','Bei bereits genutzter Branchensoftware die Matchcode-Integration als Alternative prüfen'] }
+    summary:{ kern:['Das Projekte-Modul verhindert, dass Materialentnahmen auf Baustellen unkalkuliert bleiben – Buchungen werden auch bei Bestandsüberschreitung mit Warnhinweis zugelassen, damit nichts undokumentiert bleibt.','Die volle App-Lösung kostet mit drei zusammenwirkenden Modulen ca. 25–30 €/Monat.','Als meist kostengünstigere Alternative gilt die direkte Matchcode-Integration mit der ohnehin genutzten Branchensoftware.'],
+      funk:['Entnahme & Einlagerung per App','Alternative Matchcode-Integration'], hand:['Vor Projektstart sicherstellen, dass Artikelbezeichnungen im Stamm gepflegt sind','Bei bereits genutzter Branchensoftware die Matchcode-Integration als kostengünstigere Alternative prüfen'] }
   }
 ];
 
@@ -1167,9 +1190,7 @@ function buildModuleSubNav(){
 function completedCount(){ return Object.values(state.moduleProgress).filter(p=>p.completed).length; }
 function progressPct(){ return Math.round(completedCount()/MODULES.length*100); }
 function isModuleLocked(m){
-  if(m.phase===1) return false;
-  const prevPhaseModules = MODULES.filter(x=>x.phase===m.phase-1);
-  return !prevPhaseModules.every(x=>state.moduleProgress[x.id].completed);
+  return false;
 }
 function lockedPhaseLabel(m){
   const names = {1:'Grundlagen',2:'Prozesse & Integration'};
@@ -1210,38 +1231,109 @@ function renderDashboard(){
     </div>
     `}
 
-    ${(() => { const rf = ROLE_FOCUS[state.role]; if(!rf) return ''; return `
-    <div class="section-heading">${rf.heading}</div>
-    <div class="stats-row">
-      ${rf.cards.map(c=>`<div class="stat-card" ${c.link?`style="cursor:pointer" onclick="showView('${c.link}')"`:''}><div class="stat-label">${c.label}</div><div class="stat-val" style="font-size:18px">${c.val}</div><div class="stat-sub">${c.sub}</div></div>`).join('')}
-    </div>
-    `; })()}
+    <div class="section-heading">Ihre Lernmodule <span style="font-size:11px;font-weight:600;color:var(--gray);text-transform:none">— priorisiert für ${state.role}</span></div>
+    <div class="modules-grid">${(() => { const prio = (ROLE_FOCUS[state.role]||{}).priorityModules||[]; const sorted = [...MODULES].sort((a,b)=>{ const ai=prio.indexOf(a.id), bi=prio.indexOf(b.id); const av = ai===-1?99:ai, bv = bi===-1?99:bi; return av-bv; }); return sorted.map(m=>moduleCardHtml(m, prio.includes(m.id))).join(''); })()}</div>
 
-    <div class="context-note">
-      <span><strong>Ergänzung, kein Ersatz:</strong> Diese Plattform ergänzt Ihre persönliche Erstschulung bei SPRÜGEL. Eignen Sie sich hier die Grundlagen selbstständig an – Ihr persönlicher Ansprechpartner konzentriert sich im gemeinsamen Termin dann gezielt auf Ihre individuellen Fragen.</span>
-      <button class="context-note-btn" onclick="bookAppointment()">Persönlichen Termin vereinbaren</button>
+    <div class="dash-customize-bar">
+      <span class="section-heading" style="margin:0">Weitere Kacheln</span>
+      <button class="dash-customize-btn" onclick="openDashCustomize()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 0 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 0 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 0 1 4 0v.09A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 0 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"/></svg>Dashboard anpassen</button>
     </div>
+    <div id="dashWidgets">${renderDashboardWidgets()}</div>
+  `;
+}
 
+const DASHBOARD_WIDGETS = {
+  stats: { title:'Kennzahlen', render: () => `
     <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">Abgeschlossene Module</div><div class="stat-val">${done}/${MODULES.length}</div><div class="stat-sub">${progressPct()}% des Onboardings</div></div>
+      <div class="stat-card"><div class="stat-label">Abgeschlossene Module</div><div class="stat-val">${completedCount()}/${MODULES.length}</div><div class="stat-sub">${progressPct()}% des Onboardings</div></div>
       <div class="stat-card"><div class="stat-label">Lernzeit gesamt</div><div class="stat-val">${state.totalTime}</div><div class="stat-sub">Minuten investiert</div></div>
-      <div class="stat-card"><div class="stat-label">Quiz-Durchschnitt</div><div class="stat-val">${avgQuiz}</div><div class="stat-sub">über alle Module</div></div>
-      <div class="stat-card"><div class="stat-label">Onboarding-Status</div><div class="stat-val">Phase ${phase}/3</div><div class="stat-sub">${phase===3?'Zertifizierung in Reichweite':'in Bearbeitung'}</div></div>
-    </div>
-
-    <div class="section-heading">Onboarding-Phasen</div>
+      <div class="stat-card"><div class="stat-label">Quiz-Durchschnitt</div><div class="stat-val">${(()=>{ const scores = Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore); if(!scores.length) return '–'; return Math.round(scores.reduce((a,b)=>a+b,0)/scores.length)+'%'; })()}</div><div class="stat-sub">über alle Module</div></div>
+    </div>` },
+  phases: { title:'Onboarding-Phasen', render: () => { const done=completedCount(); const phase = done>=4?3:(done>=2?2:1); return `
     <div class="phases-row">
       <div class="phase-step ${phase>=1?'active':''} ${done>=2?'unlocked':''}"><div class="phase-num">1</div><div class="phase-title">Grundlagen</div><div class="phase-desc">Module 1–2</div></div>
       <div class="phase-step ${phase>=2?'active':''} ${done>=4?'unlocked':''}"><div class="phase-num">2</div><div class="phase-title">Prozesse & Integration</div><div class="phase-desc">Module 3–4</div></div>
       <div class="phase-step ${phase>=3?'active':''} ${done>=MODULES.length?'unlocked':''}"><div class="phase-num">3</div><div class="phase-title">Optimierung & Zertifizierung</div><div class="phase-desc">Module 5–${MODULES.length} + Zertifikat</div></div>
-    </div>
+    </div>`; } },
+  rolefocus: { title:'Rollenfokus', render: () => { const rf = ROLE_FOCUS[state.role]; if(!rf) return '<p style="font-size:13px;color:var(--gray)">Für Ihre Rolle sind keine zusätzlichen Kennzahlen hinterlegt.</p>'; return `
+    <div class="stats-row">
+      ${rf.cards.map(c=>`<div class="stat-card" ${c.link?`style="cursor:pointer" onclick="showView('${c.link}')"`:''}><div class="stat-label">${c.label}</div><div class="stat-val" style="font-size:18px">${c.val}</div><div class="stat-sub">${c.sub}</div></div>`).join('')}
+    </div>`; } },
+  recos: { title:'Empfohlen für Ihre Rolle', render: () => `
+    <div class="reco-grid">${(ROLE_RECOS[state.role]||[]).map(r=>`<div class="reco-card"><div class="reco-tag">${r.tag}</div><h4>${r.t}</h4><p>${r.d}</p></div>`).join('')}</div>` },
+  appointment: { title:'Persönlicher Termin', render: () => `
+    <div class="context-note" style="margin-bottom:0">
+      <span><strong>Ergänzung, kein Ersatz:</strong> Diese Plattform ergänzt Ihre persönliche Erstschulung bei SPRÜGEL. Eignen Sie sich hier die Grundlagen selbstständig an – Ihr persönlicher Ansprechpartner konzentriert sich im gemeinsamen Termin dann gezielt auf Ihre individuellen Fragen.</span>
+      <button class="context-note-btn" onclick="bookAppointment()">Persönlichen Termin vereinbaren</button>
+    </div>` }
+};
+const DEFAULT_WIDGET_ORDER = ['stats','phases','rolefocus','recos','appointment'];
+const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:true, rolefocus:true, recos:true, appointment:true};
 
-    <div class="section-heading">Ihre Lernmodule <span style="font-size:11px;font-weight:600;color:var(--gray);text-transform:none">— priorisiert für ${state.role}</span></div>
-    <div class="modules-grid">${(() => { const prio = (ROLE_FOCUS[state.role]||{}).priorityModules||[]; const sorted = [...MODULES].sort((a,b)=>{ const ai=prio.indexOf(a.id), bi=prio.indexOf(b.id); const av = ai===-1?99:ai, bv = bi===-1?99:bi; return av-bv; }); return sorted.map(m=>moduleCardHtml(m, prio.includes(m.id))).join(''); })()}</div>
-
-    <div class="section-heading">Empfohlen für Ihre Rolle</div>
-    <div class="reco-grid">${(ROLE_RECOS[state.role]||[]).map(r=>`<div class="reco-card"><div class="reco-tag">${r.tag}</div><h4>${r.t}</h4><p>${r.d}</p></div>`).join('')}</div>
-  `;
+function loadDashboardPrefs(){
+  try{
+    const raw = localStorage.getItem('orkanDashboardPrefs');
+    if(raw){
+      const p = JSON.parse(raw);
+      const order = Array.isArray(p.order) ? DEFAULT_WIDGET_ORDER.filter(id=>p.order.includes(id)).sort((a,b)=>p.order.indexOf(a)-p.order.indexOf(b)) : DEFAULT_WIDGET_ORDER.slice();
+      return { order, hidden: Object.assign({}, DEFAULT_WIDGET_HIDDEN, p.hidden||{}) };
+    }
+  }catch(e){}
+  return { order: DEFAULT_WIDGET_ORDER.slice(), hidden: Object.assign({}, DEFAULT_WIDGET_HIDDEN) };
+}
+function saveDashboardPrefs(){
+  try{ localStorage.setItem('orkanDashboardPrefs', JSON.stringify(state.dashboardPrefs)); }catch(e){}
+}
+function resetDashboardPrefs(){
+  state.dashboardPrefs = { order: DEFAULT_WIDGET_ORDER.slice(), hidden: Object.assign({}, DEFAULT_WIDGET_HIDDEN) };
+  saveDashboardPrefs();
+  renderDashboard();
+  renderDashCustomizeList();
+  showToast('Dashboard wurde auf die Standardansicht zurückgesetzt.');
+}
+function renderDashboardWidgets(){
+  if(!state.dashboardPrefs) state.dashboardPrefs = loadDashboardPrefs();
+  const visible = state.dashboardPrefs.order.filter(id=>!state.dashboardPrefs.hidden[id]);
+  if(!visible.length) return '<p style="font-size:13px;color:var(--gray)">Alle Kacheln sind ausgeblendet — über „Dashboard anpassen" können Sie sie wieder einblenden.</p>';
+  return visible.map(id => `
+    <div class="dash-widget" draggable="true" data-widget="${id}" ondragstart="dwDragStart(event)" ondragover="dwDragOver(event)" ondrop="dwDrop(event)" ondragend="dwDragEnd(event)">
+      <div class="dash-widget-head"><span class="dash-widget-drag" title="Verschieben">⠿</span><h3>${DASHBOARD_WIDGETS[id].title}</h3><button class="dash-widget-hide" onclick="toggleWidget('${id}',true)" title="Ausblenden">&times;</button></div>
+      <div class="dash-widget-body">${DASHBOARD_WIDGETS[id].render()}</div>
+    </div>`).join('');
+}
+let dwDraggedId = null;
+function dwDragStart(e){ dwDraggedId = e.currentTarget.dataset.widget; e.currentTarget.classList.add('dragging'); }
+function dwDragOver(e){ e.preventDefault(); }
+function dwDrop(e){
+  e.preventDefault();
+  const targetId = e.currentTarget.dataset.widget;
+  if(!dwDraggedId || dwDraggedId===targetId) return;
+  const order = state.dashboardPrefs.order;
+  order.splice(order.indexOf(dwDraggedId),1);
+  order.splice(order.indexOf(targetId),0,dwDraggedId);
+  saveDashboardPrefs();
+  document.getElementById('dashWidgets').innerHTML = renderDashboardWidgets();
+}
+function dwDragEnd(e){ e.currentTarget.classList.remove('dragging'); dwDraggedId = null; }
+function toggleWidget(id, hide){
+  state.dashboardPrefs.hidden[id] = hide;
+  saveDashboardPrefs();
+  document.getElementById('dashWidgets').innerHTML = renderDashboardWidgets();
+  renderDashCustomizeList();
+}
+function openDashCustomize(){
+  renderDashCustomizeList();
+  document.getElementById('dashCustomizeModal').classList.add('open');
+}
+function closeDashCustomize(){ document.getElementById('dashCustomizeModal').classList.remove('open'); }
+function renderDashCustomizeList(){
+  const list = document.getElementById('dashCustomizeList');
+  if(!list) return;
+  list.innerHTML = DEFAULT_WIDGET_ORDER.map(id => `
+    <label class="dash-toggle-row">
+      <input type="checkbox" ${state.dashboardPrefs.hidden[id]?'':'checked'} onchange="toggleWidget('${id}', !this.checked)">
+      <span>${DASHBOARD_WIDGETS[id].title}</span>
+    </label>`).join('');
 }
 
 function moduleCardHtml(m, isPriority){
