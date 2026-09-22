@@ -588,8 +588,8 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
         <div class="role-card" data-role="Geschäftsführer" onclick="selectRole(this,'Geschäftsführer')">
           <div class="role-title">Geschäftsführer</div><div class="role-desc">Überblick, KPIs, strategische Einführung</div>
         </div>
-        <div class="role-card" data-role="Lagermitarbeiter" onclick="selectRole(this,'Lagermitarbeiter')">
-          <div class="role-title">Lagermitarbeiter</div><div class="role-desc">Tagesgeschäft, Scanner, Wareneingang</div>
+        <div class="role-card" data-role="Monteur" onclick="selectRole(this,'Monteur')">
+          <div class="role-title">Monteur</div><div class="role-desc">Nur das Zwei-Etiketten-System im Alltag</div>
         </div>
       </div>
       <button class="onb-btn" id="startBtn" disabled onclick="startApp()">Lernpfad starten</button>
@@ -638,7 +638,7 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
             <option>Lagerleiter</option>
             <option>Einkäufer</option>
             <option>Geschäftsführer</option>
-            <option>Lagermitarbeiter</option>
+            <option>Monteur</option>
           </select>
         </div>
         <div class="profile-menu-actions">
@@ -893,7 +893,7 @@ const MODULES = [
       {t:'Scan mit Auto-Enter',d:'Cursor springt automatisch ins Scan-Feld, jeder Scan löst selbstständig „Enter" aus'},
       {t:'Bestellung je Lieferant',d:'Teilbestellungen werden pro Lieferant einzeln erstellt und abgeschickt'}
     ],
-    practice:'Ein Lagermitarbeiter zieht am Nachmittag das weiße Etikett vom leeren Schrauben-Fach und legt es in die Bestellbox. Abends scannt ein Kollege alle Etiketten aus der Box unter „Bestellvorschlag" ein – die Bestellung ist in wenigen Minuten fertig zusammengestellt und wird im letzten Schritt im Shop des Lieferanten final ausgelöst.',
+    practice:'Ein Monteur zieht am Nachmittag das weiße Etikett vom leeren Schrauben-Fach und legt es in die Bestellbox. Abends scannt ein Kollege aus dem Lager alle Etiketten aus der Box unter „Bestellvorschlag" ein – die Bestellung ist in wenigen Minuten fertig zusammengestellt und wird im letzten Schritt im Shop des Lieferanten final ausgelöst.',
     task:'Simulieren Sie den Ablauf vom weißen Etikett bis zum fertigen, im Lieferanten-Shop ausgelösten Bestellvorschlag.',
     checklist:['Zwei-Etiketten-System am Testregal nachvollziehen (blau vs. weiß)','Weißes Etikett in die Bestellbox legen','Über „Lagerverwaltung" → „Bestellvorschlag" → „Erstellen" den Artikel scannen oder manuell erfassen','„Bestellungen erstellen" und Zusammenfassung prüfen (Ansprechpartner, Liefertermin, Lieferadresse)','Die drei sich öffnenden Fenster nach „Bestellen" nachvollziehen (Wareneingang, Lieferschein, Lieferanten-Shop)'],
     tip:'Landen gescannte Artikel nicht in der Liste, liegt meist ein Scanner vor, bei dem die Auto-Enter-Funktion nicht aktiv ist – ein Reset über den beiliegenden QR-Code in der Scanner-Anleitung behebt das meist, bevor Sie den Support kontaktieren.',
@@ -1024,7 +1024,7 @@ const KB_ARTICLES = [
   {cat:'Prozesse',title:'Bestellvorschlag bearbeiten',desc:'Vom Etikett in der Bestellbox zur fertigen Bestellung.',body:['So kommen Sie hin: „Lagerverwaltung" → „Bestellvorschlag" → Button „Erstellen".','Artikel werden per QR-Code-Scan oder manuell erfasst und landen im Warenkorb; der Cursor springt beim Öffnen automatisch ins Scan-Feld.','Über „Bestellungen erstellen" und „Senden" gelangen Sie zur Zusammenfassung mit Ansprechpartner, Liefertermin und Lieferadresse.','Nach „Bestellen" öffnen sich drei Fenster: Wareneingang, Lieferschein und der Lieferanten-Shop zur finalen Bestellauslösung – erst dort wird technisch bestellt.']},
   {cat:'Schnittstellen',title:'Artikelimport per Excel und ZIP',desc:'Vorbereitung, Durchführung und Bildzuordnung.',body:['So kommen Sie hin: „Lagerverwaltung" → „Artikel" → Reiter/Button „Import" (statt „Erstellen").','Der Import besteht aus einer Excel-Liste mit den Artikeldaten und einer ZIP-Datei (max. 40 MB) mit den zugehörigen Bildern.','Der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen.','Beim Import wählen Sie zwischen „Importieren und aktualisieren", „nur importieren" (nur neue Artikel) oder „nur aktualisieren" (nur bestehende Artikel) sowie dem Abgleichfeld (Lieferanten-Artikelnummer, EAN- oder interne Artikelnummer).']},
   {cat:'Schnittstellen',title:'Lieferanten-Shop anbinden',desc:'Warum die Shop-URL im Lieferantenstamm entscheidend ist.',body:['So kommen Sie hin: „Lagerverwaltung" → „Lieferant" → gewünschten Lieferanten anklicken oder „Erstellen" für einen neuen Lieferanten.','Die OrKan Cloud ist lieferantenunabhängig – Sie können den Lieferanten für jeden Artikel jederzeit wechseln.','Die Shop-URL im Lieferantenstamm ist nicht die normale Webadresse, sondern die URL der IDS-Schnittstelle – sie ist die Grundlage dafür, dass die OrKan Cloud später automatisiert auf den Bestellshop zugreifen kann.','Zusätzlich lassen sich Liefertermine je Lieferant hinterlegen, z. B. „nur freitags".']},
-  {cat:'Verwaltung',title:'Neue Benutzer anlegen & Berechtigungen vergeben',desc:'Mitarbeiterkonten anlegen und genau festlegen, was sie sehen und tun dürfen.',body:['So kommen Sie hin: drei Striche → „Einstellungen" → „Mandant" → „Mandantenverwaltung" → „Benutzer:innen" → „Erstellen".','Pflichtangaben sind E-Mail, Vorname, Nachname und Anschrift; über das ⋮-Menü neben dem Benutzer stehen zusätzlich Bearbeiten, Löschen, Import, Export, „Berechtigung" und „MFA" zur Verfügung.','„Berechtigung" öffnet einen Dialog mit sechs Kategorien, in denen Sie per Checkbox einzeln festlegen, was der Mitarbeiter sehen/bearbeiten/löschen darf: Anwendungen (App-/Website-Login), Allgemein, Lagerverwaltung, Gebrauchsgutverwaltung, App (separate Rechte je App-Funktion wie Entnahme, Einlagerung, Inventur) und Service/Wartung.','So erhält z. B. ein Lagermitarbeiter nur App-Rechte für Entnahme/Wareneingang, während ein Lagerleiter zusätzlich Statistik- und Bearbeitungsrechte in der Lagerverwaltung bekommt – „MFA" aktiviert bei Bedarf die zweistufige Verifizierung für einzelne Nutzer.']},
+  {cat:'Verwaltung',title:'Neue Benutzer anlegen & Berechtigungen vergeben',desc:'Mitarbeiterkonten anlegen und genau festlegen, was sie sehen und tun dürfen.',body:['So kommen Sie hin: drei Striche → „Einstellungen" → „Mandant" → „Mandantenverwaltung" → „Benutzer:innen" → „Erstellen".','Pflichtangaben sind E-Mail, Vorname, Nachname und Anschrift; über das ⋮-Menü neben dem Benutzer stehen zusätzlich Bearbeiten, Löschen, Import, Export, „Berechtigung" und „MFA" zur Verfügung.','„Berechtigung" öffnet einen Dialog mit sechs Kategorien, in denen Sie per Checkbox einzeln festlegen, was der Mitarbeiter sehen/bearbeiten/löschen darf: Anwendungen (App-/Website-Login), Allgemein, Lagerverwaltung, Gebrauchsgutverwaltung, App (separate Rechte je App-Funktion wie Entnahme, Einlagerung, Inventur) und Service/Wartung.','So erhält z. B. ein Monteur nur minimale App-Rechte für das Zwei-Etiketten-System, während ein Lagerleiter zusätzlich Statistik- und Bearbeitungsrechte in der Lagerverwaltung bekommt – „MFA" aktiviert bei Bedarf die zweistufige Verifizierung für einzelne Nutzer.']},
   {cat:'Verwaltung',title:'Etiketten- und Label-Designer im Detail',desc:'Eigene Etiketten-, Standort- und Gebrauchsgut-Vorlagen frei gestalten.',body:['So kommen Sie hin: drei Striche → „Einstellungen" → „Mandant" → „Lagerverwaltung" → „Artikelkarte" (für Artikel-Etiketten); „Standortkarte" und „Gebrauchsgutbeschriftung" funktionieren nach demselben Prinzip für Lagerorte bzw. Gebrauchsgüter.','Links wählen Sie per Checkbox aus einer langen Liste, welche Felder auf dem Etikett erscheinen sollen (z. B. Logo, Bezeichnung, QR-Code Artikelnummer, EAN, Lager Min/Max, Lagerort, Freitext), rechts sehen Sie eine Live-Vorschau im gewählten Template.','Maße (Höhe, Breite, Zwischenraum, Rand, Hoch-/Querformat) sind frei einstellbar, begrenzt auf maximal 297 × 210 mm (DIN A4).','Pro Mandant lassen sich beliebig viele Templates anlegen, per Dropdown auswählen, speichern, umbenennen oder löschen – so können Sie z. B. ein kompaktes Regal-Etikett und ein ausführliches Etikett mit QR-Code der Lieferanten-Artikelnummer parallel pflegen.']},
   {cat:'Prozesse',title:'Wareneingang korrekt bestätigen',desc:'Von der Anlieferung bis zur Bestandsaktualisierung.',body:['So kommen Sie hin: „Lagerverwaltung" → „Scan/Bestelleingang" – dort sehen Sie alle offenen Bestellungen eines Lieferanten nach Ampelfarbe (Rot = überfällig, Gelb = heute, Grün = zukünftig).','Nach Bestellabschluss öffnet sich alternativ automatisch das Wareneingangs-Fenster mit Artikelbild und Bezeichnung.','Haken Sie gelieferte Artikel einzeln ab oder bestätigen Sie die komplette Liste auf einmal, wenn Sie der Lieferung vertrauen; Mengenabweichungen werden dabei sichtbar gemacht.','Der Lagerbestand wird nach Bestätigung automatisch aktualisiert.']},
   {cat:'Grundlagen',title:'Gebrauchsgutverwaltung (Maschinen)',desc:'Maschinen und Werkzeuge Mitarbeitern zuordnen.',body:['So kommen Sie hin: drei Striche → „Gebrauchsgut" → „Maschinen"; rechts oben muss die Kategorie aktiv ausgewählt sein, ein Filter „Alle" existiert aktuell nicht.','Sie sehen, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine führt.','Über „Buchung" weisen Sie eine Maschine einem Standort oder Mitarbeiter zu, „Reservierungen" planen zukünftige Nutzung (keine technische Sperre, nur ein Hinweis in der Liste).','Service- und Wartungstermine (z. B. Jahresservice) lassen sich direkt an der Maschine hinterlegen, sobald das Zusatzfeature „Service & Wartung" separat aktiviert wurde.']},
@@ -1101,7 +1101,7 @@ const BEST_PRACTICES = [
     {t:'Zur Benutzerverwaltung navigieren',d:'Klicken Sie über die drei Striche auf „Einstellungen" → „Mandant" → „Mandantenverwaltung" → „Benutzer:innen" und dann auf „Erstellen".'},
     {t:'Stammdaten anlegen',d:'Tragen Sie E-Mail-Adresse, Vorname, Nachname und Anschrift des neuen Mitarbeiters ein und speichern Sie.'},
     {t:'Berechtigungen öffnen',d:'Klicken Sie in der Benutzerliste beim neuen Konto auf das ⋮-Menü und wählen Sie „Berechtigung".'},
-    {t:'Rechte je Kategorie vergeben',d:'Gehen Sie die sechs Kategorien durch (Anwendungen, Allgemein, Lagerverwaltung, Gebrauchsgutverwaltung, App, Service/Wartung) und setzen Sie nur die Haken, die für die Rolle wirklich nötig sind.',hint:'Für einen Lagermitarbeiter reichen meist die App-Rechte für Entnahme, Einlagerung und Bestelleingang – Statistik- oder Löschrechte sind selten notwendig.'},
+    {t:'Rechte je Kategorie vergeben',d:'Gehen Sie die sechs Kategorien durch (Anwendungen, Allgemein, Lagerverwaltung, Gebrauchsgutverwaltung, App, Service/Wartung) und setzen Sie nur die Haken, die für die Rolle wirklich nötig sind.',hint:'Für einen Monteur im Tagesgeschäft reichen oft schon minimale App-Rechte – Statistik- oder Löschrechte sind selten notwendig.'},
     {t:'App- und Website-Login prüfen',d:'Aktivieren Sie unter „Anwendungen", ob der Mitarbeiter sich per App, per Website-Login oder über beide Wege anmelden darf.'},
     {t:'Bei Bedarf MFA aktivieren',d:'Öffnen Sie im ⋮-Menü „MFA" und setzen Sie die Checkbox „Zweistufige Verifizierung", falls für dieses Konto eine zusätzliche Absicherung gewünscht ist.'},
     {t:'Speichern und testen',d:'Speichern Sie den Berechtigungsdialog und lassen Sie den neuen Mitarbeiter sich testweise anmelden, um zu prüfen, ob genau die vorgesehenen Bereiche sichtbar sind.'}
@@ -1116,11 +1116,11 @@ const UPDATES = [
 ];
 
 const ROLE_FOCUS = {
-  'Lagerleiter': { heading:'Ihr Fokus als Lagerleiter', priorityModules:[4,6,7],
+  'Lagerleiter': { heading:'Ihr Fokus als Lagerleiter', priorityModules:[4,5,6,7],
     cards:[
       {label:'Team-Fortschritt', val:'Ø 62%', sub:'4 Mitarbeitende aktuell im Onboarding', link:'team'},
       {label:'Priorität diese Woche', val:'Zwei-Etiketten-System', sub:'Schulen Sie Ihr Team in der Blau/Weiß-Logik'},
-      {label:'Rollenlogik prüfen', val:'Maschinenverwaltung', sub:'Wer darf für andere buchen? Nur Admins.'}
+      {label:'Wareneingang', val:'Drei-Fenster-Prozess', sub:'Sie nehmen die Ware häufig selbst an und bestätigen sie'}
     ]},
   'Einkäufer': { heading:'Ihr Fokus als Einkäufer', priorityModules:[2,3,4],
     cards:[
@@ -1130,23 +1130,22 @@ const ROLE_FOCUS = {
     ]},
   'Geschäftsführer': { heading:'Ihr strategischer Überblick', priorityModules:[5,6,8],
     cards:[
-      {label:'Team-Onboarding', val:'Ø 62%', sub:'Fortschritt aller Mitarbeitenden im Blick', link:'team'},
-      {label:'Lagerwert-Näherung', val:'≈ 53.800 €', sub:'Automatisch aus Lager MIN/MAX und EK-Preisen berechnet'},
+      {label:'Team-Fortschritt', val:'Ø 62%', sub:'Wo stehen Lagerleiter und Einkäufer aktuell?', link:'team'},
+      {label:'Schwächen im Team', val:'Wissenslücken-Analyse', sub:'Unternehmensweite Auswertung nach Thema', link:'gaps'},
       {label:'Zertifizierungsquote', val:'1 von 5', sub:'Team-Mitglieder mit vollständigem Abschluss'}
     ]},
-  'Lagermitarbeiter': { heading:'Ihr Fokus im Tagesgeschäft', priorityModules:[4,5,7],
+  'Monteur': { heading:'Ihr Fokus im Tagesgeschäft', priorityModules:[4],
     cards:[
-      {label:'Heute wichtig', val:'Weißes Etikett = bestellt', sub:'Fehlt es am Regal, ist der Artikel schon unterwegs'},
-      {label:'Wareneingang', val:'Drei-Fenster-Prozess', sub:'Wareneingang, Lieferschein, Lieferanten-Shop'},
-      {label:'Schlüssel suchen?', val:'Immer über die Adresse', sub:'Nicht über die interne Schlüsselnummer'}
+      {label:'Ihre einzige Aufgabe', val:'Weißes Etikett ziehen', sub:'Bei Mindestbestand: Etikett aus dem Regal in die Bestellbox legen'},
+      {label:'Fehlt das weiße Etikett?', val:'Artikel ist schon bestellt', sub:'Kein Grund, selbst im System nachzuschauen'}
     ]}
 };
 
 const ROLE_RECOS = {
-  'Lagerleiter':[{tag:'Prozesse',t:'Team-Einweisung ins Zwei-Etiketten-System',d:'Leitfaden zur Schulung Ihres Lagerteams in Blau/Weiß-Etikettenlogik und Bestellbox.'},{tag:'Best Practice',t:'Lager MIN/MAX unternehmensweit kalibrieren',d:'Anleitung zur Überprüfung und Anpassung bestehender Mindest-/Höchstbestände.'},{tag:'Praxis',t:'Gebrauchsgutverwaltung einführen',d:'Maschinen und Werkzeuge Mitarbeitern und Fahrzeugen zuordnen.'}],
+  'Lagerleiter':[{tag:'Prozesse',t:'Team-Einweisung ins Zwei-Etiketten-System',d:'Leitfaden zur Schulung Ihres Lagerteams in Blau/Weiß-Etikettenlogik und Bestellbox.'},{tag:'Prozesse',t:'Wareneingang korrekt bestätigen',d:'Schritt-für-Schritt-Anleitung für die Warenannahme im Drei-Fenster-Prozess.'},{tag:'Praxis',t:'Gebrauchsgutverwaltung einführen',d:'Maschinen und Werkzeuge Mitarbeitern und Fahrzeugen zuordnen.'}],
   'Einkäufer':[{tag:'Prozesse',t:'Lager MIN/MAX richtig berechnen',d:'Praxisbeispiele für realistische Mindest- und Höchstbestände.'},{tag:'Best Practice',t:'Lieferanten-Shop-Anbindung einrichten',d:'Shop-URL korrekt pflegen für die automatische Bestellweiterleitung.'},{tag:'Praxis',t:'Artikelimport für neue Lieferanten',d:'Excel- und ZIP-Import Schritt für Schritt.'}],
-  'Geschäftsführer':[{tag:'Überblick',t:'Lagerbestand & Warenwert verstehen',d:'Ist-Bestand und Warenwert je Artikel auf einen Blick.'},{tag:'Strategie',t:'Rollout-Fortschritt im Unternehmen verfolgen',d:'Behalten Sie den Onboarding-Fortschritt aller Teammitglieder im Blick.'},{tag:'Praxis',t:'Module in den Einstellungen verwalten',d:'Übersicht über buchbare Zusatzmodule wie Bestandsführung oder Schlüsselverwaltung.'}],
-  'Lagermitarbeiter':[{tag:'Praxis',t:'Weißes Etikett richtig einsetzen',d:'So läuft der Bestellprozess vom Regal bis zur Bestellbox reibungslos.'},{tag:'Prozesse',t:'Wareneingang korrekt bestätigen',d:'Schritt-für-Schritt-Anleitung für die tägliche Erfassung im Drei-Fenster-Prozess.'},{tag:'Praxis',t:'Artikel per QR-Code scannen',d:'Bestellvorschläge schnell und fehlerfrei erfassen.'}]
+  'Geschäftsführer':[{tag:'Überblick',t:'Lagerbestand & Warenwert verstehen',d:'Ist-Bestand und Warenwert je Artikel auf einen Blick.'},{tag:'Strategie',t:'Rollout-Fortschritt im Unternehmen verfolgen',d:'Behalten Sie den Onboarding-Fortschritt von Lagerleiter, Einkäufer & Co. im Blick.'},{tag:'Praxis',t:'Module in den Einstellungen verwalten',d:'Übersicht über buchbare Zusatzmodule wie Bestandsführung oder Schlüsselverwaltung.'}],
+  'Monteur':[{tag:'Praxis',t:'Weißes Etikett richtig einsetzen',d:'So läuft der Bestellprozess vom Regal bis zur Bestellbox reibungslos.'}]
 };
 
 /* Simulierte unternehmensweite KI-Aggregation aller bisherigen Pilotnutzer.
@@ -1167,9 +1166,9 @@ const AGGREGATE_GAPS = [
 /* Simulierte Teamdaten für die Vorgesetzten-Ansicht (Team-Fortschritt) */
 const TEAM_MEMBERS = [
   {name:'Julia Herrmann', role:'Einkäufer', completed:8, quizAvg:96, weakTopic:null},
-  {name:'Tobias Krämer', role:'Lagermitarbeiter', completed:5, quizAvg:78, weakTopic:'Bestellauslösung'},
+  {name:'Tobias Krämer', role:'Monteur', completed:1, quizAvg:78, weakTopic:'Bestellauslösung'},
   {name:'Sabine Wolf', role:'Lagerleiter', completed:6, quizAvg:88, weakTopic:'Maschinen-Buchungslogik'},
-  {name:'David Brenner', role:'Lagermitarbeiter', completed:2, quizAvg:60, weakTopic:'Lager MIN/MAX'}
+  {name:'David Brenner', role:'Monteur', completed:1, quizAvg:60, weakTopic:'Bestellabschluss'}
 ];
 
 /* ============ STATE ============ */
@@ -1484,7 +1483,7 @@ function moduleIntroCoachMsg(id){
     'Lagerleiter':'Als Lagerleiter empfehle ich, besonders auf die Praxisaufgabe zu achten — die Inhalte hier wirken sich direkt auf Ihr Team aus.',
     'Einkäufer':'Für Sie als Einkäufer ist dieser Bereich besonders relevant für Ihre tägliche Bestellpraxis.',
     'Geschäftsführer':'Als Geschäftsführer reicht Ihnen vermutlich der Überblick — die Kernaussagen finden Sie nach dem Wissenscheck in der Zusammenfassung.',
-    'Lagermitarbeiter':'Für Ihren Arbeitsalltag lohnt sich vor allem die Praxisaufgabe in diesem Modul.'
+    'Monteur':'Als Monteur reicht es meist, wenn Sie das Zwei-Etiketten-System sicher beherrschen — bei den übrigen Modulen genügt ein grober Überblick.'
   };
   return `Los geht's mit „${m.title}". ${intros[state.role]||'Schauen Sie sich zunächst das Video an, bearbeiten Sie danach die Praxisaufgabe und schließen Sie mit dem Wissenscheck ab.'} Bei Fragen bin ich jederzeit hier.`;
 }
