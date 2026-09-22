@@ -961,7 +961,12 @@ const KB_ARTICLES = [
   {cat:'Verwaltung',title:'Etiketten-Templates gestalten (Artikelkarte)',desc:'Eigene Etikettenvorlagen für den Lagerdruck erstellen.',body:['Unter Einstellungen → Lagerverwaltung → Artikelkarte gestalten Sie das Template für Ihre Etiketten frei per Drag & Drop.','Sie wählen selbst, welche Felder (z. B. Artikelnummer, Lagerort, Firmenlogo) auf dem Etikett erscheinen.','Beim Drucken eines Artikels wählen Sie anschließend das passende Template und erhalten eine druckfertige PDF-Datei.']},
   {cat:'Prozesse',title:'Wareneingang korrekt bestätigen',desc:'Von der Anlieferung bis zur Bestandsaktualisierung.',body:['Nach Bestellabschluss öffnet sich automatisch das Wareneingangs-Fenster mit Artikelbild und Bezeichnung.','Haken Sie gelieferte Artikel ab und gleichen Sie sie mit dem Lieferschein ab.','Der Lagerbestand wird nach Bestätigung automatisch aktualisiert.']},
   {cat:'Grundlagen',title:'Gebrauchsgutverwaltung (Maschinen)',desc:'Maschinen und Werkzeuge Mitarbeitern zuordnen.',body:['Unter Gebrauchsgut sehen Sie, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine führt.','Über „Buchung" weisen Sie eine Maschine einem Standort oder Mitarbeiter zu, „Reservierungen" planen zukünftige Nutzung.','Service- und Wartungstermine (z. B. Jahresservice) lassen sich direkt an der Maschine hinterlegen.']},
-  {cat:'Verwaltung',title:'Schlüsselverwaltung',desc:'Wer hat aktuell welchen Schlüssel – lückenlos dokumentiert.',body:['Die Schlüsselverwaltung ist ein optionales Modul, das wie die Gebrauchsgutverwaltung unter Einstellungen → Firma gebucht werden kann.','Jeder Schlüssel wird als eigener Datensatz angelegt und einem Standort, Gebäude oder Mitarbeiter zugeordnet.','Über „Buchung" wird die Ausgabe und Rückgabe eines Schlüssels dokumentiert, sodass jederzeit nachvollziehbar ist, wer aktuell im Besitz ist.']}
+  {cat:'Verwaltung',title:'Schlüsselverwaltung',desc:'Wer hat aktuell welchen Schlüssel – lückenlos dokumentiert.',body:['Die Schlüsselverwaltung ist ein optionales Modul, das wie die Gebrauchsgutverwaltung unter Einstellungen → Firma gebucht werden kann.','Jeder Schlüssel wird als eigener Datensatz angelegt und einem Standort, Gebäude oder Mitarbeiter zugeordnet.','Über „Buchung" wird die Ausgabe und Rückgabe eines Schlüssels dokumentiert, sodass jederzeit nachvollziehbar ist, wer aktuell im Besitz ist.']},
+  {cat:'Grundlagen',title:'Statistik & Berichte auswerten',desc:'Vordefinierte Auswertungen zu Mandant, Lager und Gebrauchsgut.',body:['Unter Statistik finden Sie drei aufklappbare Berichtsbereiche: Mandant (übergreifende Kennzahlen), Lagerverwaltung (Artikel Gesamt, Artikel, Bestellung, Artikelbuchung) und Gebrauchsgut (Buchungen und Nutzung).','Die Berichte sind vordefiniert und bündeln Kennzahlen, die Sie sonst einzeln aus den jeweiligen Listen zusammensuchen müssten.','Nutzen Sie diese Übersicht regelmäßig, um Trends bei Bestellvolumen oder Gerätenutzung frühzeitig zu erkennen.']},
+  {cat:'Schnittstellen',title:'DATANORM-Preisimport nutzen',desc:'Lieferantenpreislisten automatisiert einspielen.',body:['Neben dem Cloud-Import per Excel und ZIP bietet der Artikelimport einen zweiten Reiter: DATANORM Preis Import.','Damit importieren Sie eine DATANORM-Preisdatei eines ausgewählten Lieferanten und aktualisieren automatisch die hinterlegten Artikelpreise und -daten.','Das ersetzt die manuelle Einzelpflege bei jeder Preisänderung eines Lieferanten – besonders wertvoll bei großen Katalogen.']},
+  {cat:'Grundlagen',title:'Startseite anpassen & Feedback geben',desc:'Kacheln bearbeiten, Hilfe aufrufen, Rückmeldung senden.',body:['Über das Stift-Symbol in der Kopfzeile aktivieren Sie den Bearbeitungsmodus der Startseiten-Kacheln: verschieben per Drag-Handle, Icon und Farbe ändern, Kacheln löschen oder per „+" neue hinzufügen.','Das Fragezeichen-Symbol öffnet die Hilfe, das Smiley-Symbol das Feedback-Menü mit den Optionen Kontakt, Vorschlag einreichen und Problem melden – jeweils direkt per E-Mail.','Über das Personen-Symbol erreichen Sie „Meine Daten" und „Abmelden", über das Globus-Symbol die Sprachumschaltung.']},
+  {cat:'Verwaltung',title:'Fahrzeuge & Gebrauchsgut-Lieferanten',desc:'Der Fuhrpark und separate Lieferanten im Gebrauchsgut-Bereich.',body:['Unter Gebrauchsgut → Fahrzeuge führen Sie eine eigene Fuhrpark-Liste mit Kennzeichen, Modell, Fahrgestellnummer und zugeordnetem Mitarbeiter.','Über „Buchungen" weisen Sie ein Fahrzeug einem Mitarbeiter oder Standort zu — genau wie bei anderen Gebrauchsgütern.','Der Gebrauchsgut-Bereich führt zudem eine eigene Lieferantenliste (z. B. für Werkzeug- oder Maschinenhändler), getrennt von den Lieferanten der Lagerverwaltung.']},
+  {cat:'Prozesse',title:'Gebrauchsgut reservieren',desc:'Ein Gerät für einen späteren Zeitraum vormerken.',body:['Über Gebrauchsgut → Reservierungen legen Sie eine zeitliche Vorab-Reservierung für Maschinen, Anlagen oder Werkzeuge an.','So verhindern Sie, dass ein für ein Projekt eingeplantes Gerät zwischenzeitlich anderweitig gebucht wird.','Reservierungen lassen sich jederzeit bearbeiten, löschen oder als Liste exportieren.']}
 ];
 
 const BEST_PRACTICES = [
@@ -1879,7 +1884,7 @@ function toggleAI(){
 }
 function seedAIMessages(){
   document.getElementById('aiMessages').innerHTML = `<div class="ai-msg bot">Willkommen, ${state.name}. Ich habe Ihren Lernpfad basierend auf Ihrer Rolle als ${state.role} zusammengestellt. Wie kann ich Ihnen helfen?</div>`;
-  document.getElementById('suggChips').innerHTML = ['Wo stehe ich im Onboarding?','Was sollte ich als Nächstes lernen?','Habe ich Wissenslücken?','Wie funktioniert das Zwei-Etiketten-System?'].map(s=>`<div class="sugg-chip" onclick="sendAI('${s}')">${s}</div>`).join('');
+  document.getElementById('suggChips').innerHTML = ['Wo stehe ich im Onboarding?','Was sollte ich als Nächstes lernen?','Habe ich Wissenslücken?','Wie funktioniert der DATANORM-Import?'].map(s=>`<div class="sugg-chip" onclick="sendAI('${s}')">${s}</div>`).join('');
 }
 function coachWidgetGreeting(){
   const adaptive = getAdaptiveRecommendation();
@@ -1964,11 +1969,38 @@ function getAIResponse(text){
   if(t.includes('zusammenfass')||t.includes('kapitel')){
     return 'Öffnen Sie im aktuellen Modul den Tab „Zusammenfassung" nach Abschluss des Wissenschecks — dort finden Sie Kernaussagen, wichtigste Funktionen und konkrete Handlungsempfehlungen.';
   }
+  if(t.includes('datanorm')){
+    return 'Der Artikelimport hat zwei Reiter: Neben dem Cloud-Import (Excel + ZIP) gibt es den DATANORM Preis Import. Damit importieren Sie eine DATANORM-Preisdatei eines Lieferanten und aktualisieren automatisch die hinterlegten Artikelpreise und -daten — ideal bei häufigen Preisänderungen großer Lieferanten.';
+  }
   if(t.includes('csv')||t.includes('import')||t.includes('excel')){
-    return 'Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei mit den Artikelbildern — der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen. Details finden Sie in Modul 4 oder in der Wissensdatenbank unter „Artikelimport per Excel und ZIP".';
+    return 'Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei mit den Artikelbildern (max. 40 MB) — der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen. Ein Schalter „Protokoll per Mail senden" schickt Ihnen nach dem Import automatisch einen Ergebnisbericht. Details finden Sie in Modul 4 oder in der Wissensdatenbank unter „Artikelimport per Excel und ZIP".';
+  }
+  if(t.includes('statistik')||t.includes('bericht')||t.includes('auswertung')){
+    return 'Unter „Statistik" finden Sie drei aufklappbare Berichtsbereiche: Mandant (übergreifende Kennzahlen), Lagerverwaltung (Artikel, Bestellung, Artikelbuchung) und Gebrauchsgut (Buchungen und Nutzung). So müssen Sie Kennzahlen nicht mehr einzeln aus den Listen zusammensuchen.';
+  }
+  if(t.includes('startseite')||t.includes('kachel')||t.includes('feedback')||t.includes('home')){
+    return 'Über das Stift-Symbol oben in der Kopfzeile können Sie die Startseiten-Kacheln frei anpassen: verschieben, Icon und Farbe ändern, löschen oder per „+" neue hinzufügen. Über das Smiley-Symbol erreichen Sie das Feedback-Menü mit Kontakt, Vorschlag einreichen und Problem melden.';
+  }
+  if(t.includes('fahrzeug')||t.includes('fuhrpark')){
+    return 'Unter Gebrauchsgut → Fahrzeuge führen Sie Ihre Fuhrpark-Liste mit Kennzeichen, Modell, Fahrgestellnummer und zugeordnetem Mitarbeiter. Über „Buchungen" weisen Sie ein Fahrzeug einem Mitarbeiter oder Standort zu — genau wie bei anderen Gebrauchsgütern.';
+  }
+  if(t.includes('reservier')){
+    return 'Über Gebrauchsgut → Reservierungen können Sie eine Maschine, Anlage oder ein Werkzeug für einen bestimmten Zeitraum im Voraus vormerken, damit es zwischenzeitlich nicht anderweitig gebucht wird.';
+  }
+  if(t.includes('scan') || t.includes('barcode') || t.includes('bestelleingang')){
+    return 'Unter „Scan-Bestelleingang" starten Sie über den grünen Scanner-Button je Zeile die Wareneingangsbuchung: Artikel werden per Barcode-/EAN-Scan gegen die Bestellposition geprüft, die gelieferte Menge wird automatisch erfasst und Abweichungen zur bestellten Menge werden sofort sichtbar. Ein grüner Haken markiert vollständig abgeschlossene Eingänge.';
+  }
+  if(t.includes('bestellvariante')||t.includes('bestellmenge')){
+    return 'Sobald Sie im Lieferanten-Bereich der Artikelmaske Menge (VPE), Mengeneinheit und eine eventuell abweichende Bestellmenge/-einheit eintragen, berechnet die OrKan Cloud automatisch die Zeile „Ihre Bestellvariante: X Stück" — so sehen Sie sofort, welche Menge tatsächlich bestellt wird.';
+  }
+  if(t.includes('kommission')){
+    return 'Im Bestellvorschlag können Sie markierte Positionen über „Kommission" einer Kommissions- bzw. Projektnummer zuordnen — so lässt sich eine Bestellung gezielt einem Projekt statt dem allgemeinen Lagerbestand zuordnen.';
+  }
+  if(t.includes('modul')&&(t.includes('buchen')||t.includes('lizenz')||t.includes('kaufen'))){
+    return 'Unter Einstellungen → Firma → Module sehen Sie eine Kachelübersicht aller lizenzierbaren Zusatzmodule mit Häkchen für aktivierte Module und dem jeweiligen Laufzeitende. Die OrKan Cloud ist modular lizenziert — Sie buchen nur die Bereiche dazu, die Sie tatsächlich benötigen.';
   }
   if(t.includes('shop')||t.includes('lieferant')){
-    return 'Die OrKan Cloud ist lieferantenunabhängig. Entscheidend für die Anbindung ist die Shop-URL im Lieferantenstamm — darüber greift die OrKan Cloud beim Bestellabschluss direkt auf den Bestellshop des Lieferanten zu.';
+    return 'Die OrKan Cloud ist lieferantenunabhängig. Entscheidend für die Anbindung ist die Shop-URL im Lieferantenstamm sowie Benutzer und Passwort für den Systemzugang — darüber kann die OrKan Cloud Bestellungen direkt an das System des Lieferanten übermitteln (z. B. per „Erneut Senden" oder „Export UGL").';
   }
   if(t.includes('gebrauchsgut')||t.includes('maschine')){
     return 'Über die Gebrauchsgutverwaltung sehen Sie, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine hat. Zusätzlich lassen sich Service- und Wartungstermine sowie Reservierungen direkt an der Maschine hinterlegen.';
