@@ -141,6 +141,21 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .ai-banner-text span{font-size:13px;color:var(--dark-bg);opacity:.75;line-height:1.5}
 .ai-banner-btn{background:var(--dark-bg);color:#fff;border:none;padding:10px 18px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer;transition:var(--spring);flex-shrink:0}
 .ai-banner-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.status-overview{background:var(--card-bg,#fff);border:1px solid var(--border,#e5e5e0);border-radius:16px;padding:22px 24px;margin-bottom:26px}
+.status-overview-first{display:flex;align-items:center;gap:18px}
+.status-overview-icon{width:44px;height:44px;border-radius:11px;background:var(--dark-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.status-overview-icon svg{width:22px;height:22px;color:var(--green)}
+.status-overview-text{flex:1}
+.status-overview-text strong{font-size:15px;font-weight:700;display:block;margin-bottom:4px}
+.status-overview-text p{font-size:13px;line-height:1.55;color:var(--gray);max-width:640px}
+.status-overview-btn{background:var(--dark-bg);color:#fff;border:none;padding:11px 20px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer;transition:var(--spring);flex-shrink:0;white-space:nowrap}
+.status-overview-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.status-overview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:16px}
+.status-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--gray);margin-bottom:4px}
+.status-value{display:block;font-size:14.5px;font-weight:700;color:var(--dark-bg)}
+.status-progress-track{height:8px;border-radius:5px;background:var(--green-light);overflow:hidden;margin-bottom:18px}
+.status-progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-dark));border-radius:5px;transition:width .4s var(--ease)}
+@media (max-width:820px){.status-overview-grid{grid-template-columns:repeat(2,1fr)}.status-overview-first{flex-direction:column;align-items:flex-start}}
 .coach-widget{background:linear-gradient(155deg,var(--dark-bg),var(--dark2));border-radius:18px;padding:26px 28px;margin-bottom:22px;color:#fff;position:relative;overflow:hidden}
 .coach-widget::before{content:'';position:absolute;width:260px;height:260px;background:radial-gradient(circle,rgba(142,167,82,.28),transparent 70%);border-radius:50%;top:-110px;right:-80px;pointer-events:none}
 .coach-widget-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;position:relative;z-index:1}
@@ -1166,40 +1181,34 @@ function renderDashboard(){
   const avgQuiz = (()=>{ const scores = Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore); if(!scores.length) return '–'; return Math.round(scores.reduce((a,b)=>a+b,0)/scores.length)+'%'; })();
   const phase = done>=4?3:(done>=2?2:1); // Phase 3 = Module 5-8
   const nextModule = MODULES.find(m=>!state.moduleProgress[m.id].completed) || MODULES[0];
-  const adaptive = getAdaptiveRecommendation();
+  const anyStarted = Object.values(state.moduleProgress).some(p=>p.started);
+  const phaseNames = {1:'Grundlagen',2:'Prozesse & Integration',3:'Optimierung & Zertifizierung'};
 
   document.getElementById('view-dashboard').innerHTML = `
     <h1 class="page-title">Guten Tag, ${state.name}.</h1>
     <p class="page-sub">Hier ist Ihr Onboarding-Überblick als ${state.role}.</p>
 
-    ${adaptive ? `
-    <div class="adaptive-banner">
-      <div class="ai-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-5 4 3 5-7"/></svg></div>
-      <div class="ai-banner-text"><strong>Adaptiver Lernpfad — Wissenslücke erkannt</strong><span>Bei „${adaptive.topic}" gab es Unsicherheiten. Ihr Lernpfad wurde angepasst: Modul „${adaptive.module.title}" wird vor dem regulären nächsten Schritt zur Vertiefung empfohlen.</span></div>
-      <button class="ai-banner-btn" onclick="openModule(${adaptive.module.id});switchTab('content')">Vertiefung ansehen</button>
+    ${!anyStarted ? `
+    <div class="status-overview status-overview-first">
+      <div class="status-overview-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+      <div class="status-overview-text">
+        <strong>Willkommen auf der OrKan-Cloud-Trainingsplattform</strong>
+        <p>Sie durchlaufen ${MODULES.length} Module in 3 Phasen (Grundlagen → Prozesse & Integration → Optimierung & Zertifizierung) — insgesamt rund ${MODULES.reduce((s,m)=>s+parseInt(m.time),0)} Minuten. Nach Abschluss aller Module erhalten Sie Ihr Zertifikat inkl. Rabattcode.</p>
+      </div>
+      <button class="status-overview-btn" onclick="openModule(${MODULES[0].id})">Jetzt starten</button>
     </div>
     ` : `
-    <div class="ai-banner">
-      <div class="ai-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/><path d="M6 12v1a6 6 0 0 0 12 0v-1M12 19v3"/></svg></div>
-      <div class="ai-banner-text"><strong>Empfehlung</strong><span>Setzen Sie fort mit „${nextModule.title}". Basierend auf Ihrer Rolle als ${state.role} ist dies der optimale nächste Schritt.</span></div>
-      <button class="ai-banner-btn" onclick="openModule(${nextModule.id})">Jetzt starten</button>
+    <div class="status-overview">
+      <div class="status-overview-grid">
+        <div><span class="status-label">Aktuelle Phase</span><span class="status-value">Phase ${phase}/3 — ${phaseNames[phase]}</span></div>
+        <div><span class="status-label">${done>=MODULES.length?'Status':'Nächstes Modul'}</span><span class="status-value">${done>=MODULES.length?'Alle Module abgeschlossen':nextModule.title}</span></div>
+        <div><span class="status-label">Fortschritt</span><span class="status-value">${done}/${MODULES.length} Module (${progressPct()}%)</span></div>
+        <div><span class="status-label">Verbleibende Lernzeit</span><span class="status-value">${MODULES.filter(m=>!state.moduleProgress[m.id].completed).reduce((s,m)=>s+parseInt(m.time),0)} Min.</span></div>
+      </div>
+      <div class="status-progress-track"><div class="status-progress-fill" style="width:${progressPct()}%"></div></div>
+      ${done<MODULES.length?`<button class="status-overview-btn" onclick="openModule(${nextModule.id})">${state.moduleProgress[nextModule.id].started?'Fortsetzen':'Jetzt starten'}: „${nextModule.title}"</button>`:`<button class="status-overview-btn" onclick="showView('cert')">Zum Zertifikat</button>`}
     </div>
     `}
-
-    <div class="coach-widget">
-      <div class="coach-widget-head">
-        <div class="coach-widget-avatar">LC</div>
-        <div>
-          <div class="coach-widget-name">Lerncoach</div>
-          <div class="coach-widget-status">Online &middot; begleitet Ihren Lernfortschritt</div>
-        </div>
-      </div>
-      <p class="coach-widget-msg" id="coachWidgetMsg">${coachWidgetGreeting()}</p>
-      <div class="coach-widget-input-row">
-        <input type="text" id="coachWidgetInput" placeholder="Frage an Ihren Lerncoach…" onkeydown="if(event.key==='Enter')sendFromWidget()">
-        <button class="coach-widget-send" onclick="sendFromWidget()">Fragen</button>
-      </div>
-    </div>
 
     ${(() => { const rf = ROLE_FOCUS[state.role]; if(!rf) return ''; return `
     <div class="section-heading">${rf.heading}</div>
@@ -1740,7 +1749,7 @@ function renderCloudIntegration(){
     ${behavioralOn ? `
     <p class="ci-intro">So sieht es aus, wenn die Plattform Ihre Arbeitsschritte in der OrKan Cloud verfolgt. Testen Sie es mit dem Button unten — jeder Schritt zeigt, was in Ihrer Cloud passiert wäre.</p>
     <div class="ci-mockup">
-      <div class="ci-mockup-bar"><span class="ci-mockup-dot"></span><span class="ci-mockup-dot"></span><span class="ci-mockup-dot"></span><span class="ci-mockup-url">app.orkan-cloud.de · Live-Aktivität von ${state.name}</span></div>
+      <div class="ci-mockup-bar"><span class="ci-mockup-dot"></span><span class="ci-mockup-dot"></span><span class="ci-mockup-dot"></span><span class="ci-mockup-url">cloud.orkan-system.de · Live-Aktivität von ${state.name}</span></div>
       <div class="ci-mockup-body">
         <div class="ci-event-log" id="ciEventLog">
           <div class="ci-empty">Noch keine Aktivität simuliert — klicken Sie unten auf „Nächsten Cloud-Schritt simulieren".</div>
@@ -1911,7 +1920,7 @@ const CLOUD_DEEPLINKS = {
   7:{label:'Schlüsselverwaltung', path:'/gebrauchsgut/schluessel'},
   8:{label:'Projekte', path:'/projekte'}
 };
-const ORKAN_CLOUD_BASE = 'https://app.orkan-cloud.de';
+const ORKAN_CLOUD_BASE = 'https://cloud.orkan-system.de';
 function bookAppointment(){
   showToast(`Anfrage an Ihren SPRÜGEL-Ansprechpartner gesendet — Sie erhalten in Kürze einen Terminvorschlag für Ihre individuellen Fragen zur OrKan Cloud.`);
 }
