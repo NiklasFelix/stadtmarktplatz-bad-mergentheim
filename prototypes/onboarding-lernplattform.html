@@ -102,6 +102,9 @@ svg{display:block}
 .profile-menu-actions{padding:14px 18px 18px;display:flex;flex-direction:column;gap:8px}
 .profile-logout{background:none;border:none;color:var(--gray);font-size:12.5px;font-weight:600;cursor:pointer;padding:6px;transition:var(--ease)}
 .profile-logout:hover{color:#dc2626}
+.profile-menu-footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.profile-reset{background:none;border:none;color:var(--gray);font-size:11.5px;font-weight:600;cursor:pointer;padding:6px;transition:var(--ease)}
+.profile-reset:hover{color:#dc2626;text-decoration:underline}
 
 .shell-body{flex:1;display:flex;overflow:hidden}
 
@@ -150,7 +153,7 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .status-overview-text p{font-size:13px;line-height:1.55;color:var(--gray);max-width:640px}
 .status-overview-btn{background:var(--dark-bg);color:#fff;border:none;padding:11px 20px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer;transition:var(--spring);flex-shrink:0;white-space:nowrap}
 .status-overview-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
-.status-overview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:16px}
+.status-overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:16px}
 .status-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--gray);margin-bottom:4px}
 .status-value{display:block;font-size:14.5px;font-weight:700;color:var(--dark-bg)}
 .status-progress-track{height:8px;border-radius:5px;background:var(--green-light);overflow:hidden;margin-bottom:18px}
@@ -652,7 +655,10 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
         <div class="profile-menu-actions">
           <button class="btn btn-primary" style="width:100%" onclick="saveProfile()">Änderungen speichern</button>
           <button class="btn btn-outline" style="width:100%" onclick="bookAppointment()">Persönlichen Termin vereinbaren</button>
-          <button class="profile-logout" onclick="logoutProfile()">Abmelden</button>
+          <div class="profile-menu-footer-row">
+            <button class="profile-logout" onclick="logoutProfile()">Abmelden</button>
+            <button class="profile-reset" onclick="resetProgress()">Fortschritt zurücksetzen</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1241,6 +1247,10 @@ function startApp(){
   state.company = document.getElementById('onbCompany').value.trim() || 'Ihr Unternehmen';
   document.getElementById('onboarding').style.display='none';
   document.getElementById('app').style.display='flex';
+  initializeApp();
+  saveState();
+}
+function initializeApp(){
   document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
   refreshProfileMenu();
   buildModuleSubNav();
@@ -1254,6 +1264,48 @@ function startApp(){
   renderCloudIntegration();
   seedAIMessages();
   updateSidebarProgress();
+}
+
+/* ============ FORTSCHRITT SPEICHERN ============ */
+const PROGRESS_STORAGE_KEY = 'orkanTrainingProgress_v1';
+function saveState(){
+  try{
+    const snapshot = {
+      name: state.name, company: state.company, role: state.role,
+      moduleProgress: state.moduleProgress, totalTime: state.totalTime,
+      quizAnswers: state.quizAnswers, weakTopics: state.weakTopics, adaptiveLog: state.adaptiveLog,
+      integrationOptions: state.integrationOptions, discountCode: state.discountCode
+    };
+    localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(snapshot));
+  }catch(e){}
+}
+function loadState(){
+  try{
+    const raw = localStorage.getItem(PROGRESS_STORAGE_KEY);
+    if(!raw) return false;
+    const saved = JSON.parse(raw);
+    Object.assign(state, saved);
+    MODULES.forEach(m=>{ if(!state.moduleProgress[m.id]) state.moduleProgress[m.id] = {started:false,completed:false,quizScore:null,checklist:[]}; });
+    return !!(state.name && state.role);
+  }catch(e){ return false; }
+}
+function bootApp(){
+  if(loadState()){
+    document.getElementById('onboarding').style.display='none';
+    document.getElementById('app').style.display='flex';
+    initializeApp();
+  }
+  window.addEventListener('beforeunload', saveState);
+  window.addEventListener('pagehide', saveState);
+  setInterval(saveState, 8000);
+}
+function resetProgress(){
+  if(!confirm('Möchten Sie wirklich Ihren gesamten Lernfortschritt zurücksetzen? Alle abgeschlossenen Module, Wissenschecks und Ihr Zertifikat gehen dabei verloren. Dieser Schritt kann nicht rückgängig gemacht werden.')) return;
+  state.name = ''; state.role = ''; state.company = '';
+  window.removeEventListener('beforeunload', saveState);
+  window.removeEventListener('pagehide', saveState);
+  try{ localStorage.removeItem(PROGRESS_STORAGE_KEY); localStorage.removeItem('orkanDashboardPrefs'); }catch(e){}
+  location.reload();
 }
 
 /* ============ NAV ============ */
@@ -1319,7 +1371,6 @@ function renderDashboard(){
         <div><span class="status-label">Aktuelle Phase</span><span class="status-value">Phase ${phase}/3 — ${phaseNames[phase]}</span></div>
         <div><span class="status-label">${done>=MODULES.length?'Status':'Nächstes Modul'}</span><span class="status-value">${done>=MODULES.length?'Alle Module abgeschlossen':nextModule.title}</span></div>
         <div><span class="status-label">Fortschritt</span><span class="status-value">${done}/${MODULES.length} Module (${progressPct()}%)</span></div>
-        <div><span class="status-label">Verbleibende Lernzeit</span><span class="status-value">${MODULES.filter(m=>!state.moduleProgress[m.id].completed).reduce((s,m)=>s+parseInt(m.time),0)} Min.</span></div>
       </div>
       <div class="status-progress-track"><div class="status-progress-fill" style="width:${progressPct()}%"></div></div>
       ${done<MODULES.length?`<button class="status-overview-btn" onclick="openModule(${nextModule.id})">${state.moduleProgress[nextModule.id].started?'Fortsetzen':'Jetzt starten'}: „${nextModule.title}"</button>`:`<button class="status-overview-btn" onclick="showView('cert')">Zum Zertifikat</button>`}
@@ -1517,6 +1568,7 @@ function openModule(id){
   buildModuleSubNav();
   updateSidebarProgress();
   if(!wasStarted) coachProactive(moduleIntroCoachMsg(id));
+  saveState();
 }
 function moduleIntroCoachMsg(id){
   const m = MODULES.find(x=>x.id===id);
@@ -1675,6 +1727,7 @@ function toggleCheck(mid,i){
     coachProactive(`Gut gemacht — alle Schritte der Praxisaufgabe in „${m.title}" sind erledigt. Wechseln Sie jetzt zum Wissenscheck, um das Modul abzuschließen.`);
   }
   renderTab();
+  saveState();
 }
 
 function renderQuiz(m){
@@ -1729,6 +1782,7 @@ function renderQuizResult(m){
     coachProactive(`Kein Problem — beim Wissenscheck zu „${m.title}" hat es noch nicht ganz gereicht. Schauen Sie sich den Inhalt noch einmal an, ich habe die betroffenen Themen bereits in Ihrer Wissenslücken-Analyse vorgemerkt.`);
   }
   if(justLogged) updateSidebarProgress();
+  saveState();
   return `<div class="quiz-result"><div class="qr-score">${correct}/${m.quiz.length} richtig (${pct}%)</div>
     <p>${passed?'Modul erfolgreich abgeschlossen.':'Mindestens 2 von 3 Antworten müssen korrekt sein. Bitte wiederholen Sie den Wissenscheck.'}</p>
     ${passed?`<button class="btn btn-primary" onclick="switchTab('summary');document.querySelectorAll('.tab-btn')[3].classList.add('active');document.querySelectorAll('.tab-btn')[0].classList.remove('active')">Zur Zusammenfassung</button>`:`<button class="btn btn-outline" onclick="retryQuiz(${m.id})">Erneut versuchen</button>`}
@@ -2079,6 +2133,7 @@ function saveProfile(){
   updateSidebarProgress();
   showToast('Profil aktualisiert.');
   document.getElementById('profileMenu').classList.remove('open');
+  saveState();
 }
 function logoutProfile(){
   document.getElementById('profileMenu').classList.remove('open');
@@ -2229,6 +2284,7 @@ function getAIResponse(text){
   }
   return 'Das ist eine gute Frage. Ich empfehle einen Blick in die Wissensdatenbank oder das passende Lernmodul — dort finden Sie eine ausführliche Erklärung. Sie können mich auch nach Ihrem Fortschritt oder den nächsten Lernschritten fragen.';
 }
+bootApp();
 </script>
 </body>
 </html>
