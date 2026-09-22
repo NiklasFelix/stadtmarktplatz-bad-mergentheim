@@ -771,7 +771,7 @@ const MODULES = [
     quiz:[
       {q:'Was zeigt ein rot markierter Eintrag im Kalender der OrKan Cloud?',o:['Einen Urlaubstag','Eine fällige Bestellung','Einen neuen Artikel','Eine abgeschlossene Lieferung'],a:1,t:'Systemgrundlagen'},
       {q:'Wie gelangen Sie zur Hauptnavigation zurück?',o:['Über die drei Striche oben links','Nur über die Browser-Zurück-Taste','Über das Firmenlogo','Gar nicht, Neuanmeldung nötig'],a:0,t:'Navigation'},
-      {q:'Welcher Bereich gehört NICHT zu den acht Unterpunkten der Lagerverwaltung?',o:['Bestellvorschlag','Scan','Lagerbestand','Gehaltsabrechnung'],a:3,t:'Lagerverwaltung-Struktur'}
+      {q:'Welcher Bereich gehört NICHT zu den acht Unterpunkten der Lagerverwaltung?',o:['Bestellvorschlag','Scan','Lagerbestand','Rechnungsstellung'],a:3,t:'Lagerverwaltung-Struktur'}
     ],
     summary:{ kern:['Die Startseite bündelt Kalender und vier Shortcuts für die häufigsten Aufgaben.','Das Ampelsystem im Kalender priorisiert fällige Bestellungen visuell.','Die Lagerverwaltung ist der zentrale Hauptbereich mit acht klar gegliederten Unterpunkten.'],
       funk:['Startseite mit Kalender','Lagerverwaltung als Hauptbereich'], hand:['Kalender täglich als ersten Schritt prüfen','Sich mit den acht Unterpunkten der Lagerverwaltung vertraut machen'] }
@@ -1901,13 +1901,24 @@ function sendFromWidget(){
   if(!state.aiOpen) toggleAI();
   sendAI(text);
 }
-const CLOUD_DEEPLINKS = {1:'Startseite',2:'Lagerverwaltung → Artikel',3:'Bestellvorschlag',4:'Lagerverwaltung → Lieferant',5:'Lagerbestand'};
+const CLOUD_DEEPLINKS = {
+  1:{label:'Startseite', path:'/'},
+  2:{label:'Lagerverwaltung → Artikel', path:'/lagerverwaltung/artikel'},
+  3:{label:'Lagerverwaltung → Bestellvorschlag', path:'/lagerverwaltung/bestellvorschlag'},
+  4:{label:'Lagerverwaltung → Lieferant', path:'/lagerverwaltung/lieferant'},
+  5:{label:'Lagerverwaltung → Lagerbestand', path:'/lagerverwaltung/lagerbestand'},
+  6:{label:'Maschinenverwaltung', path:'/gebrauchsgut/maschinen'},
+  7:{label:'Schlüsselverwaltung', path:'/gebrauchsgut/schluessel'},
+  8:{label:'Projekte', path:'/projekte'}
+};
+const ORKAN_CLOUD_BASE = 'https://app.orkan-cloud.de';
 function bookAppointment(){
   showToast(`Anfrage an Ihren SPRÜGEL-Ansprechpartner gesendet — Sie erhalten in Kürze einen Terminvorschlag für Ihre individuellen Fragen zur OrKan Cloud.`);
 }
 function openCloudLink(mid){
-  const area = CLOUD_DEEPLINKS[mid] || 'OrKan Cloud';
-  showToast(`In der Live-Integration öffnet sich jetzt direkt „${area}" in Ihrer OrKan Cloud — ohne separate Anmeldung.`);
+  const target = CLOUD_DEEPLINKS[mid] || {label:'OrKan Cloud', path:'/'};
+  showToast(`„${target.label}" öffnet sich jetzt in einem neuen Tab in Ihrer OrKan Cloud.`);
+  window.open(ORKAN_CLOUD_BASE + target.path, '_blank', 'noopener');
 }
 function showToast(text){
   let toast = document.getElementById('appToast');
