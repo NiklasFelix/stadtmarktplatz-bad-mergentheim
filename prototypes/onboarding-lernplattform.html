@@ -1309,6 +1309,22 @@ const DASHBOARD_WIDGETS = {
       <div class="phase-step ${phase>=2?'active':''} ${done>=4?'unlocked':''}"><div class="phase-num">2</div><div class="phase-title">Prozesse & Integration</div><div class="phase-desc">Module 3–4</div></div>
       <div class="phase-step ${phase>=3?'active':''} ${done>=MODULES.length?'unlocked':''}"><div class="phase-num">3</div><div class="phase-title">Optimierung & Zertifizierung</div><div class="phase-desc">Module 5–${MODULES.length} + Zertifikat</div></div>
     </div>`; } },
+  gaps: { title:'Ihre Wissenslücken', render: () => {
+    const personal = Object.entries(state.weakTopics).sort((a,b)=>b[1]-a[1]);
+    if(!personal.length){
+      return `<p style="font-size:13px;color:var(--gray)">Noch keine Wissenslücken erkannt — weiter so! Sobald ein Wissenscheck nicht vollständig richtig beantwortet wird, erscheint hier eine gezielte Empfehlung zum Wiederholen.</p>`;
+    }
+    const top = personal.slice(0,2);
+    return `<div class="stats-row">${top.map(([topic,count])=>{
+      const module = MODULES.find(m=>m.quiz.some(q=>q.t===topic));
+      return `<div class="stat-card" style="cursor:pointer" onclick="openModule(${module?module.id:1});switchTab('content')"><div class="stat-label">${topic}</div><div class="stat-val" style="font-size:16px">${count}× unsicher</div><div class="stat-sub">Klicken zum Wiederholen</div></div>`;
+    }).join('')}</div><div style="margin-top:12px"><a onclick="showView('gaps')" style="font-size:12.5px;font-weight:700;color:var(--green-dark);cursor:pointer">Alle Wissenslücken ansehen →</a></div>`;
+  } },
+  updates: { title:'Neuigkeiten', render: () => {
+    const latest = UPDATES[0];
+    if(!latest) return '';
+    return `<div class="update-item" style="margin-bottom:0"><div class="update-top"><span class="version-badge">${latest.v}</span><span class="update-date">${latest.date}</span>${latest.isNew?'<span class="new-badge">Neu</span>':''}</div><h4>${latest.title}</h4><ul>${latest.items.slice(0,2).map(i=>`<li>${i}</li>`).join('')}</ul><div style="margin-top:10px"><a onclick="showView('updates')" style="font-size:12.5px;font-weight:700;color:var(--green-dark);cursor:pointer">Alle Neuigkeiten ansehen →</a></div></div>`;
+  } },
   rolefocus: { title:'Rollenfokus', render: () => { const rf = ROLE_FOCUS[state.role]; if(!rf) return '<p style="font-size:13px;color:var(--gray)">Für Ihre Rolle sind keine zusätzlichen Kennzahlen hinterlegt.</p>'; return `
     <div class="stats-row">
       ${rf.cards.map(c=>`<div class="stat-card" ${c.link?`style="cursor:pointer" onclick="showView('${c.link}')"`:''}><div class="stat-label">${c.label}</div><div class="stat-val" style="font-size:18px">${c.val}</div><div class="stat-sub">${c.sub}</div></div>`).join('')}
@@ -1321,8 +1337,8 @@ const DASHBOARD_WIDGETS = {
       <button class="context-note-btn" onclick="bookAppointment()">Persönlichen Termin vereinbaren</button>
     </div>` }
 };
-const DEFAULT_WIDGET_ORDER = ['stats','phases','rolefocus','recos','appointment'];
-const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:false, rolefocus:false, recos:true, appointment:true};
+const DEFAULT_WIDGET_ORDER = ['stats','phases','gaps','updates','rolefocus','recos','appointment'];
+const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:false, gaps:false, updates:false, rolefocus:true, recos:true, appointment:true};
 
 function loadDashboardPrefs(){
   try{
@@ -2057,23 +2073,23 @@ function sendFromWidget(){
   sendAI(text);
 }
 const CLOUD_DEEPLINKS = {
-  1:{label:'Startseite', path:'/'},
-  2:{label:'Lagerverwaltung → Artikel', path:'/lagerverwaltung/artikel'},
-  3:{label:'Lagerverwaltung → Lieferant', path:'/lagerverwaltung/lieferant'},
-  4:{label:'Lagerverwaltung → Bestellvorschlag', path:'/lagerverwaltung/bestellvorschlag'},
-  5:{label:'Lagerverwaltung → Lagerbestand', path:'/lagerverwaltung/lagerbestand'},
-  6:{label:'Maschinenverwaltung', path:'/gebrauchsgut/maschinen'},
-  7:{label:'Schlüsselverwaltung', path:'/gebrauchsgut/schluessel'},
-  8:{label:'Projekte', path:'/projekte'}
+  1:{label:'Startseite'},
+  2:{label:'Lagerverwaltung → Artikel'},
+  3:{label:'Lagerverwaltung → Lieferant'},
+  4:{label:'Lagerverwaltung → Bestellvorschlag'},
+  5:{label:'Lagerverwaltung → Lagerbestand'},
+  6:{label:'Maschinenverwaltung'},
+  7:{label:'Schlüsselverwaltung'},
+  8:{label:'Projekte'}
 };
-const ORKAN_CLOUD_BASE = 'https://cloud.orkan-system.de';
+const ORKAN_CLOUD_BASE = 'https://cloud.orkan-system.de/';
 function bookAppointment(){
   showToast(`Anfrage an Ihren SPRÜGEL-Ansprechpartner gesendet — Sie erhalten in Kürze einen Terminvorschlag für Ihre individuellen Fragen zur OrKan Cloud.`);
 }
 function openCloudLink(mid){
-  const target = CLOUD_DEEPLINKS[mid] || {label:'OrKan Cloud', path:'/'};
-  showToast(`„${target.label}" öffnet sich jetzt in einem neuen Tab in Ihrer OrKan Cloud.`);
-  window.open(ORKAN_CLOUD_BASE + target.path, '_blank', 'noopener');
+  const target = CLOUD_DEEPLINKS[mid] || {label:'OrKan Cloud'};
+  showToast(`Die OrKan Cloud öffnet sich in einem neuen Tab. Melden Sie sich dort an und navigieren Sie zu „${target.label}", um das Gelernte direkt anzuwenden.`);
+  window.open(ORKAN_CLOUD_BASE, '_blank', 'noopener');
 }
 function showToast(text){
   let toast = document.getElementById('appToast');
