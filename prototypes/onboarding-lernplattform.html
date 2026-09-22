@@ -256,6 +256,8 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 .milestone-card h4{font-size:14px;font-weight:700;margin-bottom:3px}
 .milestone-meta{font-size:11.5px;color:var(--gray);margin-bottom:8px}
 .milestone-card p{font-size:12.5px;color:var(--dark-bg);opacity:.8;line-height:1.5}
+.milestone-gist{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0}
+.milestone-gist li{font-size:11.5px;font-weight:600;color:var(--dark-bg);background:var(--green-light);border-radius:6px;padding:3px 9px}
 .ai-hint{font-size:11.5px;color:var(--green-dark);background:var(--green-light);padding:8px 12px;border-radius:8px;margin-top:20px;margin-bottom:8px;display:inline-block}
 .roadmap-side{text-align:center}
 .progress-ring-wrap{position:relative;width:150px;height:150px;margin:0 auto 16px}
@@ -782,6 +784,7 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
 /* ============ DATA ============ */
 const MODULES = [
   { id:1, phase:1, title:'Grundlagen der OrKan Cloud', time:'12 Min.', diff:1,
+    gist:['Startseite & Kalender','Ampelsystem','Lagerverwaltung im Überblick'],
     points:[
       'Die Startseite ist individuell anpassbar: Kacheln wie Artikel, Lieferant, Bestellvorschläge erstellen oder Meine Einstellungen lassen sich im Bearbeitungsmodus (Stift-Symbol) verschieben, umbenennen, farblich anpassen oder entfernen.',
       'Über die drei Striche oben links gelangen Sie jederzeit zurück zum Home-Bereich und zur Hauptnavigation; das Fragezeichen-Symbol öffnet die Hilfe, das Smiley-Symbol dient dem Feedback an SPRÜGEL.',
@@ -807,6 +810,7 @@ const MODULES = [
       funk:['Individuell anpassbare Startseite','Vierstufiges Kalender-Ampelsystem','Lagerverwaltung als Hauptbereich'], hand:['Kalender täglich als ersten Schritt prüfen','Sich mit den acht Unterpunkten der Lagerverwaltung vertraut machen'] }
   },
   { id:2, phase:1, title:'Artikel- und Lagerplatzverwaltung', time:'15 Min.', diff:1,
+    gist:['Artikel anlegen','Lager MIN/MAX','Lagerorte'],
     points:[
       'Ein Artikel wird mit Artikelgruppe, interner Artikelnummer, Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort angelegt – es gibt vier Wege dorthin: manuelle Neuanlage, Serienanlage über „Eingabe behalten", Kopieren eines bestehenden Artikels oder Excel-Import.',
       'Bei der Serienanlage mit „Eingabe behalten" übernimmt die OrKan Cloud automatisch alle Felder des vorherigen Artikels – außer der internen Artikelnummer und der Artikelnummer des Lieferanten, die für jeden Artikel individuell bleiben.',
@@ -831,32 +835,8 @@ const MODULES = [
     summary:{ kern:['Artikel lassen sich auf vier Wegen anlegen – am effizientesten per „Eingabe behalten" oder „Kopieren" für ähnliche Artikel.','Lager MIN und Lager MAX steuern automatisch die vorgeschlagene Bestellmenge (MAX minus MIN).','Das zuerst hochgeladene Dokument eines Artikels wird automatisch als Etikettenbild verwendet.'],
       funk:['Vier Wege der Artikelanlage','Lager MIN / Lager MAX'], hand:['Lager MIN/MAX realistisch anhand des Verbrauchs festlegen','Bei ähnlichen Artikeln konsequent „Eingabe behalten" oder „Kopieren" nutzen'] }
   },
-  { id:3, phase:2, title:'Zwei-Etiketten-System mit Bestellvorschlag', time:'10 Min.', diff:2,
-    points:[
-      'An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, zur Kennzeichnung des Lagerplatzes) und ein weißes, das davor liegt und bei Mindestbestand als Bestellauslöser entnommen wird.',
-      'Wird der Mindestbestand erreicht, zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox – fehlt das weiße Etikett am Regal, sieht jeder sofort, dass der Artikel bereits bestellt ist.',
-      'Abends nimmt ein Lagermitarbeiter die Bestellbox und erfasst die Artikel unter „Bestellvorschlag → Erstellen": Ein Klick auf „Erstellen" springt automatisch ins Scan-Feld, jeder OrKan-Scanner löst nach dem Scan selbstständig „Enter" aus – ein manuelles Bestätigen ist nicht nötig.',
-      'Enthält der Bestellvorschlag Artikel mehrerer Lieferanten, muss für jeden Lieferanten die Teilbestellung einzeln über „Bestellungen erstellen" und „Senden" abgeschickt werden; Mengen lassen sich vorher per Doppelklick korrigieren.',
-      'Beim finalen „Bestellen" öffnen sich drei Fenster – Wareneingang, Lieferschein und der Onlineshop des Lieferanten –, denn die eigentliche Bestellung wird technisch erst im Lieferanten-Shop ausgelöst; OrKan Cloud bereitet sie mit Ansprechpartner, Liefertermin und Lieferadresse vollständig vor.'
-    ],
-    features:[
-      {t:'Blaues und weißes Etikett',d:'Blau kennzeichnet dauerhaft den Lagerplatz, Weiß signalisiert eine laufende Bestellung'},
-      {t:'Scan mit Auto-Enter',d:'Cursor springt automatisch ins Scan-Feld, jeder Scan löst selbstständig „Enter" aus'},
-      {t:'Bestellung je Lieferant',d:'Teilbestellungen werden pro Lieferant einzeln erstellt und abgeschickt'}
-    ],
-    practice:'Ein Lagermitarbeiter zieht am Nachmittag das weiße Etikett vom leeren Schrauben-Fach und legt es in die Bestellbox. Abends scannt ein Kollege alle Etiketten aus der Box unter „Bestellvorschlag" ein – die Bestellung ist in wenigen Minuten fertig zusammengestellt und wird im letzten Schritt im Shop des Lieferanten final ausgelöst.',
-    task:'Simulieren Sie den Ablauf vom weißen Etikett bis zum fertigen, im Lieferanten-Shop ausgelösten Bestellvorschlag.',
-    checklist:['Zwei-Etiketten-System am Testregal nachvollziehen (blau vs. weiß)','Weißes Etikett in die Bestellbox legen','Über „Lagerverwaltung" → „Bestellvorschlag" → „Erstellen" den Artikel scannen oder manuell erfassen','„Bestellungen erstellen" und Zusammenfassung prüfen (Ansprechpartner, Liefertermin, Lieferadresse)','Die drei sich öffnenden Fenster nach „Bestellen" nachvollziehen (Wareneingang, Lieferschein, Lieferanten-Shop)'],
-    tip:'Landen gescannte Artikel nicht in der Liste, liegt meist ein Scanner vor, bei dem die Auto-Enter-Funktion nicht aktiv ist – ein Reset über den beiliegenden QR-Code in der Scanner-Anleitung behebt das meist, bevor Sie den Support kontaktieren.',
-    quiz:[
-      {q:'Wofür steht das blaue Etikett am Lagerplatz?',o:['Für den Bestellauslöser','Für die dauerhafte Lagerplatzkennzeichnung','Für den Lieferantenpreis','Für die Inventur'],a:1,t:'Zwei-Etiketten-System'},
-      {q:'Was passiert, wenn der Mindestbestand erreicht ist?',o:['Nichts, das System merkt es automatisch','Das weiße Etikett wird gezogen und in die Bestellbox gelegt','Der Artikel wird gelöscht','Der Lieferant wird automatisch gewechselt'],a:1,t:'Bestellauslösung'},
-      {q:'Wo wird eine OrKan-Cloud-Bestellung letztlich technisch ausgelöst?',o:['Direkt in OrKan Cloud, ohne weiteren Schritt','Im Onlineshop des Lieferanten, den OrKan Cloud automatisch öffnet','Per automatischem Fax an den Lieferanten','Über eine separate SAP-Schnittstelle'],a:1,t:'Bestellabschluss'}
-    ],
-    summary:{ kern:['Das Zwei-Etiketten-System (blau/weiß) macht den Bestellstatus jedes Lagerplatzes ohne Systemzugriff sichtbar.','Das weiße Etikett wandert bei Mindestbestand in die Bestellbox und wird gesammelt per Auto-Enter-Scan eingescannt.','Die eigentliche Bestellung wird erst im Onlineshop des Lieferanten final ausgelöst – OrKan Cloud bereitet sie vollständig vor.'],
-      funk:['Zwei-Etiketten-System','Bestellvorschlag per Scan mit Auto-Enter'], hand:['Bestellbox täglich zur festen Uhrzeit leeren','Weißes Etikett nach Wareneingang wieder ans Regal anbringen'] }
-  },
-  { id:4, phase:2, title:'Artikelimport und Lieferantenanbindung', time:'18 Min.', diff:3,
+  { id:3, phase:2, title:'Artikelimport und Lieferantenanbindung', time:'18 Min.', diff:3,
+    gist:['Excel-Import','Lieferanten-Shop','DATANORM-Preisimport'],
     points:[
       'Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei (max. 40 MB) mit den zugehörigen Artikelbildern – der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen.',
       'Die drei Import-Modi verhalten sich klar unterschiedlich: „Nur importieren" legt ausschließlich neue Artikel an und verändert nie bestehende; „Nur aktualisieren" verändert ausschließlich bestehende Artikel und legt nie neue an; „Importieren und aktualisieren" kombiniert beides.',
@@ -881,7 +861,34 @@ const MODULES = [
     summary:{ kern:['Der Artikelimport kombiniert eine Excel-Liste mit einer ZIP-Datei für Bilder über eine Dateinamen-Zuordnung.','Die drei Import-Modi unterscheiden strikt zwischen Neuanlage und Aktualisierung – bei Lieferantenwechsel zählt nur die interne Artikelnummer als Abgleichfeld.','Die Shop-URL im Lieferantenstamm ist die IDS-Schnittstellen-Adresse für die automatische Bestellweiterleitung, nicht die normale Shop-Webadresse.'],
       funk:['Excel + ZIP-Import','Drei Import-Modi','Lieferanten-Shop-Anbindung per IDS-URL'], hand:['Vor dem Vollimport Bildzuordnung an wenigen Testartikeln prüfen','Bei Lieferantenwechsel immer über die interne Artikelnummer abgleichen'] }
   },
+  { id:4, phase:2, title:'Zwei-Etiketten-System mit Bestellvorschlag', time:'10 Min.', diff:2,
+    gist:['Blau/Weiß-Etiketten','Bestellvorschlag','Scan mit Auto-Enter'],
+    points:[
+      'An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, zur Kennzeichnung des Lagerplatzes) und ein weißes, das davor liegt und bei Mindestbestand als Bestellauslöser entnommen wird.',
+      'Wird der Mindestbestand erreicht, zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox – fehlt das weiße Etikett am Regal, sieht jeder sofort, dass der Artikel bereits bestellt ist.',
+      'Abends nimmt ein Lagermitarbeiter die Bestellbox und erfasst die Artikel unter „Bestellvorschlag → Erstellen": Ein Klick auf „Erstellen" springt automatisch ins Scan-Feld, jeder OrKan-Scanner löst nach dem Scan selbstständig „Enter" aus – ein manuelles Bestätigen ist nicht nötig.',
+      'Enthält der Bestellvorschlag Artikel mehrerer Lieferanten, muss für jeden Lieferanten die Teilbestellung einzeln über „Bestellungen erstellen" und „Senden" abgeschickt werden; Mengen lassen sich vorher per Doppelklick korrigieren.',
+      'Beim finalen „Bestellen" öffnen sich drei Fenster – Wareneingang, Lieferschein und der Onlineshop des Lieferanten –, denn die eigentliche Bestellung wird technisch erst im Lieferanten-Shop ausgelöst; OrKan Cloud bereitet sie mit Ansprechpartner, Liefertermin und Lieferadresse vollständig vor.'
+    ],
+    features:[
+      {t:'Blaues und weißes Etikett',d:'Blau kennzeichnet dauerhaft den Lagerplatz, Weiß signalisiert eine laufende Bestellung'},
+      {t:'Scan mit Auto-Enter',d:'Cursor springt automatisch ins Scan-Feld, jeder Scan löst selbstständig „Enter" aus'},
+      {t:'Bestellung je Lieferant',d:'Teilbestellungen werden pro Lieferant einzeln erstellt und abgeschickt'}
+    ],
+    practice:'Ein Lagermitarbeiter zieht am Nachmittag das weiße Etikett vom leeren Schrauben-Fach und legt es in die Bestellbox. Abends scannt ein Kollege alle Etiketten aus der Box unter „Bestellvorschlag" ein – die Bestellung ist in wenigen Minuten fertig zusammengestellt und wird im letzten Schritt im Shop des Lieferanten final ausgelöst.',
+    task:'Simulieren Sie den Ablauf vom weißen Etikett bis zum fertigen, im Lieferanten-Shop ausgelösten Bestellvorschlag.',
+    checklist:['Zwei-Etiketten-System am Testregal nachvollziehen (blau vs. weiß)','Weißes Etikett in die Bestellbox legen','Über „Lagerverwaltung" → „Bestellvorschlag" → „Erstellen" den Artikel scannen oder manuell erfassen','„Bestellungen erstellen" und Zusammenfassung prüfen (Ansprechpartner, Liefertermin, Lieferadresse)','Die drei sich öffnenden Fenster nach „Bestellen" nachvollziehen (Wareneingang, Lieferschein, Lieferanten-Shop)'],
+    tip:'Landen gescannte Artikel nicht in der Liste, liegt meist ein Scanner vor, bei dem die Auto-Enter-Funktion nicht aktiv ist – ein Reset über den beiliegenden QR-Code in der Scanner-Anleitung behebt das meist, bevor Sie den Support kontaktieren.',
+    quiz:[
+      {q:'Wofür steht das blaue Etikett am Lagerplatz?',o:['Für den Bestellauslöser','Für die dauerhafte Lagerplatzkennzeichnung','Für den Lieferantenpreis','Für die Inventur'],a:1,t:'Zwei-Etiketten-System'},
+      {q:'Was passiert, wenn der Mindestbestand erreicht ist?',o:['Nichts, das System merkt es automatisch','Das weiße Etikett wird gezogen und in die Bestellbox gelegt','Der Artikel wird gelöscht','Der Lieferant wird automatisch gewechselt'],a:1,t:'Bestellauslösung'},
+      {q:'Wo wird eine OrKan-Cloud-Bestellung letztlich technisch ausgelöst?',o:['Direkt in OrKan Cloud, ohne weiteren Schritt','Im Onlineshop des Lieferanten, den OrKan Cloud automatisch öffnet','Per automatischem Fax an den Lieferanten','Über eine separate SAP-Schnittstelle'],a:1,t:'Bestellabschluss'}
+    ],
+    summary:{ kern:['Das Zwei-Etiketten-System (blau/weiß) macht den Bestellstatus jedes Lagerplatzes ohne Systemzugriff sichtbar.','Das weiße Etikett wandert bei Mindestbestand in die Bestellbox und wird gesammelt per Auto-Enter-Scan eingescannt.','Die eigentliche Bestellung wird erst im Onlineshop des Lieferanten final ausgelöst – OrKan Cloud bereitet sie vollständig vor.'],
+      funk:['Zwei-Etiketten-System','Bestellvorschlag per Scan mit Auto-Enter'], hand:['Bestellbox täglich zur festen Uhrzeit leeren','Weißes Etikett nach Wareneingang wieder ans Regal anbringen'] }
+  },
   { id:5, phase:3, title:'Wareneingang und Lagerbestand', time:'8 Min.', diff:2,
+    gist:['Wareneingang bestätigen','Lagerbestand & Warenwert','Inventur'],
     points:[
       'Beim Bestellabschluss öffnen sich drei Fenster: Wareneingang-Bestätigung, Lieferschein und der Lieferanten-Shop zur finalen Bestellung.',
       'Der Scan-Bestelleingang zeigt offene Bestellungen eines Lieferanten nach Ampelfarbe (Rot = überfällig, Gelb = heute fällig, Grün = zukünftig) – Positionen lassen sich einzeln oder als komplette Liste auf einmal bestätigen, Mengenabweichungen werden dabei sichtbar gemacht.',
@@ -907,6 +914,7 @@ const MODULES = [
       funk:['Drei-Fenster-Bestellabschluss','Scan-Bestelleingang mit Ampelfarben','Warenwert-Näherung'], hand:['Wareneingang zeitnah über den Scan-Bestelleingang bestätigen, um den Lagerbestand aktuell zu halten','Bei größeren Beständen regelmäßig per Excel-Export oder App-Inventur zählen'] }
   },
   { id:6, phase:3, title:'Maschinenverwaltung', time:'12 Min.', diff:2,
+    gist:['Maschinen anlegen','Buchungslogik','Service & Wartung'],
     points:[
       'Maschinen werden mit Name, Seriennummer, Wert, Heimatstandort (Fahrzeug, Lagerort, Gebäude oder Person) und Anschaffungsdatum angelegt – was als „Maschine" geführt wird, definiert der Kunde selbst, auch eine Leiter kann so erfasst sein.',
       'Das erste hochgeladene Dokument erscheint auf dem Etikett, weitere Dokumente wie der Kaufbeleg werden nicht gedruckt, sind aber entscheidend für Garantiefälle.',
@@ -933,6 +941,7 @@ const MODULES = [
       funk:['Maschinen-Stammdaten & Electronic ID','Rollenbasierte Buchungslogik','Anlagen & Service/Wartung mit Automatik'], hand:['Kaufbelege konsequent bei jeder Maschine hinterlegen','Wartungsintervalle für prüfpflichtige Geräte sofort bei Anlage festlegen'] }
   },
   { id:7, phase:3, title:'Schlüsselverwaltung', time:'8 Min.', diff:1,
+    gist:['Sicherheits-Etikett','Adresssuche','Buchung & Rückgabe'],
     points:[
       'Schlüssel-Etiketten sind spezielle gefaltete Anhänger: außen nur eine Nummer und ein QR-Code, innen (nur beim Öffnen sichtbar) die Kundenadresse.',
       'Diese Trennung ist ein Sicherheitsprinzip: Beim traditionellen Schlüsselkasten mit Nummern 1 bis n und separatem Zuordnungsordner werden bei einem Einbruch meist beide zusammen entwendet – die Adressliste liegt dann offen. Bei OrKan steckt die Adresse digital hinter der Nummer und bleibt bei Diebstahl geschützt.',
@@ -958,6 +967,7 @@ const MODULES = [
       funk:['Gefaltetes Sicherheits-Etikett','Adresssuche als Standard'], hand:['Adressfilter bei der täglichen Schlüsselsuche konsequent nutzen','Nie Adressinformationen sichtbar am Schlüsselkasten anbringen'] }
   },
   { id:8, phase:3, title:'Projekte und Baustellen', time:'10 Min.', diff:2,
+    gist:['Materialentnahme per App','Projekt-Statistik','Branchensoftware-Anbindung'],
     points:[
       'Das Projekte-Modul dokumentiert Materialentnahmen auf Baustellen, die sonst nur handschriftlich per „Aufmaß" erfasst und leicht vergessen werden.',
       'Wird eine Entnahme vergessen, entsteht ein realer Verlust: Beispiel Armatur mit Einkaufspreis 200 € und Verkaufspreis 600 € – ohne dokumentiertes Aufmaß gehen dem Betrieb die 400 € Differenz verloren.',
@@ -1073,13 +1083,13 @@ const UPDATES = [
 ];
 
 const ROLE_FOCUS = {
-  'Lagerleiter': { heading:'Ihr Fokus als Lagerleiter', priorityModules:[3,6,7],
+  'Lagerleiter': { heading:'Ihr Fokus als Lagerleiter', priorityModules:[4,6,7],
     cards:[
       {label:'Team-Fortschritt', val:'Ø 62%', sub:'4 Mitarbeitende aktuell im Onboarding', link:'team'},
       {label:'Priorität diese Woche', val:'Zwei-Etiketten-System', sub:'Schulen Sie Ihr Team in der Blau/Weiß-Logik'},
       {label:'Rollenlogik prüfen', val:'Maschinenverwaltung', sub:'Wer darf für andere buchen? Nur Admins.'}
     ]},
-  'Einkäufer': { heading:'Ihr Fokus als Einkäufer', priorityModules:[2,4,3],
+  'Einkäufer': { heading:'Ihr Fokus als Einkäufer', priorityModules:[2,3,4],
     cards:[
       {label:'Lager MIN/MAX', val:'Bestellmenge = MAX − MIN', sub:'Grundlage jedes Bestellvorschlags'},
       {label:'Lieferanten-Anbindung', val:'Shop-URL prüfen', sub:'Ohne Shop-URL keine automatische Bestellweiterleitung'},
@@ -1091,7 +1101,7 @@ const ROLE_FOCUS = {
       {label:'Lagerwert-Näherung', val:'≈ 53.800 €', sub:'Automatisch aus Lager MIN/MAX und EK-Preisen berechnet'},
       {label:'Zertifizierungsquote', val:'1 von 5', sub:'Team-Mitglieder mit vollständigem Abschluss'}
     ]},
-  'Lagermitarbeiter': { heading:'Ihr Fokus im Tagesgeschäft', priorityModules:[3,5,7],
+  'Lagermitarbeiter': { heading:'Ihr Fokus im Tagesgeschäft', priorityModules:[4,5,7],
     cards:[
       {label:'Heute wichtig', val:'Weißes Etikett = bestellt', sub:'Fehlt es am Regal, ist der Artikel schon unterwegs'},
       {label:'Wareneingang', val:'Drei-Fenster-Prozess', sub:'Wareneingang, Lieferschein, Lieferanten-Shop'},
@@ -1370,7 +1380,7 @@ function renderRoadmap(){
     const cls = p.completed?'done':(p.started?'active':'');
     return `<div class="milestone ${cls}">
       <div class="milestone-dot">${p.completed?'✓':m.id}</div>
-      <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${m.time} · Phase ${m.phase}</div><p>${m.points[0]}</p></div>
+      <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${m.time} · Phase ${m.phase}</div><ul class="milestone-gist">${(m.gist||[]).map(g=>`<li>${g}</li>`).join('')}</ul></div>
       ${i<MODULES.length-1?`<div><span class="ai-hint">Hinweis: ${nextStepHint(m.id)}</span></div>`:''}
     </div>`;
   }).join('');
@@ -1398,7 +1408,7 @@ function renderRoadmap(){
   `;
 }
 function nextStepHint(id){
-  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Das Zwei-Etiketten-System und der Bestellvorschlag folgen.',3:'Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',4:'Weiter geht es mit Wareneingang, Lagerbestand und einem ersten Einblick in die Gebrauchsgutverwaltung.',5:'Vertiefung: Die Maschinenverwaltung mit Service & Wartung folgt als eigenes Modul.',6:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',7:'Fast geschafft — zum Abschluss folgt das Projekte-Modul für Baustellen.'};
+  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',3:'Weiter geht es mit dem Zwei-Etiketten-System und dem Bestellvorschlag im Lageralltag.',4:'Weiter geht es mit Wareneingang, Lagerbestand und einem ersten Einblick in die Gebrauchsgutverwaltung.',5:'Vertiefung: Die Maschinenverwaltung mit Service & Wartung folgt als eigenes Modul.',6:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',7:'Fast geschafft — zum Abschluss folgt das Projekte-Modul für Baustellen.'};
   return hints[id]||'';
 }
 
@@ -2017,8 +2027,8 @@ function sendFromWidget(){
 const CLOUD_DEEPLINKS = {
   1:{label:'Startseite', path:'/'},
   2:{label:'Lagerverwaltung → Artikel', path:'/lagerverwaltung/artikel'},
-  3:{label:'Lagerverwaltung → Bestellvorschlag', path:'/lagerverwaltung/bestellvorschlag'},
-  4:{label:'Lagerverwaltung → Lieferant', path:'/lagerverwaltung/lieferant'},
+  3:{label:'Lagerverwaltung → Lieferant', path:'/lagerverwaltung/lieferant'},
+  4:{label:'Lagerverwaltung → Bestellvorschlag', path:'/lagerverwaltung/bestellvorschlag'},
   5:{label:'Lagerverwaltung → Lagerbestand', path:'/lagerverwaltung/lagerbestand'},
   6:{label:'Maschinenverwaltung', path:'/gebrauchsgut/maschinen'},
   7:{label:'Schlüsselverwaltung', path:'/gebrauchsgut/schluessel'},
