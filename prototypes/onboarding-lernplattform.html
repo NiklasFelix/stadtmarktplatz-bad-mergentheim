@@ -643,6 +643,7 @@ p.page-sub{color:var(--gray);font-size:14px;margin-bottom:28px}
         </div>
         <div class="profile-menu-actions">
           <button class="btn btn-primary" style="width:100%" onclick="saveProfile()">Änderungen speichern</button>
+          <button class="btn btn-outline" style="width:100%" onclick="bookAppointment()">Persönlichen Termin vereinbaren</button>
           <button class="profile-logout" onclick="logoutProfile()">Abmelden</button>
         </div>
       </div>
@@ -1327,15 +1328,10 @@ const DASHBOARD_WIDGETS = {
       ${rf.cards.map(c=>`<div class="stat-card" ${c.link?`style="cursor:pointer" onclick="showView('${c.link}')"`:''}><div class="stat-label">${c.label}</div><div class="stat-val" style="font-size:18px">${c.val}</div><div class="stat-sub">${c.sub}</div></div>`).join('')}
     </div>`; } },
   recos: { title:'Empfohlen für Ihre Rolle', render: () => `
-    <div class="reco-grid">${(ROLE_RECOS[state.role]||[]).map(r=>`<div class="reco-card"><div class="reco-tag">${r.tag}</div><h4>${r.t}</h4><p>${r.d}</p></div>`).join('')}</div>` },
-  appointment: { title:'Persönlicher Termin', render: () => `
-    <div class="context-note" style="margin-bottom:0">
-      <span><strong>Ergänzung, kein Ersatz:</strong> Diese Plattform ergänzt Ihre persönliche Erstschulung bei SPRÜGEL. Eignen Sie sich hier die Grundlagen selbstständig an – Ihr persönlicher Ansprechpartner konzentriert sich im gemeinsamen Termin dann gezielt auf Ihre individuellen Fragen.</span>
-      <button class="context-note-btn" onclick="bookAppointment()">Persönlichen Termin vereinbaren</button>
-    </div>` }
+    <div class="reco-grid">${(ROLE_RECOS[state.role]||[]).map(r=>`<div class="reco-card"><div class="reco-tag">${r.tag}</div><h4>${r.t}</h4><p>${r.d}</p></div>`).join('')}</div>` }
 };
-const DEFAULT_WIDGET_ORDER = ['stats','phases','gaps','updates','rolefocus','recos','appointment'];
-const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:false, gaps:false, updates:false, rolefocus:true, recos:true, appointment:true};
+const DEFAULT_WIDGET_ORDER = ['stats','phases','gaps','updates','rolefocus','recos'];
+const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:false, gaps:false, updates:false, rolefocus:true, recos:true};
 
 function loadDashboardPrefs(){
   try{
