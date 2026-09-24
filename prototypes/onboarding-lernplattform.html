@@ -964,6 +964,98 @@ p.page-sub{font-size:15.5px;margin-bottom:32px}
   .breadcrumb{display:none}
   .hdr-logo .logo-sub{display:none}
 }
+/* ===== DESIGN 3.0 · Hell & klar ===== */
+:root{--bg:#F5F6F3;--line:#E4E7E0;--border:#E4E7E0;--ink:#1D2327;--gray:#4E5860;--shadow:0 1px 2px rgba(29,35,39,.04),0 4px 16px -8px rgba(29,35,39,.10);--shadow-lg:0 18px 40px -18px rgba(29,35,39,.25)}
+body{letter-spacing:.005em}
+h1,h2,h3,h4,h5,.page-title,.md-title-row h2{font-weight:700;letter-spacing:-.01em}
+h1.page-title{font-size:30px}
+/* Seitenleiste hell */
+.sidebar{background:#fff;border-right:1px solid var(--line);padding:20px 14px}
+.nav-item{color:var(--ink);font-weight:500;font-size:15px;border-radius:10px}
+.nav-item svg{color:#7A858D}
+.nav-item:hover{background:var(--bg);color:var(--ink)}
+.nav-item:hover svg{color:var(--green-dark)}
+.nav-item.active{background:var(--green-light);color:var(--green-dark);font-weight:600}
+.nav-item.active svg{color:var(--green-dark)}
+.nav-item.active::before{left:-14px;background:var(--green-dark)}
+.nav-sub-item{color:var(--gray)}
+.nav-sub-item:hover{background:var(--bg);color:var(--ink)}
+.status-dot{background:#CDD2C8}
+.sidebar-progress{background:var(--bg);border:1px solid var(--line)}
+.sp-label{color:var(--gray)}
+.sp-track{background:#E3E7DC}
+.sp-fill{background:var(--green);box-shadow:none}
+.sp-text{color:var(--ink)}
+/* Buttons: Grün statt Schwarz */
+.btn-primary,.mc-btn,.template-callout-btn,.coach-btn,.status-overview-btn{background:var(--green-dark);color:#fff;border-radius:10px;font-weight:600}
+.btn-primary:hover,.mc-btn:hover,.template-callout-btn:hover,.coach-btn:hover,.status-overview-btn:hover{background:#4E5F2A;color:#fff;box-shadow:0 8px 18px -10px rgba(94,114,51,.7)}
+.coach-btn svg{color:#fff}
+.btn-outline{background:#fff;border:1.5px solid var(--line);color:var(--ink);font-weight:600}
+.btn-outline:hover{border-color:var(--green);color:var(--green-dark)}
+/* Karten */
+.stat-card,.module-card,.reco-card,.gap-card,.milestone-card,.module-detail-header,.feature-card,.quiz-q,.quiz-result,.kb-card,.kb-article,.bp-card,.update-item,.cert-gate,.team-row,.dash-widget,.gap-empty{border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.module-card:hover,.kb-card:hover,.bp-card:hover{transform:translateY(-3px);border-color:var(--green-mid);box-shadow:var(--shadow-lg)}
+/* Lernmodule */
+.modules-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.module-card{padding:22px;gap:0}
+.mc-top{margin-bottom:18px}
+.mc-num{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:12px;background:var(--green-light);color:var(--green-dark);font-size:16px;font-weight:700}
+.module-card:hover .mc-num{background:var(--green);color:#fff}
+.mc-badge{font-size:12px;font-weight:600;letter-spacing:.02em;text-transform:none;padding:4px 10px}
+.mc-badge.open,.mc-badge.locked{background:var(--bg);color:var(--gray);border:1px solid var(--line)}
+.mc-badge-prio{background:var(--amber-soft);color:var(--amber)}
+.mc-title{font-size:17px;font-weight:700;line-height:1.3}
+.mc-time{font-size:14px;color:var(--gray);margin-bottom:18px}
+.mc-track{height:6px;background:#EAEDE5;margin-bottom:18px}
+.mc-btn{background:transparent;color:var(--green-dark);border:1.5px solid var(--green-mid);padding:10px;font-size:15px}
+.module-card:hover .mc-btn,.mc-btn:hover{background:var(--green-dark);border-color:var(--green-dark);color:#fff}
+/* Moduldetail */
+.module-detail-header{padding:26px 30px;border-top:4px solid var(--green)}
+.md-title-row h2{font-size:28px}
+.phase-badge{background:var(--green-light);color:var(--green-dark);text-transform:none;letter-spacing:.02em;font-size:13px}
+.tab-bar{display:inline-flex;gap:4px;padding:5px;background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:28px;flex-wrap:wrap;max-width:100%}
+.tab-btn{padding:10px 18px;border-radius:10px;font-size:15px;font-weight:500;color:var(--gray)}
+.tab-btn::after{display:none}
+.tab-btn:hover{background:var(--bg);color:var(--ink)}
+.tab-btn.active{background:var(--green-dark);color:#fff;font-weight:600}
+.video-placeholder{border-radius:18px;height:300px}
+.key-points{max-width:760px}
+.key-points li{font-size:16px;line-height:1.65;margin-bottom:12px}
+.key-points li::before{width:8px;height:8px;border-radius:2px;margin-top:9px}
+.practice-callout,.insight-callout{background:var(--green-light);border:1px solid var(--green-mid);border-radius:14px}
+.quiz-opt{border-radius:10px;font-size:15px;padding:12px 16px;background:#fff}
+.quiz-opt:hover{border-color:var(--green);background:var(--green-light)}
+/* Lernpfad-Karten */
+.milestone-card{border-radius:14px}
+.milestone-gist li{background:var(--green-light);border-color:transparent;color:var(--green-dark)}
+.video-placeholder{background:linear-gradient(135deg,#E9EFDB,#F7F9F2 60%,#EEF3E2);border:1px solid var(--green-mid)}
+.video-placeholder::before{display:none}
+.video-placeholder span{color:var(--gray)}
+.video-manage-btn{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.video-manage-btn:hover{background:var(--green-light)}
+.play-circle svg{color:#fff}
+.play-circle{background:var(--green-dark);box-shadow:0 0 0 10px rgba(142,167,82,.18),0 0 0 22px rgba(142,167,82,.08)}
+.hero,.roadmap-side{background:linear-gradient(135deg,#fff 0%,#F6F9EF 55%,#E8F0D6 100%);color:var(--ink);border:1px solid var(--green-mid);box-shadow:var(--shadow)}
+.hero::before,.roadmap-side::before{display:none}
+.hero::after,.roadmap-side::after{background:radial-gradient(circle,rgba(142,167,82,.22),rgba(142,167,82,0) 62%)}
+.hero .page-title{color:var(--ink);font-size:38px}
+.hero .page-sub,.hero .status-overview-text p{color:var(--gray)}
+.hero .status-overview-text strong,.hero .status-value{color:var(--ink)}
+.hero .status-label{color:var(--gray)}
+.hero .status-overview-grid{border-color:var(--line)}
+.hero .status-overview-grid>div+div{border-color:var(--line)}
+.hero-eyebrow{color:var(--green-dark)}
+.hero .status-overview-btn{background:var(--green-dark);color:#fff}
+.hero .status-overview-btn:hover{background:#4E5F2A;color:#fff}
+.hero .ring-track,.roadmap-side .ring-track{stroke:#E3E9D6}
+.hero .ring-num,.roadmap-side .ring-num,.roadmap-side-count span,.roadmap-side .roadmap-note strong{color:var(--ink)}
+.hero .ring-unit,.roadmap-side .ring-unit{color:var(--green-dark)}
+.hero .ring-caption,.roadmap-side .ring-caption,.roadmap-side-count{color:var(--gray)}
+.roadmap-side .roadmap-note,.roadmap-side .adaptive-log{background:#fff;border-color:var(--line);color:var(--gray)}
+.roadmap-side .log-item{color:var(--gray);border-color:var(--line)}
+.video-placeholder span{padding:0 16px;text-align:center}
+@media(max-width:640px){.tab-bar{display:grid;grid-template-columns:1fr 1fr}.hero .page-title{font-size:28px}}
+@media(max-width:640px){.tab-bar{display:grid;grid-template-columns:1fr 1fr;width:100%}.tab-btn{flex:1 1 auto;text-align:center;padding:9px 10px;font-size:14px}h1.page-title{font-size:25px}}
 </style>
 </head>
 <body>
