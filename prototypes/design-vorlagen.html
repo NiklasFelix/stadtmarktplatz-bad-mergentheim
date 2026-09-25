@@ -289,6 +289,127 @@ section.variant{margin-bottom:56px}
 .vh .b-done{background:var(--gl);color:var(--gd)}.vh .b-prog{background:#FBF1DC;color:#9A6610}.vh .b-open{background:#F1F2EE;color:var(--gray)}
 @media(max-width:980px){.vf .row{grid-template-columns:50px 1fr 110px}.vf .row .bar,.vf .row .st{display:none}.vh .tr{grid-template-columns:30px 1fr 80px}.vh .tr>:nth-child(3),.vh .tr>:nth-child(4){display:none}.vh .kpis{grid-template-columns:1fr 1fr}.vh .kpi:nth-child(3){border-left:0}.vh .kpi:nth-child(n+3){border-top:1px solid #EDEFEA}}
 @media(max-width:760px){.vh .app{grid-template-columns:1fr}.vh header,.vh .main{grid-column:1}.vh .phases{flex-direction:column}.vf .hero h3{font-size:34px}.vf .bigpct{text-align:left;font-size:64px}.vf .row .go{display:none}.vf .row{grid-template-columns:44px 1fr}}
+/* ---------- I · Lager-Etikett ---------- */
+.vi .app{background:#EDEEE9}
+.vi header{background:var(--graph);color:#fff;border-bottom:4px solid var(--g)}
+.vi .crumb{color:rgba(255,255,255,.6);font-family:"Courier New",monospace}.vi .crumb b{color:#fff}
+.vi .av{background:var(--g);color:var(--graph);border-radius:6px}
+.vi .side{background:#fff;border-right:2px dashed #C8CCC2}
+.vi .nav{color:var(--ink);border-radius:4px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.vi .nav svg{color:var(--gray)}
+.vi .nav.on{background:var(--graph);color:#fff}.vi .nav.on svg{color:var(--g)}
+.vi .hero{background:#fff;border:2px solid var(--graph);border-radius:6px;box-shadow:6px 6px 0 var(--graph)}
+.vi .hero::before{content:'';position:absolute;right:0;top:0;bottom:0;width:10px;background:repeating-linear-gradient(0deg,var(--graph) 0 3px,transparent 3px 5px,var(--graph) 5px 6px,transparent 6px 10px)}
+.vi .eyebrow{font-family:"Courier New",monospace;color:var(--gd)}.vi .hero p{color:var(--gray)}
+.vi .cta{background:var(--g);color:var(--graph);border-radius:4px;border:2px solid var(--graph);box-shadow:3px 3px 0 var(--graph)}
+.vi .cta:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--graph)}
+.vi .ring .trk{stroke:#E6E8E2}.vi .ring .fill{stroke:var(--graph);stroke-linecap:butt}.vi .ring small{color:var(--gray)}
+.vi .sec span{color:var(--gray);font-family:"Courier New",monospace}
+.vi .card{background:#fff;border:2px solid var(--graph);border-radius:6px}
+.vi .card:hover{box-shadow:5px 5px 0 var(--g)}
+.vi .num{font-family:"Courier New",monospace;font-size:13px;background:var(--graph);color:#fff;padding:5px 9px;border-radius:3px}
+.vi .num{white-space:nowrap}.vi .num::before{content:'Nr. '}.vi .badge{font-size:9.5px;padding:4px 6px}.vi .num{padding:5px 7px;font-size:12px}.vi .badge{white-space:nowrap}.vi .ctop{gap:6px}
+.vi .meta{color:var(--gray);font-family:"Courier New",monospace}
+.vi .bar{background:#E6E8E2;border-radius:0;height:8px}.vi .bar i{border-radius:0;background:repeating-linear-gradient(90deg,var(--g) 0 8px,#7D9444 8px 10px)}
+.vi .cbtn{border:2px solid var(--graph);border-radius:4px;color:var(--graph);text-transform:uppercase;letter-spacing:.05em;font-size:12.5px}
+.vi .card:hover .cbtn{background:var(--graph);color:#fff}
+.vi .badge{border-radius:3px;text-transform:uppercase;font-size:10.5px;letter-spacing:.05em}
+.vi .b-done{background:var(--g);color:var(--graph)}.vi .b-prog{background:#F2C14E;color:var(--graph)}.vi .b-open{background:#E6E8E2;color:var(--gray)}
+
+/* ---------- J · Farbverlauf Bold ---------- */
+.vj .app{background:#F6F7F4}
+.vj header{background:transparent;position:relative;z-index:2;color:#fff}
+.vj .app{position:relative}
+.vj .app::before{content:'';position:absolute;left:0;right:0;top:0;height:330px;background:linear-gradient(120deg,#3F5220 0%,#5E7233 35%,#8EA752 70%,#6FA99A 100%);z-index:0}
+.vj header .logo{background:rgba(0,0,0,.35);padding:6px 12px;border-radius:12px}
+.vj .crumb{color:rgba(255,255,255,.75)}.vj .crumb b{color:#fff}
+.vj .av{background:#fff;color:var(--gd)}
+.vj .side,.vj .main{position:relative;z-index:1}
+.vj .side{background:transparent}
+.vj .nav{color:rgba(255,255,255,.85)}.vj .nav svg{color:rgba(255,255,255,.7)}
+.vj .side{background:linear-gradient(180deg,transparent 0 272px,#3F5220 272px)!important}
+.vj .nav.on{background:rgba(255,255,255,.2);color:#fff;font-weight:700;backdrop-filter:blur(6px)}
+.vj .hero{background:transparent;color:#fff;padding:12px 0 40px}
+.vj .eyebrow{color:rgba(255,255,255,.8)}.vj .hero h3{font-size:38px}.vj .hero p{color:rgba(255,255,255,.85)}
+.vj .cta{background:#fff;color:var(--gd);border-radius:999px;box-shadow:0 12px 26px -10px rgba(0,0,0,.4)}
+.vj .ring{background:rgba(255,255,255,.14);border-radius:50%;backdrop-filter:blur(8px)}
+.vj .ring .trk{stroke:rgba(255,255,255,.2)}.vj .ring .fill{stroke:#fff}.vj .ring small{color:rgba(255,255,255,.8)}
+.vj .sec{color:var(--ink)}.vj .sec span{color:var(--gray)}
+.vj .card{background:#fff;border-radius:20px;box-shadow:0 24px 50px -24px rgba(40,60,20,.45)}
+.vj .num{font-size:13px;color:#fff;background:linear-gradient(135deg,#8EA752,#6FA99A);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.vj .meta{color:var(--gray)}
+.vj .bar{background:#EEF0EA}.vj .bar i{background:linear-gradient(90deg,#5E7233,#8EA752,#6FA99A)}
+.vj .cbtn{background:linear-gradient(120deg,#5E7233,#8EA752);color:#fff;border-radius:999px}
+.vj .b-done{background:var(--gl);color:var(--gd)}.vj .b-prog{background:#FBF1DC;color:#9A6610}.vj .b-open{background:#F1F2EE;color:var(--gray)}
+
+/* ---------- K · Lernreise ---------- */
+.vk .app{background:#fff}
+.vk header{background:var(--graph)}
+.vk .crumb{color:rgba(255,255,255,.6)}.vk .crumb b{color:#fff}
+.vk .av{background:var(--g);color:var(--graph)}
+.vk .side{background:#F7F8F4;border-right:1px solid var(--line)}
+.vk .nav{color:var(--ink)}.vk .nav svg{color:var(--gray)}
+.vk .nav.on{background:#fff;color:var(--gd);font-weight:700;box-shadow:0 2px 8px -4px rgba(0,0,0,.2)}
+.vk .hero{padding:0;margin-bottom:18px;grid-template-columns:1fr auto}
+.vk .eyebrow{color:var(--gd)}.vk .hero p{color:var(--gray);margin-bottom:0}
+.vk .hero .cta{background:var(--gd);color:#fff}
+.vk .ring{display:none}
+.vk .journey{position:relative;display:grid;grid-template-columns:repeat(8,1fr);gap:0;padding:30px 10px 10px;margin-bottom:26px;background:linear-gradient(180deg,#F4F8EB,#fff);border:1px solid var(--gm);border-radius:20px}
+.vk .path{position:absolute;left:calc(6.25% + 10px);right:calc(6.25% + 10px);top:52px;height:6px;border-radius:6px;background:#E6EADF}
+.vk .path i{display:block;height:100%;width:35%;border-radius:6px;background:linear-gradient(90deg,#5E7233,#8EA752);transform-origin:left;animation:grow 1.6s cubic-bezier(.2,.7,.2,1) .3s backwards}
+.vk .st{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:0 4px}
+.vk .dot{width:50px;height:50px;border-radius:50%;background:#fff;border:3px solid #E0E4D8;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--gray);z-index:1}
+.vk .st.done .dot{background:var(--g);border-color:var(--g);color:#fff}
+.vk .st.now .dot{border-color:var(--g);color:var(--gd);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(142,167,82,.45)}50%{box-shadow:0 0 0 12px rgba(142,167,82,0)}}
+.vk .st span{font-size:12px;line-height:1.3;color:var(--ink)}
+.vk .st small{font-size:11px;color:var(--gray)}
+.vk .ph{position:absolute;top:-22px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gd)}
+.vk .next{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding:20px 22px;border-radius:18px;background:var(--graph);color:#fff}
+.vk .next .big{width:56px;height:56px;border-radius:16px;background:var(--g);color:var(--graph);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px}
+.vk .next small{color:#A6BF68;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.vk .next h5{font-size:18px;margin:4px 0}
+.vk .next p{font-size:13px;color:rgba(255,255,255,.65)}
+.vk .next .bar{background:rgba(255,255,255,.12);margin-top:10px;max-width:340px}.vk .next .bar i{background:#A6BF68}
+.vk .next .cta{background:#A6BF68;color:var(--graph)}
+
+/* ---------- L · Minimal Mono ---------- */
+.vl .app{background:#fff}
+.vl header{background:#fff;border-bottom:1px solid #EEE}
+.vl header .logo{background:#111;padding:6px 12px;border-radius:8px}
+.vl .crumb{color:#999}.vl .crumb b{color:#111}
+.vl .av{background:#111;color:#fff}
+.vl .side{background:#fff;padding-top:26px}
+.vl .nav{color:#888;font-size:14px}.vl .nav svg{color:#bbb}
+.vl .nav.on{color:#111;font-weight:700}.vl .nav.on svg{color:var(--g)}
+.vl .nav.on::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--g);margin-left:auto}
+.vl .main{padding:40px 44px}
+.vl .hero{padding:0 0 40px;border-radius:0}
+.vl .eyebrow{color:#999;font-weight:400;letter-spacing:.2em}
+.vl .hero h3{font-size:40px;font-weight:400;letter-spacing:-.02em}
+.vl .hero h3 b{font-weight:700}
+.vl .hero p{color:#777}
+.vl .cta{background:#111;color:#fff;border-radius:999px;padding:12px 24px}
+.vl .cta:hover{background:var(--gd)}
+.vl .ring{width:120px;height:120px}.vl .ring circle{stroke-width:3}
+.vl .ring .trk{stroke:#EEE}.vl .ring .fill{stroke:var(--g)}.vl .ring small{color:#999}.vl .ring .lbl strong{font-weight:400;font-size:28px}
+.vl .sec{margin-bottom:18px}.vl .sec h4{font-weight:400;font-size:14px;letter-spacing:.2em;text-transform:uppercase;color:#999}.vl .sec span{color:#bbb}
+.vl .cards{gap:0;border-top:1px solid #EEE}
+.vl .card{border-radius:0;border-right:1px solid #EEE;padding:22px 20px}
+.vl .card:last-child{border-right:0}
+.vl .card:hover{transform:none;background:#FAFBF7}
+.vl .num{font-size:12px;color:#bbb;font-weight:400}
+.vl .card h5{font-weight:700}
+.vl .meta{color:#999}
+.vl .bar{background:#F1F1F1;height:2px}.vl .bar i{background:#111}
+.vl .card.done .bar i{background:var(--g)}
+.vl .cbtn{text-align:left;padding:0;color:#111;font-size:13px}
+.vl .cbtn::after{content:' →';transition:margin .2s}
+.vl .card:hover .cbtn::after{margin-left:6px}
+.vl .badge{background:none;padding:0;font-weight:400;color:#999}
+.vl .b-done{color:var(--gd)}.vl .b-prog{color:#9A6610}
+@media(max-width:980px){.vk .journey{grid-template-columns:repeat(4,1fr);row-gap:26px}.vk .path{display:none}.vl .card{border-bottom:1px solid #EEE}}
+@media(max-width:760px){.vk .next{grid-template-columns:1fr}.vl .main{padding:24px 16px}.vl .hero h3{font-size:30px}.vj .app::before{height:420px}}
 
 @media(max-width:980px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.vd .bento{grid-template-columns:1fr 1fr}.vd .hero{grid-column:1/-1;grid-row:auto}}
 @media(max-width:760px){.app{grid-template-columns:1fr}.side{display:none}.app .crumb,.vd .pills{display:none}.hero{grid-template-columns:1fr;padding:22px}.hero h3{font-size:24px}.main{padding:18px 16px}}
@@ -299,9 +420,9 @@ section.variant{margin-bottom:56px}
 <div class="wrap">
   <div class="intro">
     <h1>Design-Vorlagen · OrKan Cloud Training-Plattform</h1>
-    <p>Acht Richtungen für denselben Bildschirm (Dashboard mit Lernfortschritt und Lernmodulen). Inhalte und Funktionen bleiben bei jeder Vorlage gleich – es ändert sich nur das Aussehen. Alle in Arial und in den OrKan-Farben.</p>
+    <p>Zwölf Richtungen für denselben Bildschirm (Dashboard mit Lernfortschritt und Lernmodulen). Inhalte und Funktionen bleiben bei jeder Vorlage gleich – es ändert sich nur das Aussehen. Alle in Arial und in den OrKan-Farben.</p>
   </div>
-  <nav class="jump"><a href="#A">A · Hell &amp; Klar</a><a href="#B">B · Dark Premium</a><a href="#C">C · OrKan Grün</a><a href="#D">D · Bento Modern</a><a href="#E">E · Aurora Glas</a><a href="#F">F · Editorial</a><a href="#G">G · Soft 3D</a><a href="#H">H · Kompakt Pro</a></nav>
+  <nav class="jump"><a href="#A">A · Hell &amp; Klar</a><a href="#B">B · Dark Premium</a><a href="#C">C · OrKan Grün</a><a href="#D">D · Bento Modern</a><a href="#E">E · Aurora Glas</a><a href="#F">F · Editorial</a><a href="#G">G · Soft 3D</a><a href="#H">H · Kompakt Pro</a><a href="#I">I · Lager-Etikett</a><a href="#J">J · Farbverlauf Bold</a><a href="#K">K · Lernreise</a><a href="#L">L · Minimal Mono</a></nav>
   <div id="variants"></div>
 </div>
 
@@ -315,7 +436,11 @@ const V = [
  {id:'E',cls:'ve',name:'Aurora Glas',desc:'Heller Hintergrund mit sanften Farbverläufen in Grün, Türkis und Sand, darüber milchglasartige Karten. Leicht, luftig und sehr modern.',tags:['hell','Farbverlauf','Glas-Effekt']},
  {id:'F',cls:'vf',name:'Editorial',desc:'Wie ein hochwertiges Magazin: große Typografie, klare schwarze Linien, riesige Prozentzahl, Module als Liste statt Karten. Elegant und ungewöhnlich.',tags:['typografisch','minimalistisch','elegant']},
  {id:'G',cls:'vg',name:'Soft 3D',desc:'Weiche, plastisch wirkende Flächen mit Licht und Schatten – Buttons und Balken wirken wie eingedrückt. Freundlich und haptisch.',tags:['weich','plastisch','freundlich']},
- {id:'H',cls:'vh',name:'Kompakt Pro',desc:'Profi-Software-Look (wie Linear oder Stripe): schmale Icon-Leiste, Kennzahlen-Leiste, Phasen-Zeitstrahl und Module als Tabelle. Viel Information auf einen Blick.',tags:['professionell','kompakt','datenstark']}
+ {id:'H',cls:'vh',name:'Kompakt Pro',desc:'Profi-Software-Look (wie Linear oder Stripe): schmale Icon-Leiste, Kennzahlen-Leiste, Phasen-Zeitstrahl und Module als Tabelle. Viel Information auf einen Blick.',tags:['professionell','kompakt','datenstark']},
+ {id:'I',cls:'vi',name:'Lager-Etikett',desc:'Greift die Welt des Kunden auf: Karten wie Regaletiketten mit Barcode-Streifen, Schreibmaschinen-Schrift für Nummern, kräftige Rahmen. Unverwechselbar und passend zu Lager & Handwerk.',tags:['branchennah','markant','kantig']},
+ {id:'J',cls:'vj',name:'Farbverlauf Bold',desc:'Ein großer, kräftiger Grün-Farbverlauf oben, die weißen Karten schweben darüber. Wirkt dynamisch und energiegeladen – wie eine moderne Start-up-App.',tags:['kräftig','dynamisch','Wow-Effekt']},
+ {id:'K',cls:'vk',name:'Lernreise',desc:'Der Lernpfad steht im Mittelpunkt: alle 8 Module als Stationen auf einer Strecke, die sich füllt, und das nächste Modul groß darunter. Motiviert zum Weitermachen.',tags:['motivierend','spielerisch','übersichtlich']},
+ {id:'L',cls:'vl',name:'Minimal Mono',desc:'Fast nur Schwarz und Weiß, sehr viel Weißraum, dünne Linien, Grün nur als kleiner Akzent. Wirkt ruhig, edel und hochwertig – wie Apple- oder Designer-Webseiten.',tags:['minimalistisch','edel','ruhig']}
 ];
 const MODS=[
  {t:'Grundlagen der OrKan Cloud',m:12,s:'done',p:100},
@@ -328,7 +453,7 @@ const BT={done:'Wiederholen',prog:'Fortsetzen',open:'Starten'};
 const ic=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
 const NAV=[['Dashboard','<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>'],['Mein Lernpfad','<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h6a4 4 0 0 0 0-8h-4a4 4 0 0 1 0-8h6"/>'],['Lernmodule','<path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/>'],['Wissensdatenbank','<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/>'],['Best Practices','<path d="M12 2l3 7h7l-5.5 4.5 2 7.5-6.5-4.5L5.5 21l2-7.5L2 9h7z"/>'],['Zertifikate','<circle cx="12" cy="9" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/>']];
 const ring=`<div class="ring"><svg viewBox="0 0 132 132"><defs><linearGradient id="auroraGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8EA752"/><stop offset="1" stop-color="#6FA99A"/></linearGradient></defs><circle class="trk" cx="66" cy="66" r="56"/><circle class="fill" cx="66" cy="66" r="56"/></svg><div class="lbl"><strong>38%</strong><small>geschafft</small></div></div>`;
-const heroInner=`<div><div class="eyebrow">OrKan Cloud · Onboarding</div><h3>Guten Tag, Max Muster.</h3><p>Sie sind in Phase 2 „Prozesse &amp; Integration". Als Nächstes: Artikelimport und Lieferantenanbindung.</p><button class="cta">Weiterlernen →</button></div>`;
+const heroInner=`<div><div class="eyebrow">OrKan Cloud · Onboarding</div><h3>Guten Tag, <b>Max Muster.</b></h3><p>Sie sind in Phase 2 „Prozesse &amp; Integration". Als Nächstes: Artikelimport und Lieferantenanbindung.</p><button class="cta">Weiterlernen →</button></div>`;
 function cards(){return MODS.map((m,i)=>`<div class="card ${m.s}"><div class="ctop"><span class="num">0${i+1}</span><span class="badge b-${m.s}">${BL[m.s]}</span></div><h5>${m.t}</h5><div class="meta">${m.m} Min. · Phase ${i<2?1:2}</div><div class="bar"><i style="width:${m.p}%"></i></div><div class="cbtn">${BT[m.s]}</div></div>`).join('')}
 function app(v){
   const logo = `<span class="logo"><img src="${LOGO}" alt="OrKan System"></span>`;
@@ -336,6 +461,12 @@ function app(v){
    ? `<header>${logo}<div class="pills">${NAV.slice(0,5).map((n,i)=>`<span class="${i==0?'on':''}">${n[0]}</span>`).join('')}</div><div class="sp"></div><div class="av">MM</div></header>`
    : `<header>${v.id==='H'?'':logo}<span class="crumb">Onboarding / <b>Dashboard</b></span><div class="sp"></div><div class="av">MM</div></header>`;
   const side = `<aside class="side">${v.id==='H'?`<div class="rlogo"><img src="${LOGO}" alt="OrKan System"></div>`:''}${NAV.map((n,i)=>`<div class="nav ${i==0?'on':''}" data-t="${n[0]}">${ic(n[1])}${n[0]}</div>`).join('')}</aside>`;
+  if(v.id==='K'){
+    const ALL=['Grundlagen der OrKan Cloud','Artikel- & Lagerplatzverwaltung','Artikelimport & Lieferanten','Zwei-Etiketten-System','Wareneingang & Lagerbestand','Maschinen\u00adverwaltung','Schlüssel\u00adverwaltung','Projekte & Baustellen'];
+    const PH={0:'Phase 1',2:'Phase 2',5:'Phase 3'};
+    const st=ALL.map((t,i)=>`<div class="st ${i<2?'done':i==2?'now':''}">${PH[i]?`<span class="ph">${PH[i]}</span>`:''}<div class="dot">${i<2?'✓':i+1}</div><span>${t}</span></div>`).join('');
+    return `<div class="app">${head}${side}<main class="main"><div class="hero"><div><div class="eyebrow">Ihre Lernreise · 3 von 8 Stationen</div><h3>Guten Tag, Max Muster.</h3><p>Sie sind in Phase 2 „Prozesse &amp; Integration".</p></div></div><div class="journey"><div class="path"><i></i></div>${st}</div><div class="next"><div class="big">03</div><div><small>Als Nächstes</small><h5>Artikelimport und Lieferantenanbindung</h5><p>18 Min. · Excel-Import, Lieferanten-Shop, DATANORM</p><div class="bar"><i style="width:60%"></i></div></div><button class="cta">Fortsetzen →</button></div></main></div>`;
+  }
   if(v.id==='F'){
     const rows=MODS.map((m,i)=>`<div class="row ${m.s}"><span class="n">0${i+1}</span><div><h5>${m.t}</h5><div class="meta">${m.m} Min. · Phase ${i<2?1:2}</div></div><div class="bar"><i style="width:${m.p}%"></i></div><span class="st">${BL[m.s]}</span><span class="go">${BT[m.s]} →</span></div>`).join('');
     return `<div class="app">${head}${side}<main class="main"><div class="hero"><div><div class="eyebrow">OrKan Cloud · Onboarding</div><h3>Guten Tag,<br><em>Max Muster.</em></h3><p>Sie sind in Phase 2 „Prozesse &amp; Integration". Als Nächstes: Artikelimport und Lieferantenanbindung.</p><button class="cta">Weiterlernen →</button></div><div class="bigpct">38<span>%</span><small>des Onboardings geschafft</small></div></div><div class="sec"><h4>Ihre Lernmodule</h4><span>8 Module · 3 Phasen</span></div><div class="rows">${rows}</div></main></div>`;
