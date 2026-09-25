@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OrKan Cloud – KI-Support-Assistent</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --dark:#3D4044;--dark-bg:#1F2428;--dark2:#2E3438;--dark3:#262B2F;
+  --green:#8EA752;--green-dark:#6E8440;--green-light:#F1F6E8;--green-mid:#D4E4B0;
+  --white:#FFFFFF;--bg:#F0F2EE;--gray:#6B7580;--gray-light:#E8EAE5;
+  --radius:14px;--radius-lg:20px;--shadow:0 4px 24px rgba(31,36,40,.10);
+  --shadow-lg:0 12px 48px rgba(31,36,40,.16);
+  --transition:all .28s cubic-bezier(.4,0,.2,1);
+  --spring:all .35s cubic-bezier(.34,1.56,.64,1);
+}
+html,body{height:100%;font-family:'Inter',sans-serif;color:var(--dark);background:var(--bg);overflow:hidden}
+
+/* ─── ANIMATED BACKGROUND ─── */
+.bg-mesh{position:fixed;inset:0;z-index:0;
+  background:linear-gradient(135deg,#e8eed8 0%,#f0f2ee 30%,#dde8c8 60%,#f4f5f0 100%);
+  background-size:400% 400%;animation:gradShift 18s ease infinite}
+@keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:orbFloat 12s ease-in-out infinite}
+.orb1{width:420px;height:420px;background:rgba(142,167,82,.18);top:-120px;left:-80px;animation-delay:0s}
+.orb2{width:300px;height:300px;background:rgba(31,36,40,.08);bottom:-60px;right:10%;animation-delay:-5s}
+.orb3{width:250px;height:250px;background:rgba(142,167,82,.12);top:40%;right:-60px;animation-delay:-9s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.04)}66%{transform:translate(-15px,25px) scale(.97)}}
+
+/* ─── ONBOARDING OVERLAY ─── */
+#onboarding{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.onb-card{background:rgba(255,255,255,.88);backdrop-filter:blur(24px) saturate(1.8);border:1px solid rgba(255,255,255,.7);border-radius:24px;padding:52px 48px;max-width:480px;width:90%;box-shadow:0 24px 80px rgba(31,36,40,.18);text-align:center;animation:cardIn .6s cubic-bezier(.34,1.2,.64,1)}
+@keyframes cardIn{from{opacity:0;transform:translateY(32px) scale(.96)}to{opacity:1;transform:none}}
+.onb-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:32px}
+.onb-icon svg path,.onb-icon svg line{stroke:var(--green)}
+.onb-texts .logo-name{font-size:22px;font-weight:800;color:var(--dark-bg);letter-spacing:-.5px}
+.onb-texts .logo-lines{display:flex;flex-direction:column;gap:2px;margin:6px 0 4px}
+.onb-texts .logo-lines span{height:2px;background:var(--green)}
+.onb-texts .logo-lines span:nth-child(1){width:100%}
+.onb-texts .logo-lines span:nth-child(2){width:72%;margin-left:10px}
+.onb-texts .logo-lines span:nth-child(3){width:48%;margin-left:20px}
+.onb-texts .logo-sub{display:block;font-size:10px;font-weight:700;color:var(--green);letter-spacing:4px;margin-top:2px;margin-left:20px}
+.onb-card h1{font-size:26px;font-weight:800;color:var(--dark-bg);letter-spacing:-.5px;margin-bottom:8px}
+.onb-card p{color:var(--gray);font-size:14.5px;line-height:1.6;margin-bottom:32px}
+.onb-fields{display:flex;flex-direction:column;gap:14px;margin-bottom:28px;text-align:left}
+.onb-fields label{font-size:12px;font-weight:600;color:var(--dark);letter-spacing:.3px;margin-bottom:4px;display:block}
+.onb-fields input{width:100%;padding:13px 16px;border:1.5px solid var(--gray-light);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:var(--transition);background:#fff}
+.onb-fields input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,167,82,.15)}
+.onb-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:var(--spring);letter-spacing:.2px}
+.onb-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 28px rgba(142,167,82,.4)}
+.onb-btn:active{transform:scale(.98)}
+.onb-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
+.onb-feat{background:var(--green-light);border-radius:10px;padding:12px 14px;text-align:left}
+.onb-feat .feat-title{font-size:12px;font-weight:700;color:var(--dark-bg)}
+.onb-feat .feat-desc{font-size:11px;color:var(--gray);margin-top:2px}
+
+/* ─── APP SHELL ─── */
+#app{position:relative;z-index:1;height:100vh;display:flex;flex-direction:column}
+
+/* ─── HEADER ─── */
+.app-header{background:rgba(31,36,40,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08);padding:0 28px;height:64px;display:flex;align-items:center;gap:20px;flex-shrink:0}
+.header-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.header-logo .logo-name{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.4px}
+.header-logo .logo-sub{display:block;font-size:9px;font-weight:700;color:var(--green);letter-spacing:4px;margin-top:-2px}
+.header-divider{width:1px;height:32px;background:rgba(255,255,255,.12)}
+.header-title{color:rgba(255,255,255,.9);font-size:14px;font-weight:600}
+.header-badge{background:rgba(142,167,82,.2);border:1px solid rgba(142,167,82,.4);color:var(--green);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.5px}
+.header-context{font-size:11.5px;color:rgba(255,255,255,.45);cursor:default}
+.header-availability{font-size:10.5px;font-weight:700;color:#4ade80;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);padding:4px 10px;border-radius:20px;cursor:default}
+.header-spacer{flex:1}
+.header-pilot{display:flex;align-items:center;gap:8px}
+.pilot-dot{width:8px;height:8px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{opacity:.8;box-shadow:0 0 0 6px rgba(74,222,128,0)}}
+.pilot-label{font-size:12px;color:rgba(255,255,255,.6);font-weight:500}
+.header-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff}
+.header-savings{display:flex;align-items:center;gap:6px;background:rgba(142,167,82,.15);border:1px solid rgba(142,167,82,.3);border-radius:20px;padding:5px 12px}
+.savings-label{font-size:11px;color:rgba(255,255,255,.6)}
+.savings-val{font-size:13px;font-weight:800;color:var(--green)}
+
+/* ─── MAIN CONTENT ─── */
+.main-content{flex:1;display:grid;grid-template-columns:280px 1fr 280px;gap:0;overflow:hidden}
+
+/* ─── LEFT SIDEBAR ─── */
+.sidebar-left{background:rgba(255,255,255,.72);backdrop-filter:blur(20px) saturate(1.6);border-right:1px solid rgba(255,255,255,.5);display:flex;flex-direction:column;overflow:hidden}
+.sidebar-header{padding:20px 20px 14px;border-bottom:1px solid var(--gray-light)}
+.sidebar-title{font-size:13px;font-weight:700;color:var(--dark-bg);letter-spacing:.3px;margin-bottom:10px}
+.search-wrap{position:relative}
+.search-wrap input{width:100%;padding:9px 12px 9px 34px;border:1.5px solid var(--gray-light);border-radius:9px;font-size:13px;font-family:'Inter',sans-serif;outline:none;background:#fff;transition:var(--transition)}
+.search-wrap input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,167,82,.12)}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--gray);display:flex}
+.search-icon svg{width:14px;height:14px}
+.categories-scroll{flex:1;overflow-y:auto;padding:12px 14px}
+.categories-scroll::-webkit-scrollbar{width:3px}
+.categories-scroll::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:2px}
+.category-block{margin-bottom:6px}
+.cat-header{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:var(--transition);user-select:none}
+.cat-header:hover{background:var(--green-light)}
+.cat-header.active{background:var(--green-light)}
+.cat-icon{width:28px;height:28px;border-radius:8px;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:var(--transition)}
+.cat-header.active .cat-icon{background:var(--green);filter:brightness(1.1)}
+.cat-name{font-size:12.5px;font-weight:600;color:var(--dark);flex:1}
+.cat-count{font-size:11px;font-weight:700;color:var(--gray);background:var(--gray-light);padding:2px 7px;border-radius:10px}
+.cat-arrow{font-size:10px;color:var(--gray);transition:transform .2s}
+.cat-header.active .cat-arrow{transform:rotate(90deg)}
+.cat-questions{display:none;flex-direction:column;gap:3px;padding:4px 0 4px 8px}
+.cat-questions.open{display:flex}
+.quick-q{padding:8px 12px;border-radius:8px;cursor:pointer;font-size:12px;color:var(--dark);transition:var(--transition);border-left:2px solid transparent;background:transparent}
+.quick-q:hover{background:var(--green-light);border-left-color:var(--green);color:var(--dark-bg);transform:translateX(2px)}
+
+/* ─── CHAT AREA ─── */
+.chat-area{display:flex;flex-direction:column;overflow:hidden;background:transparent}
+.chat-top{padding:16px 20px 12px;background:rgba(255,255,255,.5);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.4);flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
+.chat-top-info{display:flex;align-items:center;gap:10px}
+.ai-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--dark-bg),var(--dark2));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--green);letter-spacing:.5px;border:2px solid var(--green)}
+.ai-name{font-size:14px;font-weight:700;color:var(--dark-bg)}
+.ai-status{font-size:11.5px;color:var(--gray);display:flex;align-items:center;gap:4px}
+.ai-status::before{content:'';display:inline-block;width:6px;height:6px;background:#4ade80;border-radius:50%}
+.chat-actions{display:flex;gap:8px}
+.action-btn{padding:7px 14px;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;transition:var(--spring);border:none}
+.action-btn-ghost{background:rgba(255,255,255,.6);border:1px solid var(--gray-light);color:var(--dark)}
+.action-btn-ghost:hover{background:#fff;transform:translateY(-1px)}
+.action-btn-green{background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff}
+.action-btn-green:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(142,167,82,.35)}
+.messages-wrap{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
+.messages-wrap::-webkit-scrollbar{width:4px}
+.messages-wrap::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:2px}
+
+/* Message bubbles */
+.msg{display:flex;gap:10px;animation:msgIn .3s cubic-bezier(.34,1.2,.64,1)}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.msg.user{flex-direction:row-reverse}
+.msg-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.msg.bot .msg-avatar{background:linear-gradient(135deg,var(--dark-bg),var(--dark2));color:var(--green);border:1.5px solid var(--green)}
+.msg.user .msg-avatar{background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff}
+.msg-bubble{max-width:72%;padding:13px 16px;border-radius:16px;font-size:13.5px;line-height:1.6}
+.msg.bot .msg-bubble{background:rgba(255,255,255,.82);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.6);border-top-left-radius:4px;box-shadow:var(--shadow)}
+.msg.user .msg-bubble{background:linear-gradient(135deg,var(--dark-bg),var(--dark2));color:#fff;border-top-right-radius:4px}
+.msg-bubble h4{font-size:13px;font-weight:700;color:var(--dark-bg);margin-bottom:6px}
+.msg.user .msg-bubble h4{color:#fff}
+.msg-bubble ul{padding-left:16px;margin-top:4px}
+.msg-bubble ul li{margin-bottom:3px;font-size:13px}
+.msg-bubble code{background:var(--green-light);color:var(--green-dark);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px}
+.msg.user .msg-bubble code{background:rgba(142,167,82,.25);color:#a8d060}
+.msg-meta{margin-top:8px;display:flex;align-items:center;justify-content:space-between}
+.msg-time{font-size:10.5px;color:rgba(107,117,128,.7)}
+.msg-feedback{display:flex;gap:4px}
+.fb-btn{background:none;border:none;cursor:pointer;padding:3px 4px;border-radius:6px;transition:var(--spring);opacity:.5;color:var(--gray)}
+.fb-btn svg{width:14px;height:14px;display:block}
+.fb-btn:hover{opacity:1;transform:scale(1.2)}
+.fb-btn.active{opacity:1;color:var(--green-dark)}
+.escalation-card{background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(239,68,68,.04));border:1.5px solid rgba(239,68,68,.2);border-radius:12px;padding:14px 16px;margin-top:4px}
+.esc-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.esc-icon{font-size:16px}
+.esc-title{font-size:13px;font-weight:700;color:#dc2626}
+.esc-ticket{font-size:11px;color:var(--gray);font-family:monospace;background:var(--gray-light);padding:2px 8px;border-radius:6px;margin-left:auto}
+.esc-text{font-size:12.5px;color:var(--dark);line-height:1.5}
+.esc-contact{display:flex;gap:8px;margin-top:10px}
+.esc-btn{flex:1;padding:8px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:var(--spring);border:none;text-align:center}
+.esc-btn-primary{background:var(--dark-bg);color:#fff}
+.esc-btn-secondary{background:var(--gray-light);color:var(--dark)}
+.esc-btn:hover{transform:translateY(-1px)}
+
+/* Typing indicator */
+.typing-indicator{display:flex;gap:10px;align-items:flex-end}
+.typing-bubble{background:rgba(255,255,255,.82);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.6);border-radius:16px;border-bottom-left-radius:4px;padding:14px 18px;display:flex;gap:5px;align-items:center;box-shadow:var(--shadow)}
+.typing-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:typingBounce 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}}
+
+/* Chat input */
+.chat-input-area{padding:14px 20px;background:rgba(255,255,255,.6);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.5);flex-shrink:0}
+.input-wrap{display:flex;gap:10px;align-items:flex-end}
+.input-field{flex:1;position:relative}
+.input-field textarea{width:100%;padding:13px 16px;border:1.5px solid var(--gray-light);border-radius:12px;font-size:14px;font-family:'Inter',sans-serif;outline:none;resize:none;min-height:48px;max-height:120px;line-height:1.5;background:rgba(255,255,255,.9);transition:var(--transition)}
+.input-field textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(142,167,82,.15);background:#fff}
+.attach-btn{width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.9);border:1.5px solid var(--gray-light);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--spring);flex-shrink:0;color:var(--gray)}
+.attach-btn:hover{border-color:var(--green);color:var(--green-dark);transform:translateY(-1px)}
+.image-preview-bar{display:flex;gap:8px;margin-bottom:8px}
+.image-preview-item{position:relative;width:56px;height:56px;border-radius:10px;overflow:hidden;border:1.5px solid var(--green)}
+.image-preview-item img{width:100%;height:100%;object-fit:cover;display:block}
+.image-preview-remove{position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:rgba(31,36,40,.75);color:#fff;border:none;font-size:11px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.msg-image{max-width:220px;border-radius:10px;margin-bottom:8px;display:block}
+.intent-tag{display:inline-block;font-size:10px;font-weight:700;color:var(--green-dark);background:var(--green-light);padding:2px 8px;border-radius:8px;margin-top:8px;letter-spacing:.2px}
+.send-btn{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--green-dark));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--spring);flex-shrink:0}
+.send-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 6px 20px rgba(142,167,82,.4)}
+.send-btn:active{transform:scale(.95)}
+.send-btn svg{color:#fff}
+.input-hint{font-size:11px;color:var(--gray);margin-top:6px;text-align:center}
+
+/* ─── RIGHT SIDEBAR ─── */
+.sidebar-right{background:rgba(255,255,255,.72);backdrop-filter:blur(20px) saturate(1.6);border-left:1px solid rgba(255,255,255,.5);display:flex;flex-direction:column;overflow-y:auto;padding:20px 16px;gap:16px}
+.sidebar-right::-webkit-scrollbar{width:3px}
+.sidebar-right::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:2px}
+.stat-card{background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+.stat-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.stat-card-title{font-size:12px;font-weight:700;color:var(--dark-bg);letter-spacing:.3px;text-transform:uppercase}
+.stat-card-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px}
+.badge-green{background:var(--green-light);color:var(--green-dark)}
+.badge-blue{background:#EFF6FF;color:#1D4ED8}
+.big-stat{text-align:center;padding:8px 0}
+.big-num{font-size:42px;font-weight:900;color:var(--dark-bg);letter-spacing:-2px;line-height:1}
+.big-label{font-size:12px;color:var(--gray);margin-top:4px}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--gray-light)}
+.stat-row:last-child{border-bottom:none;padding-bottom:0}
+.stat-row-label{font-size:12px;color:var(--gray)}
+.stat-row-val{font-size:13px;font-weight:700;color:var(--dark-bg)}
+.stat-row-val.green{color:var(--green-dark)}
+.stat-row-val.red{color:#dc2626}
+
+/* Donut chart */
+.donut-wrap{position:relative;width:100px;height:100px;margin:8px auto}
+.donut-wrap svg{transform:rotate(-90deg)}
+.donut-bg{fill:none;stroke:var(--gray-light);stroke-width:12}
+.donut-fill{fill:none;stroke:var(--green);stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset 1s ease;stroke-dasharray:283;stroke-dashoffset:90}
+.donut-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut-pct{font-size:20px;font-weight:800;color:var(--dark-bg)}
+.donut-sub{font-size:9px;color:var(--gray);font-weight:600}
+
+/* Bar chart */
+.bar-chart{display:flex;flex-direction:column;gap:8px}
+.bar-item{display:grid;grid-template-columns:80px 1fr 30px;gap:6px;align-items:center}
+.bar-label{font-size:11px;color:var(--gray);text-align:right}
+.bar-track{background:var(--gray-light);border-radius:4px;height:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--green-dark));transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.bar-val{font-size:11px;font-weight:700;color:var(--dark-bg)}
+
+/* Zeitersparnis widget */
+.savings-widget{background:linear-gradient(135deg,var(--dark-bg),var(--dark2));border-radius:14px;padding:16px;color:#fff;text-align:center}
+.savings-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
+.savings-big{font-size:36px;font-weight:900;color:var(--green);line-height:1;letter-spacing:-1px}
+.savings-unit{font-size:13px;color:rgba(255,255,255,.5);margin-top:3px}
+.savings-note{font-size:11px;color:rgba(255,255,255,.4);margin-top:8px;line-height:1.4}
+
+/* Rating widget */
+.rating-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.rating-label{font-size:12px;color:var(--gray)}
+.stars-display{display:flex;gap:2px}
+.star-filled{color:var(--green);font-size:14px}
+.star-empty{color:var(--gray-light);font-size:14px}
+.rating-num{font-size:18px;font-weight:800;color:var(--dark-bg)}
+
+/* Responsive hidden panels */
+@media(max-width:1100px){.sidebar-left,.sidebar-right{display:none}.main-content{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<!-- ONBOARDING -->
+<div id="onboarding">
+  <div class="onb-card">
+    <div class="onb-logo">
+      <div class="onb-icon">
+        <svg width="52" height="52" viewBox="0 0 100 100" fill="none">
+          <ellipse cx="50" cy="18" rx="36" ry="7" fill="#8EA752"/>
+          <ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8EA752"/>
+          <ellipse cx="54" cy="50" rx="21" ry="6" fill="#8EA752"/>
+          <ellipse cx="47" cy="65" rx="13" ry="5" fill="#8EA752"/>
+          <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/>
+        </svg>
+      </div>
+      <div class="onb-texts">
+        <span class="logo-name">OrKan</span>
+        <div class="logo-lines"><span></span><span></span><span></span></div>
+        <span class="logo-sub">SYSTEM</span>
+      </div>
+    </div>
+    <h1>KI-Support-Assistent</h1>
+    <p>Sofortige Antworten auf Ihre OrKan Cloud-Fragen – rund um die Uhr, ohne Wartezeit.</p>
+    <div class="onb-fields">
+      <div>
+        <label>Ihr Name</label>
+        <input type="text" id="onbName" placeholder="z. B. Thomas Müller" autocomplete="off">
+      </div>
+      <div>
+        <label>Unternehmen</label>
+        <input type="text" id="onbCompany" placeholder="z. B. Sanitär Meier GmbH" autocomplete="off">
+      </div>
+    </div>
+    <button class="onb-btn" onclick="startChat()">Support-Chat starten →</button>
+    <div class="onb-features">
+      <div class="onb-feat"><div class="feat-title">Sofortantworten</div><div class="feat-desc">Keine Wartezeit</div></div>
+      <div class="onb-feat"><div class="feat-title">Wissensbasiert</div><div class="feat-desc">Geprüfte Wissensdatenbank</div></div>
+      <div class="onb-feat"><div class="feat-title">Pilot-Tracking</div><div class="feat-desc">Live-Auswertung</div></div>
+      <div class="onb-feat"><div class="feat-title">Eskalation</div><div class="feat-desc">Bei Bedarf zum Experten</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-logo">
+      <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
+        <ellipse cx="50" cy="18" rx="36" ry="7" fill="#8EA752"/>
+        <ellipse cx="46" cy="34" rx="29" ry="6.5" fill="#8EA752"/>
+        <ellipse cx="54" cy="50" rx="21" ry="6" fill="#8EA752"/>
+        <ellipse cx="47" cy="65" rx="13" ry="5" fill="#8EA752"/>
+        <ellipse cx="52" cy="78" rx="6" ry="3.5" fill="#8EA752"/>
+      </svg>
+      <div>
+        <div class="logo-name">OrKan</div>
+        <div class="logo-sub">SYSTEM</div>
+      </div>
+    </div>
+    <div class="header-divider"></div>
+    <div class="header-title">KI-Support-Assistent</div>
+    <div class="header-badge">PILOT v1.0</div>
+    <div class="header-context" title="Simuliert: Aufruf über den Support-Button direkt aus der OrKan Cloud">Aufgerufen aus: Lagerverwaltung &rarr; Artikel</div>
+    <div class="header-spacer"></div>
+    <div class="header-availability" title="Automatisierte Antworten sind rund um die Uhr verfügbar, unabhängig von Support-Öffnungszeiten">24/7 verfügbar</div>
+    <div class="header-savings">
+      <span class="savings-label">Zeitersparnis heute</span>
+      <span class="savings-val" id="headerSavings">0 Min.</span>
+    </div>
+    <div class="header-pilot">
+      <div class="pilot-dot"></div>
+      <span class="pilot-label">System aktiv</span>
+    </div>
+    <div class="header-avatar" id="headerAvatar">?</div>
+  </header>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <!-- LEFT: CATEGORIES -->
+    <aside class="sidebar-left">
+      <div class="sidebar-header">
+        <div class="sidebar-title">Themenbereiche</div>
+        <div class="search-wrap">
+          <span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          <input type="text" id="categorySearch" placeholder="Suchen..." oninput="filterCategories(this.value)">
+        </div>
+      </div>
+      <div class="categories-scroll" id="categoriesScroll">
+        <!-- injected by JS -->
+      </div>
+    </aside>
+
+    <!-- CENTER: CHAT -->
+    <section class="chat-area">
+      <div class="chat-top">
+        <div class="chat-top-info">
+          <div class="ai-avatar">OK</div>
+          <div>
+            <div class="ai-name">OrKan-Assistent</div>
+            <div class="ai-status">Online &amp; bereit</div>
+          </div>
+        </div>
+        <div class="chat-actions">
+          <button class="action-btn action-btn-ghost" onclick="clearChat()">Chat leeren</button>
+          <button class="action-btn action-btn-green" onclick="exportChat()">Export</button>
+        </div>
+      </div>
+      <div class="messages-wrap" id="messagesWrap"></div>
+      <div class="chat-input-area">
+        <div class="image-preview-bar" id="imagePreviewBar"></div>
+        <div class="input-wrap">
+          <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="handleImageSelect(event)">
+          <button class="attach-btn" onclick="document.getElementById('imgInput').click()" title="Foto anhängen (z. B. Fehlermeldung oder defektes Bauteil)">
+            <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          </button>
+          <div class="input-field">
+            <textarea id="chatInput" placeholder="Stellen Sie Ihre Frage zur OrKan Cloud…" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+          </div>
+          <button class="send-btn" onclick="sendMessage()">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+        <div class="input-hint">Enter senden · Shift+Enter neue Zeile · Foto-Symbol für Bildupload · Antworten des Assistenten sind automatisiert</div>
+      </div>
+    </section>
+
+    <!-- RIGHT: DASHBOARD -->
+    <aside class="sidebar-right">
+      <!-- Zeitersparnis -->
+      <div class="savings-widget">
+        <div class="savings-title">⏱ Zeitersparnis (Pilot)</div>
+        <div class="savings-big" id="savingsMin">0</div>
+        <div class="savings-unit">Minuten gespart</div>
+        <div class="savings-note">+4 Min. je beantworteter Frage vs. manuellem Support</div>
+      </div>
+
+      <!-- Hauptstatistik -->
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-card-title">Pilot-Statistik</div>
+          <div class="stat-card-badge badge-green">LIVE</div>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Fragen beantwortet</span>
+          <span class="stat-row-val green" id="statAnswered">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Eskalationen</span>
+          <span class="stat-row-val red" id="statEscalated">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Eskalationsrate</span>
+          <span class="stat-row-val" id="statEscRate">–</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Ø Antwortzeit</span>
+          <span class="stat-row-val green">1,2 Sek.</span>
+        </div>
+        <div class="stat-row" title="Anteil der häufigsten wiederkehrenden Supportthemen, die die Wissensdatenbank abdeckt">
+          <span class="stat-row-label">Short-Head-Abdeckung</span>
+          <span class="stat-row-val green">92%</span>
+        </div>
+      </div>
+
+      <!-- Lösungsrate Donut -->
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-card-title">Lösungsrate</div>
+          <div class="stat-card-badge badge-green">ZIEL &lt;20%</div>
+        </div>
+        <div class="donut-wrap">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="donut-bg" cx="50" cy="50" r="45"/>
+            <circle class="donut-fill" id="donutFill" cx="50" cy="50" r="45"/>
+          </svg>
+          <div class="donut-label">
+            <div class="donut-pct" id="donutPct">–</div>
+            <div class="donut-sub">GELÖST</div>
+          </div>
+        </div>
+        <div style="text-align:center;font-size:11.5px;color:var(--gray);margin-top:4px">
+          <span id="donutDesc">Noch keine Daten</span>
+        </div>
+      </div>
+
+      <!-- Bewertung -->
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-card-title">Nutzerbewertung</div>
+        </div>
+        <div class="rating-row">
+          <span class="rating-label">Durchschnitt</span>
+          <span class="rating-num" id="ratingAvg">–</span>
+        </div>
+        <div class="stars-display" id="starsDisplay">
+          <span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span>
+        </div>
+        <div class="stat-row" style="margin-top:10px">
+          <span class="stat-row-label">Positiv</span>
+          <span class="stat-row-val green" id="statPositive">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Negativ</span>
+          <span class="stat-row-val red" id="statNegative">0</span>
+        </div>
+      </div>
+
+      <!-- Top-Themen -->
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-card-title">Top-Themen</div>
+          <div class="stat-card-badge badge-blue">Heute</div>
+        </div>
+        <div class="bar-chart" id="topicsChart">
+          <div class="bar-item"><span class="bar-label">Lager MIN/MAX</span><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div><span class="bar-val">75%</span></div>
+          <div class="bar-item"><span class="bar-label">Artikelimport</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span class="bar-val">62%</span></div>
+          <div class="bar-item"><span class="bar-label">Zwei-Etiketten</span><div class="bar-track"><div class="bar-fill" style="width:54%"></div></div><span class="bar-val">54%</span></div>
+          <div class="bar-item"><span class="bar-label">Lieferanten-Shop</span><div class="bar-track"><div class="bar-fill" style="width:41%"></div></div><span class="bar-val">41%</span></div>
+          <div class="bar-item"><span class="bar-label">Gebrauchsgut</span><div class="bar-track"><div class="bar-fill" style="width:28%"></div></div><span class="bar-val">28%</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+// ─── STATE ───
+let userName = '', userCompany = '';
+let stats = { answered: 0, escalated: 0, positive: 0, negative: 0, savings: 0 };
+let msgCounter = 0;
+let ticketCounter = 1001;
+let lastTopic = null;
+let pendingImage = null;
+const FOLLOWUP_WORDS = ['das','es','damit','dazu','dafür','davon','dabei','wieso','warum','wie lange','und wenn','was noch'];
+
+// ─── KNOWLEDGE BASE ───
+const KB = [
+  // Artikel & Lagerplätze
+  { id: 'art1', cat: 'Artikel & Lagerplätze', keywords: ['artikel anlegen','neuer artikel','artikelgruppe','bezeichnung','artikel erstellen'],
+    title: 'Artikel anlegen',
+    answer: `<h4>Neuen Artikel anlegen</h4>
+    <p>Gehen Sie in der <strong>Lagerverwaltung → Artikel → Erstellen</strong>.</p>
+    <ul>
+      <li>Pflichtfelder: <code>Artikelgruppe</code>, <code>interne Artikelnummer</code>, <code>Bezeichnung 1–3</code></li>
+      <li><strong>Lager und Gebäude</strong> sowie <strong>Lagerort</strong> definieren, wo der Artikel physisch liegt</li>
+      <li><strong>Lager MIN</strong> (Sicherheitsbestand) und <strong>Lager MAX</strong> (Höchstbestand) festlegen</li>
+      <li>Lieferant, Lieferanten-Artikelnummer, EK-Preis, Menge und VPE optional ergänzen</li>
+      <li>Artikelbild per Drag & Drop unter „Dokumente" hinzufügen</li>
+    </ul>
+    <p>Über „Kopieren" lassen sich ähnliche Artikel schnell ohne erneute Eingabe anlegen.</p>` },
+  { id: 'art2', cat: 'Artikel & Lagerplätze', keywords: ['lager min','lager max','mindestbestand','maximalbestand','bestellmenge berechnen'],
+    title: 'Lager MIN und Lager MAX richtig setzen',
+    answer: `<h4>Lager MIN / Lager MAX</h4>
+    <ul>
+      <li><strong>Lager MIN</strong>: Sicherheitsbestand, ab dem nachbestellt werden soll</li>
+      <li><strong>Lager MAX</strong>: gewünschter Höchstbestand am Lagerplatz</li>
+      <li>Die vorgeschlagene Bestellmenge ergibt sich automatisch aus <strong>MAX minus MIN</strong></li>
+    </ul>
+    <p>Beispiel: Bei Schraubenpäckchen mit MIN = 2 und MAX = 6 schlägt die OrKan Cloud automatisch <strong>4 Stück</strong> zur Nachbestellung vor.</p>` },
+  { id: 'art3', cat: 'Artikel & Lagerplätze', keywords: ['artikel löschen','artikel kopieren','artikel bearbeiten','artikel suchen'],
+    title: 'Artikel bearbeiten, kopieren oder löschen',
+    answer: `<h4>Artikel verwalten</h4>
+    <ul>
+      <li>Auf einen Artikel klicken, um ihn jederzeit zu <strong>bearbeiten</strong></li>
+      <li><strong>Löschen</strong> über das entsprechende Symbol in der Artikelübersicht</li>
+      <li><strong>Kopieren</strong> spart Zeit bei ähnlichen Artikeln (z. B. gleicher Bohrer, andere Größe) – Beschreibung und Lieferant bleiben erhalten</li>
+      <li>Über die Suchleiste lassen sich Artikel jederzeit schnell wiederfinden</li>
+    </ul>` },
+
+  // Import & Lieferanten-Anbindung
+  { id: 'imp1', cat: 'Import & Lieferanten', keywords: ['import','excel','zip','artikel importieren','bilder importieren'],
+    title: 'Artikelimport per Excel und ZIP',
+    answer: `<h4>Artikelimport durchführen</h4>
+    <ul>
+      <li>Import besteht aus einer <strong>Excel-Liste</strong> (Artikeldaten) plus einer <strong>ZIP-Datei</strong> (Artikelbilder)</li>
+      <li>Der Bildname in der Excel-Spalte muss <strong>exakt</strong> dem Dateinamen im ZIP-Ordner entsprechen</li>
+      <li>Optionen: „Importieren und aktualisieren", „nur importieren" oder „nur aktualisieren"</li>
+      <li>Abgleich über <strong>Lieferanten-Artikelnummer</strong>, <strong>EAN-Nummer</strong> oder <strong>interne Artikelnummer</strong></li>
+    </ul>
+    <p>Die Importvorlage enthält Werksnummer, EAN, Bezeichnung 1–3, Lager/Gebäude/Lagerort sowie Min-/Max-Bestände.</p>` },
+  { id: 'imp2', cat: 'Import & Lieferanten', keywords: ['zeichensatz','fehler import','encoding','sonderzeichen'],
+    title: 'Import-Fehler und Zeichensatz beheben',
+    answer: `<h4>Häufige Importprobleme</h4>
+    <ul>
+      <li>Bildname und Excel-Eintrag stimmen nicht exakt überein → Zuordnung schlägt fehl</li>
+      <li>Doppelte interne Artikelnummern führen zu Abgleich-Konflikten</li>
+      <li>Empfehlung: Vor dem Vollimport immer einen <strong>Testimport mit wenigen Zeilen</strong> durchführen</li>
+    </ul>` },
+  { id: 'lief1', cat: 'Import & Lieferanten', keywords: ['lieferant','shop-url','lieferanten shop','anbindung','lieferant wechseln'],
+    title: 'Lieferanten-Shop anbinden',
+    answer: `<h4>Lieferanten-Shop-Anbindung</h4>
+    <p>Die OrKan Cloud ist <strong>lieferantenunabhängig</strong> – Sie können den Lieferanten je Artikel jederzeit wechseln.</p>
+    <ul>
+      <li>Lieferant anlegen unter <strong>Lagerverwaltung → Lieferant → Erstellen</strong></li>
+      <li>Pflichtfelder: Lieferantenname, Land, Kundennummer, Benutzer/Passwort</li>
+      <li>Die <strong>Shop-URL</strong> ist entscheidend: Darüber greift die OrKan Cloud beim Bestellabschluss direkt auf den Lieferanten-Shop zu</li>
+      <li>Gewünschte Liefertermine (z. B. „nur freitags") lassen sich hinterlegen</li>
+    </ul>` },
+
+  // Zwei-Etiketten-System & Bestellvorschlag
+  { id: 'etk1', cat: 'Etiketten & Bestellung', keywords: ['etikett','blaues etikett','weißes etikett','kanban','zwei etiketten'],
+    title: 'Zwei-Etiketten-System (blau/weiß)',
+    answer: `<h4>Blaues und weißes Etikett</h4>
+    <ul>
+      <li><strong>Blaues Etikett</strong>: bleibt fest am Regal, dient der eindeutigen Lagerplatzkennzeichnung</li>
+      <li><strong>Weißes Etikett</strong>: wird bei Erreichen des Mindestbestands (Lager MIN) gezogen</li>
+      <li>Das gezogene weiße Etikett wandert in die <strong>Bestellbox</strong></li>
+      <li>Fehlt das weiße Etikett am Regal, ist der Artikel bereits im Bestellprozess</li>
+    </ul>` },
+  { id: 'etk2', cat: 'Etiketten & Bestellung', keywords: ['bestellvorschlag','bestellung erstellen','scannen','warenkorb','qr code'],
+    title: 'Bestellvorschlag erstellen',
+    answer: `<h4>Vom Etikett zur Bestellung</h4>
+    <ul>
+      <li>Unter <strong>Bestellvorschlag → Erstellen</strong> Etiketten per QR-Code scannen oder Artikel manuell erfassen</li>
+      <li>Erfasste Artikel landen im <strong>Warenkorb</strong></li>
+      <li>Über <strong>„Bestellungen erstellen" → „Senden"</strong> folgt eine Zusammenfassung: Ansprechpartner, Besteller, Liefertermin, Lieferadresse, Lieferant</li>
+      <li>Nach „Bestellen" öffnen sich <strong>drei Fenster</strong>: Wareneingang-Bestätigung, Lieferschein und der Lieferanten-Shop zur finalen Bestellauslösung</li>
+    </ul>` },
+  { id: 'etk3', cat: 'Etiketten & Bestellung', keywords: ['etikett drucken','template','artikelkarte','etikettendrucker'],
+    title: 'Etiketten-Template gestalten',
+    answer: `<h4>Eigene Etiketten gestalten</h4>
+    <p>Unter <strong>Einstellungen → Lagerverwaltung → Artikelkarte</strong> gestalten Sie Ihr Etiketten-Template frei per Drag & Drop.</p>
+    <ul>
+      <li>Frei wählbar, welche Felder (Artikelnummer, Lagerort, Firmenlogo …) erscheinen</li>
+      <li>Mehrere Templates parallel möglich</li>
+      <li>Beim Drucken eines Artikels wird das passende Template gewählt → Ausgabe als <strong>PDF</strong> für den Laserdrucker</li>
+    </ul>` },
+
+  // Wareneingang & Lagerbestand
+  { id: 'we1', cat: 'Wareneingang & Bestand', keywords: ['wareneingang','einbuchen','anlieferung','lieferschein'],
+    title: 'Wareneingang bestätigen',
+    answer: `<h4>Wareneingang erfassen</h4>
+    <ul>
+      <li>Nach Bestellabschluss öffnet sich automatisch das Wareneingangs-Fenster mit Artikelbild und Bezeichnung</li>
+      <li>Gelieferte Artikel abhaken und mit dem <strong>Lieferschein</strong> abgleichen</li>
+      <li>Der Lagerbestand wird nach Bestätigung <strong>sofort automatisch aktualisiert</strong></li>
+      <li>Über <strong>Scan/Bestelleingang</strong> sehen Sie zusätzlich Bestellnummer und Kommission</li>
+    </ul>` },
+  { id: 'we2', cat: 'Wareneingang & Bestand', keywords: ['lagerbestand','warenwert','bestand prüfen','ist-bestand'],
+    title: 'Lagerbestand & Warenwert prüfen',
+    answer: `<h4>Lagerbestand im Überblick</h4>
+    <p>Der Reiter <strong>„Lagerbestand"</strong> zeigt je Artikel den aktuellen Ist-Bestand sowie den Warenwert im Verhältnis zu Lager MIN und Lager MAX.</p>
+    <p>Der Reiter <strong>„Bestellung"</strong> liefert zusätzlich eine Übersicht aller getätigten Bestellungen.</p>` },
+
+  // Gebrauchsgutverwaltung
+  { id: 'geb1', cat: 'Gebrauchsgut', keywords: ['maschine','gebrauchsgut','werkzeug','fahrzeug zuordnen','buchung'],
+    title: 'Gebrauchsgutverwaltung (Maschinen)',
+    answer: `<h4>Maschinen und Werkzeuge verwalten</h4>
+    <ul>
+      <li>Zeigt, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine hat</li>
+      <li>Über <strong>„Buchung"</strong> eine Maschine einem Standort, Mitarbeiter oder Fahrzeug zuordnen</li>
+      <li><strong>„Reservierungen"</strong> für geplante künftige Nutzung anlegen</li>
+      <li><strong>„Service und Wartung"</strong>: wiederkehrende Termine wie Jahresservice oder Pressencheck hinterlegen</li>
+    </ul>` },
+
+  // Benutzer & Module
+  { id: 'usr1', cat: 'Benutzer & Module', keywords: ['benutzer','user','mitarbeiter','anlegen','einladen','zugang','rolle','mandant'],
+    title: 'Benutzer anlegen (Mandantenverwaltung)',
+    answer: `<h4>Benutzer hinzufügen</h4>
+    <p>Unter <strong>Einstellungen → Mandantenverwaltung → Benutzer</strong>:</p>
+    <ul>
+      <li>Neue Mitarbeitende anlegen und Rollen zuweisen</li>
+      <li>Zusätzlich lassen sich hier Kontakte und die Sprache verwalten</li>
+      <li>Rollen können jederzeit geändert werden</li>
+    </ul>` },
+  { id: 'usr2', cat: 'Benutzer & Module', keywords: ['module buchen','modul kündigen','firma','rechnungsadresse','zusatzmodul'],
+    title: 'Module buchen und verwalten',
+    answer: `<h4>Module verwalten</h4>
+    <p>Unter <strong>Einstellungen → Firma</strong> finden Sie Rechnungsadresse sowie alle buchbaren Module.</p>
+    <ul>
+      <li>Kernbereich: <strong>Lagerverwaltung</strong> (Artikel, Lieferant, Bestellvorschlag …)</li>
+      <li>Häufig zusätzlich genutzt: <strong>Gebrauchsgutverwaltung</strong> (Maschinen)</li>
+      <li>Weitere Module: Bestandsführung, Flaschenverwaltung, App, Schlüsselverwaltung – je nach Bedarf buchbar oder kündbar</li>
+    </ul>` },
+  { id: 'usr3', cat: 'Benutzer & Module', keywords: ['passwort','kennwort','vergessen','reset','login','anmelden','einloggen'],
+    title: 'Passwort zurücksetzen',
+    answer: `<h4>Passwort-Reset</h4>
+    <p>Auf der Login-Seite auf <strong>„Passwort vergessen"</strong> klicken:</p>
+    <ul>
+      <li>E-Mail-Adresse eingeben → Link kommt innerhalb weniger Minuten</li>
+      <li>Als Admin: <strong>Einstellungen → Mandantenverwaltung → Benutzer</strong> → Benutzer auswählen → „Passwort zurücksetzen"</li>
+    </ul>` },
+
+  // Allgemein / Fallback
+  { id: 'gen1', cat: 'Allgemein', keywords: ['preis','kosten','lizenz','paket','tarif','abo'],
+    title: 'Lizenzmodelle & Preise',
+    answer: `<h4>Lizenzoptionen</h4>
+    <p>Der Funktionsumfang richtet sich nach den gebuchten Modulen (z. B. Lagerverwaltung, Gebrauchsgutverwaltung, Bestandsführung).</p>
+    <p>Für ein konkretes Angebot wenden Sie sich an <strong>vertrieb@orkan-system.de</strong>.</p>` },
+  { id: 'gen2', cat: 'Allgemein', keywords: ['hilfe','handbuch','dokumentation','anleitung','tutorial','schulung','startseite','kalender'],
+    title: 'Startseite und Hilfe-Ressourcen',
+    answer: `<h4>Startseite & Wissensressourcen</h4>
+    <ul>
+      <li>Die Startseite zeigt Ihren <strong>Kalender</strong> (Ampelsystem: Rot = Bestellung fällig) sowie vier Shortcuts</li>
+      <li>Über die drei Striche oben links gelangen Sie jederzeit zur Hauptnavigation</li>
+      <li><strong>Interaktive Lernplattform</strong>: 5 Module, ca. 60 Min. (empfohlen für Einsteiger)</li>
+    </ul>` },
+];
+
+// ─── CATEGORIES ───
+const CATEGORIES = [
+  { name: 'Artikel & Lagerplätze', icon: '', ids: ['art1','art2','art3'] },
+  { name: 'Import & Lieferanten', icon: '', ids: ['imp1','imp2','lief1'] },
+  { name: 'Etiketten & Bestellung', icon: '', ids: ['etk1','etk2','etk3'] },
+  { name: 'Wareneingang & Bestand', icon: '', ids: ['we1','we2'] },
+  { name: 'Gebrauchsgut', icon: '', ids: ['geb1'] },
+  { name: 'Benutzer & Module', icon: '', ids: ['usr1','usr2','usr3'] },
+  { name: 'Allgemein', icon: '', ids: ['gen1','gen2'] },
+];
+
+// ─── INIT ───
+function startChat() {
+  userName = document.getElementById('onbName').value.trim() || 'Nutzer';
+  userCompany = document.getElementById('onbCompany').value.trim() || 'Ihr Unternehmen';
+  document.getElementById('onboarding').style.display = 'none';
+  document.getElementById('headerAvatar').textContent = userName.charAt(0).toUpperCase();
+  buildCategories();
+  addWelcomeMessage();
+  animateBars();
+}
+
+function buildCategories(filter='') {
+  const scroll = document.getElementById('categoriesScroll');
+  scroll.innerHTML = '';
+  CATEGORIES.forEach(cat => {
+    const questions = KB.filter(k => cat.ids.includes(k.id) &&
+      (filter === '' || k.title.toLowerCase().includes(filter.toLowerCase()) || k.cat.toLowerCase().includes(filter.toLowerCase())));
+    if (questions.length === 0 && filter !== '') return;
+    const block = document.createElement('div');
+    block.className = 'category-block';
+    block.innerHTML = `
+      <div class="cat-header" onclick="toggleCat(this)">
+        <div class="cat-icon">${cat.icon}</div>
+        <span class="cat-name">${cat.name}</span>
+        <span class="cat-count">${questions.length}</span>
+        <span class="cat-arrow">▶</span>
+      </div>
+      <div class="cat-questions ${filter ? 'open' : ''}">
+        ${questions.map(q => `<div class="quick-q" onclick="askQuestion('${q.id}')">${q.title}</div>`).join('')}
+      </div>`;
+    scroll.appendChild(block);
+  });
+}
+
+function toggleCat(header) {
+  header.classList.toggle('active');
+  const questions = header.nextElementSibling;
+  questions.classList.toggle('open');
+}
+
+function filterCategories(val) {
+  buildCategories(val);
+}
+
+// ─── MESSAGES ───
+function addWelcomeMessage() {
+  const wrap = document.getElementById('messagesWrap');
+  wrap.innerHTML = '';
+  addBotMessage(`<h4>Willkommen, ${userName}!</h4>
+    <p>Ich bin Ihr KI-Support-Assistent für die <strong>OrKan Cloud</strong>. Ich beantworte Ihre Fragen sofort – ohne Wartezeit.</p>
+    <p style="margin-top:8px">Tippen Sie Ihre Frage oder wählen Sie links ein Thema aus. Wie kann ich Ihnen helfen?</p>`);
+}
+
+function addBotMessage(html, withFeedback = true) {
+  const wrap = document.getElementById('messagesWrap');
+  const id = 'msg-' + (++msgCounter);
+  const time = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.innerHTML = `
+    <div class="msg-avatar">OK</div>
+    <div>
+      <div class="msg-bubble">
+        ${html}
+        ${withFeedback ? `<div class="msg-meta">
+          <span class="msg-time">${time}</span>
+          <div class="msg-feedback">
+            <button class="fb-btn" onclick="feedback('${id}','up',this)" title="Hilfreich"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></svg></button>
+            <button class="fb-btn" onclick="feedback('${id}','down',this)" title="Nicht hilfreich"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/></svg></button>
+          </div>
+        </div>` : ''}
+      </div>
+    </div>`;
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function addUserMessage(text, imageDataUrl) {
+  const wrap = document.getElementById('messagesWrap');
+  const time = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  const div = document.createElement('div');
+  div.className = 'msg user';
+  div.innerHTML = `
+    <div class="msg-avatar">${userName.charAt(0).toUpperCase()}</div>
+    <div>
+      <div class="msg-bubble">
+        ${imageDataUrl ? `<img class="msg-image" src="${imageDataUrl}">` : ''}
+        ${text ? `<p>${text}</p>` : ''}
+        <div class="msg-meta" style="justify-content:flex-end">
+          <span class="msg-time" style="color:rgba(255,255,255,.5)">${time}</span>
+        </div>
+      </div>
+    </div>`;
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function showTyping() {
+  const wrap = document.getElementById('messagesWrap');
+  const div = document.createElement('div');
+  div.className = 'typing-indicator';
+  div.id = 'typingIndicator';
+  div.innerHTML = `
+    <div class="msg-avatar" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1F2428,#2E3438);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#8EA752;border:1.5px solid #8EA752">OK</div>
+    <div class="typing-bubble">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>`;
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
+}
+
+// ─── QUERY LOGIC ───
+function findAnswer(query) {
+  const q = query.toLowerCase();
+  let best = null, bestScore = 0;
+  KB.forEach(entry => {
+    let score = 0;
+    entry.keywords.forEach(kw => {
+      if (q.includes(kw)) score += kw.length;
+    });
+    if (score > bestScore) { bestScore = score; best = entry; }
+  });
+  if (bestScore >= 3) return { entry: best, contextUsed: false };
+  // Kontexterhalt: kurze Anschlussfragen ohne eigenes starkes Keyword auf das letzte Thema beziehen
+  const isShortFollowup = q.length < 40 && FOLLOWUP_WORDS.some(w => q.includes(w));
+  if (isShortFollowup && lastTopic) {
+    return { entry: lastTopic, contextUsed: true };
+  }
+  return null;
+}
+
+function askQuestion(id) {
+  const entry = KB.find(k => k.id === id);
+  if (!entry) return;
+  addUserMessage(entry.title);
+  showTyping();
+  setTimeout(() => {
+    removeTyping();
+    addBotMessage(entry.answer + `<span class="intent-tag">Erkanntes Thema: ${entry.cat}</span>`);
+    lastTopic = entry;
+    stats.answered++;
+    stats.savings += 4;
+    updateStats();
+  }, 800 + Math.random() * 600);
+}
+
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  const image = pendingImage;
+  if (!text && !image) return;
+  input.value = '';
+  input.style.height = 'auto';
+  addUserMessage(text, image ? image.dataUrl : null);
+  clearPendingImage();
+  showTyping();
+  setTimeout(() => {
+    removeTyping();
+    if (image) {
+      handleImageQuery(text, image);
+      updateStats();
+      return;
+    }
+    const result = findAnswer(text);
+    if (result) {
+      const contextNote = result.contextUsed ? `<p style="font-size:12px;color:var(--gray);margin-top:6px">Bezogen auf Ihre vorherige Frage zu „${result.entry.title}".</p>` : '';
+      addBotMessage(result.entry.answer + contextNote + `<span class="intent-tag">Erkanntes Thema: ${result.entry.cat}</span>`);
+      lastTopic = result.entry;
+      stats.answered++;
+      stats.savings += 4;
+    } else {
+      escalate(text);
+    }
+    updateStats();
+  }, 900 + Math.random() * 700);
+}
+
+// ─── MULTIMODALITÄT: Bild-Upload (z. B. Foto einer Fehlermeldung oder eines defekten Bauteils) ───
+function handleImageSelect(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    pendingImage = { dataUrl: e.target.result, name: file.name };
+    renderImagePreview();
+  };
+  reader.readAsDataURL(file);
+  event.target.value = '';
+}
+function renderImagePreview() {
+  const bar = document.getElementById('imagePreviewBar');
+  bar.innerHTML = pendingImage ? `
+    <div class="image-preview-item">
+      <img src="${pendingImage.dataUrl}">
+      <button class="image-preview-remove" onclick="clearPendingImage()">&times;</button>
+    </div>` : '';
+}
+function clearPendingImage() {
+  pendingImage = null;
+  renderImagePreview();
+}
+function handleImageQuery(caption, image) {
+  const name = image.name.toLowerCase();
+  let response;
+  if (name.includes('fehler') || name.includes('error') || (caption && caption.toLowerCase().includes('fehler'))) {
+    response = `<h4>Bildanalyse: Fehlermeldung</h4>
+      <p>Ich habe Ihr Bild ausgewertet. Bei Fehlermeldungen im Import- oder Bestellprozess helfen meist folgende Schritte:</p>
+      <ul><li>Prüfen Sie die Fehlermeldung auf Angaben zu Artikelnummer oder Zeile</li><li>Bei Import-Fehlern: Zeichensatz und Bildzuordnung kontrollieren</li><li>Screenshot für den Support aufbewahren, falls eine Eskalation nötig wird</li></ul>
+      <p style="margin-top:6px;color:var(--gray);font-size:12px">Hinweis: Die Bildauswertung ist im Pilotversuch simuliert und basiert auf dem Dateinamen. In der produktiven Version würde ein Bild-Modell die Fehlermeldung direkt auslesen.</p>`;
+  } else {
+    response = `<h4>Bild erhalten</h4>
+      <p>Danke für das Foto${caption ? ' und Ihre Nachricht' : ''}. Für eine zuverlässige Einschätzung von Bauteilen oder Etiketten leite ich das Bild an einen Mitarbeiter weiter.</p>
+      <p style="margin-top:6px;color:var(--gray);font-size:12px">Hinweis: Die Bildauswertung ist im Pilotversuch simuliert. In der produktiven Version würde ein multimodales Sprachmodell den Bildinhalt direkt analysieren.</p>`;
+    addBotMessage(response);
+    escalate(caption || '[Bildanfrage: ' + image.name + ']');
+    return;
+  }
+  addBotMessage(response + `<span class="intent-tag">Erkanntes Thema: Bildbasierte Anfrage</span>`);
+  stats.answered++;
+  stats.savings += 4;
+}
+
+function escalate(question) {
+  stats.escalated++;
+  const ticket = '#TK-2025-' + (ticketCounter++);
+  const html = `
+    <p>Für diese Frage benötige ich die Unterstützung unseres Support-Teams.</p>
+    <div class="escalation-card">
+      <div class="esc-header">
+        <span class="esc-title">Support-Ticket erstellt</span>
+        <span class="esc-ticket">${ticket}</span>
+      </div>
+      <div class="esc-text">
+        <strong>Ihre Frage:</strong> „${question}"<br>
+        <span style="margin-top:4px;display:block">Ein Experte meldet sich innerhalb von <strong>2 Stunden</strong> bei Ihnen.</span>
+      </div>
+      <div class="esc-contact">
+        <button class="esc-btn esc-btn-primary" onclick="this.textContent='✓ Gesendet';this.disabled=true">E-Mail bestätigen</button>
+        <button class="esc-btn esc-btn-secondary">Rückruf anfordern</button>
+      </div>
+    </div>`;
+  addBotMessage(html);
+}
+
+function feedback(msgId, type, btn) {
+  const parent = btn.closest('.msg-feedback');
+  parent.querySelectorAll('.fb-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (type === 'up') { stats.positive++; }
+  else { stats.negative++; }
+  updateStats();
+}
+
+// ─── STATS ───
+function updateStats() {
+  document.getElementById('statAnswered').textContent = stats.answered;
+  document.getElementById('statEscalated').textContent = stats.escalated;
+  document.getElementById('savingsMin').textContent = stats.savings;
+  document.getElementById('headerSavings').textContent = stats.savings + ' Min.';
+  document.getElementById('statPositive').textContent = stats.positive;
+  document.getElementById('statNegative').textContent = stats.negative;
+
+  const total = stats.answered + stats.escalated;
+  if (total > 0) {
+    const escRate = Math.round((stats.escalated / total) * 100);
+    const solveRate = 100 - escRate;
+    document.getElementById('statEscRate').textContent = escRate + '%';
+    document.getElementById('statEscRate').style.color = escRate > 20 ? '#dc2626' : '#6E8440';
+    document.getElementById('donutPct').textContent = solveRate + '%';
+    document.getElementById('donutDesc').textContent = `${stats.answered} von ${total} Fragen gelöst`;
+    // Update donut: circumference = 2π×45 ≈ 283
+    const offset = 283 - (283 * solveRate / 100);
+    document.getElementById('donutFill').style.strokeDashoffset = offset;
+  }
+
+  const totalFeedback = stats.positive + stats.negative;
+  if (totalFeedback > 0) {
+    const avg = (stats.positive / totalFeedback * 5).toFixed(1);
+    document.getElementById('ratingAvg').textContent = avg;
+    const filledStars = Math.round(parseFloat(avg));
+    let starsHtml = '';
+    for (let i = 1; i <= 5; i++) {
+      starsHtml += `<span class="${i <= filledStars ? 'star-filled' : 'star-empty'}">★</span>`;
+    }
+    document.getElementById('starsDisplay').innerHTML = starsHtml;
+  }
+}
+
+function animateBars() {
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill').forEach(b => {
+      const w = b.style.width;
+      b.style.width = '0';
+      requestAnimationFrame(() => { b.style.width = w; });
+    });
+  }, 300);
+}
+
+// ─── UTILS ───
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function autoResize(ta) {
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 120) + 'px';
+}
+
+function clearChat() {
+  if (confirm('Chat-Verlauf löschen?')) addWelcomeMessage();
+}
+
+function exportChat() {
+  const msgs = document.querySelectorAll('.msg-bubble');
+  let text = `OrKan Cloud – Support-Chat Export\nDatum: ${new Date().toLocaleString('de-DE')}\nNutzer: ${userName} (${userCompany})\n${'─'.repeat(50)}\n\n`;
+  msgs.forEach((m, i) => { text += (i % 2 === 0 ? 'BOT: ' : `${userName}: `) + m.innerText.split('\n').filter(l => l.trim()).join(' ').substring(0, 200) + '\n\n'; });
+  text += `\n${'─'.repeat(50)}\nStatistiken:\n- Fragen beantwortet: ${stats.answered}\n- Eskalationen: ${stats.escalated}\n- Zeitersparnis: ${stats.savings} Min.`;
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `orkan-chat-${Date.now()}.txt`;
+  a.click();
+}
+</script>
+</body>
+</html>
