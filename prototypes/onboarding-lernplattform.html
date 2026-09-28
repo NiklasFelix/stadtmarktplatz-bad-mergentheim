@@ -1988,6 +1988,7 @@ let state = {
   activityDays:{}, recent:[], ratings:{}
 };
 
+const __initialState = JSON.parse(JSON.stringify(state));
 /* ============ ONBOARDING ============ */
 function selectRole(el, role){
   document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('selected'));
@@ -2029,6 +2030,7 @@ function initializeApp(){
 /* ============ FORTSCHRITT SPEICHERN ============ */
 const PROGRESS_STORAGE_KEY = 'orkanTrainingProgress_v1';
 function saveState(){
+  if(__resetting) return;
   try{
     const snapshot = {
       name: state.name, company: state.company, role: state.role,
@@ -2078,12 +2080,26 @@ function closeResetConfirm(){
 }
 function confirmResetProgress(){
   __resetting = true;
-  window.removeEventListener('beforeunload', saveState);
-  window.removeEventListener('pagehide', saveState);
-  document.removeEventListener('visibilitychange', __visibilitySave);
   clearInterval(__autosaveInterval);
-  try{ localStorage.removeItem(PROGRESS_STORAGE_KEY); localStorage.removeItem('orkanDashboardPrefs'); localStorage.removeItem('orkanTeam_v1'); }catch(e){}
-  location.reload();
+  try{ clearTimeout(__memberTimer); }catch(e){}
+  try{ ['orkanTrainingProgress_v1','orkanDashboardPrefs','orkanTeam_v1','orkanTourDone'].forEach(k=>localStorage.removeItem(k)); }catch(e){}
+  // Zustand im laufenden Fenster zurücksetzen (funktioniert auch dort, wo ein Neuladen blockiert ist)
+  Object.keys(state).forEach(k=>delete state[k]);
+  Object.assign(state, JSON.parse(JSON.stringify(__initialState)));
+  state.dashboardPrefs = null; state.teamLive = []; state.teamCode = null; state.isLead = false; state.teamMode = null;
+  try{ if(typeof __teamUnsub==='function'){ __teamUnsub(); } __teamUnsub = null; __lastMemberJson=''; }catch(e){}
+  document.getElementById('resetConfirmModal').classList.remove('open');
+  document.getElementById('profileMenu').classList.remove('open');
+  ['onbName','onbCompany','onbTeamCode'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.querySelectorAll('.role-card.selected,.team-mode-btn.selected').forEach(el=>el.classList.remove('selected'));
+  const tcf=document.getElementById('teamCodeField'); if(tcf) tcf.hidden=true;
+  const sb=document.getElementById('startBtn'); if(sb){ sb.disabled=true; sb.textContent='Lernpfad starten'; }
+  document.getElementById('app').style.display='none';
+  document.getElementById('onboarding').style.display='flex';
+  const ms=document.querySelector('.main-scroll'); if(ms) ms.scrollTop=0;
+  __resetting = false;
+  __autosaveInterval = setInterval(saveState, 3000);
+  showToast('Ihr Fortschritt wurde zurückgesetzt.');
 }
 
 /* ============ NAV ============ */
