@@ -1357,10 +1357,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
         Lernmodule
       </div>
       <div class="nav-sub" id="moduleSubNav"></div>
-      <div class="nav-item" data-view="gaps" onclick="showView('gaps')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-5 4 3 5-7"/></svg>
-        Wissenslücken-Analyse
-      </div>
       <div class="nav-item" data-view="kb" onclick="showView('kb')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
         Wissensdatenbank
@@ -2289,7 +2285,7 @@ Object.assign(DASHBOARD_WIDGETS, {
   } }
 });
 function switchTabTo(tab){ state.currentTab=tab; document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['content','task','quiz','summary'][i]===tab)); renderTab(); }
-const DEFAULT_WIDGET_ORDER = ['nextstep','stats','certcount','quizchart','activity','recent','feedback','phases','gaps','teamsummary','completiontime','rolefocus','recos'];
+const DEFAULT_WIDGET_ORDER = ['nextstep','stats','certcount','quizchart','activity','recent','feedback','phases','teamsummary','completiontime','rolefocus','recos'];
 const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:false, gaps:false, updates:false, rolefocus:true, recos:true};
 
 function loadDashboardPrefs(){
