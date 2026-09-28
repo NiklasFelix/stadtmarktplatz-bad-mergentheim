@@ -1115,6 +1115,32 @@ html:not(.theme-light) .theme-switch button.on{background:linear-gradient(135deg
   .main-scroll{padding:16px 14px 40px!important}
 }
 @media(prefers-reduced-motion:reduce){.app-header::after,.hero::before{animation:none}}
+/* ===== Einführungstour ===== */
+.tour-layer{position:fixed;inset:0;z-index:1000;pointer-events:auto}
+.tour-spot{position:fixed;border-radius:14px;box-shadow:0 0 0 9999px rgba(8,10,12,.72),0 0 0 2px #A6BF68,0 0 24px 4px rgba(166,191,104,.55);transition:all .45s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.tour-spot.center{width:0!important;height:0!important;left:50%!important;top:50%!important;box-shadow:0 0 0 9999px rgba(8,10,12,.72)}
+.tour-card{position:fixed;width:340px;max-width:calc(100vw - 32px);background:#1C2125;color:#E8ECEF;border:1px solid rgba(166,191,104,.35);border-radius:18px;padding:20px 22px 18px;box-shadow:0 30px 60px -20px rgba(0,0,0,.8);transition:left .45s cubic-bezier(.2,.7,.2,1),top .45s cubic-bezier(.2,.7,.2,1);font-family:Arial,Helvetica,sans-serif}
+html.theme-light .tour-card{background:#fff;color:#1D2327}
+.tour-card.pop{animation:tourPop .35s cubic-bezier(.34,1.5,.64,1)}
+@keyframes tourPop{from{opacity:0;transform:scale(.94) translateY(6px)}}
+.tour-step{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#A6BF68;margin-bottom:8px}
+html.theme-light .tour-step{color:#5E7233}
+.tour-card h4{font-size:18px;margin-bottom:6px;line-height:1.3}
+.tour-card p{font-size:14.5px;line-height:1.55;color:#AEB7BE}
+html.theme-light .tour-card p{color:#4E5860}
+.tour-dots{display:flex;gap:5px;margin:16px 0 14px}
+.tour-dots i{height:6px;width:6px;border-radius:6px;background:#3A434A;transition:all .3s}
+.tour-dots i.on{width:22px;background:#A6BF68}
+html.theme-light .tour-dots i{background:#DDE2D6}html.theme-light .tour-dots i.on{background:#8EA752}
+.tour-actions{display:flex;align-items:center;gap:8px}
+.tour-skip{background:none;border:0;color:#8C979F;font-size:13px;cursor:pointer;margin-right:auto;padding:6px 0}
+.tour-skip:hover{color:#E8ECEF;text-decoration:underline}
+html.theme-light .tour-skip:hover{color:#1D2327}
+.tour-btn{border:0;border-radius:10px;padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer}
+.tour-back{background:rgba(255,255,255,.07);color:#E8ECEF}
+html.theme-light .tour-back{background:#F1F2EE;color:#1D2327}
+.tour-next{background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a;box-shadow:0 8px 20px -10px rgba(166,191,104,.8)}
+.tour-icon{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -1213,6 +1239,7 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
           <button class="btn btn-outline" style="width:100%" onclick="bookAppointment()">Persönlichen Termin vereinbaren</button>
           <p class="autosave-note">Ihr Lernfortschritt wird automatisch laufend gespeichert.</p>
           <button class="btn btn-outline" style="width:100%" onclick="manualSaveProgress()">Fortschritt jetzt speichern</button>
+          <button class="btn btn-outline" style="width:100%" onclick="startTour()">Einführungstour starten</button>
           <div class="profile-menu-footer-row">
             <button class="profile-logout" onclick="logoutProfile()">Abmelden</button>
             <button class="profile-reset" onclick="resetProgress()">Fortschritt zurücksetzen</button>
@@ -3117,6 +3144,72 @@ bootApp();
   const ms=document.querySelector('.main-scroll');
   if(ms){ const bar=document.createElement('div'); bar.className='ix-scroll'; ms.prepend(bar);
     ms.addEventListener('scroll',()=>{const m=ms.scrollHeight-ms.clientHeight; bar.style.setProperty('--sp', m>0? ms.scrollTop/m : 0);},{passive:true}); }
+})();
+</script>
+<script>
+/* ===== Einführungstour ===== */
+const TOUR_KEY='orkanTourDone';
+const TOUR_STEPS=[
+ {icon:'👋',title:'Willkommen auf Ihrer Trainingsplattform!',text:'In einer kurzen Tour (ca. 1 Minute) zeigen wir Ihnen die wichtigsten Bereiche. Sie können die Tour jederzeit überspringen und später im Profil erneut starten.'},
+ {sel:'.sidebar',title:'Das Hauptmenü',text:'Über dieses Menü erreichen Sie alle Bereiche der Plattform. Es ist immer sichtbar – Sie können also jederzeit wechseln.',pos:'right'},
+ {sel:'.hero-side',title:'Ihr Lernfortschritt',text:'Der Ring zeigt, wie viel Prozent Ihres Onboardings Sie bereits geschafft haben. Er füllt sich mit jedem abgeschlossenen Modul.'},
+ {sel:'.hero .status-overview-btn',title:'Direkt loslegen',text:'Mit diesem Button starten Sie das nächste offene Modul – ohne Suchen.'},
+ {sel:'.nav-item[data-view="roadmap"]',title:'Mein Lernpfad',text:'Hier sehen Sie alle 8 Module in 3 Phasen als Weg – mit Stationen, die Sie bereits abgeschlossen haben.',pos:'right'},
+ {sel:'.nav-item[data-view="modules"]',title:'Lernmodule',text:'Jedes Modul hat vier Schritte: Inhalt (Video & Erklärung), Praxisaufgabe, Wissenscheck und Zusammenfassung. Ab 2 von 3 richtigen Antworten ist ein Modul abgeschlossen.',pos:'right'},
+ {sel:'.nav-item[data-view="kb"]',title:'Wissensdatenbank',text:'Schnell etwas nachschlagen? Hier finden Sie Anleitungen zu allen Themen der OrKan Cloud – mit Suchfunktion.',pos:'right'},
+ {sel:'.nav-item[data-view="best"]',title:'Best Practices',text:'Praxiserprobte Schritt-für-Schritt-Anleitungen für typische Aufgaben im Lageralltag.',pos:'right'},
+ {sel:'.nav-item[data-view="cert"]',title:'Zertifikat & Rabattcode',text:'Wenn Sie alle Module abgeschlossen haben, erhalten Sie hier Ihr persönliches Zertifikat inklusive Rabattcode für den SPRÜGEL-Onlineshop.',pos:'right'},
+ {sel:'.dash-customize-btn',title:'Dashboard anpassen',text:'Blenden Sie Kacheln ein oder aus und sortieren Sie sie so, wie es für Sie am besten passt.'},
+ {sel:'.hdr-avatar',title:'Ihr Profil',text:'Hier ändern Sie Ihre Daten, wechseln zwischen hellem und dunklem Design, vereinbaren einen persönlichen Termin oder starten diese Tour erneut.'},
+ {icon:'🚀',title:'Alles klar – los geht’s!',text:'Ihr Fortschritt wird automatisch gespeichert. Viel Erfolg mit Ihrem Onboarding in der OrKan Cloud!',last:true}
+];
+let tourIdx=0, tourEls=null;
+function startTour(){
+  document.querySelectorAll('.profile-menu.open').forEach(m=>m.classList.remove('open'));
+  if(typeof showView==='function') showView('dashboard');
+  document.querySelector('.main-scroll')?.scrollTo({top:0});
+  if(!tourEls){
+    const layer=document.createElement('div'); layer.className='tour-layer';
+    layer.innerHTML='<div class="tour-spot"></div><div class="tour-card" role="dialog" aria-live="polite"></div>';
+    document.body.appendChild(layer); tourEls={layer,spot:layer.querySelector('.tour-spot'),card:layer.querySelector('.tour-card')};
+    window.addEventListener('resize',()=>tourEls&&tourEls.layer.isConnected&&renderTour());
+    document.addEventListener('keydown',e=>{ if(!tourEls||!tourEls.layer.isConnected) return;
+      if(e.key==='Escape') endTour(); else if(e.key==='ArrowRight') tourGo(1); else if(e.key==='ArrowLeft') tourGo(-1); });
+  } else document.body.appendChild(tourEls.layer);
+  tourIdx=0; setTimeout(renderTour,150);
+}
+function tourGo(d){ tourIdx=Math.max(0,Math.min(TOUR_STEPS.length-1,tourIdx+d)); renderTour(); }
+function endTour(done){
+  try{localStorage.setItem(TOUR_KEY,'1')}catch(e){}
+  if(tourEls) tourEls.layer.remove();
+  if(done && window.celebrate) celebrate();
+}
+function renderTour(){
+  const st=TOUR_STEPS[tourIdx], {spot,card}=tourEls;
+  let el=st.sel?document.querySelector(st.sel):null;
+  if(el && !el.getClientRects().length) el=null;
+  if(el) el.scrollIntoView({block:'nearest'});
+  const dots=TOUR_STEPS.map((_,i)=>`<i class="${i===tourIdx?'on':''}"></i>`).join('');
+  card.innerHTML=`${st.icon?`<div class="tour-icon">${st.icon}</div>`:''}<div class="tour-step">Schritt ${tourIdx+1} von ${TOUR_STEPS.length}</div><h4>${st.title}</h4><p>${st.text}</p><div class="tour-dots">${dots}</div><div class="tour-actions">${st.last?'':'<button class="tour-skip" onclick="endTour()">Tour überspringen</button>'}${tourIdx>0?'<button class="tour-btn tour-back" onclick="tourGo(-1)">Zurück</button>':''}<button class="tour-btn tour-next" onclick="${st.last?'endTour(true)':'tourGo(1)'}">${st.last?'Los geht’s':(tourIdx===0?'Tour starten':'Weiter')}</button></div>`;
+  card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop');
+  const vw=innerWidth, vh=innerHeight, cw=Math.min(340,vw-32), ch=card.offsetHeight;
+  if(!el){ spot.classList.add('center'); card.style.left=(vw-cw)/2+'px'; card.style.top=Math.max(16,(vh-ch)/2)+'px'; return; }
+  spot.classList.remove('center');
+  const r=el.getBoundingClientRect(), pad=6;
+  const top=Math.max(4,r.top-pad), h=Math.min(r.height+pad*2, vh-top-4);
+  Object.assign(spot.style,{left:(r.left-pad)+'px',top:top+'px',width:(r.width+pad*2)+'px',height:h+'px'});
+  let x,y;
+  if(st.pos==='right' && r.right+16+cw<vw && st.sel!=='.sidebar'){ x=r.right+16; y=r.top+r.height/2-ch/2; }
+  else if(st.sel==='.sidebar' && r.right+16+cw<vw){ x=r.right+16; y=120; }
+  else if(r.bottom+16+ch<vh){ x=r.left+r.width/2-cw/2; y=r.bottom+16; }
+  else if(r.top-16-ch>0){ x=r.left+r.width/2-cw/2; y=r.top-16-ch; }
+  else { x=(vw-cw)/2; y=vh-ch-16; }
+  card.style.left=Math.max(16,Math.min(vw-cw-16,x))+'px';
+  card.style.top=Math.max(16,Math.min(vh-ch-16,y))+'px';
+}
+(function(){
+  const orig=window.startApp;
+  if(typeof orig==='function') window.startApp=function(){ orig.apply(this,arguments); let done=false; try{done=localStorage.getItem(TOUR_KEY)==='1'}catch(e){} if(!done) setTimeout(startTour,900); };
 })();
 </script>
 </body>
