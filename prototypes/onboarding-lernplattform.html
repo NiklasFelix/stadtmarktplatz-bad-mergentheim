@@ -1874,36 +1874,53 @@ const UPDATES = [
 ];
 
 const ROLE_FOCUS = {
-  'Lagerleiter': { heading:'Ihr Fokus als Lagerleiter', priorityModules:[4,5,6,7],
+  'Lagerleiter': { heading:'Ihr Fokus als Lagerleiter', priorityModules:[2,4,5],
     cards:[
-      {label:'Team-Fortschritt', val:'Ø 62%', sub:'4 Mitarbeitende aktuell im Onboarding', link:'team'},
-      {label:'Priorität diese Woche', val:'Zwei-Etiketten-System', sub:'Schulen Sie Ihr Team in der Blau/Weiß-Logik'},
-      {label:'Wareneingang', val:'Drei-Fenster-Prozess', sub:'Sie nehmen die Ware häufig selbst an und bestätigen sie'}
+      {label:'Lagerordnung', val:'Lagerorte & Lagerplätze', sub:'Jeder Artikel braucht einen festen Platz – Grundlage für Etiketten und Inventur', mod:2},
+      {label:'Nachschub sichern', val:'Zwei-Etiketten-System', sub:'Weißes Etikett in die Bestellbox, blaues bleibt am Regal – so läuft die Nachbestellung', mod:4},
+      {label:'Wareneingang', val:'Lieferung bestätigen', sub:'Gelieferte Ware im Bestelleingang buchen, damit der Lagerbestand stimmt', mod:5}
     ]},
   'Einkäufer': { heading:'Ihr Fokus als Einkäufer', priorityModules:[2,3,4],
     cards:[
-      {label:'Lager MIN/MAX', val:'Bestellmenge = MAX − MIN', sub:'Grundlage jedes Bestellvorschlags'},
-      {label:'Lieferanten-Anbindung', val:'Shop-URL prüfen', sub:'Ohne Shop-URL keine automatische Bestellweiterleitung'},
-      {label:'Nächster Schritt', val:'Bestellvorschlag bearbeiten', sub:'Vom Etikett zur fertigen Bestellung'}
+      {label:'Bestandsgrenzen', val:'Lager MIN/MAX pflegen', sub:'Bestellmenge = MAX − MIN – die Basis für jeden Bestellvorschlag', mod:2},
+      {label:'Stammdaten', val:'Artikelimport & Lieferanten', sub:'Artikel per Excel importieren und Lieferanten-Shops anbinden', mod:3},
+      {label:'Bestellen', val:'Bestellvorschlag bearbeiten', sub:'Vom gesammelten Etikett zur fertigen Bestellung beim Lieferanten', mod:4}
     ]},
-  'Geschäftsführer': { heading:'Ihr strategischer Überblick', priorityModules:[5,6,8],
+  'Geschäftsführer': { heading:'Ihr Überblick als Geschäftsführer', priorityModules:[5,6,8],
     cards:[
-      {label:'Team-Fortschritt', val:'Ø 62%', sub:'Wo stehen Lagerleiter und Einkäufer aktuell?', link:'team'},
-      {label:'Schwächen im Team', val:'Wissenslücken-Analyse', sub:'Unternehmensweite Auswertung nach Thema', link:'gaps'},
-      {label:'Zertifizierungsquote', val:'1 von 5', sub:'Team-Mitglieder mit vollständigem Abschluss'}
+      {label:'Kapitalbindung', val:'Lagerbestand & Warenwert', sub:'Wie viel Kapital liegt im Lager – je Artikel und gesamt', mod:5},
+      {label:'Betriebsmittel', val:'Maschinen im Blick', sub:'Wo ist welche Maschine, wer nutzt sie, wann steht die Wartung an', mod:6},
+      {label:'Kosten je Auftrag', val:'Projekte & Baustellen', sub:'Material und Maschinen direkt auf Projekte buchen und auswerten', mod:8}
     ]},
-  'Monteur': { heading:'Ihr Fokus im Tagesgeschäft', priorityModules:[4],
+  'Monteur': { heading:'Ihr Fokus im Tagesgeschäft', priorityModules:[4,6,8],
     cards:[
-      {label:'Ihre einzige Aufgabe', val:'Weißes Etikett ziehen', sub:'Bei Mindestbestand: Etikett aus dem Regal in die Bestellbox legen'},
-      {label:'Fehlt das weiße Etikett?', val:'Artikel ist schon bestellt', sub:'Kein Grund, selbst im System nachzuschauen'}
+      {label:'Material nachbestellen', val:'Weißes Etikett ziehen', sub:'Mindestbestand erreicht? Weißes Etikett in die Bestellbox legen – fertig', mod:4},
+      {label:'Maschinen', val:'Entnahme & Rückgabe buchen', sub:'So weiß jeder, wo sich eine Maschine gerade befindet', mod:6},
+      {label:'Auf der Baustelle', val:'Material aufs Projekt buchen', sub:'Verbrauch direkt dem richtigen Projekt zuordnen', mod:8}
     ]}
 };
 
 const ROLE_RECOS = {
-  'Lagerleiter':[{tag:'Prozesse',t:'Team-Einweisung ins Zwei-Etiketten-System',d:'Leitfaden zur Schulung Ihres Lagerteams in Blau/Weiß-Etikettenlogik und Bestellbox.'},{tag:'Prozesse',t:'Wareneingang korrekt bestätigen',d:'Schritt-für-Schritt-Anleitung für die Warenannahme im Drei-Fenster-Prozess.'},{tag:'Praxis',t:'Gebrauchsgutverwaltung einführen',d:'Maschinen und Werkzeuge Mitarbeitern und Fahrzeugen zuordnen.'}],
-  'Einkäufer':[{tag:'Prozesse',t:'Lager MIN/MAX richtig berechnen',d:'Praxisbeispiele für realistische Mindest- und Höchstbestände.'},{tag:'Best Practice',t:'Lieferanten-Shop-Anbindung einrichten',d:'Shop-URL korrekt pflegen für die automatische Bestellweiterleitung.'},{tag:'Praxis',t:'Artikelimport für neue Lieferanten',d:'Excel- und ZIP-Import Schritt für Schritt.'}],
-  'Geschäftsführer':[{tag:'Überblick',t:'Lagerbestand & Warenwert verstehen',d:'Ist-Bestand und Warenwert je Artikel auf einen Blick.'},{tag:'Strategie',t:'Rollout-Fortschritt im Unternehmen verfolgen',d:'Behalten Sie den Onboarding-Fortschritt von Lagerleiter, Einkäufer & Co. im Blick.'},{tag:'Praxis',t:'Module in den Einstellungen verwalten',d:'Übersicht über buchbare Zusatzmodule wie Bestandsführung oder Schlüsselverwaltung.'}],
-  'Monteur':[{tag:'Praxis',t:'Weißes Etikett richtig einsetzen',d:'So läuft der Bestellprozess vom Regal bis zur Bestellbox reibungslos.'}]
+  'Lagerleiter':[
+    {tag:'Best Practice',t:'Zwei-Etiketten-System im Team einführen',d:'So erklären Sie Ihrem Lagerteam die Blau/Weiß-Logik und die Bestellbox in wenigen Minuten.',mod:4},
+    {tag:'Praxis',t:'Wareneingang sauber bestätigen',d:'Lieferung prüfen, Mengen abgleichen und im Bestelleingang buchen.',mod:5},
+    {tag:'Praxis',t:'Etiketten für neue Lagerplätze drucken',d:'Vom fertigen Template bis zum Druck auf OrKan-Etikettenpapier.',mod:4}
+  ],
+  'Einkäufer':[
+    {tag:'Praxis',t:'MIN/MAX realistisch festlegen',d:'Verbrauch und Lieferzeit richtig einschätzen – ohne Über- oder Unterbestand.',mod:2},
+    {tag:'Best Practice',t:'Artikelstamm per Excel importieren',d:'Mit der Importvorlage viele Artikel auf einmal anlegen.',mod:3},
+    {tag:'Praxis',t:'Lieferanten-Shop anbinden',d:'Shop-URL hinterlegen, damit Bestellungen direkt weitergeleitet werden.',mod:3}
+  ],
+  'Geschäftsführer':[
+    {tag:'Überblick',t:'Warenwert im Lager auswerten',d:'Ist-Bestand und gebundenes Kapital je Artikel auf einen Blick.',mod:5},
+    {tag:'Überblick',t:'Maschinenpark transparent machen',d:'Standorte, Nutzung und Wartungstermine aller Maschinen zentral sehen.',mod:6},
+    {tag:'Führung',t:'Onboarding Ihres Teams begleiten',d:'Im Team-Fortschritt sehen, wer wo steht, und gezielt unterstützen.',view:'team'}
+  ],
+  'Monteur':[
+    {tag:'Praxis',t:'Weißes Etikett richtig einsetzen',d:'Wann Sie das Etikett ziehen und wohin es kommt – in 2 Minuten erklärt.',mod:4},
+    {tag:'Praxis',t:'Maschine entnehmen und zurückgeben',d:'Schnell buchen, damit Kollegen die Maschine finden.',mod:6},
+    {tag:'Praxis',t:'Material auf die Baustelle buchen',d:'Verbrauchtes Material direkt dem Projekt zuordnen.',mod:8}
+  ]
 };
 
 /* Simulierte unternehmensweite KI-Aggregation aller bisherigen Pilotnutzer.
@@ -2193,10 +2210,10 @@ const DASHBOARD_WIDGETS = {
   } },
   rolefocus: { title:'Rollenfokus', render: () => { const rf = ROLE_FOCUS[state.role]; if(!rf) return '<p style="font-size:14px;color:var(--gray)">Für Ihre Rolle sind keine zusätzlichen Kennzahlen hinterlegt.</p>'; return `
     <div class="stats-row">
-      ${rf.cards.map(c=>`<div class="stat-card" ${c.link?`style="cursor:pointer" onclick="showView('${c.link}')"`:''}><div class="stat-label">${c.label}</div><div class="stat-val" style="font-size:18px">${c.val}</div><div class="stat-sub">${c.sub}</div></div>`).join('')}
+      ${rf.cards.map(c=>`<div class="stat-card" ${c.mod?`style="cursor:pointer" onclick="openModule(${c.mod})"`:c.link?`style="cursor:pointer" onclick="showView('${c.link}')"`:''}><div class="stat-label">${c.label}</div><div class="stat-val" style="font-size:18px">${c.val}</div><div class="stat-sub">${c.sub}</div></div>`).join('')}
     </div>`; } },
   recos: { title:'Empfohlen für Ihre Rolle', render: () => `
-    <div class="reco-grid">${(ROLE_RECOS[state.role]||[]).map(r=>`<div class="reco-card"><div class="reco-tag">${r.tag}</div><h4>${r.t}</h4><p>${r.d}</p></div>`).join('')}</div>` }
+    <div class="reco-grid">${(ROLE_RECOS[state.role]||[]).map(r=>`<div class="reco-card" style="cursor:pointer" onclick="${r.mod?`openModule(${r.mod})`:`showView('${r.view}')`}"><div class="reco-tag">${r.tag}</div><h4>${r.t}</h4><p>${r.d}</p><span class="w-link">${r.mod?'Zum Modul':'Öffnen'} →</span></div>`).join('')}</div>` }
 };
 /* ===== Zusätzliche Dashboard-Kacheln ===== */
 function todayKey(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -2285,8 +2302,8 @@ Object.assign(DASHBOARD_WIDGETS, {
   } }
 });
 function switchTabTo(tab){ state.currentTab=tab; document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['content','task','quiz','summary'][i]===tab)); renderTab(); }
-const DEFAULT_WIDGET_ORDER = ['nextstep','stats','certcount','quizchart','activity','recent','feedback','phases','teamsummary','completiontime','rolefocus','recos'];
-const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:false, gaps:false, updates:false, rolefocus:true, recos:true};
+const DEFAULT_WIDGET_ORDER = ['nextstep','stats','rolefocus','recos','activity','recent','phases','teamsummary','completiontime'];
+const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:false, gaps:false, updates:false, rolefocus:false, recos:false};
 
 function loadDashboardPrefs(){
   try{
