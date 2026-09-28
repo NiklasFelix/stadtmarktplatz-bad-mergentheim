@@ -1082,8 +1082,6 @@ html:not(.theme-light) .theme-switch button.on{background:linear-gradient(135deg
 .nav-item.active svg{filter:drop-shadow(0 0 6px rgba(166,191,104,.7))}
 /* Karten: 3D-Neigung + Lichtkegel */
 .ix-card{position:relative;transform-style:preserve-3d;will-change:transform}
-.ix-card::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(166,191,104,.22),transparent 60%)}
-.ix-card:hover::after{opacity:1}
 /* Button-Welle */
 .ix-ripple{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,.45);animation:ripple .6s ease-out forwards;pointer-events:none}
 @keyframes ripple{to{transform:scale(4);opacity:0}}
