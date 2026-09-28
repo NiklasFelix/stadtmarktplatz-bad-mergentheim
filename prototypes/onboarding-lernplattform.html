@@ -1143,6 +1143,60 @@ html.theme-light .tour-back{background:#F1F2EE;color:#1D2327}
 .tour-icon{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:14px}
 html .sidebar .nav-item{font-weight:700}
 html .sidebar .nav-sub-item{font-weight:600}
+/* ===== Neue Dashboard-Kacheln ===== */
+.w-note{font-size:13px;color:var(--gray);margin-top:12px}
+.w-next{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.w-next-num{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a;flex-shrink:0}
+.w-next-body{flex:1;min-width:200px}.w-next-body strong{font-size:17px;display:block}.w-next-body p{font-size:14px;color:var(--gray);margin-top:3px}
+.w-next.done p{font-size:14px;color:var(--gray)}
+.w-bars{display:flex;flex-direction:column;gap:9px}
+.w-bar-row{display:grid;grid-template-columns:minmax(0,240px) 1fr 48px;gap:12px;align-items:center;font-size:13.5px}
+.w-bar-lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.w-bar{height:10px;border-radius:6px;background:var(--gray-light);overflow:hidden}
+.w-bar i{display:block;height:100%;border-radius:6px;transform-origin:left;animation:barGrow 1s cubic-bezier(.2,.7,.2,1) .2s backwards}
+.w-bar i.ok{background:linear-gradient(90deg,#8EA752,#C3D88A)}.w-bar i.warn{background:linear-gradient(90deg,#D98E2B,#F0B860)}.w-bar i.goal{background:repeating-linear-gradient(90deg,var(--gray) 0 6px,transparent 6px 10px);opacity:.5}
+.w-bar-val{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.w-act{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.w-heat{display:grid;grid-template-columns:repeat(14,18px);gap:5px}
+.w-heat i{width:18px;height:18px;border-radius:5px;background:var(--gray-light);transition:transform .15s}
+.w-heat i:hover{transform:scale(1.25)}
+.w-heat i.lv1{background:rgba(142,167,82,.45)}.w-heat i.lv2{background:#8EA752}.w-heat i.lv3{background:#C3D88A;box-shadow:0 0 8px rgba(166,191,104,.6)}
+.w-act-facts{display:flex;gap:28px}.w-act-facts strong{font-size:32px;display:block;line-height:1}.w-act-facts span{font-size:13px;color:var(--gray)}
+.w-cert{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.w-cert-mini{width:150px;height:104px;border-radius:10px;background:#fff;border:3px double #8EA752;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:#1B2024;flex-shrink:0;position:relative;overflow:hidden;transform:rotate(-3deg);box-shadow:0 12px 24px -12px rgba(0,0,0,.5)}
+.w-cert-mini span{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#5F6972}.w-cert-mini b{font-size:13px;color:#5E7233}.w-cert-mini i{width:70%;height:3px;border-radius:3px;background:#E3E6DF}
+.w-cert-mini.locked>*{filter:blur(2px)}
+.w-cert-body{flex:1;min-width:220px}.w-cert-body strong{font-size:20px}.w-cert-body p{font-size:14px;color:var(--gray);margin:4px 0 12px}
+.w-cert-track{display:flex;gap:5px;margin-bottom:14px}.w-cert-track i{flex:1;height:8px;border-radius:4px;background:var(--gray-light)}.w-cert-track i.on{background:linear-gradient(90deg,#8EA752,#C3D88A)}
+.w-recent{display:flex;flex-direction:column;gap:8px}
+.w-recent-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;font:inherit;transition:border-color .2s,transform .2s}
+.w-recent-item:hover{border-color:#8EA752;transform:translateX(3px)}
+.w-recent-item strong{flex:1;font-size:14.5px}.w-arrow{color:#8EA752;font-weight:700}
+.w-tag{font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--green-light);color:var(--green-dark);white-space:nowrap}
+.w-stars{letter-spacing:2px;color:var(--gray-light);white-space:nowrap;display:inline-block}.w-stars .on{color:#E8B53D}
+.w-fb{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start}
+.w-fb-score strong{font-size:44px;display:block;line-height:1}.w-fb-score span:last-child{display:block;font-size:13px;color:var(--gray);margin-top:6px}
+.w-fb-list{display:flex;flex-direction:column;gap:6px}
+.w-fb-row{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;padding:6px 0;border-bottom:1px solid var(--line)}
+.w-fb-row span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.w-fb-row a{color:#8EA752;font-weight:700;cursor:pointer;white-space:nowrap}.w-fb-row em{color:var(--gray);font-style:normal;font-size:12.5px;white-space:nowrap}
+.w-team-bar{display:flex;height:16px;border-radius:8px;overflow:hidden;gap:3px;margin-bottom:12px}
+.w-team-bar i{display:block;transform-origin:left;animation:barGrow 1s cubic-bezier(.2,.7,.2,1) .2s backwards}
+.w-team-bar .d,.w-team-legend b.d{background:#8EA752}.w-team-bar .p,.w-team-legend b.p{background:#E8B53D}.w-team-bar .o,.w-team-legend b.o{background:var(--gray-light)}
+.w-team-legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13.5px;margin-bottom:16px}.w-team-legend b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+.w-team-avg strong{font-size:36px}.w-team-avg small{font-size:18px;color:#8EA752;margin-right:10px}.w-team-avg span{font-size:13.5px;color:var(--gray)}
+.w-link{display:inline-block;margin-top:10px;color:#8EA752;font-weight:700;font-size:14px;cursor:pointer}
+.w-dur-big{margin-bottom:14px}.w-dur-big strong{font-size:36px;margin-right:10px}.w-dur-big span{font-size:14px;color:var(--gray)}
+/* Bewertung im Modul */
+.rate-box{margin-top:20px;padding:20px 22px;border-radius:16px;border:1px solid rgba(166,191,104,.35);background:rgba(166,191,104,.07);text-align:left}
+.rate-box strong{font-size:16px}.rate-box p{font-size:14px;color:var(--gray);margin:4px 0 10px}
+.rate-stars{display:flex;gap:4px;margin-bottom:12px}
+.rate-stars button{background:none;border:0;font-size:32px;line-height:1;cursor:pointer;color:var(--gray-light);transition:transform .15s,color .15s;padding:0 2px}
+.rate-stars:hover button{color:#E8B53D}.rate-stars button:hover~button{color:var(--gray-light)}
+.rate-stars button.on{color:#E8B53D}.rate-stars button:hover{transform:scale(1.2)}
+.rate-comment{width:100%;margin-bottom:10px;resize:vertical}
+.rate-thanks{margin-left:12px;font-size:13.5px;font-weight:700;color:#8EA752}
+@media(max-width:700px){.w-bar-row{grid-template-columns:1fr 44px}.w-bar-lbl{grid-column:1/-1}.w-fb{grid-template-columns:1fr}.w-heat{grid-template-columns:repeat(7,18px)}}
 </style>
 </head>
 <body>
@@ -1851,7 +1905,8 @@ let state = {
   totalTime:0, aiOpen:false, quizAnswers:{}, kbFilter:'Alle', kbSearch:'', currentArticle:null, currentBP:null,
   weakTopics:{}, adaptiveLog:[],
   integrationOptions:{ behavioral:false, help:false, central:false },
-  moduleVideos:{}, videoManagerModuleId:null, discountCode:null
+  moduleVideos:{}, videoManagerModuleId:null, discountCode:null,
+  activityDays:{}, recent:[], ratings:{}
 };
 
 /* ============ ONBOARDING ============ */
@@ -1900,7 +1955,8 @@ function saveState(){
       name: state.name, company: state.company, role: state.role,
       moduleProgress: state.moduleProgress, totalTime: state.totalTime,
       quizAnswers: state.quizAnswers, weakTopics: state.weakTopics, adaptiveLog: state.adaptiveLog,
-      integrationOptions: state.integrationOptions, discountCode: state.discountCode
+      integrationOptions: state.integrationOptions, discountCode: state.discountCode,
+      activityDays: state.activityDays, recent: state.recent, ratings: state.ratings
     };
     localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(snapshot));
   }catch(e){}
@@ -2110,7 +2166,94 @@ const DASHBOARD_WIDGETS = {
   recos: { title:'Empfohlen für Ihre Rolle', render: () => `
     <div class="reco-grid">${(ROLE_RECOS[state.role]||[]).map(r=>`<div class="reco-card"><div class="reco-tag">${r.tag}</div><h4>${r.t}</h4><p>${r.d}</p></div>`).join('')}</div>` }
 };
-const DEFAULT_WIDGET_ORDER = ['stats','phases','gaps','rolefocus','recos'];
+/* ===== Zusätzliche Dashboard-Kacheln ===== */
+function todayKey(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function markActivity(){ state.activityDays = state.activityDays||{}; const k=todayKey(); state.activityDays[k]=(state.activityDays[k]||0)+1; }
+function pushRecent(item){
+  state.recent = (state.recent||[]).filter(r=>!(r.type===item.type && r.id===item.id));
+  state.recent.unshift(Object.assign({at:Date.now()},item)); state.recent = state.recent.slice(0,5);
+}
+function learningStreak(){
+  const days=state.activityDays||{}; let n=0; const d=new Date();
+  if(!days[todayKey(d)]) d.setDate(d.getDate()-1);
+  while(days[todayKey(d)]){ n++; d.setDate(d.getDate()-1); }
+  return n;
+}
+function starsHtml(n, size){ return `<span class="w-stars" style="font-size:${size||16}px">${[1,2,3,4,5].map(i=>`<span class="${i<=n?'on':''}">★</span>`).join('')}</span>`; }
+function ratingBlock(m){
+  const r=(state.ratings||{})[m.id]||{stars:0,comment:''};
+  return `<div class="rate-box" id="rateBox${m.id}">
+    <strong>Wie hilfreich war dieses Modul?</strong>
+    <p>Ihre Bewertung hilft uns, die Schulung weiter zu verbessern.</p>
+    <div class="rate-stars" role="radiogroup" aria-label="Bewertung">${[1,2,3,4,5].map(i=>`<button type="button" class="${i<=r.stars?'on':''}" onclick="setRating(${m.id},${i})" aria-label="${i} von 5 Sternen">★</button>`).join('')}</div>
+    <textarea class="profile-input rate-comment" id="rateComment${m.id}" rows="2" placeholder="Optional: Was können wir besser machen?">${r.comment||''}</textarea>
+    <button class="btn btn-outline" onclick="saveRatingComment(${m.id})">Feedback speichern</button>
+    ${r.stars?`<span class="rate-thanks">Danke für Ihre Bewertung!</span>`:''}
+  </div>`;
+}
+function setRating(id,n){
+  state.ratings=state.ratings||{};
+  const c=document.getElementById('rateComment'+id);
+  state.ratings[id]={stars:n,comment:c?c.value:((state.ratings[id]||{}).comment||'')};
+  saveState();
+  const box=document.getElementById('rateBox'+id); if(box) box.outerHTML=ratingBlock(MODULES.find(x=>x.id===id));
+  showToast('Danke für Ihre Bewertung!');
+}
+function saveRatingComment(id){
+  state.ratings=state.ratings||{};
+  const c=document.getElementById('rateComment'+id);
+  state.ratings[id]=Object.assign({stars:0},state.ratings[id]||{},{comment:c?c.value.trim():''});
+  saveState(); showToast('Feedback gespeichert – vielen Dank!');
+}
+const TEAM_DURATIONS = [{name:'Julia Herrmann',days:11},{name:'Pilotgruppe Sprügel (Ø)',days:16}];
+Object.assign(DASHBOARD_WIDGETS, {
+  nextstep: { title:'Ihr nächster Schritt', render: () => {
+    const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
+    if(!next) return `<div class="w-next done"><div><strong>Alle Module abgeschlossen!</strong><p>Ihr Zertifikat inklusive Rabattcode ist freigeschaltet.</p></div><button class="btn btn-primary" onclick="showView('cert')">Zum Zertifikat</button></div>`;
+    const p=state.moduleProgress[next.id];
+    return `<div class="w-next"><span class="w-next-num">${String(next.id).padStart(2,'0')}</span><div class="w-next-body"><strong>${next.title}</strong><p>${next.time} · ${next.points.length} Lerninhalte · Praxisaufgabe · Wissenscheck</p></div><button class="btn btn-primary" onclick="openModule(${next.id})">${p.started?'Fortsetzen':'Starten'} →</button></div>`;
+  } },
+  quizchart: { title:'Quiz-Ergebnisse je Modul', render: () => {
+    const rows = MODULES.map(m=>{ const s=state.moduleProgress[m.id].quizScore; return `<div class="w-bar-row"><span class="w-bar-lbl" title="${m.title}">${String(m.id).padStart(2,'0')} ${m.title}</span><div class="w-bar"><i style="width:${s??0}%" class="${s===null?'':s>=67?'ok':'warn'}"></i></div><span class="w-bar-val">${s===null?'–':s+'%'}</span></div>`; }).join('');
+    return `<div class="w-bars">${rows}</div><p class="w-note">Ab 67 % (2 von 3 richtig) gilt ein Modul als bestanden.</p>`;
+  } },
+  activity: { title:'Lernaktivität', render: () => {
+    const days=state.activityDays||{}; const cells=[]; const d=new Date(); d.setDate(d.getDate()-27);
+    let active=0;
+    for(let i=0;i<28;i++){ const k=todayKey(d); const v=days[k]||0; if(v) active++; cells.push(`<i class="lv${v>=6?3:v>=3?2:v?1:0}" title="${d.toLocaleDateString('de-DE')}: ${v?v+' Lernaktionen':'keine Aktivität'}"></i>`); d.setDate(d.getDate()+1); }
+    const streak=learningStreak();
+    return `<div class="w-act"><div class="w-heat">${cells.join('')}</div><div class="w-act-facts"><div><strong data-count="${streak}">${streak}</strong><span>${streak===1?'Tag':'Tage'} in Folge</span></div><div><strong data-count="${active}">${active}</strong><span>aktive Tage (28 Tage)</span></div></div></div><p class="w-note">Jedes grüne Feld ist ein Tag, an dem Sie gelernt haben.</p>`;
+  } },
+  certcount: { title:'Auf dem Weg zum Zertifikat', render: () => {
+    const left = MODULES.length-completedCount();
+    return `<div class="w-cert"><div class="w-cert-mini ${left?'locked':''}"><span>Zertifikat</span><b>${state.name}</b><i></i><i></i></div><div class="w-cert-body">${left?`<strong>Noch ${left} ${left===1?'Modul':'Module'}</strong><p>bis zu Ihrem persönlichen Zertifikat inklusive Rabattcode für den SPRÜGEL-Onlineshop.</p>`:`<strong>Geschafft!</strong><p>Ihr Zertifikat und Ihr Rabattcode sind freigeschaltet.</p>`}<div class="w-cert-track">${MODULES.map(m=>`<i class="${state.moduleProgress[m.id].completed?'on':''}"></i>`).join('')}</div><button class="btn btn-outline" onclick="showView('cert')">${left?'Vorschau ansehen':'Zum Zertifikat'}</button></div></div>`;
+  } },
+  recent: { title:'Zuletzt angesehen', render: () => {
+    const r=(state.recent||[]).slice(0,3);
+    if(!r.length) return `<p class="w-note" style="margin:0">Hier erscheinen die zuletzt geöffneten Module und Artikel – für den schnellen Wiedereinstieg.</p>`;
+    return `<div class="w-recent">${r.map(it=>{ if(it.type==='module'){ const m=MODULES.find(x=>x.id===it.id); return m?`<button class="w-recent-item" onclick="openModule(${m.id})"><span class="w-tag">Modul ${String(m.id).padStart(2,'0')}</span><strong>${m.title}</strong><span class="w-arrow">→</span></button>`:''; } const a=KB_ARTICLES[it.id]; return a?`<button class="w-recent-item" onclick="showView('kb');openArticle(${it.id})"><span class="w-tag">Wissensdatenbank</span><strong>${a.title||a.t}</strong><span class="w-arrow">→</span></button>`:''; }).join('')}</div>`;
+  } },
+  feedback: { title:'Feedback & Bewertung', render: () => {
+    const rs=Object.entries(state.ratings||{}).filter(([,v])=>v.stars>0);
+    const avg = rs.length? rs.reduce((s,[,v])=>s+v.stars,0)/rs.length : 0;
+    return `<div class="w-fb"><div class="w-fb-score"><strong>${rs.length?avg.toFixed(1).replace('.',','):'–'}</strong>${starsHtml(Math.round(avg),18)}<span>${rs.length} von ${MODULES.length} Modulen bewertet</span></div><div class="w-fb-list">${MODULES.map(m=>{ const v=(state.ratings||{})[m.id]; const done=state.moduleProgress[m.id].completed; return `<div class="w-fb-row"><span>${String(m.id).padStart(2,'0')} ${m.title}</span>${v&&v.stars?starsHtml(v.stars,14):done?`<a onclick="openModule(${m.id});switchTabTo('summary')">Jetzt bewerten</a>`:'<em>nach Abschluss</em>'}</div>`; }).join('')}</div></div>`;
+  } },
+  teamsummary: { title:'Team-Übersicht (für Vorgesetzte)', render: () => {
+    const all=[...TEAM_MEMBERS,{completed:completedCount()}]; const n=all.length;
+    const done=all.filter(x=>x.completed>=MODULES.length).length, open=all.filter(x=>x.completed===0).length, prog=n-done-open;
+    const avg=Math.round(all.reduce((s,x)=>s+x.completed/MODULES.length,0)/n*100);
+    return `<div class="w-team"><div class="w-team-bar"><i class="d" style="flex:${done||0.001}"></i><i class="p" style="flex:${prog||0.001}"></i><i class="o" style="flex:${open||0.001}"></i></div>
+      <div class="w-team-legend"><span><b class="d"></b>${done} abgeschlossen</span><span><b class="p"></b>${prog} in Bearbeitung</span><span><b class="o"></b>${open} noch nicht gestartet</span></div>
+      <div class="w-team-avg"><strong data-count="${avg}">${avg}</strong><small>%</small><span>Ø Fortschritt im Team (${n} Personen)</span></div>
+      <a class="w-link" onclick="showView('team')">Zum Team-Fortschritt →</a></div>`;
+  } },
+  completiontime: { title:'Dauer bis zum Abschluss (für Vorgesetzte)', render: () => {
+    const max=Math.max(...TEAM_DURATIONS.map(x=>x.days),21);
+    return `<div class="w-dur"><div class="w-dur-big"><strong>Ø 14</strong><span>Tage vom Start bis zum Zertifikat</span></div><div class="w-bars">${TEAM_DURATIONS.map(x=>`<div class="w-bar-row"><span class="w-bar-lbl">${x.name}</span><div class="w-bar"><i class="ok" style="width:${x.days/max*100}%"></i></div><span class="w-bar-val">${x.days} T.</span></div>`).join('')}<div class="w-bar-row"><span class="w-bar-lbl">Ziel</span><div class="w-bar"><i class="goal" style="width:${21/max*100}%"></i></div><span class="w-bar-val">21 T.</span></div></div><p class="w-note">Beispielwerte aus der Pilotgruppe – im Echtbetrieb automatisch berechnet.</p></div>`;
+  } }
+});
+function switchTabTo(tab){ state.currentTab=tab; document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['content','task','quiz','summary'][i]===tab)); renderTab(); }
+const DEFAULT_WIDGET_ORDER = ['nextstep','stats','certcount','quizchart','activity','recent','feedback','phases','gaps','teamsummary','completiontime','rolefocus','recos'];
 const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:false, gaps:false, updates:false, rolefocus:true, recos:true};
 
 function loadDashboardPrefs(){
@@ -2118,7 +2261,8 @@ function loadDashboardPrefs(){
     const raw = localStorage.getItem('orkanDashboardPrefs');
     if(raw){
       const p = JSON.parse(raw);
-      const order = Array.isArray(p.order) ? DEFAULT_WIDGET_ORDER.filter(id=>p.order.includes(id)).sort((a,b)=>p.order.indexOf(a)-p.order.indexOf(b)) : DEFAULT_WIDGET_ORDER.slice();
+      let order = Array.isArray(p.order) ? DEFAULT_WIDGET_ORDER.filter(id=>p.order.includes(id)).sort((a,b)=>p.order.indexOf(a)-p.order.indexOf(b)) : DEFAULT_WIDGET_ORDER.slice();
+      DEFAULT_WIDGET_ORDER.forEach((id,ix)=>{ if(!order.includes(id)) order.splice(Math.min(ix,order.length),0,id); });
       return { order, hidden: Object.assign({}, DEFAULT_WIDGET_HIDDEN, p.hidden||{}) };
     }
   }catch(e){}
@@ -2250,6 +2394,7 @@ function openModule(id){
   state.currentModule = id;
   state.currentTab = 'content';
   state.moduleProgress[id].started = true;
+  markActivity(); pushRecent({type:'module',id});
   showView('modules');
   renderModuleDetail();
   buildModuleSubNav();
@@ -2394,6 +2539,7 @@ function renderTab(){
         <div class="summary-block"><h5>Wichtigste Funktionen</h5><ul>${m.summary.funk.map(x=>`<li>${x}</li>`).join('')}</ul></div>
         <div class="summary-block"><h5>Handlungsempfehlungen</h5><ul>${m.summary.hand.map(x=>`<li>${x}</li>`).join('')}</ul></div>
         <div class="summary-block"><h5>Nächste Lernschritte</h5><ul><li>${nextModuleLink(m.id)}</li></ul></div>
+        ${ratingBlock(m)}
       `;
     }
   }
@@ -2404,6 +2550,7 @@ function nextModuleLink(id){
   return `Fahren Sie fort mit „<a href="#" onclick="openModule(${next.id});return false" style="color:var(--green-dark);font-weight:700">${next.title}</a>"`;
 }
 function toggleCheck(mid,i){
+  markActivity();
   const p = state.moduleProgress[mid];
   const m = MODULES.find(x=>x.id===mid);
   const idx = p.checklist.indexOf(i);
@@ -2461,6 +2608,7 @@ function renderQuizResult(m){
   if(passed && !state.moduleProgress[m.id].completed){
     setTimeout(()=>window.celebrate&&celebrate(),200);
     state.moduleProgress[m.id].completed = true;
+    state.moduleProgress[m.id].completedAt = Date.now(); markActivity();
     state.totalTime += parseInt(m.time);
     buildModuleSubNav();
     const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
@@ -2473,6 +2621,7 @@ function renderQuizResult(m){
   return `<div class="quiz-result"><div class="qr-score">${correct}/${m.quiz.length} richtig (${pct}%)</div>
     <p>${passed?'Modul erfolgreich abgeschlossen.':'Mindestens 2 von 3 Antworten müssen korrekt sein. Bitte wiederholen Sie den Wissenscheck.'}</p>
     ${passed?`<button class="btn btn-primary" onclick="switchTab('summary');document.querySelectorAll('.tab-btn')[3].classList.add('active');document.querySelectorAll('.tab-btn')[0].classList.remove('active')">Zur Zusammenfassung</button>`:`<button class="btn btn-outline" onclick="retryQuiz(${m.id})">Erneut versuchen</button>`}
+    ${passed?ratingBlock(m):''}
   </div>`;
 }
 function retryQuiz(mid){ delete state.quizAnswers[mid]; renderQuiz(MODULES.find(x=>x.id===mid)); }
@@ -2498,6 +2647,7 @@ function renderKBGrid(){
 }
 function openArticle(idx){
   state.currentArticle = idx;
+  markActivity(); pushRecent({type:'article',id:idx});
   const a = KB_ARTICLES[idx];
   document.getElementById('view-kb').innerHTML = `
     <div class="md-back" onclick="renderKB()">&larr; Zurück zur Wissensdatenbank</div>
