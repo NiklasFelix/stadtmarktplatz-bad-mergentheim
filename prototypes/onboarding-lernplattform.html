@@ -1055,245 +1055,26 @@ h1.page-title{font-size:30px}
 @media(max-width:640px){.tab-bar{display:grid;grid-template-columns:1fr 1fr;width:100%}.tab-btn{flex:1 1 auto;text-align:center;padding:9px 10px;font-size:14px}h1.page-title{font-size:25px}}
 body,button,input,textarea,select{font-family:Arial,Helvetica,sans-serif}
 
-/* =====================================================================
-   DESIGN 4.0 · "Dark Premium" (Vorlage B)
-   ===================================================================== */
-:root{color-scheme:dark;--bg:#15191C;--white:#1C2125;--surface:#1C2125;--surface-2:#232A2F;--ink:#E8ECEF;--gray:#9CA7AF;--line:#2B3237;--border:#2B3237;--gray-light:#2B3237;
+/* DESIGN 4.0 · Dark Premium (Standard) – Hell-Modus über html.theme-light */
+html:not(.theme-light){color-scheme:dark;--bg:#15191C;--white:#1C2125;--surface:#1C2125;--surface-2:#232A2F;--ink:#E8ECEF;--gray:#9CA7AF;--line:#2B3237;--border:#2B3237;--gray-light:#2B3237;
  --green-light:rgba(166,191,104,.14);--green-mid:rgba(166,191,104,.35);--green-dark:#A6BF68;--amber-soft:rgba(232,163,61,.15);--amber:#F0B860;--red-soft:rgba(220,90,70,.15);
- --shadow:0 1px 0 rgba(255,255,255,.03) inset,0 18px 40px -24px rgba(0,0,0,.7);--shadow-lg:0 30px 60px -24px rgba(0,0,0,.8);--shadow-sm:none}
-html,body{background:#15191C;color:var(--ink)}
-.main-scroll{background:radial-gradient(1000px 480px at 90% -10%,rgba(142,167,82,.16),transparent 60%),#15191C}
-.bg-mesh{background:#15191C}
-.adaptive-log,
-.ai-panel,
-.bg-mesh,
-.bp-card,
-.bp-diff.medium,
-.btn-outline,
-.check-item,
-.chip,
-.ci-badge-demo,
-.ci-concept-card,
-.collapsible,
-.collapsible-head,
-.context-note,
-.dash-customize-btn,
-.dash-widget,
-.dash-widget .stat-card,.dash-widget .reco-card,
-.dash-widget .stat-card,.dash-widget .reco-card,.dash-widget .update-item,
-.dash-widget .update-item,
-.feature-card,
-.field-row input,
-.gap-card,
-.gap-count,
-.gap-empty,
-.helpful-btn,
-.kb-article,
-.kb-card,
-.kb-search,
-.main-scroll,
-.mc-badge.open,.mc-badge.locked,
-.mc-badge.progress,
-.mc-num,
-.milestone-card,
-.milestone-dot,
-.milestone-gist li,
-.module-card,
-.module-detail-header,
-.nav-item:hover,
-.nav-sub-item:hover,
-.onb-form-panel,
-.phase-num,
-.profile-input,
-.profile-menu,
-.quiz-opt,
-.quiz-opt.wrong,
-.quiz-q,
-.quiz-result,
-.reco-card,
-.roadmap-note,
-.roadmap-side .roadmap-note,.roadmap-side .adaptive-log,
-.role-card,
-.sidebar,
-.sidebar-progress,
-.stat-card,
-.sugg-chip,
-.tab-bar,
-.tab-btn:hover,
-.team-row,
-.template-callout,
-.update-item,
-.video-manage-btn,
-.vm-file-input,
-.vm-modal,
-input,textarea,select{background:var(--surface)}
-.ai-banner-text span,
-.ai-send svg,
-.ai-toggle-btn:hover,
-.appointment-contact-detail-row,
-.appointment-contact-name,
-.btn-outline,
-.btn-primary:hover,.mc-btn:hover,.template-callout-btn:hover,.coach-btn:hover,.status-overview-btn:hover,
-.check-box svg,
-.ci-intro,
-.coach-btn:hover svg,
-.context-note strong,
-.context-note-btn,
-.dash-customize-btn,
-.dash-widget-hide:hover,
-.hdr-avatar,
-.hero .page-title,
-.hero .ring-num,.roadmap-side .ring-num,.roadmap-side-count span,.roadmap-side .roadmap-note strong,
-.hero .status-overview-btn,
-.hero .status-overview-btn:hover,
-.hero .status-overview-text strong,.hero .status-value,
-.hero,.roadmap-side,
-.insight-callout p,
-.kb-article p,
-.kb-link,
-.key-points li,
-.mc-num,
-.md-back:hover,
-.milestone-card p,
-.milestone-gist li,
-.milestone.done .milestone-dot,
-.nav-item,
-.nav-item:hover,
-.nav-sub-item:hover,
-.new-badge,
-.onb-btn:not(:disabled):hover,
-.phase-step.unlocked .phase-num,
-.play-circle svg,
-.practice-callout p,
-.profile-menu-name,
-.ring-num,
-.sp-text,
-.stat-card .stat-val,
-.status-value,
-.sugg-chip,
-.tab-btn.active,
-.tab-btn:hover,
-.team-quiz,
-.update-item li,
-.video-manage-btn,
-.vm-tab-btn.active,
-html,body,
-input,textarea,select{color:var(--ink)}
-/* Karten: Glas */
-.stat-card,.module-card,.reco-card,.gap-card,.milestone-card,.module-detail-header,.feature-card,.quiz-q,.quiz-result,.kb-card,.kb-article,.bp-card,.update-item,.cert-gate,.team-row,.dash-widget,.gap-empty,.ci-concept-card,.collapsible,.check-item,.template-callout,.roadmap-note,.adaptive-log,.context-note{background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}
-.module-card:hover,.kb-card:hover,.bp-card:hover{border-color:rgba(166,191,104,.5);box-shadow:0 22px 44px -22px rgba(166,191,104,.35)}
-.dash-widget .stat-card,.dash-widget .update-item,.dash-widget .reco-card{background:rgba(255,255,255,.035);border-color:transparent}
-/* Kopf & Navigation */
-.app-header{background:#15191C;border-bottom:1px solid rgba(255,255,255,.07)}
-.sidebar{background:#15191C;border-right:1px solid rgba(255,255,255,.07)}
-.nav-item{color:#AEB7BE}.nav-item svg{color:#6E7A83}
-.nav-item:hover{background:rgba(255,255,255,.05);color:#fff}
-.nav-item.active{background:linear-gradient(90deg,rgba(142,167,82,.24),rgba(142,167,82,.04));color:#fff;box-shadow:inset 3px 0 0 #A6BF68}
-.nav-item.active::before{display:none}
-.nav-item.active svg{color:#A6BF68}
-.nav-sub-item{color:#8C979F}.nav-sub-item:hover{background:rgba(255,255,255,.05);color:#fff}
-.status-dot{background:#3A434A}
-.sidebar-progress{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08)}
-.sp-track{background:rgba(255,255,255,.08)}.sp-fill{background:linear-gradient(90deg,#8EA752,#C3D88A);box-shadow:0 0 10px rgba(166,191,104,.6)}.sp-text{color:#fff}
-.sidebar-backdrop{background:rgba(0,0,0,.6)}
-/* Buttons */
-.btn-primary,.mc-btn,.template-callout-btn,.coach-btn,.status-overview-btn,.onb-btn,.ai-banner-btn,.coach-widget-send,.hero .status-overview-btn{background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a;border:0;box-shadow:0 10px 26px -12px rgba(166,191,104,.7)}
-.btn-primary:hover,.mc-btn:hover,.template-callout-btn:hover,.coach-btn:hover,.status-overview-btn:hover,.onb-btn:not(:disabled):hover,.hero .status-overview-btn:hover{background:linear-gradient(135deg,#C6DA8C,#9CB560);color:#10150a;box-shadow:0 14px 30px -10px rgba(166,191,104,.85)}
-.coach-btn svg{color:#10150a}
-.onb-btn:disabled,.btn-primary:disabled{background:#2B3237;color:#6E7A83;box-shadow:none}
-.mc-btn{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.1);box-shadow:none}
-.module-card:hover .mc-btn{background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a;border-color:transparent}
-.module-card-locked .mc-btn{background:#2B3237;color:#6E7A83}
-.btn-outline,.helpful-btn,.dash-customize-btn,.chip,.context-note-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:var(--ink)}
-.btn-outline:hover,.helpful-btn:hover,.dash-customize-btn:hover,.chip:hover{border-color:#A6BF68;color:#fff;background:rgba(166,191,104,.1)}
-.chip.active{background:#A6BF68;color:#10150a;border-color:#A6BF68}
-.btn-danger{background:#C2513E;color:#fff}
-/* Hero & Ring */
-.hero,.roadmap-side{background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);color:var(--ink);box-shadow:var(--shadow)}
-.hero::before,.roadmap-side::before{display:none}
-.hero::after,.roadmap-side::after{background:radial-gradient(circle,rgba(166,191,104,.35),transparent 65%)}
-.hero .page-title{color:#fff}.hero .page-sub,.hero .status-overview-text p{color:#9CA7AF}
-.hero .status-overview-text strong,.hero .status-value{color:#fff}
-.hero .status-label{color:#8C979F}
-.hero .status-overview-grid,.hero .status-overview-grid>div+div{border-color:rgba(255,255,255,.1)}
-.hero-eyebrow{color:#A6BF68}
-.ring-track,.hero .ring-track,.roadmap-side .ring-track{stroke:rgba(255,255,255,.08)}
-.ring-fill{stroke:#A6BF68;filter:drop-shadow(0 0 6px rgba(166,191,104,.7))}
-.ring-num,.hero .ring-num,.roadmap-side .ring-num,.roadmap-side-count span,.roadmap-side .roadmap-note strong{color:#fff}
-.ring-unit,.hero .ring-unit,.roadmap-side .ring-unit{color:#A6BF68}
-.ring-caption,.hero .ring-caption,.roadmap-side .ring-caption,.roadmap-side-count{color:#8C979F}
-.roadmap-side .roadmap-note,.roadmap-side .adaptive-log{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:#9CA7AF}
-.roadmap-side .log-item{color:#9CA7AF;border-color:rgba(255,255,255,.08)}
-/* Module */
-.mc-num{background:none;border:0;width:auto;height:auto;padding:0;font-size:26px;font-weight:700;background:linear-gradient(180deg,#fff,#6E7A83);-webkit-background-clip:text;background-clip:text;color:transparent}
-.module-card:hover .mc-num{background:linear-gradient(180deg,#fff,#A6BF68);-webkit-background-clip:text;background-clip:text;color:transparent}
-.mc-badge.open,.mc-badge.locked{background:rgba(255,255,255,.07);color:#AEB7BE;border-color:transparent}
-.mc-badge.done{background:rgba(166,191,104,.16);color:#C3D88A}
-.mc-badge.progress,.mc-badge-prio{background:rgba(232,163,61,.15);color:#F0B860}
-.mc-track,.status-progress-track,.gate-track,.gap-track{background:rgba(255,255,255,.08)}
-.mc-fill,.gate-fill,.status-progress-fill{background:linear-gradient(90deg,#8EA752,#C3D88A);box-shadow:0 0 10px rgba(166,191,104,.5)}
-.module-card-locked{background:rgba(255,255,255,.02)}
-/* Phasen & Lernpfad */
-.phase-num,.milestone-dot{background:#1C2125;border-color:#3A434A;color:#9CA7AF}
-.phase-step.unlocked .phase-num,.milestone.done .milestone-dot{background:#A6BF68;border-color:#A6BF68;color:#10150a}
-.phase-step.active .phase-num,.milestone.active .milestone-dot{border-color:#A6BF68;color:#A6BF68;background:#1C2125}
-.phase-step::before,.roadmap-line::before{background:#2B3237}
-.milestone-gist li{background:rgba(166,191,104,.12);color:#C3D88A;border-color:transparent}
-.milestone.done .milestone-card{border-color:rgba(166,191,104,.4)}
-/* Moduldetail */
-.module-detail-header{border-top:1px solid rgba(255,255,255,.08)}
-.phase-badge{background:rgba(166,191,104,.16);color:#C3D88A}
-.tab-bar{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
-.tab-btn{color:#9CA7AF}.tab-btn:hover{background:rgba(255,255,255,.05);color:#fff}
-.tab-btn.active{background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a}
-.video-placeholder{background:radial-gradient(ellipse at 75% 0%,rgba(142,167,82,.3),transparent 55%),#101316;border:1px solid rgba(255,255,255,.08)}
-.video-placeholder span{color:#9CA7AF}
-.play-circle{background:linear-gradient(135deg,#B5CC78,#8EA752);box-shadow:0 0 0 10px rgba(166,191,104,.15),0 0 30px rgba(166,191,104,.5)}
-.play-circle svg{color:#10150a}
-.video-manage-btn{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.15)}
-.key-points li{color:#D5DBDF}
-.practice-callout,.insight-callout{background:rgba(166,191,104,.08);border:1px solid rgba(166,191,104,.25)}
-.practice-callout p,.insight-callout p{color:#D5DBDF}
-.practice-callout strong,.insight-callout strong,.summary-block h5,.kb-cat,.reco-tag,.form-eyebrow{color:#A6BF68}
-.quiz-opt{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.1);color:var(--ink)}
-.quiz-opt:hover{border-color:#A6BF68;background:rgba(166,191,104,.08)}
-.quiz-opt.correct{background:rgba(166,191,104,.18);border-color:#A6BF68}
-.quiz-opt.wrong{background:rgba(220,90,70,.15);border-color:rgba(220,90,70,.6)}
-.check-item.checked{background:rgba(166,191,104,.14);border-color:#A6BF68}
-.check-box{border-color:#4A545B}
-.fc-icon,.template-callout-icon{background:rgba(166,191,104,.14)}
-.step-num{background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a}
-.step-hint{background:rgba(166,191,104,.12);color:#C3D88A}
-.kb-article p,.update-item li,.milestone-card p,.ci-intro{color:#C9D0D5;opacity:1}
-.version-badge{background:rgba(166,191,104,.16);color:#C3D88A}
-/* Formulare */
-input,textarea,select,.profile-input,.kb-search,.field-row input,.vm-textarea{background:#12161A;color:var(--ink);border-color:#2F373D}
-input::placeholder,textarea::placeholder{color:#6E7A83}
-/* Onboarding */
-#onboarding{background:radial-gradient(900px 500px at 80% 0%,rgba(142,167,82,.18),transparent 60%),#15191C}
-.onb-split{border:1px solid rgba(255,255,255,.08)}
-.onb-side{background:linear-gradient(160deg,#101316,#1C2125)}
-.onb-form-panel{background:#1C2125}
-.role-card{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.1)}
-.role-card:hover{border-color:rgba(166,191,104,.5)}
-.role-card.selected{background:rgba(166,191,104,.14);border-color:#A6BF68}
-/* Menüs, Dialoge, Toast */
-.profile-menu,.vm-modal,.ai-panel,.appointment-selected-contact{background:#1C2125;border-color:rgba(255,255,255,.1)}
-.profile-menu-head{border-color:rgba(255,255,255,.08)}
-.appointment-contact:hover,.dash-widget-hide:hover{background:rgba(255,255,255,.05)}
-.appointment-selected-contact{background:rgba(166,191,104,.1)}
-.appointment-contact-avatar,.team-avatar{background:rgba(166,191,104,.16);color:#C3D88A}
-.app-toast{background:#2B3237;color:#fff}
-.vm-overlay{background:rgba(0,0,0,.6)}
-.hdr-avatar{background:linear-gradient(135deg,#A6BF68,#5E7233);color:#10150a}
-/* Zertifikat bleibt Papier-weiß */
-.certificate{--ink:#1B2024;--gray:#5F6972;--green-dark:#5E7233;background:#fff;color:#1B2024}
-.cert-discount{--ink:#E8ECEF}
-.cert-gate h3{color:#fff}
-.cert-preview-lock strong{background:rgba(21,25,28,.9);color:#fff}
+ --shadow:0 1px 0 rgba(255,255,255,.03) inset,0 18px 40px -24px rgba(0,0,0,.7);--shadow-lg:0 30px 60px -24px rgba(0,0,0,.8);--shadow-sm:none}html:not(.theme-light),html:not(.theme-light) body{background:#15191C;color:var(--ink)}html:not(.theme-light) .main-scroll{background:radial-gradient(1000px 480px at 90% -10%,rgba(142,167,82,.16),transparent 60%),#15191C}html:not(.theme-light) .bg-mesh{background:#15191C}html:not(.theme-light) .adaptive-log,html:not(.theme-light) .ai-panel,html:not(.theme-light) .bg-mesh,html:not(.theme-light) .bp-card,html:not(.theme-light) .bp-diff.medium,html:not(.theme-light) .btn-outline,html:not(.theme-light) .check-item,html:not(.theme-light) .chip,html:not(.theme-light) .ci-badge-demo,html:not(.theme-light) .ci-concept-card,html:not(.theme-light) .collapsible,html:not(.theme-light) .collapsible-head,html:not(.theme-light) .context-note,html:not(.theme-light) .dash-customize-btn,html:not(.theme-light) .dash-widget,html:not(.theme-light) .dash-widget .stat-card,html:not(.theme-light) .dash-widget .reco-card,html:not(.theme-light) .dash-widget .stat-card,html:not(.theme-light) .dash-widget .reco-card,html:not(.theme-light) .dash-widget .update-item,html:not(.theme-light) .dash-widget .update-item,html:not(.theme-light) .feature-card,html:not(.theme-light) .field-row input,html:not(.theme-light) .gap-card,html:not(.theme-light) .gap-count,html:not(.theme-light) .gap-empty,html:not(.theme-light) .helpful-btn,html:not(.theme-light) .kb-article,html:not(.theme-light) .kb-card,html:not(.theme-light) .kb-search,html:not(.theme-light) .main-scroll,html:not(.theme-light) .mc-badge.open,html:not(.theme-light) .mc-badge.locked,html:not(.theme-light) .mc-badge.progress,html:not(.theme-light) .mc-num,html:not(.theme-light) .milestone-card,html:not(.theme-light) .milestone-dot,html:not(.theme-light) .milestone-gist li,html:not(.theme-light) .module-card,html:not(.theme-light) .module-detail-header,html:not(.theme-light) .nav-item:hover,html:not(.theme-light) .nav-sub-item:hover,html:not(.theme-light) .onb-form-panel,html:not(.theme-light) .phase-num,html:not(.theme-light) .profile-input,html:not(.theme-light) .profile-menu,html:not(.theme-light) .quiz-opt,html:not(.theme-light) .quiz-opt.wrong,html:not(.theme-light) .quiz-q,html:not(.theme-light) .quiz-result,html:not(.theme-light) .reco-card,html:not(.theme-light) .roadmap-note,html:not(.theme-light) .roadmap-side .roadmap-note,html:not(.theme-light) .roadmap-side .adaptive-log,html:not(.theme-light) .role-card,html:not(.theme-light) .sidebar,html:not(.theme-light) .sidebar-progress,html:not(.theme-light) .stat-card,html:not(.theme-light) .sugg-chip,html:not(.theme-light) .tab-bar,html:not(.theme-light) .tab-btn:hover,html:not(.theme-light) .team-row,html:not(.theme-light) .template-callout,html:not(.theme-light) .update-item,html:not(.theme-light) .video-manage-btn,html:not(.theme-light) .vm-file-input,html:not(.theme-light) .vm-modal,html:not(.theme-light) input,html:not(.theme-light) textarea,html:not(.theme-light) select{background:var(--surface)}html:not(.theme-light) .ai-banner-text span,html:not(.theme-light) .ai-send svg,html:not(.theme-light) .ai-toggle-btn:hover,html:not(.theme-light) .appointment-contact-detail-row,html:not(.theme-light) .appointment-contact-name,html:not(.theme-light) .btn-outline,html:not(.theme-light) .btn-primary:hover,html:not(.theme-light) .mc-btn:hover,html:not(.theme-light) .template-callout-btn:hover,html:not(.theme-light) .coach-btn:hover,html:not(.theme-light) .status-overview-btn:hover,html:not(.theme-light) .check-box svg,html:not(.theme-light) .ci-intro,html:not(.theme-light) .coach-btn:hover svg,html:not(.theme-light) .context-note strong,html:not(.theme-light) .context-note-btn,html:not(.theme-light) .dash-customize-btn,html:not(.theme-light) .dash-widget-hide:hover,html:not(.theme-light) .hdr-avatar,html:not(.theme-light) .hero .page-title,html:not(.theme-light) .hero .ring-num,html:not(.theme-light) .roadmap-side .ring-num,html:not(.theme-light) .roadmap-side-count span,html:not(.theme-light) .roadmap-side .roadmap-note strong,html:not(.theme-light) .hero .status-overview-btn,html:not(.theme-light) .hero .status-overview-btn:hover,html:not(.theme-light) .hero .status-overview-text strong,html:not(.theme-light) .hero .status-value,html:not(.theme-light) .hero,html:not(.theme-light) .roadmap-side,html:not(.theme-light) .insight-callout p,html:not(.theme-light) .kb-article p,html:not(.theme-light) .kb-link,html:not(.theme-light) .key-points li,html:not(.theme-light) .mc-num,html:not(.theme-light) .md-back:hover,html:not(.theme-light) .milestone-card p,html:not(.theme-light) .milestone-gist li,html:not(.theme-light) .milestone.done .milestone-dot,html:not(.theme-light) .nav-item,html:not(.theme-light) .nav-item:hover,html:not(.theme-light) .nav-sub-item:hover,html:not(.theme-light) .new-badge,html:not(.theme-light) .onb-btn:not(:disabled):hover,html:not(.theme-light) .phase-step.unlocked .phase-num,html:not(.theme-light) .play-circle svg,html:not(.theme-light) .practice-callout p,html:not(.theme-light) .profile-menu-name,html:not(.theme-light) .ring-num,html:not(.theme-light) .sp-text,html:not(.theme-light) .stat-card .stat-val,html:not(.theme-light) .status-value,html:not(.theme-light) .sugg-chip,html:not(.theme-light) .tab-btn.active,html:not(.theme-light) .tab-btn:hover,html:not(.theme-light) .team-quiz,html:not(.theme-light) .update-item li,html:not(.theme-light) .video-manage-btn,html:not(.theme-light) .vm-tab-btn.active,html:not(.theme-light),html:not(.theme-light) body,html:not(.theme-light) input,html:not(.theme-light) textarea,html:not(.theme-light) select{color:var(--ink)}html:not(.theme-light) .stat-card,html:not(.theme-light) .module-card,html:not(.theme-light) .reco-card,html:not(.theme-light) .gap-card,html:not(.theme-light) .milestone-card,html:not(.theme-light) .module-detail-header,html:not(.theme-light) .feature-card,html:not(.theme-light) .quiz-q,html:not(.theme-light) .quiz-result,html:not(.theme-light) .kb-card,html:not(.theme-light) .kb-article,html:not(.theme-light) .bp-card,html:not(.theme-light) .update-item,html:not(.theme-light) .cert-gate,html:not(.theme-light) .team-row,html:not(.theme-light) .dash-widget,html:not(.theme-light) .gap-empty,html:not(.theme-light) .ci-concept-card,html:not(.theme-light) .collapsible,html:not(.theme-light) .check-item,html:not(.theme-light) .template-callout,html:not(.theme-light) .roadmap-note,html:not(.theme-light) .adaptive-log,html:not(.theme-light) .context-note{background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}html:not(.theme-light) .module-card:hover,html:not(.theme-light) .kb-card:hover,html:not(.theme-light) .bp-card:hover{border-color:rgba(166,191,104,.5);box-shadow:0 22px 44px -22px rgba(166,191,104,.35)}html:not(.theme-light) .dash-widget .stat-card,html:not(.theme-light) .dash-widget .update-item,html:not(.theme-light) .dash-widget .reco-card{background:rgba(255,255,255,.035);border-color:transparent}html:not(.theme-light) .app-header{background:#15191C;border-bottom:1px solid rgba(255,255,255,.07)}html:not(.theme-light) .sidebar{background:#15191C;border-right:1px solid rgba(255,255,255,.07)}html:not(.theme-light) .nav-item{color:#AEB7BE}html:not(.theme-light) .nav-item svg{color:#6E7A83}html:not(.theme-light) .nav-item:hover{background:rgba(255,255,255,.05);color:#fff}html:not(.theme-light) .nav-item.active{background:linear-gradient(90deg,rgba(142,167,82,.24),rgba(142,167,82,.04));color:#fff;box-shadow:inset 3px 0 0 #A6BF68}html:not(.theme-light) .nav-item.active::before{display:none}html:not(.theme-light) .nav-item.active svg{color:#A6BF68}html:not(.theme-light) .nav-sub-item{color:#8C979F}html:not(.theme-light) .nav-sub-item:hover{background:rgba(255,255,255,.05);color:#fff}html:not(.theme-light) .status-dot{background:#3A434A}html:not(.theme-light) .sidebar-progress{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08)}html:not(.theme-light) .sp-track{background:rgba(255,255,255,.08)}html:not(.theme-light) .sp-fill{background:linear-gradient(90deg,#8EA752,#C3D88A);box-shadow:0 0 10px rgba(166,191,104,.6)}html:not(.theme-light) .sp-text{color:#fff}html:not(.theme-light) .sidebar-backdrop{background:rgba(0,0,0,.6)}html:not(.theme-light) .btn-primary,html:not(.theme-light) .mc-btn,html:not(.theme-light) .template-callout-btn,html:not(.theme-light) .coach-btn,html:not(.theme-light) .status-overview-btn,html:not(.theme-light) .onb-btn,html:not(.theme-light) .ai-banner-btn,html:not(.theme-light) .coach-widget-send,html:not(.theme-light) .hero .status-overview-btn{background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a;border:0;box-shadow:0 10px 26px -12px rgba(166,191,104,.7)}html:not(.theme-light) .btn-primary:hover,html:not(.theme-light) .mc-btn:hover,html:not(.theme-light) .template-callout-btn:hover,html:not(.theme-light) .coach-btn:hover,html:not(.theme-light) .status-overview-btn:hover,html:not(.theme-light) .onb-btn:not(:disabled):hover,html:not(.theme-light) .hero .status-overview-btn:hover{background:linear-gradient(135deg,#C6DA8C,#9CB560);color:#10150a;box-shadow:0 14px 30px -10px rgba(166,191,104,.85)}html:not(.theme-light) .coach-btn svg{color:#10150a}html:not(.theme-light) .onb-btn:disabled,html:not(.theme-light) .btn-primary:disabled{background:#2B3237;color:#6E7A83;box-shadow:none}html:not(.theme-light) .mc-btn{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.1);box-shadow:none}html:not(.theme-light) .module-card:hover .mc-btn{background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a;border-color:transparent}html:not(.theme-light) .module-card-locked .mc-btn{background:#2B3237;color:#6E7A83}html:not(.theme-light) .btn-outline,html:not(.theme-light) .helpful-btn,html:not(.theme-light) .dash-customize-btn,html:not(.theme-light) .chip,html:not(.theme-light) .context-note-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:var(--ink)}html:not(.theme-light) .btn-outline:hover,html:not(.theme-light) .helpful-btn:hover,html:not(.theme-light) .dash-customize-btn:hover,html:not(.theme-light) .chip:hover{border-color:#A6BF68;color:#fff;background:rgba(166,191,104,.1)}html:not(.theme-light) .chip.active{background:#A6BF68;color:#10150a;border-color:#A6BF68}html:not(.theme-light) .btn-danger{background:#C2513E;color:#fff}html:not(.theme-light) .hero,html:not(.theme-light) .roadmap-side{background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);color:var(--ink);box-shadow:var(--shadow)}html:not(.theme-light) .hero::before,html:not(.theme-light) .roadmap-side::before{display:none}html:not(.theme-light) .hero::after,html:not(.theme-light) .roadmap-side::after{background:radial-gradient(circle,rgba(166,191,104,.35),transparent 65%)}html:not(.theme-light) .hero .page-title{color:#fff}html:not(.theme-light) .hero .page-sub,html:not(.theme-light) .hero .status-overview-text p{color:#9CA7AF}html:not(.theme-light) .hero .status-overview-text strong,html:not(.theme-light) .hero .status-value{color:#fff}html:not(.theme-light) .hero .status-label{color:#8C979F}html:not(.theme-light) .hero .status-overview-grid,html:not(.theme-light) .hero .status-overview-grid>div+div{border-color:rgba(255,255,255,.1)}html:not(.theme-light) .hero-eyebrow{color:#A6BF68}html:not(.theme-light) .ring-track,html:not(.theme-light) .hero .ring-track,html:not(.theme-light) .roadmap-side .ring-track{stroke:rgba(255,255,255,.08)}html:not(.theme-light) .ring-fill{stroke:#A6BF68;filter:drop-shadow(0 0 6px rgba(166,191,104,.7))}html:not(.theme-light) .ring-num,html:not(.theme-light) .hero .ring-num,html:not(.theme-light) .roadmap-side .ring-num,html:not(.theme-light) .roadmap-side-count span,html:not(.theme-light) .roadmap-side .roadmap-note strong{color:#fff}html:not(.theme-light) .ring-unit,html:not(.theme-light) .hero .ring-unit,html:not(.theme-light) .roadmap-side .ring-unit{color:#A6BF68}html:not(.theme-light) .ring-caption,html:not(.theme-light) .hero .ring-caption,html:not(.theme-light) .roadmap-side .ring-caption,html:not(.theme-light) .roadmap-side-count{color:#8C979F}html:not(.theme-light) .roadmap-side .roadmap-note,html:not(.theme-light) .roadmap-side .adaptive-log{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:#9CA7AF}html:not(.theme-light) .roadmap-side .log-item{color:#9CA7AF;border-color:rgba(255,255,255,.08)}html:not(.theme-light) .mc-num{background:none;border:0;width:auto;height:auto;padding:0;font-size:26px;font-weight:700;background:linear-gradient(180deg,#fff,#6E7A83);-webkit-background-clip:text;background-clip:text;color:transparent}html:not(.theme-light) .module-card:hover .mc-num{background:linear-gradient(180deg,#fff,#A6BF68);-webkit-background-clip:text;background-clip:text;color:transparent}html:not(.theme-light) .mc-badge.open,html:not(.theme-light) .mc-badge.locked{background:rgba(255,255,255,.07);color:#AEB7BE;border-color:transparent}html:not(.theme-light) .mc-badge.done{background:rgba(166,191,104,.16);color:#C3D88A}html:not(.theme-light) .mc-badge.progress,html:not(.theme-light) .mc-badge-prio{background:rgba(232,163,61,.15);color:#F0B860}html:not(.theme-light) .mc-track,html:not(.theme-light) .status-progress-track,html:not(.theme-light) .gate-track,html:not(.theme-light) .gap-track{background:rgba(255,255,255,.08)}html:not(.theme-light) .mc-fill,html:not(.theme-light) .gate-fill,html:not(.theme-light) .status-progress-fill{background:linear-gradient(90deg,#8EA752,#C3D88A);box-shadow:0 0 10px rgba(166,191,104,.5)}html:not(.theme-light) .module-card-locked{background:rgba(255,255,255,.02)}html:not(.theme-light) .phase-num,html:not(.theme-light) .milestone-dot{background:#1C2125;border-color:#3A434A;color:#9CA7AF}html:not(.theme-light) .phase-step.unlocked .phase-num,html:not(.theme-light) .milestone.done .milestone-dot{background:#A6BF68;border-color:#A6BF68;color:#10150a}html:not(.theme-light) .phase-step.active .phase-num,html:not(.theme-light) .milestone.active .milestone-dot{border-color:#A6BF68;color:#A6BF68;background:#1C2125}html:not(.theme-light) .phase-step::before,html:not(.theme-light) .roadmap-line::before{background:#2B3237}html:not(.theme-light) .milestone-gist li{background:rgba(166,191,104,.12);color:#C3D88A;border-color:transparent}html:not(.theme-light) .milestone.done .milestone-card{border-color:rgba(166,191,104,.4)}html:not(.theme-light) .module-detail-header{border-top:1px solid rgba(255,255,255,.08)}html:not(.theme-light) .phase-badge{background:rgba(166,191,104,.16);color:#C3D88A}html:not(.theme-light) .tab-bar{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}html:not(.theme-light) .tab-btn{color:#9CA7AF}html:not(.theme-light) .tab-btn:hover{background:rgba(255,255,255,.05);color:#fff}html:not(.theme-light) .tab-btn.active{background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a}html:not(.theme-light) .video-placeholder{background:radial-gradient(ellipse at 75% 0%,rgba(142,167,82,.3),transparent 55%),#101316;border:1px solid rgba(255,255,255,.08)}html:not(.theme-light) .video-placeholder span{color:#9CA7AF}html:not(.theme-light) .play-circle{background:linear-gradient(135deg,#B5CC78,#8EA752);box-shadow:0 0 0 10px rgba(166,191,104,.15),0 0 30px rgba(166,191,104,.5)}html:not(.theme-light) .play-circle svg{color:#10150a}html:not(.theme-light) .video-manage-btn{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.15)}html:not(.theme-light) .key-points li{color:#D5DBDF}html:not(.theme-light) .practice-callout,html:not(.theme-light) .insight-callout{background:rgba(166,191,104,.08);border:1px solid rgba(166,191,104,.25)}html:not(.theme-light) .practice-callout p,html:not(.theme-light) .insight-callout p{color:#D5DBDF}html:not(.theme-light) .practice-callout strong,html:not(.theme-light) .insight-callout strong,html:not(.theme-light) .summary-block h5,html:not(.theme-light) .kb-cat,html:not(.theme-light) .reco-tag,html:not(.theme-light) .form-eyebrow{color:#A6BF68}html:not(.theme-light) .quiz-opt{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.1);color:var(--ink)}html:not(.theme-light) .quiz-opt:hover{border-color:#A6BF68;background:rgba(166,191,104,.08)}html:not(.theme-light) .quiz-opt.correct{background:rgba(166,191,104,.18);border-color:#A6BF68}html:not(.theme-light) .quiz-opt.wrong{background:rgba(220,90,70,.15);border-color:rgba(220,90,70,.6)}html:not(.theme-light) .check-item.checked{background:rgba(166,191,104,.14);border-color:#A6BF68}html:not(.theme-light) .check-box{border-color:#4A545B}html:not(.theme-light) .fc-icon,html:not(.theme-light) .template-callout-icon{background:rgba(166,191,104,.14)}html:not(.theme-light) .step-num{background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a}html:not(.theme-light) .step-hint{background:rgba(166,191,104,.12);color:#C3D88A}html:not(.theme-light) .kb-article p,html:not(.theme-light) .update-item li,html:not(.theme-light) .milestone-card p,html:not(.theme-light) .ci-intro{color:#C9D0D5;opacity:1}html:not(.theme-light) .version-badge{background:rgba(166,191,104,.16);color:#C3D88A}html:not(.theme-light) input,html:not(.theme-light) textarea,html:not(.theme-light) select,html:not(.theme-light) .profile-input,html:not(.theme-light) .kb-search,html:not(.theme-light) .field-row input,html:not(.theme-light) .vm-textarea{background:#12161A;color:var(--ink);border-color:#2F373D}html:not(.theme-light) input::placeholder,html:not(.theme-light) textarea::placeholder{color:#6E7A83}html:not(.theme-light) #onboarding{background:radial-gradient(900px 500px at 80% 0%,rgba(142,167,82,.18),transparent 60%),#15191C}html:not(.theme-light) .onb-split{border:1px solid rgba(255,255,255,.08)}html:not(.theme-light) .onb-side{background:linear-gradient(160deg,#101316,#1C2125)}html:not(.theme-light) .onb-form-panel{background:#1C2125}html:not(.theme-light) .role-card{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.1)}html:not(.theme-light) .role-card:hover{border-color:rgba(166,191,104,.5)}html:not(.theme-light) .role-card.selected{background:rgba(166,191,104,.14);border-color:#A6BF68}html:not(.theme-light) .profile-menu,html:not(.theme-light) .vm-modal,html:not(.theme-light) .ai-panel,html:not(.theme-light) .appointment-selected-contact{background:#1C2125;border-color:rgba(255,255,255,.1)}html:not(.theme-light) .profile-menu-head{border-color:rgba(255,255,255,.08)}html:not(.theme-light) .appointment-contact:hover,html:not(.theme-light) .dash-widget-hide:hover{background:rgba(255,255,255,.05)}html:not(.theme-light) .appointment-selected-contact{background:rgba(166,191,104,.1)}html:not(.theme-light) .appointment-contact-avatar,html:not(.theme-light) .team-avatar{background:rgba(166,191,104,.16);color:#C3D88A}html:not(.theme-light) .app-toast{background:#2B3237;color:#fff}html:not(.theme-light) .vm-overlay{background:rgba(0,0,0,.6)}html:not(.theme-light) .hdr-avatar{background:linear-gradient(135deg,#A6BF68,#5E7233);color:#10150a}html:not(.theme-light) .certificate{--ink:#1B2024;--gray:#5F6972;--green-dark:#5E7233;background:#fff;color:#1B2024}html:not(.theme-light) .cert-discount{--ink:#E8ECEF}html:not(.theme-light) .cert-gate h3{color:#fff}html:not(.theme-light) .cert-preview-lock strong{background:rgba(21,25,28,.9);color:#fff}
+
+/* Hell-Modus: Kopfleiste bleibt Anthrazit */
+html.theme-light .app-header{background:#1F2428}
+.theme-switch{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:10px;background:var(--bg);border:1px solid var(--line);margin-top:4px}
+.theme-switch button{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;border:0;border-radius:7px;background:transparent;color:var(--gray);font-size:13px;font-weight:600;cursor:pointer}
+.theme-switch button.on{background:var(--green-dark);color:#fff}
+html:not(.theme-light) .theme-switch{background:#12161A;border-color:#2F373D}
+html:not(.theme-light) .theme-switch button.on{background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a}
 </style>
 </head>
 <body>
+<script>
+function applyTheme(t){document.documentElement.classList.toggle('theme-light',t==='light');document.querySelectorAll('[data-theme-btn]').forEach(b=>b.classList.toggle('on',b.dataset.themeBtn===t));}
+function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyTheme(t);}
+(function(){let t='dark';try{t=localStorage.getItem('orkanTheme')||'dark'}catch(e){}applyTheme(t);document.addEventListener('DOMContentLoaded',()=>applyTheme(t));})();
+</script>
 <div class="bg-mesh"></div>
 <div class="orb orb1"></div>
 <div class="orb orb2"></div>
@@ -1378,6 +1159,11 @@ input::placeholder,textarea::placeholder{color:#6E7A83}
             <option>Geschäftsführer</option>
             <option>Monteur</option>
           </select>
+          <label class="field-label" style="margin-top:14px">Darstellung</label>
+          <div class="theme-switch" role="group" aria-label="Darstellung">
+            <button type="button" data-theme-btn="dark" onclick="setTheme('dark')">☾ Dunkel</button>
+            <button type="button" data-theme-btn="light" onclick="setTheme('light')">☀ Hell</button>
+          </div>
         </div>
         <div class="profile-menu-actions">
           <button class="btn btn-primary" style="width:100%" onclick="saveProfile()">Änderungen speichern</button>
