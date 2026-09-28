@@ -1222,6 +1222,7 @@ html .sidebar .nav-sub-item{font-weight:600}
 .section-heading{padding-left:14px}
 .section-heading::before{position:absolute;left:0;top:50%;transform:translateY(-50%);margin:0!important}
 html .team-mode-btn.selected{border-color:#8EA752;background:rgba(166,191,104,.16);box-shadow:0 0 0 3px rgba(166,191,104,.15)}
+.profile-saved{font-size:12.5px;font-weight:700;color:#8EA752;min-height:16px;margin-top:8px;opacity:0;transition:opacity .3s}.profile-saved.on{opacity:1}
 </style>
 </head>
 <body>
@@ -1318,6 +1319,7 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
             <option>Geschäftsführer</option>
             <option>Monteur</option>
           </select>
+          <div class="profile-saved" id="profileSaved"></div>
           <div class="profile-team" id="profileTeam"></div>
           <label class="field-label" style="margin-top:14px">Darstellung</label>
           <div class="theme-switch" role="group" aria-label="Darstellung">
@@ -1328,7 +1330,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
         <div class="profile-menu-actions">
           <button class="btn btn-outline" style="width:100%" onclick="bookAppointment()">Persönlichen Termin vereinbaren</button>
           <button class="btn btn-outline" style="width:100%" onclick="startTour()">Einführungstour starten</button>
-          <button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="saveProfile()">Änderungen speichern</button>
           <button class="btn btn-outline" style="width:100%" onclick="manualSaveProgress()">Fortschritt jetzt speichern</button>
           <p class="autosave-note">Ihr Lernfortschritt wird automatisch laufend gespeichert.</p>
           <div class="profile-menu-footer-row">
@@ -3024,6 +3025,22 @@ function saveProfile(){
   document.getElementById('profileMenu').classList.remove('open');
   saveState();
 }
+let __profileTimer=null;
+function autoSaveProfile(){
+  const n=document.getElementById('profileNameInput').value.trim();
+  const c=document.getElementById('profileCompanyInput').value.trim();
+  if(n) state.name=n; if(c) state.company=c;
+  state.role=document.getElementById('profileRoleInput').value;
+  document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
+  document.getElementById('profileMenuAvatar').textContent = state.name.charAt(0).toUpperCase();
+  document.getElementById('profileMenuName').textContent = state.name;
+  document.getElementById('profileMenuRole').textContent = `${state.role} · ${state.company}`;
+  updateSidebarProgress();
+  saveState();
+  const st=document.getElementById('profileSaved'); if(st){ st.textContent='✓ Automatisch gespeichert'; st.classList.add('on'); clearTimeout(st.__t); st.__t=setTimeout(()=>st.classList.remove('on'),1800); }
+}
+document.addEventListener('input', e=>{ if(e.target.id==='profileNameInput'||e.target.id==='profileCompanyInput'){ clearTimeout(__profileTimer); __profileTimer=setTimeout(autoSaveProfile,500); } });
+document.addEventListener('change', e=>{ if(e.target.id==='profileRoleInput'||e.target.id==='profileNameInput'||e.target.id==='profileCompanyInput'){ clearTimeout(__profileTimer); autoSaveProfile(); } });
 function logoutProfile(){
   document.getElementById('profileMenu').classList.remove('open');
   document.getElementById('app').style.display='none';
