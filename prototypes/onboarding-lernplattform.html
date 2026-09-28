@@ -1238,6 +1238,10 @@ html .team-mode-btn.selected{border-color:#8EA752;background:rgba(166,191,104,.1
 @media(max-width:1000px){.mod-intro-grid{grid-template-columns:1fr}}
 .mod-intro ul{list-style:none;display:flex;flex-direction:column;gap:8px}.mod-intro li{position:relative;padding-left:16px;font-size:15px;line-height:1.55}.mod-intro li::before{content:'';position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:2px;background:#8EA752}.mod-intro{padding:20px 24px}
 .key-points li.kp-head{display:block;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8EA752;margin:22px 0 8px}.key-points li.kp-head:first-child{margin-top:0}.key-points li.kp-head::before{display:none}
+.rate-stars{flex-direction:row-reverse;justify-content:flex-end}
+.rate-stars button,.rate-stars:hover button{color:var(--gray)}
+.rate-stars button.on{color:#E8B53D}
+.rate-stars button:hover,.rate-stars button:hover~button{color:#E8B53D}
 </style>
 </head>
 <body>
@@ -2303,7 +2307,7 @@ function ratingBlock(m){
   return `<div class="rate-box" id="rateBox${m.id}">
     <strong>Wie hilfreich war dieses Modul?</strong>
     <p>Ihre Bewertung hilft uns, die Schulung weiter zu verbessern.</p>
-    <div class="rate-stars" role="radiogroup" aria-label="Bewertung">${[1,2,3,4,5].map(i=>`<button type="button" class="${i<=r.stars?'on':''}" onclick="setRating(${m.id},${i})" aria-label="${i} von 5 Sternen">★</button>`).join('')}</div>
+    <div class="rate-stars" role="radiogroup" aria-label="Bewertung">${[5,4,3,2,1].map(i=>`<button type="button" class="${i<=r.stars?'on':''}" onclick="setRating(${m.id},${i})" aria-label="${i} von 5 Sternen">${i<=r.stars?'★':'☆'}</button>`).join('')}</div>
     <textarea class="profile-input rate-comment" id="rateComment${m.id}" rows="2" placeholder="Optional: Was können wir besser machen?">${r.comment||''}</textarea>
     <button class="btn btn-outline" onclick="saveRatingComment(${m.id})">Feedback speichern</button>
     ${r.stars?`<span class="rate-thanks">Danke für Ihre Bewertung!</span>`:''}
