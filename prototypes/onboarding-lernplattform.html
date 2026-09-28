@@ -1235,11 +1235,11 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
           </div>
         </div>
         <div class="profile-menu-actions">
-          <button class="btn btn-primary" style="width:100%" onclick="saveProfile()">Änderungen speichern</button>
           <button class="btn btn-outline" style="width:100%" onclick="bookAppointment()">Persönlichen Termin vereinbaren</button>
-          <p class="autosave-note">Ihr Lernfortschritt wird automatisch laufend gespeichert.</p>
-          <button class="btn btn-outline" style="width:100%" onclick="manualSaveProgress()">Fortschritt jetzt speichern</button>
           <button class="btn btn-outline" style="width:100%" onclick="startTour()">Einführungstour starten</button>
+          <button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="saveProfile()">Änderungen speichern</button>
+          <button class="btn btn-outline" style="width:100%" onclick="manualSaveProgress()">Fortschritt jetzt speichern</button>
+          <p class="autosave-note">Ihr Lernfortschritt wird automatisch laufend gespeichert.</p>
           <div class="profile-menu-footer-row">
             <button class="profile-logout" onclick="logoutProfile()">Abmelden</button>
             <button class="profile-reset" onclick="resetProgress()">Fortschritt zurücksetzen</button>
