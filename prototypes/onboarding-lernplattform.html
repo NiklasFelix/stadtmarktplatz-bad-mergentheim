@@ -1067,6 +1067,56 @@ html.theme-light .app-header{background:#1F2428}
 .theme-switch button.on{background:var(--green-dark);color:#fff}
 html:not(.theme-light) .theme-switch{background:#12161A;border-color:#2F373D}
 html:not(.theme-light) .theme-switch button.on{background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a}
+/* ===== Interaktiv & CI (Menü immer sichtbar, Lerncoach aus) ===== */
+.ai-panel,.ai-toggle-btn,.mobile-nav-toggle,.sidebar-backdrop{display:none!important}
+.app-header{position:relative}
+.app-header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,transparent,#8EA752 20%,#C3D88A 50%,#8EA752 80%,transparent);background-size:200% 100%;animation:ciFlow 6s linear infinite;opacity:.9}
+@keyframes ciFlow{to{background-position:-200% 0}}
+.page-title{position:relative;padding-bottom:10px}
+.view>.page-title::after,.view>h1.page-title::after{content:'';position:absolute;left:0;bottom:0;width:56px;height:4px;border-radius:4px;background:linear-gradient(90deg,#5E7233,#8EA752,#C3D88A);animation:barGrow .9s cubic-bezier(.2,.7,.2,1) .2s backwards;transform-origin:left}
+.section-heading,.dash-widget-head h3{position:relative}
+.section-heading::before{content:'';display:inline-block;width:4px;height:18px;border-radius:3px;background:linear-gradient(#C3D88A,#5E7233);margin-right:10px;vertical-align:-3px}
+/* Nav: Icons springen, Leuchtpunkt */
+.nav-item svg{transition:transform .35s cubic-bezier(.34,1.6,.64,1),color .2s}
+.nav-item:hover svg{transform:scale(1.18) rotate(-6deg);color:#A6BF68}
+.nav-item.active svg{filter:drop-shadow(0 0 6px rgba(166,191,104,.7))}
+/* Karten: 3D-Neigung + Lichtkegel */
+.ix-card{position:relative;transform-style:preserve-3d;will-change:transform}
+.ix-card::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(166,191,104,.22),transparent 60%)}
+.ix-card:hover::after{opacity:1}
+/* Button-Welle */
+.ix-ripple{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,.45);animation:ripple .6s ease-out forwards;pointer-events:none}
+@keyframes ripple{to{transform:scale(4);opacity:0}}
+/* Konfetti */
+.ix-confetti{position:fixed;top:-12px;width:9px;height:14px;z-index:999;pointer-events:none;border-radius:2px;animation:confFall linear forwards}
+@keyframes confFall{to{transform:translate3d(var(--dx),110vh,0) rotate(var(--rot));opacity:.9}}
+/* Scroll-Fortschritt */
+.ix-scroll{position:sticky;top:0;height:3px;margin:-1px 0 0;z-index:5;background:linear-gradient(90deg,#5E7233,#C3D88A);transform-origin:left;transform:scaleX(var(--sp,0));transition:transform .1s linear}
+/* Hero: animierter CI-Rand */
+.hero{background-clip:padding-box}
+.hero::before{display:block!important;content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--ang,0deg),transparent 0 70%,#C3D88A 80%,#8EA752 88%,transparent 95%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spinAng 6s linear infinite;z-index:0;pointer-events:none}
+@property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes spinAng{to{--ang:360deg}}
+/* Quiz-Optionen: Auswahl-Feedback */
+.quiz-opt{transition:transform .15s,border-color .2s,background .2s}
+.quiz-opt:active{transform:scale(.98)}
+.quiz-opt.correct{animation:okPop .45s cubic-bezier(.34,1.6,.64,1)}
+.quiz-opt.wrong{animation:shake .4s}
+@keyframes okPop{50%{transform:scale(1.03)}}
+@keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.check-item.checked .check-box{animation:okPop .4s cubic-bezier(.34,1.6,.64,1)}
+/* Menü dauerhaft sichtbar: Tablet schmaler, Smartphone Symbolleiste */
+@media(max-width:1000px){
+  .sidebar{position:static!important;transform:none!important;box-shadow:none;width:210px}
+}
+@media(max-width:700px){
+  .sidebar{width:64px;padding:12px 8px;align-items:center}
+  .sidebar .nav-item{width:48px;height:48px;justify-content:center;padding:0;font-size:0;gap:0}
+  .sidebar .nav-item svg{width:21px;height:21px}
+  .sidebar .nav-sub,.sidebar-progress{display:none!important}
+  .main-scroll{padding:16px 14px 40px!important}
+}
+@media(prefers-reduced-motion:reduce){.app-header::after,.hero::before{animation:none}}
 </style>
 </head>
 <body>
@@ -1132,11 +1182,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
     <div class="hdr-divider"></div>
     <div class="breadcrumb">Onboarding / <strong id="breadcrumbCurrent">Dashboard</strong></div>
     <div class="hdr-spacer"></div>
-    <button class="ai-toggle-btn" onclick="toggleAI()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/><path d="M6 12v1a6 6 0 0 0 12 0v-1M12 19v3"/></svg>
-      Lerncoach
-      <span class="notif-dot" id="aiNotifDot" style="display:none"></span>
-    </button>
     <div class="profile-wrap">
       <div class="hdr-avatar" id="hdrAvatar" onclick="toggleProfileMenu()">?</div>
       <div class="profile-menu" id="profileMenu">
@@ -1207,10 +1252,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg>
         Best Practices
       </div>
-      <div class="nav-item" data-view="updates" onclick="showView('updates')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3.5-7.1M21 4v6h-6"/></svg>
-        Update-Center
-      </div>
       <div class="nav-item" data-view="cert" onclick="showView('cert')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M9 13.5 7 22l5-3 5 3-2-8.5"/></svg>
         Zertifikate
@@ -1218,10 +1259,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
       <div class="nav-item" data-view="team" onclick="showView('team')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Team-Fortschritt
-      </div>
-      <div class="nav-item" data-view="cloudintegration" onclick="showView('cloudintegration')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-        Cloud-Integration
       </div>
       <div class="sidebar-progress">
         <div class="sp-label">Fortschritt</div>
@@ -2047,7 +2084,7 @@ const DASHBOARD_WIDGETS = {
   recos: { title:'Empfohlen für Ihre Rolle', render: () => `
     <div class="reco-grid">${(ROLE_RECOS[state.role]||[]).map(r=>`<div class="reco-card"><div class="reco-tag">${r.tag}</div><h4>${r.t}</h4><p>${r.d}</p></div>`).join('')}</div>` }
 };
-const DEFAULT_WIDGET_ORDER = ['stats','phases','gaps','updates','rolefocus','recos'];
+const DEFAULT_WIDGET_ORDER = ['stats','phases','gaps','rolefocus','recos'];
 const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:false, gaps:false, updates:false, rolefocus:true, recos:true};
 
 function loadDashboardPrefs(){
@@ -2304,7 +2341,6 @@ function renderTab(){
       ${m.id===3 ? templateDownloadCallout() : ''}
       <div class="practice-callout"><strong>In der Praxis</strong><p>${m.practice}</p></div>
       <div class="btn-row" style="margin-top:0">
-        <button class="coach-btn" onclick="askCoach(${m.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"/></svg>Fragen Sie den Lerncoach</button>
         <button class="btn btn-outline" onclick="openCloudLink(${m.id})">Direkt in der OrKan Cloud üben</button>
       </div>
     `;
@@ -2317,7 +2353,7 @@ function renderTab(){
         return `<li class="check-item ${checked?'checked':''}" onclick="toggleCheck(${m.id},${i})"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span>${c}</span></li>`;
       }).join('')}</ul>
       <div class="collapsible" id="tipBox">
-        <div class="collapsible-head" onclick="document.getElementById('tipBox').classList.toggle('open')">Tipps vom Lerncoach <span>+</span></div>
+        <div class="collapsible-head" onclick="document.getElementById('tipBox').classList.toggle('open')">Praxistipps <span>+</span></div>
         <div class="collapsible-body"><p>${m.tip}</p></div>
       </div>
     `;
@@ -2397,6 +2433,7 @@ function renderQuizResult(m){
     }
   }
   if(passed && !state.moduleProgress[m.id].completed){
+    setTimeout(()=>window.celebrate&&celebrate(),200);
     state.moduleProgress[m.id].completed = true;
     state.totalTime += parseInt(m.time);
     buildModuleSubNav();
@@ -3039,6 +3076,50 @@ function getAIResponse(text){
   return 'Das ist eine gute Frage. Ich empfehle einen Blick in die Wissensdatenbank oder das passende Lernmodul — dort finden Sie eine ausführliche Erklärung. Sie können mich auch nach Ihrem Fortschritt oder den nächsten Lernschritten fragen.';
 }
 bootApp();
+</script>
+<script>
+/* ===== Interaktive Elemente ===== */
+(function(){
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CARD = '.module-card,.kb-card,.bp-card,.stat-card,.milestone-card,.feature-card,.role-card,.team-row';
+  // 3D-Neigung + Lichtkegel
+  document.addEventListener('pointermove', e=>{
+    const c = e.target.closest && e.target.closest(CARD); if(!c) return;
+    c.classList.add('ix-card');
+    const r = c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
+    c.style.setProperty('--mx',(x*100)+'%'); c.style.setProperty('--my',(y*100)+'%');
+    if(!reduce && e.pointerType==='mouse') c.style.transform=`perspective(900px) rotateX(${(0.5-y)*6}deg) rotateY(${(x-0.5)*8}deg) translateY(-3px)`;
+  });
+  document.addEventListener('pointerout', e=>{
+    const c = e.target.closest && e.target.closest(CARD);
+    if(c && !c.contains(e.relatedTarget)) c.style.transform='';
+  });
+  // Button-Welle
+  document.addEventListener('pointerdown', e=>{
+    const b = e.target.closest && e.target.closest('.btn,.mc-btn,.onb-btn,.status-overview-btn,.tab-btn,.template-callout-btn,.chip');
+    if(!b || reduce) return;
+    const r=b.getBoundingClientRect(), d=Math.max(r.width,r.height), s=document.createElement('span');
+    s.className='ix-ripple'; s.style.cssText=`width:${d}px;height:${d}px;left:${e.clientX-r.left-d/2}px;top:${e.clientY-r.top-d/2}px`;
+    if(getComputedStyle(b).position==='static') b.style.position='relative';
+    b.style.overflow='hidden'; b.appendChild(s); setTimeout(()=>s.remove(),650);
+  });
+  // Konfetti in OrKan-Farben
+  window.celebrate = function(){
+    if(reduce) return;
+    const cols=['#8EA752','#A6BF68','#C3D88A','#5E7233','#E8ECEF','#1F2428'];
+    for(let i=0;i<90;i++){
+      const c=document.createElement('i'); c.className='ix-confetti';
+      c.style.left=Math.random()*100+'vw'; c.style.background=cols[i%cols.length];
+      c.style.setProperty('--dx',(Math.random()*200-100)+'px'); c.style.setProperty('--rot',(Math.random()*900)+'deg');
+      c.style.animationDuration=(1.6+Math.random()*1.6)+'s'; c.style.animationDelay=(Math.random()*.4)+'s';
+      document.body.appendChild(c); setTimeout(()=>c.remove(),3800);
+    }
+  };
+  // Scroll-Fortschritt im Inhaltsbereich
+  const ms=document.querySelector('.main-scroll');
+  if(ms){ const bar=document.createElement('div'); bar.className='ix-scroll'; ms.prepend(bar);
+    ms.addEventListener('scroll',()=>{const m=ms.scrollHeight-ms.clientHeight; bar.style.setProperty('--sp', m>0? ms.scrollTop/m : 0);},{passive:true}); }
+})();
 </script>
 </body>
 </html>
