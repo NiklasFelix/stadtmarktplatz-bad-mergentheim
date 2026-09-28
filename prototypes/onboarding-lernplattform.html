@@ -1236,6 +1236,7 @@ html .team-mode-btn.selected{border-color:#8EA752;background:rgba(166,191,104,.1
 .mod-intro-tags span{font-size:13px;font-weight:700;color:var(--gray);margin-right:4px}
 .mod-intro-tags i{font-style:normal;font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(166,191,104,.14);color:var(--green-dark)}
 @media(max-width:1000px){.mod-intro-grid{grid-template-columns:1fr}}
+.mod-intro ul{list-style:none;display:flex;flex-direction:column;gap:8px}.mod-intro li{position:relative;padding-left:16px;font-size:15px;line-height:1.55}.mod-intro li::before{content:'';position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:2px;background:#8EA752}.mod-intro{padding:20px 24px}
 </style>
 </head>
 <body>
@@ -1561,7 +1562,7 @@ function templateDownloadCallout(){
 /* ============ DATA ============ */
 const MODULES = [
   { id:1, phase:1, title:'Grundlagen der OrKan Cloud', time:'12 Min.', diff:1,
-    intro:{"title": "Was ist die OrKan Cloud?", "lead": "Die OrKan Cloud ist ein lieferantenunabhängiges Software-Tool zur Lagerführung und Lageroptimierung – seit Jahren am Markt, bei über 100 Kunden im Einsatz und gemeinsam mit den Kunden laufend weiterentwickelt.", "groups": [["Wozu dient sie?", ["Einfaches, systematisches Bestellwesen nach dem <strong>Kanban-Prinzip</strong> (jap. „Signalkarte“): Nachbestellt wird, was tatsächlich am Lagerplatz verbraucht wurde.", "Artikel werden einmal im System angelegt und danach bequem per Scanner erfasst und bestellt – dank Standardabläufen auch durch fachfremde Mitarbeiter, z. B. aus der Verwaltung.", "Neben dem Bestellwesen verwaltet sie Maschinen und Betriebsmittel: Wer nutzt oder reserviert gerade welche Maschine?"]], ["Ihr Nutzen", ["Definierte Mindestbestände sind immer vorhanden – der Nachschub an Verbrauchsmaterial ist gesichert.", "Keine Doppelbestellungen, langen Suchzeiten oder spontanen Einkäufe beim Großhändler mehr.", "Voller Überblick über zukünftige, fällige und überfällige Bestellungen; Materialflüsse und Lagerbestände werden transparent.", "Deutlich weniger Bestell- und Rüstzeiten – Inhaber und Meister werden entlastet und haben mehr Zeit für wertschöpfende Tätigkeiten.", "Überblick über den Jahresverbrauch aller Materialien – eine gute Grundlage, um beim Händler bessere Preise zu erzielen."]], ["Alles aus einer Hand", ["Bestellkarten und Regalbeschriftungen mit Barcode lassen sich direkt aus der OrKan Cloud drucken – ein Scan führt direkt zum Artikel.", "Auch unterwegs nutzbar: Baustellenbestellungen absetzen oder Maschinen bei Kollegen suchen.", "Intuitive Bedienung mit geringem Schulungsbedarf; jeder Betrieb erhält eine individuell erstellte und lizenzierte Programmversion."]]], "tags": ["Artikelstamm", "Lagerstamm", "Bestandsverwaltung", "Inventur", "Bestellwesen", "Lieferantenstamm", "Maschinenverwaltung", "OrKan-System-App", "Verleihsystem", "Excel-Import/-Export", "E-Mail-Schnittstelle", "Termin-Cockpit", "E-Check", "Lieferantenbewertung"]},
+    intro:{"title": "Was ist die OrKan Cloud?", "points": ["Ein lieferantenunabhängiges Software-Tool für Lagerführung und Bestellwesen – bereits bei über 100 Betrieben im Einsatz.", "Funktioniert nach dem Kanban-Prinzip: Nachbestellt wird, was am Lagerplatz tatsächlich verbraucht wurde – einfach per Scan.", "Ihr Nutzen: gesicherter Nachschub, keine Doppelbestellungen oder Suchzeiten und voller Überblick über Material und Maschinen."]},
     gist:['Startseite & Kalender','Ampelsystem','Lagerverwaltung im Überblick'],
     points:[
       'Die Startseite ist individuell anpassbar: Kacheln wie Artikel, Lieferant, Bestellvorschläge erstellen oder Meine Einstellungen lassen sich im Bearbeitungsmodus (Stift-Symbol) verschieben, umbenennen, farblich anpassen oder entfernen.',
@@ -2523,7 +2524,7 @@ function renderModuleDetail(){
 function switchTab(tab){ state.currentTab = tab; document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); renderTab(); }
 
 function introBlockHtml(it){
-  return `<section class="mod-intro"><h3>${it.title}</h3><p class="mod-intro-lead">${it.lead}</p><div class="mod-intro-grid">${it.groups.map(([h,items])=>`<div class="mod-intro-col"><h4>${h}</h4><ul>${items.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}</div><div class="mod-intro-tags"><span>Funktionen im Überblick:</span>${it.tags.map(t=>`<i>${t}</i>`).join('')}</div></section>`;
+  return `<section class="mod-intro"><h3>${it.title}</h3><ul>${it.points.map(x=>`<li>${x}</li>`).join('')}</ul></section>`;
 }
 function videoBlockHtml(m){
   const v = state.moduleVideos[m.id];
