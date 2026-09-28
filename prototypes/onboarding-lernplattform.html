@@ -1168,7 +1168,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
       </div>
     </div>
     <div class="onb-form-panel">
-      <span class="form-eyebrow">Erste Schritte</span>
       <h2>Ihre Daten</h2>
       <div class="field-row">
         <div><span class="field-label">Name</span><input type="text" id="onbName" placeholder="Vor- und Nachname"></div>
@@ -2037,7 +2036,7 @@ function renderDashboard(){
     ${!anyStarted ? `
     <section class="hero hero-first">
       <div class="hero-main">
-        <span class="hero-eyebrow">OrKan Cloud · Onboarding</span>
+        
         <h1 class="page-title">Guten Tag, ${state.name}.</h1>
         <p class="page-sub">Hier ist Ihr Onboarding-Überblick als ${state.role}.</p>
         <div class="status-overview-text">
@@ -2051,7 +2050,7 @@ function renderDashboard(){
     ` : `
     <section class="hero">
       <div class="hero-main">
-        <span class="hero-eyebrow">OrKan Cloud · Onboarding</span>
+        
         <h1 class="page-title">Guten Tag, ${state.name}.</h1>
         <p class="page-sub">Hier ist Ihr Onboarding-Überblick als ${state.role}.</p>
         <div class="status-overview-grid">
