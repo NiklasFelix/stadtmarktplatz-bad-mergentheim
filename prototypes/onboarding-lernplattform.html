@@ -1649,9 +1649,14 @@ const MODULES = [
       "Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei (max. 40 MB) mit den zugehörigen Artikelbildern – der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen.",
       "Die drei Import-Modi verhalten sich klar unterschiedlich: „Nur importieren\" legt ausschließlich neue Artikel an und verändert nie bestehende; „Nur aktualisieren\" verändert ausschließlich bestehende Artikel und legt nie neue an; „Importieren und aktualisieren\" kombiniert beides.",
       "Der Abgleich läuft wahlweise über die Lieferanten-Artikelnummer, die EAN-Nummer oder die interne Artikelnummer – bei einem Lieferantenwechsel für einen bestehenden Artikel muss zwingend über die interne Artikelnummer abgeglichen werden, sonst legt die OrKan Cloud den Artikel fälschlich doppelt neu an und Bestandsdaten gehen verloren.",
-      "## 2. Lieferanten anbinden und Preise pflegen",
+      "## 2. Lieferanten anbinden",
+      "Auch beim Anlegen eines Lieferanten gilt: Alle mit einem Sternchen (*) gekennzeichneten Pflichtfelder müssen ausgefüllt werden.",
       "Die Shop-URL im Lieferantenstamm ist NICHT die normale Webadresse des Onlineshops, sondern die URL der IDS-Schnittstelle – sie ist die technische Grundlage dafür, dass die OrKan Cloud Bestellungen automatisiert an den Lieferanten übermitteln kann.",
-      "Über den separaten Reiter „DATANORM Preis Import\" lassen sich Preise und Daten vieler Artikel eines Lieferanten in einem Schritt aktualisieren, statt jeden Artikel einzeln zu pflegen."
+      "Die Shop-URL lässt sich über das Lupen-Symbol suchen – häufig ist der passende Händler dort bereits hinterlegt. Wird er nicht gefunden, fragen Sie einfach bei Ihrem Händler nach der Shop-URL.",
+      "<div>Im Feld „Standardbestellverfahren“ legen Sie fest, wie Bestellungen an diesen Lieferanten gehen:<ul class=\"sub-points\"><li><strong>Online (IDS-Schnittstelle):</strong> Die Bestellung wird direkt an den Webshop des Händlers übergeben.</li><li><strong>PDF:</strong> Die Bestellung wird als PDF-Datei erzeugt.</li><li><strong>E-Mail:</strong> Die Bestellung wird per E-Mail an den Lieferanten verschickt.</li></ul></div>",
+      "Zusätzlich lassen sich die gewünschten Liefertermine des Lieferanten in der OrKan Cloud einstellen. Über „Offset in Tagen“ legen Sie fest, wie viele Tage dabei zeitlich berücksichtigt werden sollen.",
+      "## 3. Preise pflegen",
+      "Über den separaten Reiter „DATANORM Preis Import“ lassen sich Preise und Daten vieler Artikel eines Lieferanten in einem Schritt aktualisieren, statt jeden Artikel einzeln zu pflegen."
     ],
     features:[
       {t:'Excel + ZIP-Import',d:'Artikeldaten und Bilder werden gemeinsam über Dateiname-Zuordnung importiert'},
