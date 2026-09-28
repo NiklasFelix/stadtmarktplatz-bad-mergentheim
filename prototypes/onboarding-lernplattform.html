@@ -1197,6 +1197,31 @@ html .sidebar .nav-sub-item{font-weight:600}
 .rate-comment{width:100%;margin-bottom:10px;resize:vertical}
 .rate-thanks{margin-left:12px;font-size:13.5px;font-weight:700;color:#8EA752}
 @media(max-width:700px){.w-bar-row{grid-template-columns:1fr 44px}.w-bar-lbl{grid-column:1/-1}.w-fb{grid-template-columns:1fr}.w-heat{grid-template-columns:repeat(7,18px)}}
+/* ===== Team-Zugang ===== */
+.team-mode{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.team-mode-btn{text-align:left;padding:14px 16px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--ink);cursor:pointer;font:inherit;display:flex;flex-direction:column;gap:4px;transition:border-color .2s,background .2s}
+.team-mode-btn strong{font-size:14.5px}.team-mode-btn span{font-size:12.5px;color:var(--gray);line-height:1.4}
+.team-mode-btn:hover{border-color:rgba(166,191,104,.5)}
+.team-mode-btn.selected{border-color:#8EA752;background:rgba(166,191,104,.12)}
+.team-code-field{margin-bottom:22px}
+.team-code-field input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;letter-spacing:.08em}
+.team-code-error{display:block;min-height:16px;margin-top:6px;font-size:13px;color:#E0735F}
+.team-code-card{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:20px 22px;border-radius:16px;margin-bottom:24px;background:linear-gradient(135deg,rgba(166,191,104,.16),rgba(166,191,104,.04));border:1px solid rgba(166,191,104,.35)}
+.team-code-card .tc-code{font-size:28px;font-weight:700;letter-spacing:.12em;padding:8px 16px;border-radius:12px;border:1.5px dashed #8EA752;color:var(--ink)}
+.team-code-card .tc-text{flex:1;min-width:220px;font-size:14px;color:var(--gray)}
+.team-code-card .tc-text strong{display:block;font-size:16px;color:var(--ink);margin-bottom:4px}
+.team-live{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:#8EA752}
+.team-live::before{content:'';width:8px;height:8px;border-radius:50%;background:#8EA752;box-shadow:0 0 0 0 rgba(142,167,82,.6);animation:livePulse 1.8s infinite}
+@keyframes livePulse{70%{box-shadow:0 0 0 8px rgba(142,167,82,0)}}
+.team-demo-toggle{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--gray);cursor:pointer;margin:0 0 14px}
+.team-demo-tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;background:var(--gray-light);color:var(--gray);margin-left:6px}
+.team-you-tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;background:rgba(166,191,104,.18);color:#8EA752;margin-left:6px}
+.team-locked{padding:40px;text-align:center;border-radius:16px;border:1px solid var(--line)}
+.profile-team{font-size:12.5px;color:var(--gray);margin-top:10px}.profile-team b{color:var(--ink);letter-spacing:.06em}
+@media(max-width:640px){.team-mode{grid-template-columns:1fr}}
+.section-heading{padding-left:14px}
+.section-heading::before{position:absolute;left:0;top:50%;transform:translateY(-50%);margin:0!important}
+html .team-mode-btn.selected{border-color:#8EA752;background:rgba(166,191,104,.16);box-shadow:0 0 0 3px rgba(166,191,104,.15)}
 </style>
 </head>
 <body>
@@ -1228,6 +1253,16 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
       <div class="field-row">
         <div><span class="field-label">Name</span><input type="text" id="onbName" placeholder="Vor- und Nachname"></div>
         <div><span class="field-label">Unternehmen</span><input type="text" id="onbCompany" placeholder="Firmenname"></div>
+      </div>
+      <span class="role-label">Zugang</span>
+      <div class="team-mode" id="teamMode">
+        <button type="button" class="team-mode-btn" data-mode="create" onclick="selectTeamMode('create')"><strong>Neues Team anlegen</strong><span>Für Lagerleitung oder Geschäftsführung – Sie erhalten einen Teamcode für Ihre Mitarbeiter.</span></button>
+        <button type="button" class="team-mode-btn" data-mode="join" onclick="selectTeamMode('join')"><strong>Einem Team beitreten</strong><span>Sie haben einen Teamcode von Ihrer Führungskraft erhalten.</span></button>
+      </div>
+      <div class="team-code-field" id="teamCodeField" hidden>
+        <span class="field-label">Teamcode</span>
+        <input type="text" id="onbTeamCode" placeholder="z. B. MUSTER-4821" autocomplete="off" style="text-transform:uppercase">
+        <span class="team-code-error" id="teamCodeError"></span>
       </div>
       <span class="role-label">Ihre Rolle</span>
       <div class="role-grid" id="roleGrid">
@@ -1283,6 +1318,7 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
             <option>Geschäftsführer</option>
             <option>Monteur</option>
           </select>
+          <div class="profile-team" id="profileTeam"></div>
           <label class="field-label" style="margin-top:14px">Darstellung</label>
           <div class="theme-switch" role="group" aria-label="Darstellung">
             <button type="button" data-theme-btn="dark" onclick="setTheme('dark')">☾ Dunkel</button>
@@ -2003,7 +2039,7 @@ function confirmResetProgress(){
   window.removeEventListener('pagehide', saveState);
   document.removeEventListener('visibilitychange', __visibilitySave);
   clearInterval(__autosaveInterval);
-  try{ localStorage.removeItem(PROGRESS_STORAGE_KEY); localStorage.removeItem('orkanDashboardPrefs'); }catch(e){}
+  try{ localStorage.removeItem(PROGRESS_STORAGE_KEY); localStorage.removeItem('orkanDashboardPrefs'); localStorage.removeItem('orkanTeam_v1'); }catch(e){}
   location.reload();
 }
 
@@ -3361,6 +3397,166 @@ function renderTour(){
 (function(){
   const orig=window.startApp;
   if(typeof orig==='function') window.startApp=function(){ orig.apply(this,arguments); setTimeout(startTour,700); };
+})();
+</script>
+<script>
+/* ===== Team-Konten: Teamcode, gemeinsame Speicherung, Team-Fortschritt ===== */
+let __teamDb=null, __teamUser=null, __teamUnsub=null, __lastMemberJson='', __memberTimer=null;
+const __dbReady = (async()=>{
+  try{ if(window.claude && typeof claude.use==='function'){ __teamDb = await claude.use('db'); __teamUser = await claude.use('user'); } }catch(e){ __teamDb=null; }
+  return __teamDb;
+})();
+function selectTeamMode(mode){
+  state.teamMode = mode;
+  document.querySelectorAll('.team-mode-btn').forEach(b=>b.classList.toggle('selected', b.dataset.mode===mode));
+  document.getElementById('teamCodeField').hidden = mode!=='join';
+  document.getElementById('teamCodeError').textContent='';
+  checkStart();
+}
+const __origCheckStart = checkStart;
+checkStart = function(){
+  const name = document.getElementById('onbName').value.trim();
+  const code = (document.getElementById('onbTeamCode')||{}).value||'';
+  document.getElementById('startBtn').disabled = !(name && state.role && state.teamMode && (state.teamMode==='create' || code.trim().length>=4));
+};
+document.addEventListener('input', e=>{ if(e.target.id==='onbTeamCode') checkStart(); });
+function cleanSeg(s){ return String(s||'').replace(/[^A-Za-z0-9_\-.~:@+]/g,'_').slice(0,120) || 'x'; }
+async function memberId(){
+  try{ if(__teamUser && __teamUser.id){ const id = await __teamUser.id(); if(id) return cleanSeg(id); } }catch(e){}
+  let id=null; try{ id=localStorage.getItem('orkanMemberId'); }catch(e){}
+  if(!id){ id='m'+Date.now().toString(36)+Math.random().toString(36).slice(2,8); try{localStorage.setItem('orkanMemberId',id)}catch(e){} }
+  return id;
+}
+function makeTeamCode(company){
+  const base=(company||'TEAM').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]/g,'').toUpperCase().slice(0,8)||'TEAM';
+  return base+'-'+String(Math.floor(1000+Math.random()*9000));
+}
+const __origStartApp = window.startApp;
+window.startApp = async function(){
+  const btn=document.getElementById('startBtn'); const err=document.getElementById('teamCodeError');
+  const db = await Promise.race([__dbReady, new Promise(r=>setTimeout(()=>r(null),4000))]);
+  const company = document.getElementById('onbCompany').value.trim() || 'Ihr Unternehmen';
+  if(state.teamMode==='join'){
+    const code = document.getElementById('onbTeamCode').value.trim().toUpperCase();
+    if(db){
+      btn.disabled=true; btn.textContent='Teamcode wird geprüft …';
+      let ok=false; try{ ok=(await db.doc('teams/'+cleanSeg(code)).get()).exists; }catch(e){ ok=false; }
+      btn.textContent='Lernpfad starten'; btn.disabled=false;
+      if(!ok){ err.textContent='Dieser Teamcode wurde nicht gefunden. Bitte prüfen Sie die Schreibweise oder fragen Sie Ihre Führungskraft.'; return; }
+    }
+    state.teamCode=code; state.isLead=false;
+  } else {
+    state.teamCode=makeTeamCode(company); state.isLead=true;
+    if(db){ try{ await db.doc('teams/'+cleanSeg(state.teamCode)).set({company, leadName:document.getElementById('onbName').value.trim(), createdAt:new Date().toISOString()}); }catch(e){} }
+  }
+  __origStartApp.apply(this, arguments);
+  applyTeamAccess(); syncMember(true); subscribeTeam();
+};
+function applyTeamAccess(){
+  const nav=document.querySelector('.nav-item[data-view="team"]'); if(nav) nav.style.display = state.isLead ? '' : 'none';
+  const pt=document.getElementById('profileTeam');
+  if(pt) pt.innerHTML = state.teamCode ? `${state.isLead?'Teamleitung':'Team'} · Code <b>${state.teamCode}</b>` : '';
+}
+function memberPayload(){
+  const s=Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore);
+  const rs=Object.values(state.ratings||{}).filter(r=>r.stars);
+  return { name:state.name, role:state.role, company:state.company, isLead:!!state.isLead,
+    completed:completedCount(), quizAvg: s.length?Math.round(s.reduce((a,b)=>a+b,0)/s.length):null,
+    weakTopic: Object.entries(state.weakTopics||{}).sort((a,b)=>b[1]-a[1]).map(x=>x[0])[0]||null,
+    doneModules: MODULES.filter(m=>state.moduleProgress[m.id].completed).map(m=>m.id),
+    ratingAvg: rs.length? Math.round(rs.reduce((a,r)=>a+r.stars,0)/rs.length*10)/10 : null };
+}
+async function syncMember(force){
+  if(!state.teamCode) return;
+  const db=await __dbReady; if(!db) return;
+  const p=memberPayload(); const j=JSON.stringify(p);
+  if(!force && j===__lastMemberJson) return;
+  __lastMemberJson=j;
+  try{ await db.doc('teams/'+cleanSeg(state.teamCode)+'/members/'+(await memberId())).set(Object.assign(p,{updatedAt:new Date().toISOString()})); }catch(e){ __lastMemberJson=''; }
+}
+const __origSaveState = saveState;
+saveState = function(){ __origSaveState(); clearTimeout(__memberTimer); __memberTimer=setTimeout(()=>syncMember(false),1500); };
+async function subscribeTeam(){
+  if(!state.isLead || !state.teamCode || __teamUnsub) return;
+  const db=await __dbReady; if(!db) return;
+  const myId=await memberId();
+  __teamUnsub = db.collection('teams/'+cleanSeg(state.teamCode)+'/members').onSnapshot(snap=>{
+    state.teamLive = snap.docs.filter(d=>d.id!==myId).map(d=>Object.assign({id:d.id},d.data()));
+    state.teamDbOk = true;
+    if(state.currentView==='team') renderTeam();
+    if(state.currentView==='dashboard' && document.getElementById('dashWidgets')) document.getElementById('dashWidgets').innerHTML=renderDashboardWidgets();
+  }, ()=>{ state.teamDbOk=false; });
+}
+function selfMember(){ const p=memberPayload(); return {name:`${state.name}`, you:true, role:state.role, completed:p.completed, quizAvg:p.quizAvg??0, weakTopic:p.weakTopic}; }
+function getTeamMembers(){
+  const live=(state.teamLive||[]).filter(m=>!m.isLead || true).map(m=>({name:m.name||'Mitarbeiter', role:m.role||'', completed:m.completed||0, quizAvg:m.quizAvg??0, weakTopic:m.weakTopic||null}));
+  const showDemo = state.showDemoTeam!==undefined ? state.showDemoTeam : !live.length;
+  return [selfMember(), ...live, ...(showDemo? TEAM_MEMBERS.map(m=>Object.assign({demo:true},m)) : [])];
+}
+function toggleDemoTeam(on){ state.showDemoTeam=on; renderTeam(); }
+function copyTeamCode(){
+  const c=state.teamCode||''; const done=()=>showToast('Teamcode kopiert: '+c);
+  try{ navigator.clipboard.writeText(c).then(done,()=>showToast('Teamcode: '+c)); }catch(e){ showToast('Teamcode: '+c); }
+}
+renderTeam = function(){
+  const el=document.getElementById('view-team'); if(!el) return;
+  if(!state.isLead){
+    el.innerHTML=`<h1 class="page-title">Team-Fortschritt</h1><div class="team-locked"><p>Diese Ansicht ist nur für die Teamleitung (Lagerleitung oder Geschäftsführung) sichtbar.</p></div>`; return;
+  }
+  const all=getTeamMembers(); const liveCount=(state.teamLive||[]).length;
+  const showDemo = state.showDemoTeam!==undefined ? state.showDemoTeam : !liveCount;
+  const avg=Math.round(all.reduce((a,m)=>a+m.completed,0)/all.length/MODULES.length*100);
+  el.innerHTML=`
+    <h1 class="page-title">Team-Fortschritt</h1>
+    <p class="page-sub">Onboarding-Status aller Mitarbeiter, die Ihrem Team beigetreten sind. ${state.teamDbOk?'<span class="team-live">Live</span>':''}</p>
+    <div class="team-code-card">
+      <span class="tc-code">${state.teamCode||'—'}</span>
+      <div class="tc-text"><strong>Ihr Teamcode</strong>Geben Sie diesen Code an Ihre Mitarbeiter weiter. Bei der Anmeldung wählen sie „Einem Team beitreten“ und tragen den Code ein – ihr Fortschritt erscheint dann automatisch hier.</div>
+      <button class="btn btn-primary" onclick="copyTeamCode()">Code kopieren</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Team-Mitglieder</div><div class="stat-val">${all.length}</div><div class="stat-sub">${liveCount} beigetreten${showDemo?' + Demo':''}</div></div>
+      <div class="stat-card"><div class="stat-label">Ø Fortschritt</div><div class="stat-val">${avg}%</div><div class="stat-sub">über alle Module</div></div>
+      <div class="stat-card"><div class="stat-label">Vollständig abgeschlossen</div><div class="stat-val">${all.filter(m=>m.completed>=MODULES.length).length}</div><div class="stat-sub">von ${all.length} Personen</div></div>
+      <div class="stat-card"><div class="stat-label">Auffällige Wissenslücken</div><div class="stat-val">${all.filter(m=>m.weakTopic).length}</div><div class="stat-sub">benötigen Vertiefung</div></div>
+    </div>
+    <div class="section-heading">Teammitglieder</div>
+    <label class="team-demo-toggle"><input type="checkbox" ${showDemo?'checked':''} onchange="toggleDemoTeam(this.checked)"> Beispiel-Mitarbeiter anzeigen (Demo)</label>
+    <div class="team-list">${all.map(m=>`
+      <div class="team-row">
+        <div class="team-avatar">${(m.name||'?').split(' ').map(n=>n[0]).slice(0,2).join('')}</div>
+        <div class="team-info"><div class="team-name">${m.name}${m.you?'<span class="team-you-tag">Sie</span>':''}${m.demo?'<span class="team-demo-tag">Demo</span>':''}</div><div class="team-role">${m.role}</div></div>
+        <div class="team-progress-wrap"><div class="gap-track" style="width:140px"><div class="gap-fill company" style="width:${m.completed/MODULES.length*100}%"></div></div><span class="team-progress-text">${m.completed}/${MODULES.length} Module</span></div>
+        <div class="team-quiz">Ø ${m.quizAvg}%</div>
+        <div class="team-flag">${m.weakTopic?`<span class="gap-count">Lücke: ${m.weakTopic}</span>`:`<span class="team-ok">Keine Lücken</span>`}</div>
+      </div>`).join('')}</div>
+    ${liveCount?'':`<div class="insight-callout" style="margin-top:24px"><strong>Noch niemand beigetreten</strong><p>Sobald ein Mitarbeiter sich mit Ihrem Teamcode anmeldet, erscheint er hier – inklusive Fortschritt, Quiz-Ergebnissen und Wissenslücken.</p></div>`}`;
+};
+DASHBOARD_WIDGETS.teamsummary.render = (orig => () => {
+  const all=getTeamMembers(); const n=all.length;
+  const done=all.filter(x=>x.completed>=MODULES.length).length, open=all.filter(x=>x.completed===0).length, prog=n-done-open;
+  const avg=Math.round(all.reduce((s,x)=>s+x.completed/MODULES.length,0)/n*100);
+  return `<div class="w-team"><div class="w-team-bar"><i class="d" style="flex:${done||0.001}"></i><i class="p" style="flex:${prog||0.001}"></i><i class="o" style="flex:${open||0.001}"></i></div>
+    <div class="w-team-legend"><span><b class="d"></b>${done} abgeschlossen</span><span><b class="p"></b>${prog} in Bearbeitung</span><span><b class="o"></b>${open} noch nicht gestartet</span></div>
+    <div class="w-team-avg"><strong>${avg}</strong><small>%</small><span>Ø Fortschritt im Team (${n} Personen) · Teamcode <b>${state.teamCode||'—'}</b></span></div>
+    <a class="w-link" onclick="showView('team')">Zum Team-Fortschritt →</a></div>`;
+})();
+const __origRenderWidgets = renderDashboardWidgets;
+renderDashboardWidgets = function(){
+  const prefs = state.dashboardPrefs || (state.dashboardPrefs = loadDashboardPrefs());
+  if(state.isLead) return __origRenderWidgets();
+  const saved = Object.assign({}, prefs.hidden);
+  prefs.hidden = Object.assign({}, saved, {teamsummary:true, completiontime:true});
+  try{ return __origRenderWidgets(); } finally { prefs.hidden = saved; }
+};
+const __origSnapshotSave = saveState;
+(function(){
+  // Teamdaten mit speichern/laden
+  const key='orkanTeam_v1';
+  const persist=()=>{ try{ localStorage.setItem(key, JSON.stringify({teamCode:state.teamCode, isLead:state.isLead, teamMode:state.teamMode})); }catch(e){} };
+  const s2=saveState; saveState=function(){ persist(); s2(); };
+  try{ const t=JSON.parse(localStorage.getItem(key)||'null'); if(t){ state.teamCode=t.teamCode; state.isLead=t.isLead; state.teamMode=t.teamMode; } }catch(e){}
+  if(document.getElementById('app') && document.getElementById('app').style.display==='flex'){ applyTeamAccess(); renderTeam(); renderDashboard(); syncMember(true); subscribeTeam(); }
 })();
 </script>
 </body>
