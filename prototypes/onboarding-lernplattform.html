@@ -1224,6 +1224,18 @@ html .sidebar .nav-sub-item{font-weight:600}
 html .team-mode-btn.selected{border-color:#8EA752;background:rgba(166,191,104,.16);box-shadow:0 0 0 3px rgba(166,191,104,.15)}
 .profile-saved{font-size:12.5px;font-weight:700;color:#8EA752;min-height:16px;margin-top:8px;opacity:0;transition:opacity .3s}.profile-saved.on{opacity:1}
 .sub-points{list-style:none;margin:10px 0 2px;display:flex;flex-direction:column;gap:8px}.key-points .sub-points li{margin:0;padding-left:14px;position:relative;font-size:14.5px;display:block}.key-points .sub-points li::before{content:'';position:absolute;left:0;top:9px;width:6px;height:2px;background:#8EA752;border-radius:2px;margin:0}
+.mod-intro{margin:0 0 26px;padding:24px 26px;border-radius:18px;border:1px solid rgba(166,191,104,.3);background:linear-gradient(145deg,rgba(166,191,104,.1),rgba(166,191,104,.02))}
+.mod-intro h3{font-size:20px;margin-bottom:8px}
+.mod-intro-lead{font-size:15.5px;line-height:1.6;color:var(--ink);max-width:880px;margin-bottom:18px}
+.mod-intro-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.mod-intro-col h4{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#8EA752;margin-bottom:10px}
+.mod-intro-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.mod-intro-col li{position:relative;padding-left:16px;font-size:14.5px;line-height:1.55;color:var(--ink)}
+.mod-intro-col li::before{content:'';position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:2px;background:#8EA752}
+.mod-intro-tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.mod-intro-tags span{font-size:13px;font-weight:700;color:var(--gray);margin-right:4px}
+.mod-intro-tags i{font-style:normal;font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(166,191,104,.14);color:var(--green-dark)}
+@media(max-width:1000px){.mod-intro-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1549,6 +1561,7 @@ function templateDownloadCallout(){
 /* ============ DATA ============ */
 const MODULES = [
   { id:1, phase:1, title:'Grundlagen der OrKan Cloud', time:'12 Min.', diff:1,
+    intro:{"title": "Was ist die OrKan Cloud?", "lead": "Die OrKan Cloud ist ein lieferantenunabhängiges Software-Tool zur Lagerführung und Lageroptimierung – seit Jahren am Markt, bei über 100 Kunden im Einsatz und gemeinsam mit den Kunden laufend weiterentwickelt.", "groups": [["Wozu dient sie?", ["Einfaches, systematisches Bestellwesen nach dem <strong>Kanban-Prinzip</strong> (jap. „Signalkarte“): Nachbestellt wird, was tatsächlich am Lagerplatz verbraucht wurde.", "Artikel werden einmal im System angelegt und danach bequem per Scanner erfasst und bestellt – dank Standardabläufen auch durch fachfremde Mitarbeiter, z. B. aus der Verwaltung.", "Neben dem Bestellwesen verwaltet sie Maschinen und Betriebsmittel: Wer nutzt oder reserviert gerade welche Maschine?"]], ["Ihr Nutzen", ["Definierte Mindestbestände sind immer vorhanden – der Nachschub an Verbrauchsmaterial ist gesichert.", "Keine Doppelbestellungen, langen Suchzeiten oder spontanen Einkäufe beim Großhändler mehr.", "Voller Überblick über zukünftige, fällige und überfällige Bestellungen; Materialflüsse und Lagerbestände werden transparent.", "Deutlich weniger Bestell- und Rüstzeiten – Inhaber und Meister werden entlastet und haben mehr Zeit für wertschöpfende Tätigkeiten.", "Überblick über den Jahresverbrauch aller Materialien – eine gute Grundlage, um beim Händler bessere Preise zu erzielen."]], ["Alles aus einer Hand", ["Bestellkarten und Regalbeschriftungen mit Barcode lassen sich direkt aus der OrKan Cloud drucken – ein Scan führt direkt zum Artikel.", "Auch unterwegs nutzbar: Baustellenbestellungen absetzen oder Maschinen bei Kollegen suchen.", "Intuitive Bedienung mit geringem Schulungsbedarf; jeder Betrieb erhält eine individuell erstellte und lizenzierte Programmversion."]]], "tags": ["Artikelstamm", "Lagerstamm", "Bestandsverwaltung", "Inventur", "Bestellwesen", "Lieferantenstamm", "Maschinenverwaltung", "OrKan-System-App", "Verleihsystem", "Excel-Import/-Export", "E-Mail-Schnittstelle", "Termin-Cockpit", "E-Check", "Lieferantenbewertung"]},
     gist:['Startseite & Kalender','Ampelsystem','Lagerverwaltung im Überblick'],
     points:[
       'Die Startseite ist individuell anpassbar: Kacheln wie Artikel, Lieferant, Bestellvorschläge erstellen oder Meine Einstellungen lassen sich im Bearbeitungsmodus (Stift-Symbol) verschieben, umbenennen, farblich anpassen oder entfernen.',
@@ -2509,6 +2522,9 @@ function renderModuleDetail(){
 
 function switchTab(tab){ state.currentTab = tab; document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); renderTab(); }
 
+function introBlockHtml(it){
+  return `<section class="mod-intro"><h3>${it.title}</h3><p class="mod-intro-lead">${it.lead}</p><div class="mod-intro-grid">${it.groups.map(([h,items])=>`<div class="mod-intro-col"><h4>${h}</h4><ul>${items.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}</div><div class="mod-intro-tags"><span>Funktionen im Überblick:</span>${it.tags.map(t=>`<i>${t}</i>`).join('')}</div></section>`;
+}
 function videoBlockHtml(m){
   const v = state.moduleVideos[m.id];
   let inner;
@@ -2571,6 +2587,7 @@ function renderTab(){
   if(state.currentTab==='content'){
     host.innerHTML = `
       ${videoBlockHtml(m)}
+      ${m.intro?introBlockHtml(m.intro):''}
       <ul class="key-points">${m.points.map(pt=>`<li>${pt}</li>`).join('')}</ul>
       <div class="section-heading" style="margin-top:0">Wichtige Funktionen</div>
       <div class="feature-cards">${m.features.map(f=>`<div class="feature-card"><div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></div><h5>${f.t}</h5><p>${f.d}</p></div>`).join('')}</div>
