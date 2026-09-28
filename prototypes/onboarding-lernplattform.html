@@ -1628,11 +1628,13 @@ const MODULES = [
   { id:3, phase:2, title:'Artikelimport und Lieferantenanbindung', time:'18 Min.', diff:3,
     gist:['Excel-Import','Lieferanten-Shop','DATANORM-Preisimport'],
     points:[
-      'Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei (max. 40 MB) mit den zugehörigen Artikelbildern – der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen.',
-      'Die drei Import-Modi verhalten sich klar unterschiedlich: „Nur importieren" legt ausschließlich neue Artikel an und verändert nie bestehende; „Nur aktualisieren" verändert ausschließlich bestehende Artikel und legt nie neue an; „Importieren und aktualisieren" kombiniert beides.',
-      'Der Abgleich läuft wahlweise über die Lieferanten-Artikelnummer, die EAN-Nummer oder die interne Artikelnummer – bei einem Lieferantenwechsel für einen bestehenden Artikel muss zwingend über die interne Artikelnummer abgeglichen werden, sonst legt die OrKan Cloud den Artikel fälschlich doppelt neu an und Bestandsdaten gehen verloren.',
-      'Die Shop-URL im Lieferantenstamm ist NICHT die normale Webadresse des Onlineshops, sondern die URL der IDS-Schnittstelle – sie ist die technische Grundlage dafür, dass die OrKan Cloud Bestellungen automatisiert an den Lieferanten übermitteln kann.',
-      'Über den separaten Reiter „DATANORM Preis Import" lassen sich Preise und Daten vieler Artikel eines Lieferanten in einem Schritt aktualisieren, statt jeden Artikel einzeln zu pflegen.'
+      "## 1. Artikel per Excel importieren",
+      "Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei (max. 40 MB) mit den zugehörigen Artikelbildern – der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen.",
+      "Die drei Import-Modi verhalten sich klar unterschiedlich: „Nur importieren\" legt ausschließlich neue Artikel an und verändert nie bestehende; „Nur aktualisieren\" verändert ausschließlich bestehende Artikel und legt nie neue an; „Importieren und aktualisieren\" kombiniert beides.",
+      "Der Abgleich läuft wahlweise über die Lieferanten-Artikelnummer, die EAN-Nummer oder die interne Artikelnummer – bei einem Lieferantenwechsel für einen bestehenden Artikel muss zwingend über die interne Artikelnummer abgeglichen werden, sonst legt die OrKan Cloud den Artikel fälschlich doppelt neu an und Bestandsdaten gehen verloren.",
+      "## 2. Lieferanten anbinden und Preise pflegen",
+      "Die Shop-URL im Lieferantenstamm ist NICHT die normale Webadresse des Onlineshops, sondern die URL der IDS-Schnittstelle – sie ist die technische Grundlage dafür, dass die OrKan Cloud Bestellungen automatisiert an den Lieferanten übermitteln kann.",
+      "Über den separaten Reiter „DATANORM Preis Import\" lassen sich Preise und Daten vieler Artikel eines Lieferanten in einem Schritt aktualisieren, statt jeden Artikel einzeln zu pflegen."
     ],
     features:[
       {t:'Excel + ZIP-Import',d:'Artikeldaten und Bilder werden gemeinsam über Dateiname-Zuordnung importiert'},
@@ -1656,12 +1658,15 @@ const MODULES = [
   { id:4, phase:2, title:'Zwei-Etiketten-System mit Bestellvorschlag', time:'10 Min.', diff:2,
     gist:['Etiketten drucken','Blau/Weiß-Etiketten','Bestellvorschlag'],
     points:[
-      'Bevor das System im Alltag genutzt werden kann, müssen die Etiketten erst gedruckt werden: Unter „Lagerverwaltung" → „Artikel" → „Drucken" wählen Sie Ihr Etiketten-Template, legen fest, welche Artikel gedruckt werden (alle, nur aktualisierte, nur nicht aktualisierte oder nur markierte), und erhalten nach „Speichern" eine PDF-Datei zum Druck auf das OrKan-Etikettenpapier.',
-      'An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, zur Kennzeichnung des Lagerplatzes) und ein weißes, das davor liegt und bei Mindestbestand als Bestellauslöser entnommen wird.',
-      'Wird der Mindestbestand erreicht, zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox – fehlt das weiße Etikett am Regal, sieht jeder sofort, dass der Artikel bereits bestellt ist.',
-      'Abends nimmt ein Lagermitarbeiter die Bestellbox und erfasst die Artikel unter „Bestellvorschlag → Erstellen": Ein Klick auf „Erstellen" springt automatisch ins Scan-Feld, jeder OrKan-Scanner löst nach dem Scan selbstständig „Enter" aus – ein manuelles Bestätigen ist nicht nötig.',
-      'Enthält der Bestellvorschlag Artikel mehrerer Lieferanten, muss für jeden Lieferanten die Teilbestellung einzeln über „Bestellungen erstellen" und „Senden" abgeschickt werden; Mengen lassen sich vorher per Doppelklick korrigieren.',
-      'Beim finalen „Bestellen" öffnen sich drei Fenster – Wareneingang, Lieferschein und der Onlineshop des Lieferanten –, denn die eigentliche Bestellung wird technisch erst im Lieferanten-Shop ausgelöst; OrKan Cloud bereitet sie mit Ansprechpartner, Liefertermin und Lieferadresse vollständig vor.'
+      "## 1. Etiketten drucken",
+      "Bevor das System im Alltag genutzt werden kann, müssen die Etiketten erst gedruckt werden: Unter „Lagerverwaltung\" → „Artikel\" → „Drucken\" wählen Sie Ihr Etiketten-Template, legen fest, welche Artikel gedruckt werden (alle, nur aktualisierte, nur nicht aktualisierte oder nur markierte), und erhalten nach „Speichern\" eine PDF-Datei zum Druck auf das OrKan-Etikettenpapier.",
+      "## 2. Das Zwei-Etiketten-System",
+      "An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, zur Kennzeichnung des Lagerplatzes) und ein weißes, das davor liegt und bei Mindestbestand als Bestellauslöser entnommen wird.",
+      "Wird der Mindestbestand erreicht, zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox – fehlt das weiße Etikett am Regal, sieht jeder sofort, dass der Artikel bereits bestellt ist.",
+      "## 3. Vom Etikett zur Bestellung",
+      "Abends nimmt ein Lagermitarbeiter die Bestellbox und erfasst die Artikel unter „Bestellvorschlag → Erstellen\": Ein Klick auf „Erstellen\" springt automatisch ins Scan-Feld, jeder OrKan-Scanner löst nach dem Scan selbstständig „Enter\" aus – ein manuelles Bestätigen ist nicht nötig.",
+      "Enthält der Bestellvorschlag Artikel mehrerer Lieferanten, muss für jeden Lieferanten die Teilbestellung einzeln über „Bestellungen erstellen\" und „Senden\" abgeschickt werden; Mengen lassen sich vorher per Doppelklick korrigieren.",
+      "Beim finalen „Bestellen\" öffnen sich drei Fenster – Wareneingang, Lieferschein und der Onlineshop des Lieferanten –, denn die eigentliche Bestellung wird technisch erst im Lieferanten-Shop ausgelöst; OrKan Cloud bereitet sie mit Ansprechpartner, Liefertermin und Lieferadresse vollständig vor."
     ],
     features:[
       {t:'Etiketten drucken',d:'Template wählen, Artikelauswahl festlegen (alle/aktualisiert/nicht aktualisiert/markiert), als PDF speichern'},
@@ -1685,11 +1690,14 @@ const MODULES = [
   { id:5, phase:3, title:'Wareneingang und Lagerbestand', time:'8 Min.', diff:2,
     gist:['Wareneingang bestätigen','Lagerbestand & Warenwert','Inventur'],
     points:[
-      'Beim Bestellabschluss öffnen sich drei Fenster: Wareneingang-Bestätigung, Lieferschein und der Lieferanten-Shop zur finalen Bestellung.',
-      'Der Scan-Bestelleingang zeigt offene Bestellungen eines Lieferanten nach Ampelfarbe (Rot = überfällig, Gelb = heute fällig, Grün = zukünftig) – Positionen lassen sich einzeln oder als komplette Liste auf einmal bestätigen, Mengenabweichungen werden dabei sichtbar gemacht.',
-      'Ist keine Bestandsführung aktiviert, lässt sich der Warenwert näherungsweise schätzen: Mittelwert aus Lager MIN und Lager MAX × Einkaufspreis, aufsummiert über alle Artikel – trifft in der Praxis zu rund 90 % zu.',
-      'Der Reiter „Lagerbestand" zeigt je Artikel den aktuellen Bestand, Lager MIN/MAX sowie den geschätzten Warenwert; über „Buchungen" lässt sich die komplette Bewegungshistorie eines Artikels einsehen.',
-      'Für die Inventur gibt es zwei Wege: Export als Excel-Liste mit manuell ergänzter Zählmenge, oder – mit aktivierter (kostenpflichtiger) Bestandsführung – die App-Funktion „Inventur" mit direkter Scan-Erfassung.'
+      "## 1. Wareneingang bestätigen",
+      "Beim Bestellabschluss öffnen sich drei Fenster: Wareneingang-Bestätigung, Lieferschein und der Lieferanten-Shop zur finalen Bestellung.",
+      "Der Scan-Bestelleingang zeigt offene Bestellungen eines Lieferanten nach Ampelfarbe (Rot = überfällig, Gelb = heute fällig, Grün = zukünftig) – Positionen lassen sich einzeln oder als komplette Liste auf einmal bestätigen, Mengenabweichungen werden dabei sichtbar gemacht.",
+      "## 2. Lagerbestand und Warenwert",
+      "Der Reiter „Lagerbestand\" zeigt je Artikel den aktuellen Bestand, Lager MIN/MAX sowie den geschätzten Warenwert; über „Buchungen\" lässt sich die komplette Bewegungshistorie eines Artikels einsehen.",
+      "Ist keine Bestandsführung aktiviert, lässt sich der Warenwert näherungsweise schätzen: Mittelwert aus Lager MIN und Lager MAX × Einkaufspreis, aufsummiert über alle Artikel – trifft in der Praxis zu rund 90 % zu.",
+      "## 3. Inventur",
+      "Für die Inventur gibt es zwei Wege: Export als Excel-Liste mit manuell ergänzter Zählmenge, oder – mit aktivierter (kostenpflichtiger) Bestandsführung – die App-Funktion „Inventur\" mit direkter Scan-Erfassung."
     ],
     features:[
       {t:'Drei-Fenster-Bestellabschluss',d:'Wareneingang, Lieferschein und Lieferanten-Shop in einem Schritt'},
@@ -1713,11 +1721,14 @@ const MODULES = [
   { id:6, phase:3, title:'Maschinenverwaltung', time:'12 Min.', diff:2,
     gist:['Maschinen anlegen','Buchungslogik','Service & Wartung'],
     points:[
-      'Maschinen werden mit Name, Seriennummer, Wert, Heimatstandort (Fahrzeug, Lagerort, Gebäude oder Person) und Anschaffungsdatum angelegt – was als „Maschine" geführt wird, definiert der Kunde selbst, auch eine Leiter kann so erfasst sein.',
-      'Das erste hochgeladene Dokument erscheint auf dem Etikett, weitere Dokumente wie der Kaufbeleg werden nicht gedruckt, sind aber entscheidend für Garantiefälle.',
-      'Ein Administrator kann jede Maschine auf jeden Standort buchen; ein Monteur kann über die App ausschließlich Maschinen zu sich selbst buchen, nicht stellvertretend auf andere Personen.',
-      'Service & Wartung muss als Zusatzfunktion separat aktiviert werden (verursacht aber keine Zusatzkosten) – erst dann lassen sich Intervalle wie eine jährliche VDE-Prüfung hinterlegen, bei deren Bestätigung automatisch ein Folgetermin angelegt wird.',
-      'Mehrere Einzelteile lassen sich zu einer „Anlage" bündeln (z. B. Kernbohrgerät, Befestigungsset und Staubsauger): Ein einziger Scan bucht alle Teile gemeinsam, jedes bleibt aber ein eigener Artikel mit eigener Wartungshistorie. Eine „Reservierung" ist dabei keine technische Sperre, sondern nur ein Hinweis in einer Liste.'
+      "## 1. Maschinen anlegen",
+      "Maschinen werden mit Name, Seriennummer, Wert, Heimatstandort (Fahrzeug, Lagerort, Gebäude oder Person) und Anschaffungsdatum angelegt – was als „Maschine\" geführt wird, definiert der Kunde selbst, auch eine Leiter kann so erfasst sein.",
+      "Das erste hochgeladene Dokument erscheint auf dem Etikett, weitere Dokumente wie der Kaufbeleg werden nicht gedruckt, sind aber entscheidend für Garantiefälle.",
+      "## 2. Maschinen buchen",
+      "Ein Administrator kann jede Maschine auf jeden Standort buchen; ein Monteur kann über die App ausschließlich Maschinen zu sich selbst buchen, nicht stellvertretend auf andere Personen.",
+      "## 3. Service, Wartung und Anlagen",
+      "Service & Wartung muss als Zusatzfunktion separat aktiviert werden (verursacht aber keine Zusatzkosten) – erst dann lassen sich Intervalle wie eine jährliche VDE-Prüfung hinterlegen, bei deren Bestätigung automatisch ein Folgetermin angelegt wird.",
+      "Mehrere Einzelteile lassen sich zu einer „Anlage\" bündeln (z. B. Kernbohrgerät, Befestigungsset und Staubsauger): Ein einziger Scan bucht alle Teile gemeinsam, jedes bleibt aber ein eigener Artikel mit eigener Wartungshistorie. Eine „Reservierung\" ist dabei keine technische Sperre, sondern nur ein Hinweis in einer Liste."
     ],
     features:[
       {t:'Vollständige Maschinen-Stammdaten',d:'Inkl. Electronic ID als Alternative zum QR-Code-Scan (NFC/RFID)'},
@@ -1741,11 +1752,13 @@ const MODULES = [
   { id:7, phase:3, title:'Schlüsselverwaltung', time:'8 Min.', diff:1,
     gist:['Sicherheits-Etikett','Adresssuche','Buchung & Rückgabe'],
     points:[
-      'Schlüssel-Etiketten sind spezielle gefaltete Anhänger: außen nur eine Nummer und ein QR-Code, innen (nur beim Öffnen sichtbar) die Kundenadresse.',
-      'Diese Trennung ist ein Sicherheitsprinzip: Beim traditionellen Schlüsselkasten mit Nummern 1 bis n und separatem Zuordnungsordner werden bei einem Einbruch meist beide zusammen entwendet – die Adressliste liegt dann offen. Bei OrKan steckt die Adresse digital hinter der Nummer und bleibt bei Diebstahl geschützt.',
-      'Die Adresse muss als Suchkriterium in der Standardansicht verfügbar sein, da im Alltag primär über die Adresse gesucht wird (z. B. „Lerchenweg"), nicht über die interne Schlüsselnummer.',
-      'Ein Finderlohn-Hinweis auf dem Etikett (Richtwert ca. 50 €) erhöht die Rückgabewahrscheinlichkeit – wichtig, da die Erneuerung hochwertiger Schließanlagen im Verlustfall deutlich teurer wird.',
-      'Buchen funktioniert wie bei Maschinen: Schlüssel scannen, Zielperson (auch temporäre Trupps möglich) wählen, speichern – Rückgabe erfolgt durch erneutes Buchen auf den Schlüsselkasten.'
+      "## 1. Das Sicherheits-Etikett",
+      "Schlüssel-Etiketten sind spezielle gefaltete Anhänger: außen nur eine Nummer und ein QR-Code, innen (nur beim Öffnen sichtbar) die Kundenadresse.",
+      "Diese Trennung ist ein Sicherheitsprinzip: Beim traditionellen Schlüsselkasten mit Nummern 1 bis n und separatem Zuordnungsordner werden bei einem Einbruch meist beide zusammen entwendet – die Adressliste liegt dann offen. Bei OrKan steckt die Adresse digital hinter der Nummer und bleibt bei Diebstahl geschützt.",
+      "Ein Finderlohn-Hinweis auf dem Etikett (Richtwert ca. 50 €) erhöht die Rückgabewahrscheinlichkeit – wichtig, da die Erneuerung hochwertiger Schließanlagen im Verlustfall deutlich teurer wird.",
+      "## 2. Suchen, buchen und zurückgeben",
+      "Die Adresse muss als Suchkriterium in der Standardansicht verfügbar sein, da im Alltag primär über die Adresse gesucht wird (z. B. „Lerchenweg\"), nicht über die interne Schlüsselnummer.",
+      "Buchen funktioniert wie bei Maschinen: Schlüssel scannen, Zielperson (auch temporäre Trupps möglich) wählen, speichern – Rückgabe erfolgt durch erneutes Buchen auf den Schlüsselkasten."
     ],
     features:[
       {t:'Gefaltetes Sicherheits-Etikett',d:'Nummer und QR-Code außen, Adresse nur innen sichtbar'},
@@ -1769,11 +1782,14 @@ const MODULES = [
   { id:8, phase:3, title:'Projekte und Baustellen', time:'10 Min.', diff:2,
     gist:['Materialentnahme per App','Projekt-Statistik','Branchensoftware-Anbindung'],
     points:[
-      'Das Projekte-Modul dokumentiert Materialentnahmen auf Baustellen, die sonst nur handschriftlich per „Aufmaß" erfasst und leicht vergessen werden.',
-      'Wird eine Entnahme vergessen, entsteht ein realer Verlust: Beispiel Armatur mit Einkaufspreis 200 € und Verkaufspreis 600 € – ohne dokumentiertes Aufmaß gehen dem Betrieb die 400 € Differenz verloren.',
-      'Übersteigt eine gebuchte Entnahme den verfügbaren Lagerbestand, warnt die App zwar, lässt die Buchung aber trotzdem zu – so bleibt die physische Entnahme in jedem Fall dokumentiert.',
-      'Die volle Nutzung erfordert drei zusammenwirkende Module (Projekte, Bestandsführung, OrKan-App) für zusammen ca. 25–30 €/Monat – über die Desktop-Oberfläche ist keine Materialbuchung im Feld möglich.',
-      'Meist sinnvoller: Der OrKan-Artikelstamm wird per Matchcode (interne Artikelnummer) direkt in die Branchensoftware importiert, sodass Monteure Entnahmen dort buchen, wo sie ohnehin schon für Baustellen und Zeiterfassung arbeiten – ohne zusätzliche OrKan-Modulkosten.'
+      "## 1. Warum Entnahmen dokumentieren?",
+      "Das Projekte-Modul dokumentiert Materialentnahmen auf Baustellen, die sonst nur handschriftlich per „Aufmaß\" erfasst und leicht vergessen werden.",
+      "Wird eine Entnahme vergessen, entsteht ein realer Verlust: Beispiel Armatur mit Einkaufspreis 200 € und Verkaufspreis 600 € – ohne dokumentiertes Aufmaß gehen dem Betrieb die 400 € Differenz verloren.",
+      "## 2. Buchen per App",
+      "Übersteigt eine gebuchte Entnahme den verfügbaren Lagerbestand, warnt die App zwar, lässt die Buchung aber trotzdem zu – so bleibt die physische Entnahme in jedem Fall dokumentiert.",
+      "Die volle Nutzung erfordert drei zusammenwirkende Module (Projekte, Bestandsführung, OrKan-App) für zusammen ca. 25–30 €/Monat – über die Desktop-Oberfläche ist keine Materialbuchung im Feld möglich.",
+      "## 3. Alternative: Branchensoftware",
+      "Meist sinnvoller: Der OrKan-Artikelstamm wird per Matchcode (interne Artikelnummer) direkt in die Branchensoftware importiert, sodass Monteure Entnahmen dort buchen, wo sie ohnehin schon für Baustellen und Zeiterfassung arbeiten – ohne zusätzliche OrKan-Modulkosten."
     ],
     features:[
       {t:'Entnahme & Einlagerung per App',d:'Artikel scannen, Menge angeben, Projekt auswählen – Buchung auch bei Bestandsüberschreitung mit Warnhinweis möglich'},
@@ -2313,7 +2329,7 @@ Object.assign(DASHBOARD_WIDGETS, {
     const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
     if(!next) return `<div class="w-next done"><div><strong>Alle Module abgeschlossen!</strong><p>Ihr Zertifikat inklusive Rabattcode ist freigeschaltet.</p></div><button class="btn btn-primary" onclick="showView('cert')">Zum Zertifikat</button></div>`;
     const p=state.moduleProgress[next.id];
-    return `<div class="w-next"><span class="w-next-num">${String(next.id).padStart(2,'0')}</span><div class="w-next-body"><strong>${next.title}</strong><p>${next.time} · ${next.points.length} Lerninhalte · Praxisaufgabe · Wissenscheck</p></div><button class="btn btn-primary" onclick="openModule(${next.id})">${p.started?'Fortsetzen':'Starten'} →</button></div>`;
+    return `<div class="w-next"><span class="w-next-num">${String(next.id).padStart(2,'0')}</span><div class="w-next-body"><strong>${next.title}</strong><p>${next.time} · ${next.points.filter(x=>!x.startsWith("## ")).length} Lerninhalte · Praxisaufgabe · Wissenscheck</p></div><button class="btn btn-primary" onclick="openModule(${next.id})">${p.started?'Fortsetzen':'Starten'} →</button></div>`;
   } },
   quizchart: { title:'Quiz-Ergebnisse je Modul', render: () => {
     const rows = MODULES.map(m=>{ const s=state.moduleProgress[m.id].quizScore; return `<div class="w-bar-row"><span class="w-bar-lbl" title="${m.title}">${String(m.id).padStart(2,'0')} ${m.title}</span><div class="w-bar"><i style="width:${s??0}%" class="${s===null?'':s>=80?'ok':'warn'}"></i></div><span class="w-bar-val">${s===null?'–':s+'%'}</span></div>`; }).join('');
