@@ -3209,7 +3209,7 @@ function renderTour(){
 }
 (function(){
   const orig=window.startApp;
-  if(typeof orig==='function') window.startApp=function(){ orig.apply(this,arguments); let done=false; try{done=localStorage.getItem(TOUR_KEY)==='1'}catch(e){} if(!done) setTimeout(startTour,900); };
+  if(typeof orig==='function') window.startApp=function(){ orig.apply(this,arguments); setTimeout(startTour,700); };
 })();
 </script>
 </body>
