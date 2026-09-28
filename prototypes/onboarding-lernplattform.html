@@ -1597,7 +1597,7 @@ const MODULES = [
       'Bei der Serienanlage mit „Eingabe behalten" übernimmt die OrKan Cloud automatisch alle Felder des vorherigen Artikels – außer der internen Artikelnummer und der Artikelnummer des Lieferanten, die für jeden Artikel individuell bleiben.',
       'Die interne Artikelnummer wird standardmäßig automatisch fortlaufend vergeben (höchste vergebene Nummer +1); ungenutzte niedrigere Nummern werden dabei nicht rückwirkend aufgefüllt, wenn versehentlich eine hohe Nummer importiert wurde.',
       'Lager MIN definiert den Sicherheitsbestand, Lager MAX den gewünschten Höchstbestand am Lagerplatz – die Bestellmenge im Bestellvorschlag ergibt sich automatisch aus der Differenz zwischen Lager MAX und Lager MIN.',
-      'Zu jedem Artikel werden Lagereinheit, Lieferant, Lieferanten-Artikelnummer, EK-Preis sowie Menge und VPE hinterlegt. Das erste hochgeladene Dokument erscheint automatisch als Bild auf dem Etikett, weitere Dokumente (z. B. Sicherheitsdatenblätter) bleiben reine Anhänge.'
+      'Zu jedem Artikel werden Lagereinheit, Lieferant, Lieferanten-Artikelnummer sowie Menge und Mengeneinheit (VPE) hinterlegt. Beispiel Schraube: Lagereinheit = Pack, Menge (VPE) = Anzahl der Schrauben pro Pack, Mengeneinheit (VPE) = Stück – daraus ergibt sich die abweichende Bestelleinheit „Stück“, die im Feld „Abweichende Bestelleinheit“ eingetragen wird. Das erste hochgeladene Dokument erscheint automatisch als Bild auf dem Etikett, weitere Dokumente (z. B. Sicherheitsdatenblätter) bleiben reine Anhänge.'
     ],
     features:[
       {t:'Vier Wege der Artikelanlage',d:'Neuanlage, Serienanlage per „Eingabe behalten", Kopieren oder Import'},
