@@ -1593,6 +1593,7 @@ const MODULES = [
     gist:['Artikel anlegen','Lager MIN/MAX','Lagerorte'],
     points:[
       'Ein Artikel wird mit Artikelgruppe, interner Artikelnummer, Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort angelegt – es gibt vier Wege dorthin: manuelle Neuanlage, Serienanlage über „Eingabe behalten", Kopieren eines bestehenden Artikels oder Excel-Import.',
+      'Pflichtfelder sind in der Artikelkarte mit einem Sternchen (*) gekennzeichnet und müssen ausgefüllt werden: Artikelgruppe, Bezeichnung 1, Lager/Gebäude, Lagerort, Lager MIN, Lager MAX, Lagereinheit, Lieferant, Menge (VPE) und Mengeneinheit (VPE).',
       'Bei der Serienanlage mit „Eingabe behalten" übernimmt die OrKan Cloud automatisch alle Felder des vorherigen Artikels – außer der internen Artikelnummer und der Artikelnummer des Lieferanten, die für jeden Artikel individuell bleiben.',
       'Die interne Artikelnummer wird standardmäßig automatisch fortlaufend vergeben (höchste vergebene Nummer +1); ungenutzte niedrigere Nummern werden dabei nicht rückwirkend aufgefüllt, wenn versehentlich eine hohe Nummer importiert wurde.',
       'Lager MIN definiert den Sicherheitsbestand, Lager MAX den gewünschten Höchstbestand am Lagerplatz – die Bestellmenge im Bestellvorschlag ergibt sich automatisch aus der Differenz zwischen Lager MAX und Lager MIN.',
@@ -1605,7 +1606,7 @@ const MODULES = [
     ],
     practice:'Für ein Schraubenpäckchen wird Lager MIN = 2 und Lager MAX = 6 hinterlegt. Sobald der Mindestbestand von 2 erreicht ist, schlägt die OrKan Cloud automatisch die Differenz von 4 Päckchen zur Nachbestellung vor.',
     task:'Legen Sie einen Artikel mit Lager MIN/MAX nach dem Schraubenpäckchen-Beispiel an und legen Sie per „Eingabe behalten" eine ähnliche Variante nach.',
-    checklist:['Über „Lagerverwaltung" → „Artikel" → „Erstellen" die leere Eingabemaske öffnen','Artikelgruppe und interne Artikelnummer vergeben','Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort eintragen','Lager MIN und Lager MAX festlegen (z. B. 2 / 6)','Einen zweiten, ähnlichen Artikel per „Eingabe behalten" oder „Kopieren" anlegen','Artikelbild per Drag & Drop unter „Dokumente" hinzufügen und speichern'],
+    checklist:['Über „Lagerverwaltung" → „Artikel" → „Erstellen" die leere Eingabemaske öffnen','Alle mit * gekennzeichneten Pflichtfelder ausfüllen','Artikelgruppe und interne Artikelnummer vergeben','Bezeichnung 1–3 sowie Lager, Gebäude und Lagerort eintragen','Lager MIN und Lager MAX festlegen (z. B. 2 / 6)','Einen zweiten, ähnlichen Artikel per „Eingabe behalten" oder „Kopieren" anlegen','Artikelbild per Drag & Drop unter „Dokumente" hinzufügen und speichern'],
     tip:'Nutzen Sie „Eingabe behalten" oder „Kopieren" für ähnliche Artikel (z. B. gleicher Bohrer in anderer Größe) – nur die interne Artikelnummer und die Lieferanten-Artikelnummer müssen Sie dann noch anpassen.',
     quiz:[
       {q:"Sie legen Bohrer in 6, 8 und 10 mm an, die sich nur in der Größe unterscheiden. Was ist der effizienteste Weg?",o:["Jeden Bohrer vollständig manuell neu anlegen", "Per „Eingabe behalten“ oder „Kopieren“ anlegen und nur interne Artikelnummer und Lieferanten-Artikelnummer anpassen", "Alle drei Größen als einen Artikel mit drei Bezeichnungen anlegen", "Die Bohrer nur über den Bestellvorschlag erfassen"],a:1,t:"Serienanlage"},
