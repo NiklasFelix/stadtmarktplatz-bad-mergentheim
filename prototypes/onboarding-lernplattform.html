@@ -1532,7 +1532,8 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
       <span class="appointment-field-error" id="appointmentMessageError"></span>
       <div class="appointment-form-actions">
         <button type="button" class="btn btn-outline" onclick="backToContactList()">Zurück</button>
-        <button type="submit" class="btn btn-primary" id="appointmentSendBtn">Per E-Mail senden</button>
+        <a class="btn btn-primary" id="appointmentSendBtn" href="#" target="_top" rel="noopener" style="text-align:center;text-decoration:none" onclick="return appointmentMailClick(event)">Per E-Mail senden</a>
+        <button type="button" class="btn btn-outline" onclick="copyAppointmentMail()">Text kopieren</button>
       </div>
       <p id="appointmentSendStatus" class="appointment-send-status"></p>
     </form>
@@ -3286,7 +3287,7 @@ function closeAppointmentModal(){
   document.getElementById('appointmentModal').classList.remove('open');
   document.getElementById('appointmentSendStatus').textContent = '';
   const btn = document.getElementById('appointmentSendBtn');
-  btn.disabled = false; btn.textContent = 'Per E-Mail senden';
+
 }
 function selectAppointmentContact(idx){
   appointmentSelected = APPOINTMENT_CONTACTS[idx];
@@ -3308,6 +3309,7 @@ function selectAppointmentContact(idx){
   document.getElementById('appointmentName').value = state.name || '';
   document.getElementById('appointmentEmail').value = '';
   document.getElementById('appointmentMessage').value = `Hallo ${appointmentSelected.name.split(' ')[0]},\n\nich würde gerne einen persönlichen Termin zu meinen individuellen Fragen zur OrKan Cloud vereinbaren.\n\nViele Grüße`;
+  setTimeout(updateAppointmentMailLink,0);
   document.getElementById('appointmentSendStatus').textContent = '';
   clearAppointmentFieldErrors();
 }
@@ -3327,29 +3329,38 @@ function markAppointmentFieldError(field, msg){
   document.getElementById('appointment'+field+'Error').textContent = msg;
   document.getElementById('appointment'+field).classList.add('field-invalid');
 }
-document.getElementById('appointmentMsgForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  if(!appointmentSelected) return;
-  clearAppointmentFieldErrors();
+function appointmentMailData(){
   const name = document.getElementById('appointmentName').value.trim();
   const email = document.getElementById('appointmentEmail').value.trim();
   const message = document.getElementById('appointmentMessage').value.trim();
-  let hasError = false;
-  if(!name){ markAppointmentFieldError('Name','Bitte geben Sie Ihren Namen ein.'); hasError = true; }
-  if(!email){ markAppointmentFieldError('Email','Bitte geben Sie Ihre E-Mail-Adresse ein.'); hasError = true; }
-  else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ markAppointmentFieldError('Email','Das sieht nicht wie eine gültige E-Mail-Adresse aus.'); hasError = true; }
-  if(!message){ markAppointmentFieldError('Message','Bitte geben Sie eine Nachricht ein.'); hasError = true; }
-  if(hasError) return;
-  const statusEl = document.getElementById('appointmentSendStatus');
-  statusEl.classList.remove('appointment-send-error');
   const subject = `Persönlicher Termin – OrKan Cloud Onboarding (${name})`;
   const body = `${message}\n\n---\nName: ${name}\nE-Mail: ${email}\nUnternehmen: ${state.company||''}\nRolle: ${state.role||''}`;
-  const href = `mailto:${appointmentSelected.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  const a = document.createElement('a');
-  a.href = href; a.target = '_top'; a.rel = 'noopener';
-  document.body.appendChild(a); a.click(); a.remove();
-  statusEl.innerHTML = `Ihr E-Mail-Programm wird geöffnet – bitte die vorbereitete E-Mail dort absenden.<br>Öffnet sich nichts? Schreiben Sie direkt an <strong style="user-select:all">${appointmentSelected.email}</strong> oder <a href="${href}">hier klicken</a>.`;
-});
+  return {name,email,message,subject,body,href:`mailto:${appointmentSelected?appointmentSelected.email:''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`};
+}
+function updateAppointmentMailLink(){ if(appointmentSelected) document.getElementById('appointmentSendBtn').href = appointmentMailData().href; }
+document.addEventListener('input', e=>{ if(e.target && /^appointment(Name|Email|Message)$/.test(e.target.id)) updateAppointmentMailLink(); });
+function appointmentMailClick(e){
+  if(!appointmentSelected){ e.preventDefault(); return false; }
+  clearAppointmentFieldErrors();
+  const d = appointmentMailData();
+  let err=false;
+  if(!d.name){ markAppointmentFieldError('Name','Bitte geben Sie Ihren Namen ein.'); err=true; }
+  if(!d.email){ markAppointmentFieldError('Email','Bitte geben Sie Ihre E-Mail-Adresse ein.'); err=true; }
+  else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)){ markAppointmentFieldError('Email','Das sieht nicht wie eine gültige E-Mail-Adresse aus.'); err=true; }
+  if(!d.message){ markAppointmentFieldError('Message','Bitte geben Sie eine Nachricht ein.'); err=true; }
+  if(err){ e.preventDefault(); return false; }
+  e.currentTarget.href = d.href;
+  document.getElementById('appointmentSendStatus').innerHTML = `Ihr E-Mail-Programm sollte sich jetzt öffnen – bitte die vorbereitete E-Mail dort absenden.<br>Öffnet sich nichts? Nutzen Sie „Text kopieren“ und schreiben Sie an <strong style="user-select:all">${appointmentSelected.email}</strong>.`;
+  return true;
+}
+function copyAppointmentMail(){
+  if(!appointmentSelected) return;
+  const d = appointmentMailData();
+  const txt = `An: ${appointmentSelected.email}\nBetreff: ${d.subject}\n\n${d.body}`;
+  const done=()=>showToast('Nachricht kopiert – fügen Sie sie in Ihr E-Mail-Programm ein.');
+  try{ navigator.clipboard.writeText(txt).then(done,()=>showToast('Kopieren nicht möglich – bitte Text manuell markieren.')); }catch(e){ showToast('Kopieren nicht möglich – bitte Text manuell markieren.'); }
+}
+document.getElementById('appointmentMsgForm').addEventListener('submit', e=>e.preventDefault());
 function openCloudLink(mid){
   const target = CLOUD_DEEPLINKS[mid] || {label:'OrKan Cloud'};
   showToast(`Die OrKan Cloud öffnet sich in einem neuen Tab. Melden Sie sich dort an und navigieren Sie zu „${target.label}", um das Gelernte direkt anzuwenden.`);
