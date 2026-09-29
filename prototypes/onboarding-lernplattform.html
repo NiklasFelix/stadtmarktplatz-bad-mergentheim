@@ -1242,6 +1242,14 @@ html .team-mode-btn.selected{border-color:#8EA752;background:rgba(166,191,104,.1
 .rate-stars button,.rate-stars:hover button{color:var(--gray)}
 .rate-stars button.on{color:#E8B53D}
 .rate-stars button:hover,.rate-stars button:hover~button{color:#E8B53D}
+.module-group-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:28px 0 14px}
+.module-group-head:first-of-type{margin-top:8px}
+.module-group-head h2{font-size:20px;position:relative;padding-left:14px}
+.module-group-head h2::before{content:'';position:absolute;left:0;top:3px;bottom:3px;width:4px;border-radius:3px;background:linear-gradient(#C3D88A,#5E7233)}
+.module-group-head span{font-size:13.5px;color:var(--gray)}
+.roadmap-group-head{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8EA752;margin:6px 0 14px}
+.milestone+.roadmap-group-head{margin-top:26px}
+.nav-sub-group{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8EA752;padding:8px 10px 2px}
 </style>
 </head>
 <body>
@@ -2177,7 +2185,8 @@ function buildModuleSubNav(){
   el.innerHTML = MODULES.map(m=>{
     const p = state.moduleProgress[m.id];
     const cls = p.completed?'done':(p.started?'active':'');
-    return `<div class="nav-sub-item" onclick="openModule(${m.id});event.stopPropagation()"><span class="status-dot ${cls}"></span>${m.title}</div>`;
+    const grp=moduleGroupStart(m.id);
+    return `${grp?`<div class="nav-sub-group">${grp.title}</div>`:''}<div class="nav-sub-item" onclick="openModule(${m.id});event.stopPropagation()"><span class="status-dot ${cls}"></span>${m.title}</div>`;
   }).join('');
 }
 
@@ -2479,12 +2488,15 @@ function moduleCardHtml(m, isPriority){
   </div>`;
 }
 
+const MODULE_GROUPS=[{title:'Grundlagen Onboarding',sub:'Die Basis für die tägliche Arbeit mit der OrKan Cloud',ids:[1,2,3,4,5]},{title:'Expertenwissen',sub:'Vertiefende Module für Maschinen, Schlüssel und Projekte',ids:[6,7,8]}];
+function moduleGroupStart(id){ return MODULE_GROUPS.find(g=>g.ids[0]===id); }
 /* ============ ROADMAP ============ */
 function renderRoadmap(){
   const html = MODULES.map((m,i)=>{
     const p = state.moduleProgress[m.id];
     const cls = p.completed?'done':(p.started?'active':'');
-    return `<div class="milestone ${cls}">
+    const grp=moduleGroupStart(m.id);
+    return `${grp?`<div class="roadmap-group-head">${grp.title}</div>`:''}<div class="milestone ${cls}">
       <div class="milestone-dot">${p.completed?'✓':m.id}</div>
       <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${m.time} · Phase ${m.phase}</div><ul class="milestone-gist">${(m.gist||[]).map(g=>`<li>${g}</li>`).join('')}</ul></div>
       ${i<MODULES.length-1?`<div><span class="ai-hint">Hinweis: ${nextStepHint(m.id)}</span></div>`:''}
@@ -2521,7 +2533,7 @@ function renderModulesList(){
   document.getElementById('view-modules').innerHTML = `
     <h1 class="page-title">Lernmodule</h1>
     <p class="page-sub">${MODULES.length} praxisorientierte Module führen Sie durch die OrKan Cloud.</p>
-    <div class="modules-grid">${MODULES.map(m=>moduleCardHtml(m)).join('')}</div>
+    ${MODULE_GROUPS.map(g=>`<div class="module-group-head"><h2>${g.title}</h2><span>${g.sub} · Module ${g.ids[0]}–${g.ids[g.ids.length-1]}</span></div><div class="modules-grid">${MODULES.filter(m=>g.ids.includes(m.id)).map(m=>moduleCardHtml(m)).join('')}</div>`).join('')}
   `;
 }
 
