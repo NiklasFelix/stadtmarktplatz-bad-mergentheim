@@ -1688,39 +1688,69 @@ const MODULES = [
     summary:{ kern:['Der Artikelimport kombiniert eine Excel-Liste mit einer ZIP-Datei für Bilder über eine Dateinamen-Zuordnung.','Die drei Import-Modi unterscheiden strikt zwischen Neuanlage und Aktualisierung – bei Lieferantenwechsel zählt nur die interne Artikelnummer als Abgleichfeld.','Die Shop-URL im Lieferantenstamm ist die IDS-Schnittstellen-Adresse für die automatische Bestellweiterleitung, nicht die normale Shop-Webadresse.'],
       funk:['Excel + ZIP-Import','Drei Import-Modi','Lieferanten-Shop-Anbindung per IDS-URL'], hand:['Vor dem Vollimport Bildzuordnung an wenigen Testartikeln prüfen','Bei Lieferantenwechsel immer über die interne Artikelnummer abgleichen'] }
   },
-  { id:4, phase:2, title:'Zwei-Etiketten-System mit Bestellvorschlag', time:'10 Min.', diff:2,
-    gist:['Etiketten drucken','Blau/Weiß-Etiketten','Bestellvorschlag'],
+  { id:4, phase:2, title:'Zwei-Etiketten-System', time:'10 Min.', diff:2,
+    gist:['Etiketten-Templates','Etiketten drucken','Blau/Weiß-Etiketten'],
     points:[
-      "## 1. Etiketten drucken",
-      "Bevor das System im Alltag genutzt werden kann, müssen die Etiketten erst gedruckt werden: Unter „Lagerverwaltung\" → „Artikel\" → „Drucken\" wählen Sie Ihr Etiketten-Template, legen fest, welche Artikel gedruckt werden (alle, nur aktualisierte, nur nicht aktualisierte oder nur markierte), und erhalten nach „Speichern\" eine PDF-Datei zum Druck auf das OrKan-Etikettenpapier. Achtung: Steht im Suchfeld der Artikelliste ein Begriff, bezieht sich „Alle“ nur auf dieses Suchergebnis.",
-      "## 2. Das Zwei-Etiketten-System",
+      "## 1. Etiketten-Templates gestalten",
+      "Wie Ihre Etiketten aussehen, legen Sie im Etiketten-Designer fest: „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Artikelkarte“.",
+      "<div>Der Aufbau ist frei gestaltbar:<ul class=\"sub-points\"><li><strong>Elemente:</strong> z. B. Bezeichnung 1–3, Artikelbild, QR-Code, Lager MIN/MAX und Lagerort.</li><li><strong>Anordnung:</strong> Elemente per Drag & Drop positionieren und in der Größe anpassen.</li><li><strong>Mehrere Templates:</strong> parallel anlegbar, auch mit eigenem Firmenlogo.</li></ul></div>",
+      "## 2. Etiketten drucken",
+      "Unter „Lagerverwaltung“ → „Artikel“ → „Drucken“ wählen Sie Ihr Template, legen fest, welche Artikel gedruckt werden (alle, nur aktualisierte, nur nicht aktualisierte oder nur markierte), und erhalten nach „Speichern“ eine PDF-Datei zum Druck auf das OrKan-Etikettenpapier.",
+      "Achtung: Steht im Suchfeld der Artikelliste ein Begriff, bezieht sich „Alle“ nur auf dieses Suchergebnis.",
+      "## 3. Das Zwei-Etiketten-System",
       "An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, zur Kennzeichnung des Lagerplatzes) und ein weißes, das davor liegt und bei Mindestbestand als Bestellauslöser entnommen wird.",
-      "Wird der Mindestbestand erreicht, zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox – fehlt das weiße Etikett am Regal, sieht jeder sofort, dass der Artikel bereits bestellt ist.",
-      "## 3. Vom Etikett zur Bestellung",
-      "Abends nimmt ein Lagermitarbeiter die Bestellbox und erfasst die Artikel unter „Bestellvorschlag → Erstellen\": Ein Klick auf „Erstellen\" springt automatisch ins Scan-Feld, jeder OrKan-Scanner löst nach dem Scan selbstständig „Enter\" aus – ein manuelles Bestätigen ist nicht nötig.",
-      "Enthält der Bestellvorschlag Artikel mehrerer Lieferanten, muss für jeden Lieferanten die Teilbestellung einzeln über „Bestellungen erstellen\" und „Senden\" abgeschickt werden; Mengen lassen sich vorher per Doppelklick korrigieren.",
-      "Beim finalen „Bestellen\" öffnen sich drei Fenster – Wareneingang, Lieferschein und der Onlineshop des Lieferanten –, denn die eigentliche Bestellung wird technisch erst im Lieferanten-Shop ausgelöst; OrKan Cloud bereitet sie mit Ansprechpartner, Liefertermin und Lieferadresse vollständig vor."
+      "Wird der Mindestbestand erreicht, zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox – fehlt das weiße Etikett am Regal, sieht jeder sofort, dass der Artikel bereits bestellt ist. Wie daraus eine Bestellung wird, lernen Sie in Modul 5."
     ],
     features:[
+      {t:'Etiketten-Designer',d:'Eigene Templates mit Bezeichnung, Bild, QR-Code, Lager MIN/MAX, Lagerort und Firmenlogo gestalten'},
       {t:'Etiketten drucken',d:'Template wählen, Artikelauswahl festlegen (alle/aktualisiert/nicht aktualisiert/markiert), als PDF speichern'},
-      {t:'Blaues und weißes Etikett',d:'Blau kennzeichnet dauerhaft den Lagerplatz, Weiß signalisiert eine laufende Bestellung'},
-      {t:'Scan mit Auto-Enter',d:'Cursor springt automatisch ins Scan-Feld, jeder Scan löst selbstständig „Enter" aus'}
+      {t:'Blaues und weißes Etikett',d:'Blau kennzeichnet dauerhaft den Lagerplatz, Weiß signalisiert eine laufende Bestellung'}
+    ],
+    practice:'Ein Betrieb gestaltet im Etiketten-Designer ein Template mit Bezeichnung, Artikelbild, QR-Code und Lager MIN/MAX. Nach dem Druck hängt an jedem Regalfach ein blaues Etikett, davor liegt das weiße – ist ein Fach fast leer, zieht der Monteur das weiße Etikett und legt es in die Bestellbox.',
+    task:'Gestalten Sie ein Etiketten-Template, drucken Sie Etiketten für einen Testartikel und hängen Sie sie nach dem Zwei-Etiketten-Prinzip auf.',
+    checklist:['Über „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Artikelkarte“ ein Etiketten-Template öffnen oder anlegen','Elemente wie Bezeichnung, Artikelbild und QR-Code per Drag & Drop platzieren','Über „Lagerverwaltung“ → „Artikel“ → „Drucken“ das Template wählen und eine Test-PDF erzeugen','Vor dem Druck prüfen, ob im Suchfeld der Artikelliste ein Begriff steht','Blaues Etikett am Lagerplatz anbringen, weißes davor legen'],
+    tip:'Legen Sie für unterschiedliche Regalgrößen eigene Templates an – so passen die Etiketten überall optimal.',
+    quiz:[
+      {q:"Wo gestalten Sie das Aussehen Ihrer Etiketten (Template)?",o:["Unter „Lagerverwaltung“ → „Bestellvorschlag“", "Unter „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Artikelkarte“", "Nur über den OrKan-Support", "Direkt im Druck-Dialog der PDF"],a:1,t:"Etiketten-Templates"},
+      {q:"Welche Aussage zum Etiketten-Designer ist richtig?",o:["Es gibt nur ein festes Standard-Etikett", "Elemente lassen sich per Drag & Drop positionieren, mehrere Templates sind möglich – auch mit Firmenlogo", "Logos können nicht eingebunden werden", "Templates gelten immer nur für einen einzigen Artikel"],a:1,t:"Etiketten-Designer"},
+      {q:"Sie haben fünf neue Artikel markiert und möchten nur für diese Etiketten drucken. Welche Auswahl treffen Sie im Druck-Dialog?",o:["Alle", "Nur aktualisierte", "Nur nicht aktualisierte", "Nur markierte"],a:3,t:"Etiketten drucken"},
+      {q:"Im Suchfeld der Artikelliste steht noch „Befestigung“. Sie wählen im Druck-Dialog „Alle“. Was wird gedruckt?",o:["Alle Artikel des gesamten Artikelstamms", "Nur die Artikel, die den Begriff „Befestigung“ enthalten", "Gar nichts – der Druck bricht ab", "Nur markierte Artikel"],a:1,t:"Suchfeld & Druck"},
+      {q:"Am Lagerplatz hängt das blaue Etikett, das weiße fehlt. Was bedeutet das?",o:["Der Lagerplatz wurde aufgelöst", "Das weiße Etikett ist verloren und muss neu gedruckt werden", "Der Mindestbestand ist noch nicht erreicht", "Der Artikel ist bereits bestellt"],a:3,t:"Zwei-Etiketten-System"}
+    ],
+    summary:{ kern:['Etiketten-Templates werden im Etiketten-Designer unter „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Artikelkarte“ frei gestaltet.','Gedruckt wird über „Artikel“ → „Drucken“: Template wählen, Artikelauswahl festlegen, als PDF speichern.','Das Zwei-Etiketten-System (blau/weiß) macht den Bestellstatus jedes Lagerplatzes ohne Systemzugriff sichtbar.'],
+      funk:['Etiketten-Designer','Etiketten drucken','Zwei-Etiketten-System'], hand:['Vor jedem Druck das Suchfeld prüfen','Weißes Etikett nach Wareneingang wieder ans Regal anbringen'] }
+  },
+  { id:5, phase:2, title:'Bestellvorschlag (Artikel bestellen)', time:'10 Min.', diff:2,
+    gist:['Bestellbox scannen','Mehrere Lieferanten','Bestellung auslösen'],
+    points:[
+      "## 1. Etiketten erfassen",
+      "Abends nimmt ein Mitarbeiter die Bestellbox mit den gezogenen weißen Etiketten und erfasst die Artikel unter „Lagerverwaltung“ → „Bestellvorschlag“ → „Erstellen“.",
+      "Ein Klick auf „Erstellen“ springt automatisch ins Scan-Feld, jeder OrKan-Scanner löst nach dem Scan selbstständig „Enter“ aus – ein manuelles Bestätigen ist nicht nötig.",
+      "## 2. Bestellungen erstellen",
+      "Enthält der Bestellvorschlag Artikel mehrerer Lieferanten, muss für jeden Lieferanten die Teilbestellung einzeln über „Bestellungen erstellen“ und „Senden“ abgeschickt werden; Mengen lassen sich vorher per Doppelklick korrigieren.",
+      "## 3. Bestellung auslösen",
+      "Beim finalen „Bestellen“ öffnen sich drei Fenster – Wareneingang, Lieferschein und der Onlineshop des Lieferanten –, denn die eigentliche Bestellung wird technisch erst im Lieferanten-Shop ausgelöst; OrKan Cloud bereitet sie mit Ansprechpartner, Liefertermin und Lieferadresse vollständig vor."
+    ],
+    features:[
+      {t:'Scan mit Auto-Enter',d:'Cursor springt automatisch ins Scan-Feld, jeder Scan löst selbstständig „Enter" aus'},
+      {t:'Teilbestellungen je Lieferant',d:'Pro Lieferant „Bestellungen erstellen“ und „Senden“, Mengen per Doppelklick anpassbar'},
+      {t:'Drei-Fenster-Bestellabschluss',d:'Wareneingang, Lieferschein und Lieferanten-Shop öffnen sich beim finalen Bestellen'}
     ],
     practice:'Ein Monteur zieht am Nachmittag das weiße Etikett vom leeren Schrauben-Fach und legt es in die Bestellbox. Abends scannt ein Kollege aus dem Lager alle Etiketten aus der Box unter „Bestellvorschlag" ein – die Bestellung ist in wenigen Minuten fertig zusammengestellt und wird im letzten Schritt im Shop des Lieferanten final ausgelöst.',
-    task:'Drucken Sie testweise Etiketten für einen Artikel und simulieren Sie danach den Ablauf vom weißen Etikett bis zum fertigen, im Lieferanten-Shop ausgelösten Bestellvorschlag.',
-    checklist:['Über „Lagerverwaltung" → „Artikel" → „Drucken" ein Etiketten-Template wählen und eine Test-PDF erzeugen','Zwei-Etiketten-System am Testregal nachvollziehen (blau vs. weiß)','Weißes Etikett in die Bestellbox legen','Über „Lagerverwaltung" → „Bestellvorschlag" → „Erstellen" den Artikel scannen oder manuell erfassen','„Bestellungen erstellen" und Zusammenfassung prüfen (Ansprechpartner, Liefertermin, Lieferadresse)','Die drei sich öffnenden Fenster nach „Bestellen" nachvollziehen (Wareneingang, Lieferschein, Lieferanten-Shop)'],
+    task:'Simulieren Sie den Ablauf vom weißen Etikett in der Bestellbox bis zur im Lieferanten-Shop ausgelösten Bestellung.',
+    checklist:['Weißes Etikett aus der Bestellbox nehmen','Über „Lagerverwaltung“ → „Bestellvorschlag“ → „Erstellen“ den Artikel scannen oder manuell erfassen','Mengen prüfen und bei Bedarf per Doppelklick korrigieren','„Bestellungen erstellen“ und Zusammenfassung prüfen (Ansprechpartner, Liefertermin, Lieferadresse)','Die drei sich öffnenden Fenster nach „Bestellen“ nachvollziehen (Wareneingang, Lieferschein, Lieferanten-Shop)'],
     tip:'Landen gescannte Artikel nicht in der Liste, liegt meist ein Scanner vor, bei dem die Auto-Enter-Funktion nicht aktiv ist – ein Reset über den beiliegenden QR-Code in der Scanner-Anleitung behebt das meist, bevor Sie den Support kontaktieren.',
     quiz:[
-      {q:"Am Lagerplatz hängt das blaue Etikett, das weiße fehlt. Was bedeutet das?",o:["Der Lagerplatz wurde aufgelöst", "Das weiße Etikett ist verloren und muss neu gedruckt werden", "Der Mindestbestand ist noch nicht erreicht", "Der Artikel ist bereits bestellt"],a:3,t:"Zwei-Etiketten-System"},
-      {q:"Ihr Bestellvorschlag enthält Artikel von drei Lieferanten. Wie wird bestellt?",o:["Ein einziger Klick auf „Senden“ bestellt bei allen drei", "Für jeden Lieferanten die Teilbestellung einzeln über „Bestellungen erstellen“ und „Senden“ abschicken", "OrKan Cloud verschickt alle Teilbestellungen automatisch ohne weiteres Zutun", "Es darf immer nur ein Lieferant pro Bestellvorschlag enthalten sein"],a:1,t:"Bestellvorschlag mit mehreren Lieferanten"},
-      {q:"Beim abendlichen Scannen der Bestellbox erscheinen die gescannten Artikel nicht in der Liste. Was ist die wahrscheinlichste Ursache?",o:["Die Auto-Enter-Funktion des Scanners ist nicht aktiv – ein Reset über den QR-Code der Anleitung behebt das meist", "Die Artikel wurden zwischenzeitlich gelöscht", "Der Lieferant ist gesperrt", "Weiße Etiketten lassen sich grundsätzlich nicht scannen"],a:0,t:"Scan mit Auto-Enter"},
-      {q:"Wo wird eine Bestellung letztlich technisch ausgelöst?",o:["Direkt in der OrKan Cloud ohne weiteren Schritt", "Per automatischem Fax", "Im Onlineshop des Lieferanten, den OrKan Cloud beim Bestellen öffnet", "Über den Scan-Bestelleingang"],a:2,t:"Bestellabschluss"},
-      {q:"Sie haben fünf neue Artikel markiert und möchten nur für diese Etiketten drucken. Welche Auswahl treffen Sie im Druck-Dialog?",o:["Alle", "Nur aktualisierte", "Nur nicht aktualisierte", "Nur markierte"],a:3,t:"Etiketten drucken"}
+      {q:"Wo erfassen Sie die weißen Etiketten aus der Bestellbox?",o:["Unter „Lagerverwaltung“ → „Bestellvorschlag“ → „Erstellen“", "Unter „Lagerverwaltung“ → „Lagerbestand“", "Im Etiketten-Designer", "Unter „Standorte“"],a:0,t:"Bestellvorschlag erfassen"},
+      {q:"Beim Scannen der Bestellbox erscheinen die gescannten Artikel nicht in der Liste. Was ist die wahrscheinlichste Ursache?",o:["Die Artikel wurden zwischenzeitlich gelöscht", "Die Auto-Enter-Funktion des Scanners ist nicht aktiv – ein Reset über den QR-Code der Anleitung behebt das meist", "Der Lieferant ist gesperrt", "Weiße Etiketten lassen sich grundsätzlich nicht scannen"],a:1,t:"Scan mit Auto-Enter"},
+      {q:"Ihr Bestellvorschlag enthält Artikel von drei Lieferanten. Wie wird bestellt?",o:["Ein einziger Klick auf „Senden“ bestellt bei allen drei", "OrKan Cloud verschickt alle Teilbestellungen automatisch ohne weiteres Zutun", "Für jeden Lieferanten die Teilbestellung einzeln über „Bestellungen erstellen“ und „Senden“ abschicken", "Es darf immer nur ein Lieferant pro Bestellvorschlag enthalten sein"],a:2,t:"Mehrere Lieferanten"},
+      {q:"Sie möchten vor dem Senden die Menge einer Position ändern. Wie gehen Sie vor?",o:["Den Artikel löschen und neu scannen", "Die Menge per Doppelklick direkt in der Position korrigieren", "Das ist nach dem Scan nicht mehr möglich", "Die Menge im Lieferanten-Shop ändern"],a:1,t:"Mengen korrigieren"},
+      {q:"Wo wird eine Bestellung letztlich technisch ausgelöst?",o:["Direkt in der OrKan Cloud ohne weiteren Schritt", "Per automatischem Fax", "Über den Scan-Bestelleingang", "Im Onlineshop des Lieferanten, den OrKan Cloud beim Bestellen öffnet"],a:3,t:"Bestellabschluss"}
     ],
-    summary:{ kern:['Die Etiketten selbst entstehen über „Artikel" → „Drucken": Template wählen, Artikelauswahl festlegen, als PDF speichern und auf OrKan-Etikettenpapier drucken.','Das Zwei-Etiketten-System (blau/weiß) macht den Bestellstatus jedes Lagerplatzes ohne Systemzugriff sichtbar.','Das weiße Etikett wandert bei Mindestbestand in die Bestellbox und wird gesammelt per Auto-Enter-Scan eingescannt.','Die eigentliche Bestellung wird erst im Onlineshop des Lieferanten final ausgelöst – OrKan Cloud bereitet sie vollständig vor.'],
-      funk:['Etiketten drucken','Zwei-Etiketten-System','Bestellvorschlag per Scan mit Auto-Enter'], hand:['Bestellbox täglich zur festen Uhrzeit leeren','Weißes Etikett nach Wareneingang wieder ans Regal anbringen'] }
+    summary:{ kern:['Die weißen Etiketten aus der Bestellbox werden unter „Bestellvorschlag“ → „Erstellen“ per Auto-Enter-Scan erfasst.','Bei mehreren Lieferanten wird jede Teilbestellung einzeln erstellt und gesendet.','Die eigentliche Bestellung wird im Onlineshop des Lieferanten final ausgelöst – OrKan Cloud bereitet sie vollständig vor.'],
+      funk:['Bestellvorschlag per Scan mit Auto-Enter','Teilbestellungen je Lieferant','Drei-Fenster-Bestellabschluss'], hand:['Bestellbox täglich zur festen Uhrzeit leeren','Zusammenfassung vor dem Senden immer prüfen'] }
   },
-  { id:5, phase:3, title:'Wareneingang und Lagerbestand', time:'8 Min.', diff:2,
+  { id:6, phase:3, title:'Wareneingang und Lagerbestand', time:'8 Min.', diff:2,
     gist:['Wareneingang bestätigen','Lagerbestand & Warenwert','Inventur'],
     points:[
       "## 1. Wareneingang bestätigen",
@@ -1751,7 +1781,7 @@ const MODULES = [
     summary:{ kern:['Der Bestellabschluss verbindet Wareneingang, Lieferschein und Lieferanten-Shop in einem durchgängigen Drei-Fenster-Prozess.','Der Scan-Bestelleingang bestätigt Lieferungen per Ampelfarbe und macht Mengenabweichungen direkt sichtbar.','Ohne Bestandsführung lässt sich der Warenwert über Lager MIN/MAX und Einkaufspreis mit rund 90 % Genauigkeit schätzen.'],
       funk:['Drei-Fenster-Bestellabschluss','Scan-Bestelleingang mit Ampelfarben','Warenwert-Näherung'], hand:['Wareneingang zeitnah über den Scan-Bestelleingang bestätigen, um den Lagerbestand aktuell zu halten','Bei größeren Beständen regelmäßig per Excel-Export oder App-Inventur zählen'] }
   },
-  { id:6, phase:3, title:'Maschinenverwaltung', time:'12 Min.', diff:2,
+  { id:7, phase:3, title:'Maschinenverwaltung', time:'12 Min.', diff:2,
     gist:['Maschinen anlegen','Buchungslogik','Service & Wartung'],
     points:[
       "## 1. Maschinen anlegen",
@@ -1782,7 +1812,7 @@ const MODULES = [
     summary:{ kern:['Maschinen werden mit vollständigen Stammdaten inkl. Heimatstandort und Kaufbeleg erfasst; was als „Maschine" gilt, bestimmt der Betrieb selbst.','Die Buchungslogik ist rollenabhängig: Admins buchen für alle, Monteure nur für sich selbst.','Service & Wartung ist separat aktivierbar und erzeugt nach Bestätigung automatisch Folgetermine; Anlagen bündeln mehrere Teile zu einer Sammelbuchung.'],
       funk:['Maschinen-Stammdaten & Electronic ID','Rollenbasierte Buchungslogik','Anlagen & Service/Wartung mit Automatik'], hand:['Kaufbelege konsequent bei jeder Maschine hinterlegen','Wartungsintervalle für prüfpflichtige Geräte sofort bei Anlage festlegen'] }
   },
-  { id:7, phase:3, title:'Schlüsselverwaltung', time:'8 Min.', diff:1,
+  { id:8, phase:3, title:'Schlüsselverwaltung', time:'8 Min.', diff:1,
     gist:['Sicherheits-Etikett','Adresssuche','Buchung & Rückgabe'],
     points:[
       "## 1. Das Sicherheits-Etikett",
@@ -1812,7 +1842,7 @@ const MODULES = [
     summary:{ kern:['Schlüssel-Etiketten trennen aus Sicherheitsgründen Nummer/QR-Code (außen) von der Adresse (innen) – anders als beim klassischen Kasten mit offenliegendem Zuordnungsordner.','Die Adresssuche ist bei größeren Schlüsselbeständen essenziell und muss in der Standardansicht verfügbar sein.','Buchung und Rückgabe folgen derselben Logik wie bei der Maschinenverwaltung, inklusive Finderlohn-Option auf dem Etikett.'],
       funk:['Gefaltetes Sicherheits-Etikett','Adresssuche als Standard'], hand:['Adressfilter bei der täglichen Schlüsselsuche konsequent nutzen','Nie Adressinformationen sichtbar am Schlüsselkasten anbringen'] }
   },
-  { id:8, phase:3, title:'Projekte und Baustellen', time:'10 Min.', diff:2,
+  { id:9, phase:3, title:'Projekte und Baustellen', time:'10 Min.', diff:2,
     gist:['Materialentnahme per App','Projekt-Statistik','Branchensoftware-Anbindung'],
     points:[
       "## 1. Warum Entnahmen dokumentieren?",
@@ -1843,7 +1873,7 @@ const MODULES = [
     summary:{ kern:['Das Projekte-Modul verhindert, dass Materialentnahmen auf Baustellen unkalkuliert bleiben – Buchungen werden auch bei Bestandsüberschreitung mit Warnhinweis zugelassen, damit nichts undokumentiert bleibt.','Die volle App-Lösung kostet mit drei zusammenwirkenden Modulen ca. 25–30 €/Monat.','Als meist kostengünstigere Alternative gilt die direkte Matchcode-Integration mit der ohnehin genutzten Branchensoftware.'],
       funk:['Entnahme & Einlagerung per App','Alternative Matchcode-Integration'], hand:['Vor Projektstart sicherstellen, dass Artikelbezeichnungen im Stamm gepflegt sind','Bei bereits genutzter Branchensoftware die Matchcode-Integration als kostengünstigere Alternative prüfen'] }
   },
-  { id:9, phase:3, title:"Bestandsführung", time:"10 Min.", diff:2,
+  { id:10, phase:3, title:"Bestandsführung", time:"10 Min.", diff:2,
     gist:["Laufender Bestand", "Buchungen & Korrekturen", "Bestand und Bestellvorschlag"],
     points:[
       "## 1. Was ist die Bestandsführung?",
@@ -1870,7 +1900,7 @@ const MODULES = [
     ],
     summary:{"kern": ["Die Bestandsführung ist ein Zusatzmodul und macht aus „Lagerbestand“ einen laufend fortgeschriebenen Ist-Bestand.", "Über „Buchungen“ ist jede Bewegung eines Artikels nachvollziehbar und bei Bedarf per Korrekturbuchung anpassbar.", "Bestand, Bestellvorschlag, Bestellung und Wareneingang bilden einen geschlossenen Kreislauf."], "funk": ["Laufender Bestand", "Buchungshistorie & Korrekturbuchung", "Bestellvorschläge ermitteln"], "hand": ["Abweichungen zwischen System und Regal sofort per Korrekturbuchung bereinigen", "Entnahmen konsequent über die App buchen"]}
   },
-  { id:10, phase:3, title:"Inventur", time:"8 Min.", diff:2,
+  { id:11, phase:3, title:"Inventur", time:"8 Min.", diff:2,
     gist:["Inventur per Excel", "Inventur per App", "Warenwert ermitteln"],
     points:[
       "## 1. Zwei Wege zur Inventur",
@@ -2011,36 +2041,36 @@ const UPDATES = [
 ];
 
 const ROLE_FOCUS = {
-  'Lagerleiter': { heading:'Ihr Fokus als Lagerleiter', priorityModules:[2,4,5],
+  'Lagerleiter': { heading:'Ihr Fokus als Lagerleiter', priorityModules:[2,4,6],
     cards:[
       {label:'Lagerordnung', val:'Lagerorte & Lagerplätze', sub:'Jeder Artikel braucht einen festen Platz – Grundlage für Etiketten und Inventur', mod:2},
       {label:'Nachschub sichern', val:'Zwei-Etiketten-System', sub:'Weißes Etikett in die Bestellbox, blaues bleibt am Regal – so läuft die Nachbestellung', mod:4},
-      {label:'Wareneingang', val:'Lieferung bestätigen', sub:'Gelieferte Ware im Bestelleingang buchen, damit der Lagerbestand stimmt', mod:5}
+      {label:'Wareneingang', val:'Lieferung bestätigen', sub:'Gelieferte Ware im Bestelleingang buchen, damit der Lagerbestand stimmt', mod:6}
     ]},
-  'Einkäufer': { heading:'Ihr Fokus als Einkäufer', priorityModules:[2,3,4],
+  'Einkäufer': { heading:'Ihr Fokus als Einkäufer', priorityModules:[2,3,5],
     cards:[
       {label:'Bestandsgrenzen', val:'Lager MIN/MAX pflegen', sub:'Bestellmenge = MAX − MIN – die Basis für jeden Bestellvorschlag', mod:2},
       {label:'Stammdaten', val:'Artikelimport & Lieferanten', sub:'Artikel per Excel importieren und Lieferanten-Shops anbinden', mod:3},
-      {label:'Bestellen', val:'Bestellvorschlag bearbeiten', sub:'Vom gesammelten Etikett zur fertigen Bestellung beim Lieferanten', mod:4}
+      {label:'Bestellen', val:'Bestellvorschlag bearbeiten', sub:'Vom gesammelten Etikett zur fertigen Bestellung beim Lieferanten', mod:5}
     ]},
-  'Geschäftsführer': { heading:'Ihr Überblick als Geschäftsführer', priorityModules:[5,6,8],
+  'Geschäftsführer': { heading:'Ihr Überblick als Geschäftsführer', priorityModules:[6,7,9],
     cards:[
-      {label:'Kapitalbindung', val:'Lagerbestand & Warenwert', sub:'Wie viel Kapital liegt im Lager – je Artikel und gesamt', mod:5},
-      {label:'Betriebsmittel', val:'Maschinen im Blick', sub:'Wo ist welche Maschine, wer nutzt sie, wann steht die Wartung an', mod:6},
-      {label:'Kosten je Auftrag', val:'Projekte & Baustellen', sub:'Material und Maschinen direkt auf Projekte buchen und auswerten', mod:8}
+      {label:'Kapitalbindung', val:'Lagerbestand & Warenwert', sub:'Wie viel Kapital liegt im Lager – je Artikel und gesamt', mod:6},
+      {label:'Betriebsmittel', val:'Maschinen im Blick', sub:'Wo ist welche Maschine, wer nutzt sie, wann steht die Wartung an', mod:7},
+      {label:'Kosten je Auftrag', val:'Projekte & Baustellen', sub:'Material und Maschinen direkt auf Projekte buchen und auswerten', mod:9}
     ]},
-  'Monteur': { heading:'Ihr Fokus im Tagesgeschäft', priorityModules:[4,6,8],
+  'Monteur': { heading:'Ihr Fokus im Tagesgeschäft', priorityModules:[4,7,9],
     cards:[
       {label:'Material nachbestellen', val:'Weißes Etikett ziehen', sub:'Mindestbestand erreicht? Weißes Etikett in die Bestellbox legen – fertig', mod:4},
-      {label:'Maschinen', val:'Entnahme & Rückgabe buchen', sub:'So weiß jeder, wo sich eine Maschine gerade befindet', mod:6},
-      {label:'Auf der Baustelle', val:'Material aufs Projekt buchen', sub:'Verbrauch direkt dem richtigen Projekt zuordnen', mod:8}
+      {label:'Maschinen', val:'Entnahme & Rückgabe buchen', sub:'So weiß jeder, wo sich eine Maschine gerade befindet', mod:7},
+      {label:'Auf der Baustelle', val:'Material aufs Projekt buchen', sub:'Verbrauch direkt dem richtigen Projekt zuordnen', mod:9}
     ]}
 };
 
 const ROLE_RECOS = {
   'Lagerleiter':[
     {tag:'Best Practice',t:'Zwei-Etiketten-System im Team einführen',d:'So erklären Sie Ihrem Lagerteam die Blau/Weiß-Logik und die Bestellbox in wenigen Minuten.',mod:4},
-    {tag:'Praxis',t:'Wareneingang sauber bestätigen',d:'Lieferung prüfen, Mengen abgleichen und im Bestelleingang buchen.',mod:5},
+    {tag:'Praxis',t:'Wareneingang sauber bestätigen',d:'Lieferung prüfen, Mengen abgleichen und im Bestelleingang buchen.',mod:6},
     {tag:'Praxis',t:'Etiketten für neue Lagerplätze drucken',d:'Vom fertigen Template bis zum Druck auf OrKan-Etikettenpapier.',mod:4}
   ],
   'Einkäufer':[
@@ -2049,14 +2079,14 @@ const ROLE_RECOS = {
     {tag:'Praxis',t:'Lieferanten-Shop anbinden',d:'Shop-URL hinterlegen, damit Bestellungen direkt weitergeleitet werden.',mod:3}
   ],
   'Geschäftsführer':[
-    {tag:'Überblick',t:'Warenwert im Lager auswerten',d:'Ist-Bestand und gebundenes Kapital je Artikel auf einen Blick.',mod:5},
-    {tag:'Überblick',t:'Maschinenpark transparent machen',d:'Standorte, Nutzung und Wartungstermine aller Maschinen zentral sehen.',mod:6},
-    {tag:'Überblick',t:'Projektkosten nachvollziehen',d:'Material und Maschinen je Projekt auswerten und nachkalkulieren.',mod:8}
+    {tag:'Überblick',t:'Warenwert im Lager auswerten',d:'Ist-Bestand und gebundenes Kapital je Artikel auf einen Blick.',mod:6},
+    {tag:'Überblick',t:'Maschinenpark transparent machen',d:'Standorte, Nutzung und Wartungstermine aller Maschinen zentral sehen.',mod:7},
+    {tag:'Überblick',t:'Projektkosten nachvollziehen',d:'Material und Maschinen je Projekt auswerten und nachkalkulieren.',mod:9}
   ],
   'Monteur':[
     {tag:'Praxis',t:'Weißes Etikett richtig einsetzen',d:'Wann Sie das Etikett ziehen und wohin es kommt – in 2 Minuten erklärt.',mod:4},
-    {tag:'Praxis',t:'Maschine entnehmen und zurückgeben',d:'Schnell buchen, damit Kollegen die Maschine finden.',mod:6},
-    {tag:'Praxis',t:'Material auf die Baustelle buchen',d:'Verbrauchtes Material direkt dem Projekt zuordnen.',mod:8}
+    {tag:'Praxis',t:'Maschine entnehmen und zurückgeben',d:'Schnell buchen, damit Kollegen die Maschine finden.',mod:7},
+    {tag:'Praxis',t:'Material auf die Baustelle buchen',d:'Verbrauchtes Material direkt dem Projekt zuordnen.',mod:9}
   ]
 };
 
@@ -2305,7 +2335,7 @@ function renderDashboard(){
         <p class="page-sub">Hier ist Ihr Onboarding-Überblick als ${state.role}.</p>
         <div class="status-overview-text">
           <strong>Willkommen auf der OrKan-Cloud-Trainingsplattform</strong>
-          <p>Sie durchlaufen ${MODULES.length} Module in 3 Phasen (Grundlagen → Prozesse & Integration → Optimierung & Zertifizierung) — insgesamt rund ${MODULES.reduce((s,m)=>s+parseInt(m.time),0)} Minuten. Bereits nach den Grundlagen (Module 1–5) erhalten Sie Ihr Zertifikat inkl. Rabattcode.</p>
+          <p>Sie durchlaufen ${MODULES.length} Module in 3 Phasen (Grundlagen → Prozesse & Integration → Optimierung & Zertifizierung) — insgesamt rund ${MODULES.reduce((s,m)=>s+parseInt(m.time),0)} Minuten. Bereits nach den Grundlagen (Module 1–6) erhalten Sie Ihr Zertifikat inkl. Rabattcode.</p>
         </div>
         <button class="status-overview-btn" onclick="openModule(${MODULES[0].id})">Jetzt starten</button>
       </div>
@@ -2544,7 +2574,7 @@ function moduleCardHtml(m, isPriority){
   </div>`;
 }
 
-const MODULE_GROUPS=[{title:'Grundlagen Onboarding',sub:'Die Basis für die tägliche Arbeit mit der OrKan Cloud',ids:[1,2,3,4,5]},{title:'Expertenwissen',sub:'Vertiefende Module für Maschinen, Schlüssel, Projekte, Bestandsführung und Inventur',ids:[6,7,8,9,10]}];
+const MODULE_GROUPS=[{title:'Grundlagen Onboarding',sub:'Die Basis für die tägliche Arbeit mit der OrKan Cloud',ids:[1,2,3,4,5,6]},{title:'Expertenwissen',sub:'Vertiefende Module für Maschinen, Schlüssel, Projekte, Bestandsführung und Inventur',ids:[7,8,9,10,11]}];
 function moduleGroupStart(id){ return MODULE_GROUPS.find(g=>g.ids[0]===id); }
 function certDoneCount(){ return MODULE_GROUPS[0].ids.filter(id=>state.moduleProgress[id]&&state.moduleProgress[id].completed).length; }
 function certTotal(){ return MODULE_GROUPS[0].ids.length; }
@@ -2559,7 +2589,7 @@ function renderRoadmap(){
       <div class="milestone-dot">${p.completed?'✓':m.id}</div>
       <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${m.time} · Phase ${m.phase}</div><ul class="milestone-gist">${(m.gist||[]).map(g=>`<li>${g}</li>`).join('')}</ul></div>
       ${i<MODULES.length-1?`<div><span class="ai-hint">Hinweis: ${nextStepHint(m.id)}</span></div>`:''}
-    </div>`+(m.id===MODULE_GROUPS[0].ids[MODULE_GROUPS[0].ids.length-1]?`<div class="milestone ${certUnlocked()?'done':''}"><div class="milestone-dot">${certUnlocked()?'✓':'★'}</div><div class="milestone-card"><h4>Abschlusszertifikat</h4><div class="milestone-meta">Nach Abschluss der Grundlagen (Module 1–5)</div><p>Erhalten Sie Ihr offizielles Onboarding-Zertifikat inklusive Rabattcode.</p></div></div>`:'');
+    </div>`+(m.id===MODULE_GROUPS[0].ids[MODULE_GROUPS[0].ids.length-1]?`<div class="milestone ${certUnlocked()?'done':''}"><div class="milestone-dot">${certUnlocked()?'✓':'★'}</div><div class="milestone-card"><h4>Abschlusszertifikat</h4><div class="milestone-meta">Nach Abschluss der Grundlagen (Module 1–6)</div><p>Erhalten Sie Ihr offizielles Onboarding-Zertifikat inklusive Rabattcode.</p></div></div>`:'');
   }).join('');
 
   document.getElementById('view-roadmap').innerHTML = `
@@ -2579,7 +2609,7 @@ function renderRoadmap(){
   `;
 }
 function nextStepHint(id){
-  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',3:'Weiter geht es mit dem Zwei-Etiketten-System und dem Bestellvorschlag im Lageralltag.',4:'Weiter geht es mit Wareneingang, Lagerbestand und einem ersten Einblick in die Gebrauchsgutverwaltung.',5:'Vertiefung: Die Maschinenverwaltung mit Service & Wartung folgt als eigenes Modul.',6:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',7:'Als Nächstes folgt das Projekte-Modul für Baustellen.',8:'Weiter geht es mit der Bestandsführung – dem laufenden Ist-Bestand im Lager.',9:'Fast geschafft — zum Abschluss folgt die Inventur.'};
+  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',3:'Weiter geht es mit Etiketten-Templates, dem Etikettendruck und dem Zwei-Etiketten-System.',4:'Die Etiketten hängen – als Nächstes lernen Sie, wie daraus eine Bestellung wird.',5:'Weiter geht es mit Wareneingang und Lagerbestand.',6:'Grundlagen geschafft! Vertiefung: Die Maschinenverwaltung mit Service & Wartung.',7:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',8:'Als Nächstes folgt das Projekte-Modul für Baustellen.',9:'Weiter geht es mit der Bestandsführung – dem laufenden Ist-Bestand im Lager.',10:'Fast geschafft — zum Abschluss folgt die Inventur.'};
   return hints[id]||'';
 }
 
@@ -2929,7 +2959,7 @@ function renderCert(){
   if(!unlocked){
     document.getElementById('view-cert').innerHTML = `
       <h1 class="page-title">Zertifikate</h1>
-      <p class="page-sub">So sieht Ihr Zertifikat aus, sobald Sie die Grundlagen des Onboardings (Module 1–5) abgeschlossen haben.</p>
+      <p class="page-sub">So sieht Ihr Zertifikat aus, sobald Sie die Grundlagen des Onboardings (Module 1–6) abgeschlossen haben.</p>
       <div class="cert-gate"><h3>Noch nicht verfügbar</h3><p>Schließen Sie die ${certTotal()} Grundlagen-Module ab, um Ihr Zertifikat freizuschalten — inklusive Rabattcode für den SPRÜGEL-Onlineshop.</p>
       <div class="gate-track"><div class="gate-fill" style="width:${Math.round(certDoneCount()/certTotal()*100)}%"></div></div>
       <p style="margin-bottom:0">${done}/${certTotal()} Grundlagen-Module abgeschlossen</p></div>
@@ -3260,13 +3290,14 @@ const CLOUD_DEEPLINKS = {
   1:{label:'Startseite'},
   2:{label:'Lagerverwaltung → Artikel'},
   3:{label:'Lagerverwaltung → Lieferant'},
-  4:{label:'Lagerverwaltung → Bestellvorschlag'},
-  5:{label:'Lagerverwaltung → Lagerbestand'},
-  6:{label:'Maschinenverwaltung'},
-  7:{label:'Schlüsselverwaltung'},
-  8:{label:'Projekte'},
-  9:{label:'Lagerverwaltung → Lagerbestand'},
-  10:{label:'Lagerverwaltung → Lagerbestand'}
+  4:{label:'Lagerverwaltung → Artikel → Drucken'},
+  5:{label:'Lagerverwaltung → Bestellvorschlag'},
+  6:{label:'Lagerverwaltung → Lagerbestand'},
+  7:{label:'Maschinenverwaltung'},
+  8:{label:'Schlüsselverwaltung'},
+  9:{label:'Projekte'},
+  10:{label:'Lagerverwaltung → Lagerbestand'},
+  11:{label:'Lagerverwaltung → Lagerbestand'}
 };
 const ORKAN_CLOUD_BASE = 'https://cloud.orkan-system.de/';
 const APPOINTMENT_CONTACTS = [
@@ -3552,7 +3583,7 @@ const TOUR_STEPS=[
  {sel:'.nav-item[data-view="modules"]',title:'Lernmodule',text:'Jedes Modul hat vier Schritte: Inhalt (Video & Erklärung), Praxisaufgabe, Wissenscheck und Zusammenfassung. Ab 4 von 5 richtigen Antworten ist ein Modul abgeschlossen.',pos:'right'},
  {sel:'.nav-item[data-view="kb"]',title:'Wissensdatenbank',text:'Schnell etwas nachschlagen? Hier finden Sie Anleitungen zu allen Themen der OrKan Cloud – mit Suchfunktion.',pos:'right'},
  {sel:'.nav-item[data-view="best"]',title:'Best Practices',text:'Praxiserprobte Schritt-für-Schritt-Anleitungen für typische Aufgaben im Lageralltag.',pos:'right'},
- {sel:'.nav-item[data-view="cert"]',title:'Zertifikat & Rabattcode',text:'Sobald Sie die Grundlagen (Module 1–5) abgeschlossen haben, erhalten Sie hier Ihr persönliches Zertifikat inklusive Rabattcode für den SPRÜGEL-Onlineshop.',pos:'right'},
+ {sel:'.nav-item[data-view="cert"]',title:'Zertifikat & Rabattcode',text:'Sobald Sie die Grundlagen (Module 1–6) abgeschlossen haben, erhalten Sie hier Ihr persönliches Zertifikat inklusive Rabattcode für den SPRÜGEL-Onlineshop.',pos:'right'},
  {sel:'.dash-customize-btn',title:'Dashboard anpassen',text:'Blenden Sie Kacheln ein oder aus und sortieren Sie sie so, wie es für Sie am besten passt.'},
  {sel:'.hdr-avatar',title:'Ihr Profil',text:'Hier ändern Sie Ihre Daten, wechseln zwischen hellem und dunklem Design, vereinbaren einen persönlichen Termin oder starten diese Tour erneut.'},
  {icon:'<img src="data:image/png;base64,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" alt="" style="height:32px;width:auto;display:block">',title:'Alles klar – los geht’s!',text:'Ihr Fortschritt wird automatisch gespeichert. Viel Erfolg mit Ihrem Onboarding in der OrKan Cloud!',last:true}
