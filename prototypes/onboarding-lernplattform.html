@@ -1398,10 +1398,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M9 13.5 7 22l5-3 5 3-2-8.5"/></svg>
         Zertifikate
       </div>
-      <div class="nav-item" data-view="team" onclick="showView('team')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Team-Fortschritt
-      </div>
       <div class="sidebar-progress">
         <div class="sp-label">Fortschritt</div>
         <div class="sp-track"><div class="sp-fill" id="sidebarFill" style="width:0%"></div></div>
@@ -2054,7 +2050,7 @@ const ROLE_RECOS = {
   'Geschäftsführer':[
     {tag:'Überblick',t:'Warenwert im Lager auswerten',d:'Ist-Bestand und gebundenes Kapital je Artikel auf einen Blick.',mod:5},
     {tag:'Überblick',t:'Maschinenpark transparent machen',d:'Standorte, Nutzung und Wartungstermine aller Maschinen zentral sehen.',mod:6},
-    {tag:'Führung',t:'Onboarding Ihres Teams begleiten',d:'Im Team-Fortschritt sehen, wer wo steht, und gezielt unterstützen.',view:'team'}
+    {tag:'Überblick',t:'Projektkosten nachvollziehen',d:'Material und Maschinen je Projekt auswerten und nachkalkulieren.',mod:8}
   ],
   'Monteur':[
     {tag:'Praxis',t:'Weißes Etikett richtig einsetzen',d:'Wann Sie das Etikett ziehen und wohin es kommt – in 2 Minuten erklärt.',mod:4},
@@ -2454,7 +2450,7 @@ Object.assign(DASHBOARD_WIDGETS, {
     return `<div class="w-team"><div class="w-team-bar"><i class="d" style="flex:${done||0.001}"></i><i class="p" style="flex:${prog||0.001}"></i><i class="o" style="flex:${open||0.001}"></i></div>
       <div class="w-team-legend"><span><b class="d"></b>${done} abgeschlossen</span><span><b class="p"></b>${prog} in Bearbeitung</span><span><b class="o"></b>${open} noch nicht gestartet</span></div>
       <div class="w-team-avg"><strong data-count="${avg}">${avg}</strong><small>%</small><span>Ø Fortschritt im Team (${n} Personen)</span></div>
-      <a class="w-link" onclick="showView('team')">Zum Team-Fortschritt →</a></div>`;
+      </div>`;
   } },
   completiontime: { title:'Dauer bis zum Abschluss (für Vorgesetzte)', render: () => {
     const max=Math.max(...TEAM_DURATIONS.map(x=>x.days),21);
@@ -3662,7 +3658,7 @@ window.startApp = async function(){
   applyTeamAccess(); syncMember(true); subscribeTeam();
 };
 function applyTeamAccess(){
-  const nav=document.querySelector('.nav-item[data-view="team"]'); if(nav) nav.style.display = state.isLead ? '' : 'none';
+  
   const pt=document.getElementById('profileTeam');
   if(pt) pt.innerHTML = state.teamCode ? `${state.isLead?'Teamleitung':'Team'} · Code <b>${state.teamCode}</b>` : '';
 }
@@ -3748,7 +3744,7 @@ DASHBOARD_WIDGETS.teamsummary.render = (orig => () => {
   return `<div class="w-team"><div class="w-team-bar"><i class="d" style="flex:${done||0.001}"></i><i class="p" style="flex:${prog||0.001}"></i><i class="o" style="flex:${open||0.001}"></i></div>
     <div class="w-team-legend"><span><b class="d"></b>${done} abgeschlossen</span><span><b class="p"></b>${prog} in Bearbeitung</span><span><b class="o"></b>${open} noch nicht gestartet</span></div>
     <div class="w-team-avg"><strong>${avg}</strong><small>%</small><span>Ø Fortschritt im Team (${n} Personen) · Teamcode <b>${state.teamCode||'—'}</b></span></div>
-    <a class="w-link" onclick="showView('team')">Zum Team-Fortschritt →</a></div>`;
+    </div>`;
 })();
 const __origRenderWidgets = renderDashboardWidgets;
 renderDashboardWidgets = function(){
