@@ -1840,6 +1840,57 @@ const MODULES = [
     ],
     summary:{ kern:['Das Projekte-Modul verhindert, dass Materialentnahmen auf Baustellen unkalkuliert bleiben – Buchungen werden auch bei Bestandsüberschreitung mit Warnhinweis zugelassen, damit nichts undokumentiert bleibt.','Die volle App-Lösung kostet mit drei zusammenwirkenden Modulen ca. 25–30 €/Monat.','Als meist kostengünstigere Alternative gilt die direkte Matchcode-Integration mit der ohnehin genutzten Branchensoftware.'],
       funk:['Entnahme & Einlagerung per App','Alternative Matchcode-Integration'], hand:['Vor Projektstart sicherstellen, dass Artikelbezeichnungen im Stamm gepflegt sind','Bei bereits genutzter Branchensoftware die Matchcode-Integration als kostengünstigere Alternative prüfen'] }
+  },
+  { id:9, phase:3, title:"Bestandsführung", time:"10 Min.", diff:2,
+    gist:["Laufender Bestand", "Buchungen & Korrekturen", "Bestand und Bestellvorschlag"],
+    points:[
+      "## 1. Was ist die Bestandsführung?",
+      "Die Bestandsführung ist ein Zusatzmodul, das unter „Einstellungen“ → „Firma“ → „Module“ gebucht wird. Ist sie aktiviert, zeigt „Lagerbestand“ den tatsächlichen, laufend fortgeschriebenen Bestand je Artikel.",
+      "Jede Warenbewegung verändert den Bestand automatisch: Wareneingänge erhöhen ihn, Entnahmen verringern ihn. So wissen Sie jederzeit, wie viel von einem Artikel wirklich im Lager liegt.",
+      "## 2. Lagerbestand im Überblick",
+      "Die Übersicht „Lagerbestand“ zeigt je Artikel u. a. Artikelnummer, Bezeichnung, Lager MIN/MAX, Bestand und Lagereinheit – filterbar nach Lagerorttyp und jederzeit als Liste exportierbar.",
+      "Über „Buchungen“ sehen Sie für einen markierten Artikel die vollständige Buchungshistorie (Typ, Menge, Datum). Mit „Erstellen“ legen Sie dort bei Bedarf eine manuelle Korrekturbuchung an; auch die Historie lässt sich exportieren.",
+      "## 3. Bestand im Zusammenspiel",
+      "<div>Der Kreislauf der Bestandsführung:<ul class=\"sub-points\"><li>Der Bestand sinkt unter Lager MIN → ein Bestellvorschlag entsteht (automatisch über „Bestellvorschläge ermitteln“ oder manuell).</li><li>Aus dem Vorschlag wird eine Bestellung beim Lieferanten erstellt und versendet.</li><li>Bei Anlieferung wird der Wareneingang gescannt und gebucht → der Lagerbestand wird aktualisiert.</li></ul></div>",
+      "In der OrKan-App buchen Mitarbeiter Bewegungen direkt am Regal – z. B. Einlagerung, Entnahme oder Umlagerung. Übersteigt eine Entnahme den verfügbaren Bestand, warnt die App, lässt die Buchung aber zu, damit die Entnahme dokumentiert bleibt."
+    ],
+    features:[{"t": "Laufender Bestand", "d": "Wareneingänge und Entnahmen schreiben den Bestand je Artikel automatisch fort"}, {"t": "Buchungshistorie & Korrektur", "d": "Alle Bewegungen je Artikel einsehen, bei Bedarf manuell korrigieren und exportieren"}, {"t": "Bestellvorschläge ermitteln", "d": "Artikel unter Lager MIN werden automatisch für die Nachbestellung vorgeschlagen"}],
+    practice:"Ein Lagerleiter sieht in „Lagerbestand“, dass bei einem Kabelbinder nur noch 3 Pack statt der hinterlegten 5 (Lager MIN) vorhanden sind. Über „Bestellvorschläge ermitteln“ landet der Artikel automatisch im Bestellvorschlag – nach dem Wareneingang zeigt der Bestand wieder den korrekten Wert.",
+    task:"Prüfen Sie den Bestand eines Artikels, sehen Sie sich seine Buchungshistorie an und legen Sie testweise eine Korrekturbuchung an.",
+    checklist:["„Lagerverwaltung“ → „Lagerbestand“ öffnen und den Bestand eines Artikels prüfen", "Den Artikel markieren und über „Buchungen“ die Historie einsehen", "Über „Erstellen“ eine Test-Korrekturbuchung anlegen", "„Bestellvorschläge ermitteln“ ausführen und prüfen, welche Artikel unter Lager MIN liegen"],
+    tip:"Weicht der Bestand im System vom Regal ab, korrigieren Sie ihn sofort über eine Korrekturbuchung – so bleiben Bestellvorschläge und Warenwert verlässlich.",
+    quiz:[
+      {q:"Welche Voraussetzung muss erfüllt sein, damit „Lagerbestand“ den tatsächlichen, laufend fortgeschriebenen Bestand zeigt?",o:["Die Artikel müssen ein Bild haben", "Das Zusatzmodul Bestandsführung muss aktiviert sein", "Es muss einmal im Jahr eine Inventur erfolgen", "Der Lieferant muss per IDS angebunden sein"],a:1,t:"Voraussetzung Bestandsführung"},
+      {q:"Im System stehen 12 Stück, im Regal liegen aber nur 10. Wie korrigieren Sie den Bestand?",o:["Den Artikel löschen und neu anlegen", "Eine neue Bestellung über 2 Stück auslösen", "Den Artikel markieren und unter „Buchungen“ über „Erstellen“ eine Korrekturbuchung anlegen", "Das ist nur über den Support möglich"],a:2,t:"Korrekturbuchung"},
+      {q:"Was passiert, wenn der Bestand eines Artikels unter Lager MIN sinkt?",o:["Der Artikel wird automatisch gesperrt", "Der Artikel erscheint im Bestellvorschlag – automatisch über „Bestellvorschläge ermitteln“ oder manuell", "Der Lieferant wird automatisch informiert, ohne weiteren Schritt", "Nichts – Lager MIN dient nur der Anzeige"],a:1,t:"Bestand & Bestellvorschlag"},
+      {q:"Wo sehen Sie, wann und in welcher Menge ein Artikel ein- oder ausgebucht wurde?",o:["In der Buchungshistorie über „Buchungen“ im Lagerbestand", "Im Kalender der Startseite", "Im Lieferantenstamm", "Im Druck-Dialog der Artikel"],a:0,t:"Buchungshistorie"},
+      {q:"Ein Monteur entnimmt per App mehr Material, als laut System vorhanden ist. Was passiert?",o:["Die Buchung wird abgelehnt", "Die Menge wird automatisch auf den Bestand gekürzt", "Die App warnt, lässt die Buchung aber zu, damit die Entnahme dokumentiert bleibt", "Der Artikel wird automatisch nachbestellt und die Buchung gelöscht"],a:2,t:"Entnahme über Bestand"}
+    ],
+    summary:{"kern": ["Die Bestandsführung ist ein Zusatzmodul und macht aus „Lagerbestand“ einen laufend fortgeschriebenen Ist-Bestand.", "Über „Buchungen“ ist jede Bewegung eines Artikels nachvollziehbar und bei Bedarf per Korrekturbuchung anpassbar.", "Bestand, Bestellvorschlag, Bestellung und Wareneingang bilden einen geschlossenen Kreislauf."], "funk": ["Laufender Bestand", "Buchungshistorie & Korrekturbuchung", "Bestellvorschläge ermitteln"], "hand": ["Abweichungen zwischen System und Regal sofort per Korrekturbuchung bereinigen", "Entnahmen konsequent über die App buchen"]}
+  },
+  { id:10, phase:3, title:"Inventur", time:"8 Min.", diff:2,
+    gist:["Inventur per Excel", "Inventur per App", "Warenwert ermitteln"],
+    points:[
+      "## 1. Zwei Wege zur Inventur",
+      "<div>Die OrKan Cloud bietet zwei Wege, eine Inventur durchzuführen:<ul class=\"sub-points\"><li><strong>Excel-Liste:</strong> Den Lagerbestand exportieren – z. B. gefiltert nach einem Lagerort wie „1.10“ –, Zählmenge und Unterschriftsfeld in Excel ergänzen und als klassische Inventurliste verwenden. Das funktioniert auch ohne Bestandsführung.</li><li><strong>App-Funktion „Inventur“:</strong> Die Artikel werden nacheinander gescannt, die gezählte Menge wird direkt erfasst. So entsteht sofort ein digitaler Inventurwert, der sich anschließend als Ganzes exportieren lässt. Voraussetzung ist die kostenpflichtige Bestandsführung.</li></ul></div>",
+      "## 2. Warenwert ermitteln",
+      "Mit Bestandsführung ergibt sich der Warenwert aus dem tatsächlichen Bestand – ideal für die Inventurbewertung.",
+      "Ohne Bestandsführung lässt sich ein Näherungswert berechnen, sofern Einkaufspreise gepflegt sind: Mittelwert aus Lager MIN und Lager MAX × Einkaufspreis, aufsummiert über alle Artikel. In der Praxis trifft dieser Wert zu etwa 90 % zu.",
+      "Beispiel: Lager MIN 1, Lager MAX 2 → Mittelwert 1,5 Stück; bei einem Einkaufspreis von 0,70 € ergibt sich ein Warenwert von ca. 1,05 € für diesen Artikel."
+    ],
+    features:[{"t": "Inventur per Excel", "d": "Export je Lagerort, Zählmenge und Unterschrift manuell ergänzen – auch ohne Bestandsführung"}, {"t": "Inventur per App", "d": "Artikel scannen, Menge erfassen, Inventurwert direkt exportieren"}, {"t": "Warenwert-Näherung", "d": "Mittelwert aus Lager MIN/MAX × Einkaufspreis, ca. 90 % Trefferquote"}],
+    practice:"Zum Jahresende exportiert ein Betrieb ohne Bestandsführung den Lagerbestand je Lagerort als Excel-Liste. Zwei Mitarbeiter zählen Regal für Regal, tragen die Mengen ein und unterschreiben – die fertige Liste dient als Inventurnachweis.",
+    task:"Exportieren Sie den Lagerbestand eines Lagerorts als Inventurliste und berechnen Sie für drei Artikel den geschätzten Warenwert.",
+    checklist:["„Lagerverwaltung“ → „Lagerbestand“ öffnen und nach einem Lagerort filtern", "Die Liste exportieren und Spalten für Zählmenge und Unterschrift ergänzen", "Für drei Artikel den Warenwert mit (Lager MIN + Lager MAX) ÷ 2 × Einkaufspreis berechnen", "Falls Bestandsführung aktiv ist: die App-Funktion „Inventur“ an einem Testartikel ausprobieren"],
+    tip:"Filtern Sie den Export nach Lagerort – so erhält jedes Zählteam eine eigene, übersichtliche Liste für seinen Bereich.",
+    quiz:[
+      {q:"Ihr Betrieb hat KEINE Bestandsführung gebucht. Wie führen Sie die Inventur durch?",o:["Über die App-Funktion „Inventur“", "Lagerbestand als Excel-Liste exportieren, Zählmenge und Unterschrift ergänzen", "Eine Inventur ist ohne Bestandsführung nicht möglich", "Nur durch Beauftragung von OrKan System"],a:1,t:"Inventur ohne Bestandsführung"},
+      {q:"Was ist Voraussetzung für die App-Funktion „Inventur“?",o:["Eine Excel-Lizenz", "Das kostenpflichtige Zusatzmodul Bestandsführung", "Ein angebundener Lieferanten-Shop", "Mindestens 100 Artikel im System"],a:1,t:"App-Inventur"},
+      {q:"Ohne Bestandsführung: Ein Artikel hat Lager MIN 4, Lager MAX 10 und kostet im Einkauf 3 €. Wie hoch ist der geschätzte Warenwert?",o:["12 €", "30 €", "21 €", "42 €"],a:2,t:"Warenwert-Näherung"},
+      {q:"Wie genau ist die Warenwert-Näherung über Lager MIN/MAX in der Praxis etwa?",o:["Ca. 50 %", "Ca. 70 %", "Ca. 90 %", "Immer exakt 100 %"],a:2,t:"Genauigkeit"},
+      {q:"Mehrere Teams sollen gleichzeitig zählen. Wie bereiten Sie die Excel-Inventurlisten sinnvoll vor?",o:["Eine Gesamtliste für alle Teams drucken", "Den Export nach Lagerort filtern, sodass jedes Team seinen Bereich erhält", "Die Liste alphabetisch nach Lieferanten sortieren", "Nur Artikel mit Bild exportieren"],a:1,t:"Inventur organisieren"}
+    ],
+    summary:{"kern": ["Inventur geht per Excel-Export (auch ohne Bestandsführung) oder per App-Scan (mit Bestandsführung).", "Mit Bestandsführung basiert der Warenwert auf dem tatsächlichen Bestand.", "Ohne Bestandsführung liefert Mittelwert aus Lager MIN/MAX × Einkaufspreis einen Näherungswert mit ca. 90 % Genauigkeit."], "funk": ["Inventur per Excel", "Inventur per App", "Warenwert-Näherung"], "hand": ["Inventurlisten nach Lagerort aufteilen", "Einkaufspreise pflegen, damit der Warenwert berechnet werden kann"]}
   }
 ];
 
@@ -2024,7 +2075,7 @@ const AGGREGATE_GAPS = [
 
 /* Simulierte Teamdaten für die Vorgesetzten-Ansicht (Team-Fortschritt) */
 const TEAM_MEMBERS = [
-  {name:'Julia Herrmann', role:'Einkäufer', completed:8, quizAvg:96, weakTopic:null},
+  {name:'Julia Herrmann', role:'Einkäufer', completed:10, quizAvg:96, weakTopic:null},
   {name:'Tobias Krämer', role:'Monteur', completed:1, quizAvg:78, weakTopic:'Bestellauslösung'},
   {name:'Sabine Wolf', role:'Lagerleiter', completed:6, quizAvg:88, weakTopic:'Maschinen-Buchungslogik'},
   {name:'David Brenner', role:'Monteur', completed:1, quizAvg:60, weakTopic:'Bestellabschluss'}
@@ -2488,7 +2539,7 @@ function moduleCardHtml(m, isPriority){
   </div>`;
 }
 
-const MODULE_GROUPS=[{title:'Grundlagen Onboarding',sub:'Die Basis für die tägliche Arbeit mit der OrKan Cloud',ids:[1,2,3,4,5]},{title:'Expertenwissen',sub:'Vertiefende Module für Maschinen, Schlüssel und Projekte',ids:[6,7,8]}];
+const MODULE_GROUPS=[{title:'Grundlagen Onboarding',sub:'Die Basis für die tägliche Arbeit mit der OrKan Cloud',ids:[1,2,3,4,5]},{title:'Expertenwissen',sub:'Vertiefende Module für Maschinen, Schlüssel, Projekte, Bestandsführung und Inventur',ids:[6,7,8,9,10]}];
 function moduleGroupStart(id){ return MODULE_GROUPS.find(g=>g.ids[0]===id); }
 /* ============ ROADMAP ============ */
 function renderRoadmap(){
@@ -2524,7 +2575,7 @@ function renderRoadmap(){
   `;
 }
 function nextStepHint(id){
-  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',3:'Weiter geht es mit dem Zwei-Etiketten-System und dem Bestellvorschlag im Lageralltag.',4:'Weiter geht es mit Wareneingang, Lagerbestand und einem ersten Einblick in die Gebrauchsgutverwaltung.',5:'Vertiefung: Die Maschinenverwaltung mit Service & Wartung folgt als eigenes Modul.',6:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',7:'Fast geschafft — zum Abschluss folgt das Projekte-Modul für Baustellen.'};
+  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',3:'Weiter geht es mit dem Zwei-Etiketten-System und dem Bestellvorschlag im Lageralltag.',4:'Weiter geht es mit Wareneingang, Lagerbestand und einem ersten Einblick in die Gebrauchsgutverwaltung.',5:'Vertiefung: Die Maschinenverwaltung mit Service & Wartung folgt als eigenes Modul.',6:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',7:'Als Nächstes folgt das Projekte-Modul für Baustellen.',8:'Weiter geht es mit der Bestandsführung – dem laufenden Ist-Bestand im Lager.',9:'Fast geschafft — zum Abschluss folgt die Inventur.'};
   return hints[id]||'';
 }
 
@@ -3198,7 +3249,9 @@ const CLOUD_DEEPLINKS = {
   5:{label:'Lagerverwaltung → Lagerbestand'},
   6:{label:'Maschinenverwaltung'},
   7:{label:'Schlüsselverwaltung'},
-  8:{label:'Projekte'}
+  8:{label:'Projekte'},
+  9:{label:'Lagerverwaltung → Lagerbestand'},
+  10:{label:'Lagerverwaltung → Lagerbestand'}
 };
 const ORKAN_CLOUD_BASE = 'https://cloud.orkan-system.de/';
 const APPOINTMENT_CONTACTS = [
