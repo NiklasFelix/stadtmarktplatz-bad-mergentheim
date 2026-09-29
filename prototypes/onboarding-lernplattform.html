@@ -1284,16 +1284,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
         <div><span class="field-label">Name</span><input type="text" id="onbName" placeholder="Vor- und Nachname"></div>
         <div><span class="field-label">Unternehmen</span><input type="text" id="onbCompany" placeholder="Firmenname"></div>
       </div>
-      <span class="role-label">Zugang</span>
-      <div class="team-mode" id="teamMode">
-        <button type="button" class="team-mode-btn" data-mode="create" onclick="selectTeamMode('create')"><strong>Neues Team anlegen</strong><span>Für Lagerleitung oder Geschäftsführung – Sie erhalten einen Teamcode für Ihre Mitarbeiter.</span></button>
-        <button type="button" class="team-mode-btn" data-mode="join" onclick="selectTeamMode('join')"><strong>Einem Team beitreten</strong><span>Sie haben einen Teamcode von Ihrer Führungskraft erhalten.</span></button>
-      </div>
-      <div class="team-code-field" id="teamCodeField" hidden>
-        <span class="field-label">Teamcode</span>
-        <input type="text" id="onbTeamCode" placeholder="z. B. MUSTER-4821" autocomplete="off" style="text-transform:uppercase">
-        <span class="team-code-error" id="teamCodeError"></span>
-      </div>
       <span class="role-label">Ihre Rolle</span>
       <div class="role-grid" id="roleGrid">
         <div class="role-card" data-role="Lagerleiter" onclick="selectRole(this,'Lagerleiter')">
@@ -2458,7 +2448,7 @@ Object.assign(DASHBOARD_WIDGETS, {
   } }
 });
 function switchTabTo(tab){ state.currentTab=tab; document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['content','task','quiz','summary'][i]===tab)); renderTab(); }
-const DEFAULT_WIDGET_ORDER = ['nextstep','stats','rolefocus','recos','activity','recent','phases','teamsummary','completiontime'];
+const DEFAULT_WIDGET_ORDER = ['nextstep','stats','rolefocus','recos','activity','recent','phases'];
 const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:false, gaps:false, updates:false, rolefocus:false, recos:false};
 
 function loadDashboardPrefs(){
@@ -3596,7 +3586,7 @@ const __origCheckStart = checkStart;
 checkStart = function(){
   const name = document.getElementById('onbName').value.trim();
   const code = (document.getElementById('onbTeamCode')||{}).value||'';
-  document.getElementById('startBtn').disabled = !(name && state.role && state.teamMode && (state.teamMode==='create' || code.trim().length>=4));
+  document.getElementById('startBtn').disabled = !(name && state.role);
 };
 document.addEventListener('input', e=>{ if(e.target.id==='onbTeamCode') checkStart(); });
 function cleanSeg(s){ return String(s||'').replace(/[^A-Za-z0-9_\-.~:@+]/g,'_').slice(0,120) || 'x'; }
@@ -3611,26 +3601,7 @@ function makeTeamCode(company){
   return base+'-'+String(Math.floor(1000+Math.random()*9000));
 }
 const __origStartApp = window.startApp;
-window.startApp = async function(){
-  const btn=document.getElementById('startBtn'); const err=document.getElementById('teamCodeError');
-  const db = await Promise.race([__dbReady, new Promise(r=>setTimeout(()=>r(null),4000))]);
-  const company = document.getElementById('onbCompany').value.trim() || 'Ihr Unternehmen';
-  if(state.teamMode==='join'){
-    const code = document.getElementById('onbTeamCode').value.trim().toUpperCase();
-    if(db){
-      btn.disabled=true; btn.textContent='Teamcode wird geprüft …';
-      let ok=false; try{ ok=(await db.doc('teams/'+cleanSeg(code)).get()).exists; }catch(e){ ok=false; }
-      btn.textContent='Lernpfad starten'; btn.disabled=false;
-      if(!ok){ err.textContent='Dieser Teamcode wurde nicht gefunden. Bitte prüfen Sie die Schreibweise oder fragen Sie Ihre Führungskraft.'; return; }
-    }
-    state.teamCode=code; state.isLead=false;
-  } else {
-    state.teamCode=makeTeamCode(company); state.isLead=true;
-    if(db){ try{ await db.doc('teams/'+cleanSeg(state.teamCode)).set({company, leadName:document.getElementById('onbName').value.trim(), createdAt:new Date().toISOString()}); }catch(e){} }
-  }
-  __origStartApp.apply(this, arguments);
-  applyTeamAccess(); syncMember(true); subscribeTeam();
-};
+window.startApp = function(){ state.teamCode=null; state.isLead=false; __origStartApp.apply(this, arguments); };
 function applyTeamAccess(){
   
   const pt=document.getElementById('profileTeam');
@@ -3723,7 +3694,6 @@ DASHBOARD_WIDGETS.teamsummary.render = (orig => () => {
 const __origRenderWidgets = renderDashboardWidgets;
 renderDashboardWidgets = function(){
   const prefs = state.dashboardPrefs || (state.dashboardPrefs = loadDashboardPrefs());
-  if(state.isLead) return __origRenderWidgets();
   const saved = Object.assign({}, prefs.hidden);
   prefs.hidden = Object.assign({}, saved, {teamsummary:true, completiontime:true});
   try{ return __origRenderWidgets(); } finally { prefs.hidden = saved; }
