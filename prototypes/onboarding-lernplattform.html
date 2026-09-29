@@ -2098,6 +2098,7 @@ let state = {
   activityDays:{}, recent:[], ratings:{}
 };
 
+MODULES.forEach(m=>{ if(!state.moduleProgress[m.id]) state.moduleProgress[m.id]={started:false,completed:false,quizScore:null,checklist:[]}; });
 const __initialState = JSON.parse(JSON.stringify(state));
 /* ============ ONBOARDING ============ */
 function selectRole(el, role){
@@ -2196,6 +2197,8 @@ function confirmResetProgress(){
   // Zustand im laufenden Fenster zurücksetzen (funktioniert auch dort, wo ein Neuladen blockiert ist)
   Object.keys(state).forEach(k=>delete state[k]);
   Object.assign(state, JSON.parse(JSON.stringify(__initialState)));
+  state.quizAnswers = {}; state.quizTries = {};
+  document.getElementById('tabContentHost') && (document.getElementById('tabContentHost').innerHTML='');
   state.dashboardPrefs = null; state.teamLive = []; state.teamCode = null; state.isLead = false; state.teamMode = null;
   try{ if(typeof __teamUnsub==='function'){ __teamUnsub(); } __teamUnsub = null; __lastMemberJson=''; }catch(e){}
   document.getElementById('resetConfirmModal').classList.remove('open');
