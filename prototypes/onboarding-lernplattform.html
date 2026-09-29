@@ -1252,6 +1252,18 @@ html .team-mode-btn.selected{border-color:#8EA752;background:rgba(166,191,104,.1
 .nav-sub-group{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8EA752;padding:8px 10px 2px}
 .quiz-retry-hint{margin-top:8px;font-size:14px;font-weight:700;color:#F0B860}
 html.theme-light .quiz-retry-hint{color:#9A6610}
+.mail-chooser{position:fixed;inset:0;z-index:1200;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);padding:16px}
+.mail-chooser[hidden]{display:none!important}
+.mail-chooser-box{width:440px;max-width:100%;background:#fff;color:#1B1B1B;border-radius:10px;padding:24px 22px 18px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);font-family:"Segoe UI",Arial,sans-serif}
+.mail-chooser-box h3{font-size:20px;font-weight:600;line-height:1.3;margin-bottom:16px}
+.mail-chooser-sub{font-size:13.5px;color:#444;margin-bottom:8px}
+.mail-app{display:flex;align-items:center;gap:14px;width:100%;padding:11px 8px;border:0;border-radius:6px;background:none;color:#1B1B1B;font:inherit;font-size:15px;text-align:left;text-decoration:none;cursor:pointer}
+.mail-app:hover{background:#F0F0F0}
+.mail-app small{color:#666;font-size:12.5px}
+.mail-app-ic{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;flex-shrink:0}
+.mail-chooser-foot{display:flex;justify-content:flex-end;margin-top:12px;padding-top:12px;border-top:1px solid #E5E5E5}
+.mail-chooser-foot .btn{background:#fff;color:#1B1B1B;border:1px solid #D0D0D0}
+html .mail-chooser-foot .btn{background:#fff!important;color:#1B1B1B!important;border:1px solid #D0D0D0!important}
 </style>
 </head>
 <body>
@@ -1339,7 +1351,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
             <option>Monteur</option>
           </select>
           <div class="profile-saved" id="profileSaved"></div>
-          <div class="profile-team" id="profileTeam"></div>
           <label class="field-label" style="margin-top:14px">Darstellung</label>
           <div class="theme-switch" role="group" aria-label="Darstellung">
             <button type="button" data-theme-btn="dark" onclick="setTheme('dark')">☾ Dunkel</button>
@@ -1532,8 +1543,7 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
       <span class="appointment-field-error" id="appointmentMessageError"></span>
       <div class="appointment-form-actions">
         <button type="button" class="btn btn-outline" onclick="backToContactList()">Zurück</button>
-        <a class="btn btn-primary" id="appointmentSendBtn" href="#" target="_top" rel="noopener" style="text-align:center;text-decoration:none" onclick="return appointmentMailClick(event)">Per E-Mail senden</a>
-        <button type="button" class="btn btn-outline" onclick="copyAppointmentMail()">Text kopieren</button>
+        <button type="button" class="btn btn-primary" id="appointmentSendBtn" onclick="openMailChooser()">Per E-Mail senden</button>
       </div>
       <p id="appointmentSendStatus" class="appointment-send-status"></p>
     </form>
@@ -3339,6 +3349,24 @@ function appointmentMailData(){
 }
 function updateAppointmentMailLink(){ if(appointmentSelected) document.getElementById('appointmentSendBtn').href = appointmentMailData().href; }
 document.addEventListener('input', e=>{ if(e.target && /^appointment(Name|Email|Message)$/.test(e.target.id)) updateAppointmentMailLink(); });
+function openMailChooser(){
+  if(!appointmentSelected) return;
+  clearAppointmentFieldErrors();
+  const d = appointmentMailData();
+  let err=false;
+  if(!d.name){ markAppointmentFieldError('Name','Bitte geben Sie Ihren Namen ein.'); err=true; }
+  if(!d.email){ markAppointmentFieldError('Email','Bitte geben Sie Ihre E-Mail-Adresse ein.'); err=true; }
+  else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)){ markAppointmentFieldError('Email','Das sieht nicht wie eine gültige E-Mail-Adresse aus.'); err=true; }
+  if(!d.message){ markAppointmentFieldError('Message','Bitte geben Sie eine Nachricht ein.'); err=true; }
+  if(err) return;
+  const to=encodeURIComponent(appointmentSelected.email), su=encodeURIComponent(d.subject), bo=encodeURIComponent(d.body);
+  document.getElementById('mcDefault').href = d.href;
+  document.getElementById('mcOutlookWeb').href = `https://outlook.office.com/mail/deeplink/compose?to=${to}&subject=${su}&body=${bo}`;
+  document.getElementById('mcGmail').href = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${su}&body=${bo}`;
+  document.getElementById('mailChooser').hidden = false;
+}
+function closeMailChooser(){ document.getElementById('mailChooser').hidden = true; }
+document.addEventListener('click', e=>{ const a=e.target.closest && e.target.closest('#mailChooser a.mail-app'); if(a){ setTimeout(closeMailChooser,300); document.getElementById('appointmentSendStatus').textContent='Bitte die vorbereitete E-Mail in der gewählten App absenden.'; } });
 function appointmentMailClick(e){
   if(!appointmentSelected){ e.preventDefault(); return false; }
   clearAppointmentFieldErrors();
@@ -3715,9 +3743,21 @@ const __origSnapshotSave = saveState;
   const key='orkanTeam_v1';
   const persist=()=>{ try{ localStorage.setItem(key, JSON.stringify({teamCode:state.teamCode, isLead:state.isLead, teamMode:state.teamMode})); }catch(e){} };
   const s2=saveState; saveState=function(){ persist(); s2(); };
-  try{ const t=JSON.parse(localStorage.getItem(key)||'null'); if(t){ state.teamCode=t.teamCode; state.isLead=t.isLead; state.teamMode=t.teamMode; } }catch(e){}
+  try{ localStorage.removeItem(key); }catch(e){} state.teamCode=null; state.isLead=false;
   if(document.getElementById('app') && document.getElementById('app').style.display==='flex'){ applyTeamAccess(); renderTeam(); renderDashboard(); syncMember(true); subscribeTeam(); }
 })();
 </script>
+
+<div class="mail-chooser" id="mailChooser" hidden onclick="if(event.target===this)closeMailChooser()">
+  <div class="mail-chooser-box" role="dialog" aria-label="E-Mail-App auswählen">
+    <h3>Wählen Sie eine App aus, um die E-Mail zu senden</h3>
+    <p class="mail-chooser-sub">Vorgeschlagene Apps</p>
+    <a class="mail-app" id="mcDefault" target="_top" rel="noopener"><span class="mail-app-ic" style="background:#0F6CBD">✉</span>Standard-E-Mail-Programm <small>(z. B. Outlook am PC)</small></a>
+    <a class="mail-app" id="mcOutlookWeb" target="_blank" rel="noopener"><span class="mail-app-ic" style="background:#0078D4">O</span>Outlook im Browser <small>(Microsoft 365)</small></a>
+    <a class="mail-app" id="mcGmail" target="_blank" rel="noopener"><span class="mail-app-ic" style="background:#EA4335">G</span>Gmail</a>
+    <button type="button" class="mail-app" onclick="copyAppointmentMail()"><span class="mail-app-ic" style="background:#5F6972">⧉</span>Text kopieren <small>(in jedes E-Mail-Programm einfügen)</small></button>
+    <div class="mail-chooser-foot"><button type="button" class="btn btn-outline" onclick="closeMailChooser()">Abbrechen</button></div>
+  </div>
+</div>
 </body>
 </html>
