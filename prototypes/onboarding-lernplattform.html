@@ -1250,6 +1250,8 @@ html .team-mode-btn.selected{border-color:#8EA752;background:rgba(166,191,104,.1
 .roadmap-group-head{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8EA752;margin:6px 0 14px}
 .milestone+.roadmap-group-head{margin-top:26px}
 .nav-sub-group{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8EA752;padding:8px 10px 2px}
+.quiz-retry-hint{margin-top:8px;font-size:14px;font-weight:700;color:#F0B860}
+html.theme-light .quiz-retry-hint{color:#9A6610}
 </style>
 </head>
 <body>
@@ -2782,18 +2784,29 @@ function renderQuiz(m){
     <div class="quiz-q"><h5>${qi+1}. ${q.q}</h5>
       ${q.o.map((opt,oi)=>{
         let cls='';
+        const firstWrong = ((state.quizTries||{})[m.id]||{})[qi];
         if(answers[qi]!==undefined){
           cls='disabled';
-          if(oi===q.a) cls+=' correct'; else if(oi===answers[qi]) cls+=' wrong';
-        }
+          if(oi===q.a) cls+=' correct'; else if(oi===answers[qi] || oi===firstWrong) cls+=' wrong';
+        } else if(oi===firstWrong){ cls='disabled wrong'; }
         return `<div class="quiz-opt ${cls}" onclick="answerQuiz(${m.id},${qi},${oi})">${opt}</div>`;
       }).join('')}
+      ${answers[qi]===undefined && ((state.quizTries||{})[m.id]||{})[qi]!==undefined ? '<p class="quiz-retry-hint">Leider nicht richtig – Sie haben einen zweiten Versuch.</p>' : ''}
     </div>`).join('') +
     (allAnswered ? renderQuizResult(m) : '');
 }
 function answerQuiz(mid,qi,oi){
   if(!state.quizAnswers[mid]) state.quizAnswers[mid]={};
   if(state.quizAnswers[mid][qi]!==undefined) return;
+  const m = MODULES.find(x=>x.id===mid);
+  state.quizTries = state.quizTries || {}; state.quizTries[mid] = state.quizTries[mid] || {};
+  const firstWrong = state.quizTries[mid][qi];
+  if(oi===firstWrong) return;
+  if(oi!==m.quiz[qi].a && firstWrong===undefined){
+    state.quizTries[mid][qi]=oi;
+    renderQuiz(m);
+    return;
+  }
   state.quizAnswers[mid][qi]=oi;
   renderQuiz(MODULES.find(x=>x.id===mid));
 }
@@ -2835,7 +2848,7 @@ function renderQuizResult(m){
     ${passed?ratingBlock(m):''}
   </div>`;
 }
-function retryQuiz(mid){ delete state.quizAnswers[mid]; renderQuiz(MODULES.find(x=>x.id===mid)); }
+function retryQuiz(mid){ delete state.quizAnswers[mid]; if(state.quizTries) delete state.quizTries[mid]; renderQuiz(MODULES.find(x=>x.id===mid)); }
 
 /* ============ KNOWLEDGE BASE ============ */
 function renderKB(){
