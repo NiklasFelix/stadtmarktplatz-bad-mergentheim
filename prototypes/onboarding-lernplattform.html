@@ -1264,6 +1264,7 @@ html.theme-light .quiz-retry-hint{color:#9A6610}
 .mail-chooser-foot{display:flex;justify-content:flex-end;margin-top:12px;padding-top:12px;border-top:1px solid #E5E5E5}
 .mail-chooser-foot .btn{background:#fff;color:#1B1B1B;border:1px solid #D0D0D0}
 html .mail-chooser-foot .btn{background:#fff!important;color:#1B1B1B!important;border:1px solid #D0D0D0!important}
+.mail-app-svg{width:32px;height:32px;flex-shrink:0;display:flex}
 </style>
 </head>
 <body>
@@ -3390,7 +3391,7 @@ function openMailChooser(){
   if(!d.message){ markAppointmentFieldError('Message','Bitte geben Sie eine Nachricht ein.'); err=true; }
   if(err) return;
   const to=encodeURIComponent(appointmentSelected.email), su=encodeURIComponent(d.subject), bo=encodeURIComponent(d.body);
-  document.getElementById('mcDefault').href = d.href;
+  document.getElementById('mcDefault').href = d.href; document.getElementById('mcOutlookClassic').href = d.href;
   document.getElementById('mcOutlookWeb').href = `https://outlook.office.com/mail/deeplink/compose?to=${to}&subject=${su}&body=${bo}`;
   document.getElementById('mcGmail').href = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${su}&body=${bo}`;
   document.getElementById('mailChooser').hidden = false;
@@ -3782,10 +3783,11 @@ const __origSnapshotSave = saveState;
   <div class="mail-chooser-box" role="dialog" aria-label="E-Mail-App auswählen">
     <h3>Wählen Sie eine App aus, um die E-Mail zu senden</h3>
     <p class="mail-chooser-sub">Vorgeschlagene Apps</p>
-    <a class="mail-app" id="mcDefault" target="_top" rel="noopener"><span class="mail-app-ic" style="background:#0F6CBD">✉</span>Standard-E-Mail-Programm <small>(z. B. Outlook am PC)</small></a>
-    <a class="mail-app" id="mcOutlookWeb" target="_blank" rel="noopener"><span class="mail-app-ic" style="background:#0078D4">O</span>Outlook im Browser <small>(Microsoft 365)</small></a>
-    <a class="mail-app" id="mcGmail" target="_blank" rel="noopener"><span class="mail-app-ic" style="background:#EA4335">G</span>Gmail</a>
-    <button type="button" class="mail-app" onclick="copyAppointmentMail()"><span class="mail-app-ic" style="background:#5F6972">⧉</span>Text kopieren <small>(in jedes E-Mail-Programm einfügen)</small></button>
+    <a class="mail-app" id="mcOutlookWeb" target="_blank" rel="noopener"><span class="mail-app-svg"><svg viewBox="0 0 32 32" width="32" height="32"><defs><linearGradient id="oln" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1CA7EC"/><stop offset="1" stop-color="#0F4FB5"/></linearGradient></defs><rect x="9" y="5" width="21" height="22" rx="4" fill="url(#oln)"/><path d="M13 13l8 5 8-5v9a3 3 0 0 1-3 3H16a3 3 0 0 1-3-3z" fill="#50D9FF" opacity=".85"/><rect x="2" y="9" width="15" height="15" rx="3" fill="#0A5EC2"/><ellipse cx="9.5" cy="16.5" rx="3.6" ry="4.3" fill="none" stroke="#fff" stroke-width="2.2"/></svg></span>Outlook</a>
+    <a class="mail-app" id="mcOutlookClassic" target="_top" rel="noopener"><span class="mail-app-svg"><svg viewBox="0 0 32 32" width="32" height="32"><rect x="11" y="6" width="19" height="20" rx="2" fill="#0364B8"/><path d="M11 11l9.5 6L30 11v13a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2z" fill="#28A8EA"/><path d="M11 11l9.5 6L30 11" fill="none" stroke="#0A2767" stroke-width="1"/><rect x="2" y="8" width="16" height="16" rx="2" fill="#0078D4"/><ellipse cx="10" cy="16" rx="3.8" ry="4.6" fill="none" stroke="#fff" stroke-width="2.3"/></svg></span>Outlook (klassisch)</a>
+    <a class="mail-app" id="mcGmail" target="_blank" rel="noopener"><span class="mail-app-svg"><svg viewBox="0 0 32 32" width="32" height="32"><rect x="3" y="7" width="26" height="19" rx="3" fill="#fff" stroke="#E0E0E0"/><path d="M3 10l13 9 13-9" fill="none" stroke="#EA4335" stroke-width="3"/><path d="M3 10v14" stroke="#4285F4" stroke-width="3"/><path d="M29 10v14" stroke="#34A853" stroke-width="3"/></svg></span>Gmail</a>
+    <a class="mail-app" id="mcDefault" target="_top" rel="noopener"><span class="mail-app-svg"><svg viewBox="0 0 32 32" width="32" height="32"><rect x="3" y="7" width="26" height="19" rx="3" fill="#5F6972"/><path d="M5 10l11 8 11-8" fill="none" stroke="#fff" stroke-width="2"/></svg></span>Anderes E-Mail-Programm <small>(Standard-App)</small></a>
+    <button type="button" class="mail-app" onclick="copyAppointmentMail()"><span class="mail-app-svg"><svg viewBox="0 0 32 32" width="32" height="32"><rect x="9" y="4" width="17" height="20" rx="3" fill="#E6E8E2"/><rect x="5" y="8" width="17" height="20" rx="3" fill="#8A949B"/></svg></span>Text kopieren <small>(in jedes E-Mail-Programm einfügen)</small></button>
     <div class="mail-chooser-foot"><button type="button" class="btn btn-outline" onclick="closeMailChooser()">Abbrechen</button></div>
   </div>
 </div>
