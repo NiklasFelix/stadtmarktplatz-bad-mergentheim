@@ -1618,17 +1618,20 @@ const MODULES = [
   { id:2, phase:1, title:'Artikel- und Lagerplatzverwaltung', time:'15 Min.', diff:1,
     gist:['Artikel anlegen','Lager MIN/MAX','Lagerorte'],
     points:[
-      "## 1. Artikel anlegen",
+      "## 1. Die Artikelübersicht",
+      "<div>Die Artikelliste unter „Lagerverwaltung“ → „Artikel“ lässt sich an Ihre Arbeitsweise anpassen:<ul class=\"sub-points\"><li><strong>Spalten:</strong> Über das Doppelpfeil-Symbol blenden Sie Spaltenüberschriften ein oder aus.</li><li><strong>Suchfeld:</strong> Die Suche ist eine Volltextsuche – angezeigt wird jeder Artikel, in dem das eingegebene Wort vorkommt.</li><li><strong>Anzahl:</strong> Rechts unten stellen Sie ein, wie viele Artikel pro Seite erscheinen; rechts daneben steht die Gesamtanzahl.</li></ul></div>",
+      "<div><strong>Wichtig:</strong> Die Gesamtanzahl bezieht sich immer auf das aktuelle Suchergebnis. Steht z. B. „Befestigung“ im Suchfeld, werden nur Artikel mit diesem Begriff gezählt – und auch nur diese gedruckt. Prüfen Sie vor dem Etikettendruck deshalb immer, ob etwas im Suchfeld steht.</div>",
+      "## 2. Artikel anlegen",
       "Es gibt vier Wege, einen Artikel anzulegen: manuelle Neuanlage über „Erstellen“, Serienanlage per „Eingabe behalten“, Kopieren eines bestehenden Artikels oder Excel-Import (wie der Import genau funktioniert, lernen Sie in Modul 3).",
       "Pflichtfelder sind in der Artikelkarte mit einem Sternchen (*) gekennzeichnet und müssen ausgefüllt werden: Artikelgruppe, Bezeichnung 1, Lager/Gebäude, Lagerort, Lager MIN, Lager MAX, Lagereinheit, Lieferant, Menge (VPE) und Mengeneinheit (VPE).",
       "Die interne Artikelnummer wird automatisch fortlaufend vergeben (höchste vergebene Nummer +1). Ungenutzte niedrigere Nummern werden nicht rückwirkend aufgefüllt, wenn versehentlich eine hohe Nummer importiert wurde.",
       "Bei der Serienanlage mit „Eingabe behalten“ übernimmt die OrKan Cloud alle Felder des vorherigen Artikels – außer der internen Artikelnummer und der Artikelnummer des Lieferanten, die für jeden Artikel individuell bleiben.",
-      "## 2. Bestand und Einheiten festlegen",
+      "## 3. Bestand und Einheiten festlegen",
       "Lager MIN definiert den Sicherheitsbestand, Lager MAX den gewünschten Höchstbestand am Lagerplatz – die Bestellmenge im Bestellvorschlag ergibt sich automatisch aus der Differenz zwischen Lager MAX und Lager MIN.",
       "Wie Lagereinheit und Verpackungseinheit (VPE) zusammenspielen, zeigt ein Beispiel mit Schrauben: Lagereinheit = Pack, Menge (VPE) = Anzahl der Schrauben pro Pack, Mengeneinheit (VPE) = Stück – daraus ergibt sich die abweichende Bestelleinheit „Stück“, die im Feld „Abweichende Bestelleinheit“ eingetragen wird.",
-      "## 3. Bilder und Dokumente",
+      "## 4. Bilder und Dokumente",
       "Bilder und Dokumente fügen Sie per Drag & Drop unter „Dokumente“ hinzu. Das erste hochgeladene Dokument erscheint automatisch als Bild auf dem Etikett, weitere Dokumente (z. B. Sicherheitsdatenblätter) bleiben reine Anhänge.",
-      "## 4. Lagerplätze verwalten",
+      "## 5. Lagerplätze verwalten",
       "<div>Lager/Gebäude und Lagerorte (Lagerplätze) legen Sie auf zwei Wegen an:<ul class=\"sub-points\"><li><strong>Direkt in der Artikelkarte:</strong> Auf das Feld „Lager/Gebäude“ bzw. „Lagerort“ klicken und „Hinzufügen“ wählen – praktisch, wenn beim Anlegen eines Artikels ein Platz noch fehlt.</li><li><strong>Über die Einstellungen:</strong> Menü → „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Lager/Gebäude“ bzw. „Lagerorte/Lagerplätze“ → „Erstellen“ und die mit * gekennzeichneten Pflichtfelder ausfüllen.</li><li><strong>Viele auf einmal:</strong> Müssen viele Gebäude, Lagerorte oder Lagerplätze angelegt werden, lassen sie sich dort – wie Artikel – per Excel-Liste importieren. Ein Export ist jederzeit möglich.</li></ul></div>"
     ],
     features:[
@@ -1690,7 +1693,7 @@ const MODULES = [
     gist:['Etiketten drucken','Blau/Weiß-Etiketten','Bestellvorschlag'],
     points:[
       "## 1. Etiketten drucken",
-      "Bevor das System im Alltag genutzt werden kann, müssen die Etiketten erst gedruckt werden: Unter „Lagerverwaltung\" → „Artikel\" → „Drucken\" wählen Sie Ihr Etiketten-Template, legen fest, welche Artikel gedruckt werden (alle, nur aktualisierte, nur nicht aktualisierte oder nur markierte), und erhalten nach „Speichern\" eine PDF-Datei zum Druck auf das OrKan-Etikettenpapier.",
+      "Bevor das System im Alltag genutzt werden kann, müssen die Etiketten erst gedruckt werden: Unter „Lagerverwaltung\" → „Artikel\" → „Drucken\" wählen Sie Ihr Etiketten-Template, legen fest, welche Artikel gedruckt werden (alle, nur aktualisierte, nur nicht aktualisierte oder nur markierte), und erhalten nach „Speichern\" eine PDF-Datei zum Druck auf das OrKan-Etikettenpapier. Achtung: Steht im Suchfeld der Artikelliste ein Begriff, bezieht sich „Alle“ nur auf dieses Suchergebnis.",
       "## 2. Das Zwei-Etiketten-System",
       "An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, zur Kennzeichnung des Lagerplatzes) und ein weißes, das davor liegt und bei Mindestbestand als Bestellauslöser entnommen wird.",
       "Wird der Mindestbestand erreicht, zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox – fehlt das weiße Etikett am Regal, sieht jeder sofort, dass der Artikel bereits bestellt ist.",
