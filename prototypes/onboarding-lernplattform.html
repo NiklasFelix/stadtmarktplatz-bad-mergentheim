@@ -1658,7 +1658,7 @@ const MODULES = [
       funk:['Vier Wege der Artikelanlage','Lager MIN / Lager MAX'], hand:['Lager MIN/MAX realistisch anhand des Verbrauchs festlegen','Bei ähnlichen Artikeln konsequent „Eingabe behalten" oder „Kopieren" nutzen'] }
   },
   { id:3, phase:2, title:'Artikelimport und Lieferantenanbindung', time:'18 Min.', diff:3,
-    gist:['Excel-Import','Lieferanten-Shop','DATANORM-Preisimport'],
+    gist:['Excel-Import','Lieferanten anlegen','Shop-Anbindung'],
     points:[
       "## 1. Artikel per Excel importieren",
       "Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei (max. 40 MB) mit den zugehörigen Artikelbildern – der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen.",
@@ -1670,9 +1670,7 @@ const MODULES = [
       "Die Shop-URL lässt sich über das Lupen-Symbol suchen – häufig ist der passende Händler dort bereits hinterlegt. Wird er nicht gefunden, fragen Sie einfach bei Ihrem Händler nach der Shop-URL oder schauen Sie in Ihrer Branchensoftware nach – dort ist sie oft bereits hinterlegt.",
       "<div>Im Feld „Standardbestellverfahren“ legen Sie fest, wie Bestellungen an diesen Lieferanten gehen:<ul class=\"sub-points\"><li><strong>Online (IDS-Schnittstelle):</strong> Die Bestellung wird direkt an den Webshop des Händlers übergeben.</li><li><strong>PDF:</strong> Die Bestellung wird als PDF-Datei erzeugt.</li><li><strong>E-Mail:</strong> Die Bestellung wird per E-Mail an den Lieferanten verschickt.</li></ul></div>",
       "<div><strong>Liefertage und Offset:</strong> Je Lieferant werden die Liefertage (z. B. Mo–Fr oder nur donnerstags) und ein „Offset in Tagen“ hinterlegt – die Tage zwischen Bestellung und Wareneingang: Offset 0 = Lieferung am nächsten Liefertag, Offset 1 = ein Tag Zwischenraum. <em>Beispiel:</em> Lieferung nur donnerstags, Offset 1, Bestellung am Mittwoch → Wareneingang am Donnerstag der Folgewoche. Der Wert gilt für alle Standardbestellungen und lässt sich pro Bestellung überschreiben.</div>",
-      "<div><strong>Wichtig:</strong> Der Offset bildet nur die Zustelldauer ab, keinen Bestellrhythmus. Wer gesammelt nur an bestimmten Tagen bestellen möchte, regelt das organisatorisch – am einfachsten mit einer Liste, wer wann bei welchem Lieferanten bestellt.</div>",
-      "## 3. Preise pflegen",
-      "Über den separaten Reiter „DATANORM Preis Import“ lassen sich Preise und Daten vieler Artikel eines Lieferanten in einem Schritt aktualisieren, statt jeden Artikel einzeln zu pflegen."
+      "<div><strong>Wichtig:</strong> Der Offset bildet nur die Zustelldauer ab, keinen Bestellrhythmus. Wer gesammelt nur an bestimmten Tagen bestellen möchte, regelt das organisatorisch – am einfachsten mit einer Liste, wer wann bei welchem Lieferanten bestellt.</div>"
     ],
     features:[
       {t:'Excel + ZIP-Import',d:'Artikeldaten und Bilder werden gemeinsam über Dateiname-Zuordnung importiert'},
@@ -1688,7 +1686,7 @@ const MODULES = [
       {q:"Sie importieren eine Excel-Liste, die ausschließlich neue Preise für bereits bestehende Artikel enthält, im Modus „Nur importieren“. Was passiert?",o:["Alle Preise werden aktualisiert", "Die bestehenden Artikel werden doppelt angelegt", "Nur Artikel mit EAN werden aktualisiert", "Nichts wird geändert, da „Nur importieren“ ausschließlich neue Artikel anlegt"],a:3,t:"Import-Modi"},
       {q:"In der Excel-Liste steht als Bildname „schraube_m8.jpg“, im ZIP-Ordner heißt die Datei „Schraube_M8.jpeg“. Was ist die Folge?",o:["Das Bild wird trotzdem korrekt zugeordnet", "Das Bild wird nicht zugeordnet – der Name muss exakt dem Dateinamen im ZIP entsprechen", "Der gesamte Import bricht ab", "OrKan Cloud benennt die Datei automatisch passend um"],a:1,t:"Bildzuordnung beim Import"},
       {q:"Was muss im Lieferantenstamm als „Shop-URL“ hinterlegt werden, damit Bestellungen automatisiert übermittelt werden?",o:["Die normale Webadresse des Onlineshops", "Die E-Mail-Adresse des Außendienstes", "Die URL der IDS-Schnittstelle des Lieferanten", "Die Adresse der Lieferanten-Homepage mit Impressum"],a:2,t:"Shop-URL & IDS-Schnittstelle"},
-      {q:"Ein Lieferant hat neue Preise für 300 Artikel veröffentlicht. Wie aktualisieren Sie diese am effizientesten?",o:["Über den Reiter „DATANORM Preis Import“", "Jeden Artikel einzeln öffnen und den Preis ändern", "Den Lieferanten löschen und neu anlegen", "Einen Import im Modus „Nur importieren“ durchführen"],a:0,t:"DATANORM-Preisimport"}
+      {q:"Beim Anlegen eines Lieferanten findet die Suche über das Lupen-Symbol keine Shop-URL. Wie gehen Sie vor?",o:["Den Lieferanten ohne Shop-URL speichern und per Online-Bestellung bestellen", "Beim Händler nachfragen oder in der Branchensoftware nachsehen – dort ist sie oft hinterlegt", "Die normale Webadresse des Shops eintragen", "Den Lieferanten löschen"],a:1,t:"Shop-URL finden"}
     ],
     summary:{ kern:['Der Artikelimport kombiniert eine Excel-Liste mit einer ZIP-Datei für Bilder über eine Dateinamen-Zuordnung.','Die drei Import-Modi unterscheiden strikt zwischen Neuanlage und Aktualisierung – bei Lieferantenwechsel zählt nur die interne Artikelnummer als Abgleichfeld.','Die Shop-URL im Lieferantenstamm ist die IDS-Schnittstellen-Adresse für die automatische Bestellweiterleitung, nicht die normale Shop-Webadresse.'],
       funk:['Excel + ZIP-Import','Drei Import-Modi','Lieferanten-Shop-Anbindung per IDS-URL'], hand:['Vor dem Vollimport Bildzuordnung an wenigen Testartikeln prüfen','Bei Lieferantenwechsel immer über die interne Artikelnummer abgleichen'] }
@@ -1928,6 +1926,35 @@ const MODULES = [
       {q:"Mehrere Teams sollen gleichzeitig zählen. Wie bereiten Sie die Excel-Inventurlisten sinnvoll vor?",o:["Eine Gesamtliste für alle Teams drucken", "Den Export nach Lagerort filtern, sodass jedes Team seinen Bereich erhält", "Die Liste alphabetisch nach Lieferanten sortieren", "Nur Artikel mit Bild exportieren"],a:1,t:"Inventur organisieren"}
     ],
     summary:{"kern": ["Inventur geht per Excel-Export (auch ohne Bestandsführung) oder per App-Scan (mit Bestandsführung).", "Mit Bestandsführung basiert der Warenwert auf dem tatsächlichen Bestand.", "Ohne Bestandsführung liefert Mittelwert aus Lager MIN/MAX × Einkaufspreis einen Näherungswert mit ca. 90 % Genauigkeit."], "funk": ["Inventur per Excel", "Inventur per App", "Warenwert-Näherung"], "hand": ["Inventurlisten nach Lagerort aufteilen", "Einkaufspreise pflegen, damit der Warenwert berechnet werden kann"]}
+  },
+  { id:12, phase:3, title:'Preise pflegen und abfragen', time:'8 Min.', diff:2,
+    gist:['Preise pflegen','DATANORM-Import','Preisabfrage im Shop'],
+    points:[
+      "## 1. Preise pflegen",
+      "Einkaufspreise hinterlegen Sie direkt in der Artikelkarte beim jeweiligen Lieferanten. Gepflegte Preise sind die Grundlage für den Warenwert und für die Kostenübersicht Ihrer Bestellungen.",
+      "Über den separaten Reiter „DATANORM Preis Import“ lassen sich Preise und Daten vieler Artikel eines Lieferanten in einem Schritt aktualisieren, statt jeden Artikel einzeln zu pflegen.",
+      "## 2. Preise abfragen",
+      "<div>Aktuelle Preise können Sie direkt über den Shop Ihres Händlers abfragen – der Ablauf nutzt dieselbe Anbindung wie eine normale Bestellung:<ul class=\"sub-points\"><li><strong>1. Bestellung anlegen:</strong> Eine Bestellung mit allen Artikeln erstellen, deren Preise Sie wissen möchten.</li><li><strong>2. An den Shop senden:</strong> Die Bestellung an den Shop des jeweiligen Händlers schicken – wie bei einer normalen Bestellung.</li><li><strong>3. Preisabfrage im Shop:</strong> Im Händler-Shop die Funktion bzw. den Button „Preisabfrage“ nutzen, statt die Bestellung auszulösen.</li></ul></div>",
+      "Wichtig: Voraussetzung ist ein per Shop-URL (IDS-Schnittstelle) angebundener Lieferant. Wie die Anbindung eingerichtet wird, lernen Sie in Modul 3."
+    ],
+    features:[
+      {t:'DATANORM Preis Import',d:'Preise vieler Artikel eines Lieferanten in einem Schritt aktualisieren'},
+      {t:'Preisabfrage über den Shop',d:'Bestellung mit den gewünschten Artikeln an den Händler-Shop senden und dort „Preisabfrage“ nutzen'},
+      {t:'Gepflegte Einkaufspreise',d:'Grundlage für Warenwert und Kostenübersicht'}
+    ],
+    practice:'Ein Einkäufer möchte vor einer größeren Bestellung wissen, was 20 Artikel aktuell kosten. Er legt eine Bestellung mit genau diesen Artikeln an, schickt sie an den Shop des Großhändlers und nutzt dort die Preisabfrage – so hat er die tagesaktuellen Preise, ohne verbindlich zu bestellen.',
+    task:'Führen Sie eine Preisabfrage für drei Artikel über den Shop eines angebundenen Händlers durch.',
+    checklist:['Eine Bestellung mit drei Artikeln anlegen, deren Preise Sie abfragen möchten','Die Bestellung an den Shop des jeweiligen Händlers senden','Im Händler-Shop die Funktion „Preisabfrage“ nutzen','Optional: Preise eines Lieferanten über „DATANORM Preis Import“ aktualisieren'],
+    tip:'Nutzen Sie die Preisabfrage vor größeren Bestellungen – so vergleichen Sie tagesaktuelle Konditionen, ohne verbindlich zu bestellen.',
+    quiz:[
+      {q:"Ein Lieferant hat neue Preise für 300 Artikel veröffentlicht. Wie aktualisieren Sie diese am effizientesten?",o:["Jeden Artikel einzeln öffnen und den Preis ändern", "Über den Reiter „DATANORM Preis Import“", "Den Lieferanten löschen und neu anlegen", "Einen Import im Modus „Nur importieren“ durchführen"],a:1,t:"DATANORM-Preisimport"},
+      {q:"Sie möchten die aktuellen Preise für fünf Artikel bei Ihrem Händler erfahren. Was ist der erste Schritt?",o:["Beim Händler anrufen", "Eine Bestellung mit genau diesen fünf Artikeln anlegen", "Die Artikel neu importieren", "Die Artikel löschen und neu anlegen"],a:1,t:"Preisabfrage – Ablauf"},
+      {q:"Die Bestellung für die Preisabfrage wurde an den Händler-Shop gesendet. Wie erhalten Sie nun die Preise, ohne zu bestellen?",o:["Im Shop die Funktion bzw. den Button „Preisabfrage“ nutzen", "Die Bestellung im Shop ganz normal auslösen und später stornieren", "Die Preise erscheinen automatisch im Lagerbestand", "Gar nicht – Preise gibt es nur mit Rechnung"],a:0,t:"Preisabfrage im Shop"},
+      {q:"Was ist Voraussetzung, um Preise über den Händler-Shop abzufragen?",o:["Der Lieferant ist über die Shop-URL (IDS-Schnittstelle) angebunden", "Die Bestandsführung ist aktiviert", "Der Artikel hat ein Bild", "Der Lieferant liefert nur donnerstags"],a:0,t:"Voraussetzung"},
+      {q:"Warum lohnt es sich, Einkaufspreise in der OrKan Cloud gepflegt zu halten?",o:["Sie werden auf jedes Etikett gedruckt", "Sie sind die Grundlage für den Warenwert und die Kostenübersicht der Bestellungen", "Ohne Preis kann kein Artikel angelegt werden", "Sie ersetzen die Lieferanten-Artikelnummer"],a:1,t:"Nutzen gepflegter Preise"}
+    ],
+    summary:{ kern:['Einkaufspreise werden in der Artikelkarte beim Lieferanten gepflegt – bei vielen Artikeln per DATANORM Preis Import.','Preise lassen sich über den Händler-Shop abfragen: Bestellung anlegen, an den Shop senden, dort „Preisabfrage“ nutzen.','Voraussetzung ist ein per Shop-URL (IDS) angebundener Lieferant.'],
+      funk:['DATANORM Preis Import','Preisabfrage über den Shop'], hand:['Preise regelmäßig aktualisieren','Vor größeren Bestellungen Preise abfragen'] }
   }
 ];
 
@@ -2579,7 +2606,7 @@ function moduleCardHtml(m, isPriority){
   </div>`;
 }
 
-const MODULE_GROUPS=[{title:'Grundlagen Onboarding',sub:'Die Basis für die tägliche Arbeit mit der OrKan Cloud',ids:[1,2,3,4,5,6]},{title:'Expertenwissen',sub:'Vertiefende Module für Maschinen, Schlüssel, Projekte, Bestandsführung und Inventur',ids:[7,8,9,10,11]}];
+const MODULE_GROUPS=[{title:'Grundlagen Onboarding',sub:'Die Basis für die tägliche Arbeit mit der OrKan Cloud',ids:[1,2,3,4,5,6]},{title:'Expertenwissen',sub:'Vertiefende Module für Maschinen, Schlüssel, Projekte, Bestandsführung, Inventur und Preise',ids:[7,8,9,10,11,12]}];
 function moduleGroupStart(id){ return MODULE_GROUPS.find(g=>g.ids[0]===id); }
 function certDoneCount(){ return MODULE_GROUPS[0].ids.filter(id=>state.moduleProgress[id]&&state.moduleProgress[id].completed).length; }
 function certTotal(){ return MODULE_GROUPS[0].ids.length; }
@@ -2614,7 +2641,7 @@ function renderRoadmap(){
   `;
 }
 function nextStepHint(id){
-  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',3:'Weiter geht es mit Etiketten-Templates, dem Etikettendruck und dem Zwei-Etiketten-System.',4:'Die Etiketten hängen – als Nächstes lernen Sie, wie daraus eine Bestellung wird.',5:'Weiter geht es mit Wareneingang und Lagerbestand.',6:'Grundlagen geschafft! Vertiefung: Die Maschinenverwaltung mit Service & Wartung.',7:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',8:'Als Nächstes folgt das Projekte-Modul für Baustellen.',9:'Weiter geht es mit der Bestandsführung – dem laufenden Ist-Bestand im Lager.',10:'Fast geschafft — zum Abschluss folgt die Inventur.'};
+  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',3:'Weiter geht es mit Etiketten-Templates, dem Etikettendruck und dem Zwei-Etiketten-System.',4:'Die Etiketten hängen – als Nächstes lernen Sie, wie daraus eine Bestellung wird.',5:'Weiter geht es mit Wareneingang und Lagerbestand.',6:'Grundlagen geschafft! Vertiefung: Die Maschinenverwaltung mit Service & Wartung.',7:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',8:'Als Nächstes folgt das Projekte-Modul für Baustellen.',9:'Weiter geht es mit der Bestandsführung – dem laufenden Ist-Bestand im Lager.',10:'Weiter geht es mit der Inventur.',11:'Zum Abschluss: Preise pflegen und abfragen.'};
   return hints[id]||'';
 }
 
@@ -3302,7 +3329,8 @@ const CLOUD_DEEPLINKS = {
   8:{label:'Schlüsselverwaltung'},
   9:{label:'Projekte'},
   10:{label:'Lagerverwaltung → Lagerbestand'},
-  11:{label:'Lagerverwaltung → Lagerbestand'}
+  11:{label:'Lagerverwaltung → Lagerbestand'},
+  12:{label:'Lagerverwaltung → Lieferant'}
 };
 const ORKAN_CLOUD_BASE = 'https://cloud.orkan-system.de/';
 const APPOINTMENT_CONTACTS = [
