@@ -1266,6 +1266,7 @@ html.theme-light .quiz-retry-hint{color:#9A6610}
 html .mail-chooser-foot .btn{background:#fff!important;color:#1B1B1B!important;border:1px solid #D0D0D0!important}
 .mail-app-svg{width:32px;height:32px;flex-shrink:0;display:flex}
 .mail-store-link{display:block;margin:10px 8px 0;color:#0F6CBD;font-size:14.5px;text-decoration:none}.mail-store-link:hover{text-decoration:underline}
+.tpl-legend{list-style:none;display:flex;flex-wrap:wrap;gap:6px 16px;margin:6px 0 8px;font-size:13px}.tpl-legend li{display:flex;align-items:center;gap:6px}.tpl-legend li strong{display:inline!important;margin:0!important}.tpl-legend i{width:12px;height:12px;border-radius:3px;display:inline-block}.template-callout-text p+p{margin-top:6px}
 </style>
 </head>
 <body>
@@ -1581,7 +1582,9 @@ async function downloadImportTemplate(){
 function templateDownloadCallout(){
   return `<div class="template-callout">
     <div class="template-callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg></div>
-    <div class="template-callout-text"><strong>Importvorlage von OrKan System (Stand Januar 2026)</strong><p>Nutzen Sie die echte Importvorlage mit allen Spalten (Artikelnr., Bezeichnung 1–3, Lieferant, Lager/Gebäude, Lagerort, Lager Min/Max, EAN u. v. m.) direkt als Basis für Ihren eigenen Import.</p></div>
+    <div class="template-callout-text"><strong>Importvorlage von OrKan System (Stand Januar 2026)</strong><p>Die Vorlage zeigt anhand von Beispielzeilen, wie Artikeldaten korrekt angelegt werden. Die Farben der Spalten zeigen die Wichtigkeit:</p>
+      <ul class="tpl-legend"><li><i style="background:#8EC07C"></i><strong>Grün:</strong> sehr wichtig</li><li><i style="background:#F2D16B"></i><strong>Gelb:</strong> relativ wichtig</li><li><i style="background:#BFC4C8"></i><strong>Grau:</strong> weniger wichtig</li></ul>
+      <p><strong style="display:inline">Wichtig:</strong> Beachten Sie die Kommentare in den Spalten U–W (Mengeneinheit (VPE), Abw. Bestelleinheit, Satzart) – z. B. bei „Satzart“ immer „ST“ für den Standardlieferanten.</p></div>
     <button class="template-callout-btn" onclick="downloadImportTemplate()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg>Vorlage herunterladen</button>
   </div>`;
 }
