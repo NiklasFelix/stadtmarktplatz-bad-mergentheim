@@ -1267,6 +1267,7 @@ html .mail-chooser-foot .btn{background:#fff!important;color:#1B1B1B!important;b
 .mail-app-svg{width:32px;height:32px;flex-shrink:0;display:flex}
 .mail-store-link{display:block;margin:10px 8px 0;color:#0F6CBD;font-size:14.5px;text-decoration:none}.mail-store-link:hover{text-decoration:underline}
 .tpl-legend{list-style:none;display:flex;flex-wrap:wrap;gap:6px 16px;margin:6px 0 8px;font-size:13px}.tpl-legend li{display:flex;align-items:center;gap:6px}.tpl-legend li strong{display:inline!important;margin:0!important}.tpl-legend i{width:12px;height:12px;border-radius:3px;display:inline-block}.template-callout-text p+p{margin-top:6px}
+.nav-shop{text-decoration:none;margin-top:14px;border-top:1px solid var(--line);border-radius:0 0 10px 10px;padding-top:14px}.nav-shop span{flex:1}.nav-shop::after{content:'↗';font-size:13px;opacity:.7}.key-points a{color:#8EA752;font-weight:700}
 </style>
 </head>
 <body>
@@ -1402,6 +1403,10 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M9 13.5 7 22l5-3 5 3-2-8.5"/></svg>
         Zertifikate
       </div>
+      <a class="nav-item nav-shop" href="https://orkan-system.de/shop/" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span>OrKan Shop</span>
+      </a>
       <div class="sidebar-progress">
         <div class="sp-label">Fortschritt</div>
         <div class="sp-track"><div class="sp-fill" id="sidebarFill" style="width:0%"></div></div>
@@ -1699,7 +1704,7 @@ const MODULES = [
       "Wie Ihre Etiketten aussehen, legen Sie im Etiketten-Designer fest: „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Artikelkarte“.",
       "<div>Der Aufbau ist frei gestaltbar:<ul class=\"sub-points\"><li><strong>Elemente:</strong> z. B. Bezeichnung 1–3, Artikelbild, QR-Code, Lager MIN/MAX und Lagerort.</li><li><strong>Anordnung:</strong> Elemente per Drag & Drop positionieren und in der Größe anpassen.</li><li><strong>Mehrere Templates:</strong> parallel anlegbar, auch mit eigenem Firmenlogo.</li></ul></div>",
       "## 2. Etiketten drucken",
-      "<div>So drucken Sie Etiketten:<ul class=\"sub-points\"><li><strong>1. Artikel markieren:</strong> Unter „Lagerverwaltung“ → „Artikel“ links das Kästchen des gewünschten Artikels anklicken – ein Häkchen bestätigt die Auswahl.</li><li><strong>2. Drucken:</strong> Auf „Drucken“ klicken und das Etiketten-Template auswählen.</li><li><strong>3. Auswahl festlegen:</strong> Bestimmen, welche Artikel gedruckt werden (alle, nur aktualisierte, nur nicht aktualisierte oder nur markierte).</li><li><strong>4. PDF:</strong> Nach „Speichern“ erhalten Sie eine PDF-Datei zum Druck auf das OrKan-Etikettenpapier.</li></ul></div>",
+      "<div>So drucken Sie Etiketten:<ul class=\"sub-points\"><li><strong>1. Artikel markieren:</strong> Unter „Lagerverwaltung“ → „Artikel“ links das Kästchen des gewünschten Artikels anklicken – ein Häkchen bestätigt die Auswahl.</li><li><strong>2. Drucken:</strong> Auf „Drucken“ klicken und das Etiketten-Template auswählen.</li><li><strong>3. Auswahl festlegen:</strong> Bestimmen, welche Artikel gedruckt werden (alle, nur aktualisierte, nur nicht aktualisierte oder nur markierte).</li><li><strong>4. PDF:</strong> Nach „Speichern“ erhalten Sie eine PDF-Datei zum Druck auf das OrKan-Etikettenpapier. Etikettenpapier und weiteres Zubehör erhalten Sie im <a href=\"https://orkan-system.de/shop/\" target=\"_blank\" rel=\"noopener\">OrKan System Shop</a>.</li></ul></div>",
       "Achtung: Steht im Suchfeld der Artikelliste ein Begriff, bezieht sich „Alle“ nur auf dieses Suchergebnis.",
       "## 3. Das Zwei-Etiketten-System",
       "An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, zur Kennzeichnung des Lagerplatzes) und ein weißes, das davor liegt und bei Mindestbestand als Bestellauslöser entnommen wird.",
