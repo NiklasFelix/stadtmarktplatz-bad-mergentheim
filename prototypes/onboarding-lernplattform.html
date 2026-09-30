@@ -1754,35 +1754,32 @@ const MODULES = [
     summary:{ kern:['Die weißen Etiketten aus der Bestellbox werden unter „Bestellvorschlag“ → „Erstellen“ per Auto-Enter-Scan erfasst.','Bei mehreren Lieferanten wird jede Teilbestellung einzeln erstellt und gesendet.','Die eigentliche Bestellung wird im Onlineshop des Lieferanten final ausgelöst – OrKan Cloud bereitet sie vollständig vor.'],
       funk:['Bestellvorschlag per Scan mit Auto-Enter','Teilbestellungen je Lieferant','Drei-Fenster-Bestellabschluss'], hand:['Bestellbox täglich zur festen Uhrzeit leeren','Zusammenfassung vor dem Senden immer prüfen'] }
   },
-  { id:6, phase:3, title:'Wareneingang und Lagerbestand', time:'8 Min.', diff:2,
-    gist:['Wareneingang buchen','Weißes Etikett zurück','Lagerbestand & Warenwert'],
+  { id:6, phase:3, title:'Wareneingang', time:'8 Min.', diff:2,
+    gist:['Wareneingang buchen','Offene & abgeschlossene Bestellungen','Weißes Etikett zurück'],
     points:[
       "## 1. Wareneingang bestätigen",
       "<div>Den Wareneingang buchen Sie auf verschiedenen Wegen:<ul class=\"sub-points\"><li><strong>Über den Kalender:</strong> Auf den Tag klicken – die erweiterte Ansicht mit den „B“-Einträgen (Bestellungen) erscheint. Durch Ankreuzen des Hakens buchen Sie den Wareneingang.</li><li><strong>Über „Bestellungen“:</strong> Rechts oben den Filter auf „Offene Bestellungen“ setzen, die Bestellung anklicken und auf „Wareneingang“ klicken – es erscheint dieselbe Ansicht wie im Kalender, dort buchen Sie den Wareneingang.</li><li><strong>Abgeschlossene Bestellungen</strong> sehen Sie, indem Sie den Filter rechts oben auf „Abgeschlossene Bestellungen“ umstellen.</li></ul></div>",
       "Der Scan-Bestelleingang zeigt offene Bestellungen eines Lieferanten nach Ampelfarbe (Rot = überfällig, Gelb = heute fällig, Grün = zukünftig) – Positionen lassen sich einzeln oder als komplette Liste auf einmal bestätigen, Mengenabweichungen werden dabei sichtbar gemacht.",
-      "<div><strong>Wichtig beim Einlagern:</strong> Nehmen Sie das weiße Etikett mit und bringen Sie es wieder am Regal an – nur so funktioniert das Zwei-Etiketten-System für die nächste Bestellung.</div>",
-      "## 2. Lagerbestand und Warenwert",
-      "Der Reiter „Lagerbestand\" zeigt je Artikel den aktuellen Bestand, Lager MIN/MAX sowie den geschätzten Warenwert; über „Buchungen\" lässt sich die komplette Bewegungshistorie eines Artikels einsehen.",
-      "Ist keine Bestandsführung aktiviert, lässt sich der Warenwert näherungsweise schätzen: Mittelwert aus Lager MIN und Lager MAX × Einkaufspreis, aufsummiert über alle Artikel – trifft in der Praxis zu rund 90 % zu."
+      "<div><strong>Wichtig beim Einlagern:</strong> Nehmen Sie das weiße Etikett mit und bringen Sie es wieder am Regal an – nur so funktioniert das Zwei-Etiketten-System für die nächste Bestellung.</div>"
     ],
     features:[
-      {t:'Drei-Fenster-Bestellabschluss',d:'Wareneingangsprüfungs-Zettel, Bestellübersicht und Warenkorb im Händler-Shop in einem Schritt'},
-      {t:'Scan-Bestelleingang mit Ampelfarben',d:'Offene Bestellungen nach Rot/Gelb/Grün filtern, Mengenabweichungen werden sichtbar'},
-      {t:'Warenwert-Näherung ohne Bestandsführung',d:'Mittelwert aus Lager MIN/MAX × Einkaufspreis, ca. 90 % Trefferquote'}
+      {t:'Wareneingang im Kalender',d:'Tag anklicken, beim „B“-Eintrag den Haken setzen – fertig'},
+      {t:'Wareneingang über „Bestellungen“',d:'Filter auf offene Bestellungen, Bestellung anklicken, „Wareneingang“ buchen'},
+      {t:'Scan-Bestelleingang mit Ampelfarben',d:'Offene Bestellungen nach Rot/Gelb/Grün, Mengenabweichungen werden sichtbar'}
     ],
-    practice:'Nach Abschluss einer Bestellung hakt ein Lagermitarbeiter im Scan-Bestelleingang die gelieferten Artikel ab, prüft sie gegen den Lieferschein und aktualisiert damit automatisch den Lagerbestand – ganz ohne separate Excel-Erfassung.',
-    task:'Prüfen Sie den Lagerbestand, Lager MIN/MAX und den geschätzten Warenwert eines Testartikels und bestätigen Sie einen Wareneingang über den Scan-Bestelleingang.',
-    checklist:['Bestellabschluss mit den drei Fenstern nachvollziehen','Über „Lagerverwaltung" → „Scan/Bestelleingang" einen Wareneingang für eine Testbestellung bestätigen','Über „Lagerverwaltung" → „Lagerbestand" Bestand, Lager MIN/MAX und geschätzten Warenwert eines Artikels prüfen','Buchungshistorie eines Artikels über „Buchungen" einsehen'],
-    tip:'Zeigt der Scan-Bestelleingang eine Mengenabweichung zwischen Bestellung und Lieferung an, klären Sie diese sofort mit dem Lieferanten – erst danach sollten Sie den Wareneingang endgültig bestätigen.',
+    practice:'Nach der Anlieferung klickt ein Lagermitarbeiter im Kalender auf den heutigen Tag, prüft die Lieferung gegen den Wareneingangsprüfungs-Zettel und setzt beim „B“-Eintrag den Haken. Beim Einlagern hängt er das weiße Etikett wieder ans Regal.',
+    task:'Buchen Sie einen Wareneingang einmal über den Kalender und einmal über „Bestellungen“.',
+    checklist:['Im Kalender auf einen Tag klicken und beim „B“-Eintrag den Haken setzen','Unter „Bestellungen“ den Filter rechts oben auf „Offene Bestellungen“ setzen','Eine Bestellung anklicken und über „Wareneingang“ buchen','Den Filter auf „Abgeschlossene Bestellungen“ umstellen und die Bestellung wiederfinden','Das weiße Etikett beim Einlagern wieder am Regal anbringen'],
+    tip:'Zeigt sich eine Mengenabweichung zwischen Bestellung und Lieferung, klären Sie diese sofort mit dem Lieferanten – erst danach sollten Sie den Wareneingang endgültig bestätigen.',
     quiz:[
-      {q:"Ohne Bestandsführung: Ein Artikel hat Lager MIN = 10, Lager MAX = 30 und einen Einkaufspreis von 2 €. Wie hoch ist der geschätzte Warenwert?",o:["20 €", "40 €", "60 €", "80 €"],a:1,t:"Warenwert-Näherung"},
+      {q:"Wie buchen Sie einen Wareneingang über den Kalender?",o:["Auf den Tag klicken, in der erweiterten Ansicht beim „B“-Eintrag den Haken setzen", "Den Kalendereintrag löschen", "Den Eintrag auf Grau ziehen", "Das ist über den Kalender nicht möglich"],a:0,t:"Wareneingang im Kalender"},
+      {q:"Sie möchten den Wareneingang über „Bestellungen“ buchen, sehen aber die Bestellung nicht. Was prüfen Sie zuerst?",o:["Ob der Filter rechts oben auf „Offene Bestellungen“ steht", "Ob der Lieferant ein Logo hat", "Ob die Bestandsführung aktiviert ist", "Ob der Artikel ein Bild hat"],a:0,t:"Filter offene Bestellungen"},
       {q:"Im Scan-Bestelleingang zeigt sich: Bestellt waren 10 Stück, geliefert wurden 8. Wie gehen Sie richtig vor?",o:["Den Wareneingang sofort vollständig bestätigen", "Die Bestellung löschen und neu bestellen", "Die Abweichung zuerst mit dem Lieferanten klären und danach den Wareneingang bestätigen", "Nichts tun – OrKan Cloud gleicht die Menge automatisch aus"],a:2,t:"Mengenabweichung"},
       {q:"Was bedeutet eine rot markierte offene Bestellung im Scan-Bestelleingang?",o:["Sie ist überfällig", "Sie ist heute fällig", "Sie ist erst künftig fällig", "Sie wurde bereits bestätigt"],a:0,t:"Scan-Bestelleingang"},
-      {q:"Sie haben eine Lieferung eingelagert. Was müssen Sie mit dem weißen Etikett tun?",o:["Es wegwerfen – es wird neu gedruckt", "Es mitnehmen und wieder am Regal anbringen", "Es in der Bestellbox lassen", "Es beim Lieferanten abgeben"],a:1,t:"Weißes Etikett zurück"},
-      {q:"Wo sehen Sie die komplette Bewegungshistorie eines einzelnen Artikels?",o:["Unter „Bestellungen“", "Im Lagerbestand über „Buchungen“", "Im Druck-Dialog der Artikel", "Im Kalender der Startseite"],a:1,t:"Buchungshistorie"}
+      {q:"Sie haben eine Lieferung eingelagert. Was müssen Sie mit dem weißen Etikett tun?",o:["Es wegwerfen – es wird neu gedruckt", "Es mitnehmen und wieder am Regal anbringen", "Es in der Bestellbox lassen", "Es beim Lieferanten abgeben"],a:1,t:"Weißes Etikett zurück"}
     ],
-    summary:{ kern:['Der Bestellabschluss verbindet Wareneingangsprüfungs-Zettel, Bestellübersicht und Warenkorb im Händler-Shop in einem durchgängigen Drei-Fenster-Prozess.','Der Scan-Bestelleingang bestätigt Lieferungen per Ampelfarbe und macht Mengenabweichungen direkt sichtbar.','Ohne Bestandsführung lässt sich der Warenwert über Lager MIN/MAX und Einkaufspreis mit rund 90 % Genauigkeit schätzen.'],
-      funk:['Drei-Fenster-Bestellabschluss','Scan-Bestelleingang mit Ampelfarben','Warenwert-Näherung'], hand:['Wareneingang zeitnah über den Scan-Bestelleingang bestätigen, um den Lagerbestand aktuell zu halten','Bei größeren Beständen regelmäßig per Excel-Export oder App-Inventur zählen'] }
+    summary:{ kern:['Der Wareneingang lässt sich über den Kalender oder über „Bestellungen“ (Filter: offene Bestellungen) buchen.','Abgeschlossene Bestellungen finden Sie über den Filter „Abgeschlossene Bestellungen“.','Beim Einlagern kommt das weiße Etikett wieder ans Regal – so bleibt das Zwei-Etiketten-System intakt.'],
+      funk:['Wareneingang im Kalender','Wareneingang über Bestellungen','Scan-Bestelleingang'], hand:['Wareneingang zeitnah buchen','Weißes Etikett immer wieder anbringen'] }
   },
   { id:7, phase:3, title:'Maschinenverwaltung', time:'12 Min.', diff:2,
     gist:['Maschinen anlegen','Buchungslogik','Service & Wartung'],
@@ -1885,6 +1882,8 @@ const MODULES = [
       "## 2. Lagerbestand im Überblick",
       "Die Übersicht „Lagerbestand“ zeigt je Artikel u. a. Artikelnummer, Bezeichnung, Lager MIN/MAX, Bestand und Lagereinheit – filterbar nach Lagerorttyp und jederzeit als Liste exportierbar.",
       "Über „Buchungen“ sehen Sie für einen markierten Artikel die vollständige Buchungshistorie (Typ, Menge, Datum). Mit „Erstellen“ legen Sie dort bei Bedarf eine manuelle Korrekturbuchung an; auch die Historie lässt sich exportieren.",
+      "Die Übersicht „Lagerbestand“ zeigt je Artikel außerdem den geschätzten Warenwert.",
+      "Ist keine Bestandsführung aktiviert, lässt sich der Warenwert näherungsweise schätzen: Mittelwert aus Lager MIN und Lager MAX × Einkaufspreis, aufsummiert über alle Artikel – trifft in der Praxis zu rund 90 % zu.",
       "## 3. Bestand im Zusammenspiel",
       "<div>Der Kreislauf der Bestandsführung:<ul class=\"sub-points\"><li>Der Bestand sinkt unter Lager MIN → ein Bestellvorschlag entsteht (automatisch über „Bestellvorschläge ermitteln“ oder manuell).</li><li>Aus dem Vorschlag wird eine Bestellung beim Lieferanten erstellt und versendet.</li><li>Bei Anlieferung wird der Wareneingang gescannt und gebucht → der Lagerbestand wird aktualisiert.</li></ul></div>",
       "In der OrKan-App buchen Mitarbeiter Bewegungen direkt am Regal – z. B. Einlagerung, Entnahme oder Umlagerung. Übersteigt eine Entnahme den verfügbaren Bestand, warnt die App, lässt die Buchung aber zu, damit die Entnahme dokumentiert bleibt."
@@ -2087,7 +2086,7 @@ const ROLE_FOCUS = {
     ]},
   'Geschäftsführer': { heading:'Ihr Überblick als Geschäftsführer', priorityModules:[6,7,9],
     cards:[
-      {label:'Kapitalbindung', val:'Lagerbestand & Warenwert', sub:'Wie viel Kapital liegt im Lager – je Artikel und gesamt', mod:6},
+      {label:'Kapitalbindung', val:'Lagerbestand & Warenwert', sub:'Wie viel Kapital liegt im Lager – je Artikel und gesamt', mod:10},
       {label:'Betriebsmittel', val:'Maschinen im Blick', sub:'Wo ist welche Maschine, wer nutzt sie, wann steht die Wartung an', mod:7},
       {label:'Kosten je Auftrag', val:'Projekte & Baustellen', sub:'Material und Maschinen direkt auf Projekte buchen und auswerten', mod:9}
     ]},
@@ -2111,7 +2110,7 @@ const ROLE_RECOS = {
     {tag:'Praxis',t:'Lieferanten-Shop anbinden',d:'Shop-URL hinterlegen, damit Bestellungen direkt weitergeleitet werden.',mod:3}
   ],
   'Geschäftsführer':[
-    {tag:'Überblick',t:'Warenwert im Lager auswerten',d:'Ist-Bestand und gebundenes Kapital je Artikel auf einen Blick.',mod:6},
+    {tag:'Überblick',t:'Warenwert im Lager auswerten',d:'Ist-Bestand und gebundenes Kapital je Artikel auf einen Blick.',mod:10},
     {tag:'Überblick',t:'Maschinenpark transparent machen',d:'Standorte, Nutzung und Wartungstermine aller Maschinen zentral sehen.',mod:7},
     {tag:'Überblick',t:'Projektkosten nachvollziehen',d:'Material und Maschinen je Projekt auswerten und nachkalkulieren.',mod:9}
   ],
@@ -2641,7 +2640,7 @@ function renderRoadmap(){
   `;
 }
 function nextStepHint(id){
-  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',3:'Weiter geht es mit Etiketten-Templates, dem Etikettendruck und dem Zwei-Etiketten-System.',4:'Die Etiketten hängen – als Nächstes lernen Sie, wie daraus eine Bestellung wird.',5:'Weiter geht es mit Wareneingang und Lagerbestand.',6:'Grundlagen geschafft! Vertiefung: Die Maschinenverwaltung mit Service & Wartung.',7:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',8:'Als Nächstes folgt das Projekte-Modul für Baustellen.',9:'Weiter geht es mit der Bestandsführung – dem laufenden Ist-Bestand im Lager.',10:'Weiter geht es mit der Inventur.',11:'Zum Abschluss: Preise pflegen und abfragen.'};
+  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',3:'Weiter geht es mit Etiketten-Templates, dem Etikettendruck und dem Zwei-Etiketten-System.',4:'Die Etiketten hängen – als Nächstes lernen Sie, wie daraus eine Bestellung wird.',5:'Weiter geht es mit dem Wareneingang.',6:'Grundlagen geschafft! Vertiefung: Die Maschinenverwaltung mit Service & Wartung.',7:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',8:'Als Nächstes folgt das Projekte-Modul für Baustellen.',9:'Weiter geht es mit der Bestandsführung – dem laufenden Ist-Bestand im Lager.',10:'Weiter geht es mit der Inventur.',11:'Zum Abschluss: Preise pflegen und abfragen.'};
   return hints[id]||'';
 }
 
@@ -3324,7 +3323,7 @@ const CLOUD_DEEPLINKS = {
   3:{label:'Lagerverwaltung → Lieferant'},
   4:{label:'Lagerverwaltung → Artikel → Drucken'},
   5:{label:'Lagerverwaltung → Bestellvorschlag'},
-  6:{label:'Lagerverwaltung → Lagerbestand'},
+  6:{label:'Lagerverwaltung → Bestellungen'},
   7:{label:'Maschinenverwaltung'},
   8:{label:'Schlüsselverwaltung'},
   9:{label:'Projekte'},
