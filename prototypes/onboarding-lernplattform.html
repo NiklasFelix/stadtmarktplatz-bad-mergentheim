@@ -1268,6 +1268,13 @@ html .mail-chooser-foot .btn{background:#fff!important;color:#1B1B1B!important;b
 .mail-store-link{display:block;margin:10px 8px 0;color:#0F6CBD;font-size:14.5px;text-decoration:none}.mail-store-link:hover{text-decoration:underline}
 .tpl-legend{list-style:none;display:flex;flex-wrap:wrap;gap:6px 16px;margin:6px 0 8px;font-size:13px}.tpl-legend li{display:flex;align-items:center;gap:6px}.tpl-legend li strong{display:inline!important;margin:0!important}.tpl-legend i{width:12px;height:12px;border-radius:3px;display:inline-block}.template-callout-text p+p{margin-top:6px}
 .nav-shop{text-decoration:none;color:inherit}.nav-shop span{flex:1}.nav-shop::after{content:'↗';font-size:13px;opacity:.7}.key-points a{color:#8EA752;font-weight:700}
+.onb-hero-stat{display:flex;flex-direction:column;gap:4px;margin-bottom:22px;padding:18px 20px;border-radius:16px;border:1px solid rgba(166,191,104,.35);background:linear-gradient(135deg,rgba(166,191,104,.16),rgba(166,191,104,.03))}
+.onb-hero-stat strong{font-size:30px;line-height:1.1;color:#C3D88A}
+.onb-hero-stat span{font-size:14px;line-height:1.45;color:rgba(232,236,239,.75)}
+.onb-perk{display:flex;gap:14px;align-items:flex-start;padding:12px 4px}
+.onb-perk>svg{flex-shrink:0;width:40px;height:40px;padding:9px;border-radius:12px;background:rgba(166,191,104,.14);color:#C3D88A}
+.onb-perk strong{display:block;font-size:15px;color:#fff;margin-bottom:2px}
+.onb-perk span{font-size:13.5px;line-height:1.45;color:rgba(232,236,239,.7)}
 </style>
 </head>
 <body>
@@ -1290,7 +1297,7 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
       </div>
       <div class="onb-side-body">
         <h1>Willkommen bei Ihrer<br>Onboarding-Plattform</h1>
-        <p class="sub">Strukturierte, rollenbasierte Einführung in die OrKan Cloud – Schritt für Schritt.</p>
+        <p class="sub">Strukturierte Einführung in die OrKan Cloud – Schritt für Schritt.</p>
         <div class="onb-roadmap-preview" id="onbRoadmapPreview"></div>
       </div>
     </div>
@@ -1299,21 +1306,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
       <div class="field-row">
         <div><span class="field-label">Name</span><input type="text" id="onbName" placeholder="Vor- und Nachname"></div>
         <div><span class="field-label">Unternehmen</span><input type="text" id="onbCompany" placeholder="Firmenname"></div>
-      </div>
-      <span class="role-label">Ihre Rolle</span>
-      <div class="role-grid" id="roleGrid">
-        <div class="role-card" data-role="Lagerleiter" onclick="selectRole(this,'Lagerleiter')">
-          <div class="role-title">Lagerleiter</div>
-        </div>
-        <div class="role-card" data-role="Einkäufer" onclick="selectRole(this,'Einkäufer')">
-          <div class="role-title">Einkäufer</div>
-        </div>
-        <div class="role-card" data-role="Geschäftsführer" onclick="selectRole(this,'Geschäftsführer')">
-          <div class="role-title">Geschäftsführer</div>
-        </div>
-        <div class="role-card" data-role="Monteur" onclick="selectRole(this,'Monteur')">
-          <div class="role-title">Monteur</div>
-        </div>
       </div>
       <button class="onb-btn" id="startBtn" disabled onclick="startApp()">Lernpfad starten</button>
     </div>
@@ -1347,13 +1339,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
           <input type="text" id="profileNameInput" class="profile-input">
           <label class="field-label" style="margin-top:10px">Unternehmen</label>
           <input type="text" id="profileCompanyInput" class="profile-input">
-          <label class="field-label" style="margin-top:10px">Rolle</label>
-          <select id="profileRoleInput" class="profile-input">
-            <option>Lagerleiter</option>
-            <option>Einkäufer</option>
-            <option>Geschäftsführer</option>
-            <option>Monteur</option>
-          </select>
           <div class="profile-saved" id="profileSaved"></div>
           <label class="field-label" style="margin-top:14px">Darstellung</label>
           <div class="theme-switch" role="group" aria-label="Darstellung">
@@ -1596,6 +1581,7 @@ function templateDownloadCallout(){
 }
 
 /* ============ DATA ============ */
+const MODULE_GROUPS=[{title:'Grundlagen Onboarding',sub:'Die Basis für die tägliche Arbeit mit der OrKan Cloud',ids:[1,2,3,4,5,6]},{title:'Expertenwissen',sub:'Vertiefende Module für Maschinen, Schlüssel, Projekte, Bestandsführung, Inventur und Preise',ids:[7,8,9,10,11,12]}];
 const MODULES = [
   { id:1, phase:1, title:'Grundlagen der OrKan Cloud', time:'12 Min.', diff:1,
     intro:{"title": "Was ist die OrKan Cloud?", "points": ["Ein lieferantenunabhängiges Software-Tool für Lagerführung und Bestellwesen – bereits bei über 100 Betrieben im Einsatz.", "Funktioniert nach dem Kanban-Prinzip: Nachbestellt wird, was am Lagerplatz tatsächlich verbraucht wurde – einfach per Scan.", "Ihr Nutzen: gesicherter Nachschub, keine Doppelbestellungen oder Suchzeiten und voller Überblick über Material und Maschinen."]},
@@ -1962,9 +1948,16 @@ const MODULES = [
   }
 ];
 
-document.getElementById('onbRoadmapPreview').innerHTML = MODULES.map((m,i)=>`
-  <div class="orp-item"><div class="orp-num">${i+1}</div><div class="orp-title">${m.title}</div></div>
-`).join('');
+(function(){
+  const base = MODULE_GROUPS[0].ids;
+  const min = MODULES.filter(m=>base.includes(m.id)).reduce((t,m)=>t+parseInt(m.time),0);
+  const ic = d => `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+  document.getElementById('onbRoadmapPreview').innerHTML = `
+    <div class="onb-hero-stat"><strong>ca. ${min} Min.</strong><span>bis zu Ihrem Zertifikat – in kleinen Etappen, jederzeit unterbrechbar</span></div>
+    <div class="onb-perk">${ic('<circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/>')}<div><strong>Zertifikat + Rabattcode</strong><span>Schon nach den Grundlagen (Module 1–${base[base.length-1]}) – Rabattcode für den SPRÜGEL-Onlineshop inklusive</span></div></div>
+    <div class="onb-perk">${ic('<rect x="3" y="4" width="18" height="14" rx="2"/><path d="m10 8 5 3-5 3z"/><path d="M8 21h8"/>')}<div><strong>Praxisnah lernen</strong><span>Video, Praxisaufgabe und Wissenscheck – direkt in der OrKan Cloud ausprobieren</span></div></div>
+    <div class="onb-perk">${ic('<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/>')}<div><strong>Fortschritt wird gespeichert</strong><span>Sie machen genau dort weiter, wo Sie aufgehört haben</span></div></div>`;
+})();
 
 const KB_ARTICLES = [
   {cat:'Grundlagen',title:'Startseite: Kalender und Shortcuts',desc:'Aufbau der Startseite und das Ampelsystem im Kalender.',body:['So kommen Sie hin: Die Startseite ist der erste Bildschirm direkt nach der Anmeldung; über das OrKan-Logo oben links gelangen Sie von überall dorthin zurück.','Die Startseite zeigt Ihren Kalender sowie mehrere Schnellzugriffs-Kacheln, z. B. Artikel, Lieferant, Bestellvorschläge erstellen und Meine Einstellungen.','Der Kalender arbeitet mit einem vierstufigen Ampelsystem: Grau (bestätigt/erledigt), Grün (künftig fällig), Gelb (heute fällig) und Rot (überfällig).','Über die drei Striche oben links gelangen Sie jederzeit zum Hauptmenü mit allen weiteren Bereichen.']},
@@ -2076,55 +2069,6 @@ const UPDATES = [
   {v:'v2.3.0',date:'14. Mai 2026',isNew:false,title:'Rollenbasierte Lernpfade',items:['Individuelle Lernpfade für vier Nutzerrollen','Angepasste Dashboard-Empfehlungen je Rolle','Verbesserte Fortschrittsvisualisierung']}
 ];
 
-const ROLE_FOCUS = {
-  'Lagerleiter': { heading:'Ihr Fokus als Lagerleiter', priorityModules:[2,4,6],
-    cards:[
-      {label:'Lagerordnung', val:'Lagerorte & Lagerplätze', sub:'Jeder Artikel braucht einen festen Platz – Grundlage für Etiketten und Inventur', mod:2},
-      {label:'Nachschub sichern', val:'Zwei-Etiketten-System', sub:'Weißes Etikett in die Bestellbox, blaues bleibt am Regal – so läuft die Nachbestellung', mod:4},
-      {label:'Wareneingang', val:'Lieferung bestätigen', sub:'Gelieferte Ware im Bestelleingang buchen, damit der Lagerbestand stimmt', mod:6}
-    ]},
-  'Einkäufer': { heading:'Ihr Fokus als Einkäufer', priorityModules:[2,3,5],
-    cards:[
-      {label:'Bestandsgrenzen', val:'Lager MIN/MAX pflegen', sub:'Bestellmenge = MAX − MIN – die Basis für jeden Bestellvorschlag', mod:2},
-      {label:'Stammdaten', val:'Artikelimport & Lieferanten', sub:'Artikel per Excel importieren und Lieferanten-Shops anbinden', mod:3},
-      {label:'Bestellen', val:'Bestellvorschlag bearbeiten', sub:'Vom gesammelten Etikett zur fertigen Bestellung beim Lieferanten', mod:5}
-    ]},
-  'Geschäftsführer': { heading:'Ihr Überblick als Geschäftsführer', priorityModules:[6,7,9],
-    cards:[
-      {label:'Kapitalbindung', val:'Lagerbestand & Warenwert', sub:'Wie viel Kapital liegt im Lager – je Artikel und gesamt', mod:10},
-      {label:'Betriebsmittel', val:'Maschinen im Blick', sub:'Wo ist welche Maschine, wer nutzt sie, wann steht die Wartung an', mod:7},
-      {label:'Kosten je Auftrag', val:'Projekte & Baustellen', sub:'Material und Maschinen direkt auf Projekte buchen und auswerten', mod:9}
-    ]},
-  'Monteur': { heading:'Ihr Fokus im Tagesgeschäft', priorityModules:[4,7,9],
-    cards:[
-      {label:'Material nachbestellen', val:'Weißes Etikett ziehen', sub:'Mindestbestand erreicht? Weißes Etikett in die Bestellbox legen – fertig', mod:4},
-      {label:'Maschinen', val:'Entnahme & Rückgabe buchen', sub:'So weiß jeder, wo sich eine Maschine gerade befindet', mod:7},
-      {label:'Auf der Baustelle', val:'Material aufs Projekt buchen', sub:'Verbrauch direkt dem richtigen Projekt zuordnen', mod:9}
-    ]}
-};
-
-const ROLE_RECOS = {
-  'Lagerleiter':[
-    {tag:'Best Practice',t:'Zwei-Etiketten-System im Team einführen',d:'So erklären Sie Ihrem Lagerteam die Blau/Weiß-Logik und die Bestellbox in wenigen Minuten.',mod:4},
-    {tag:'Praxis',t:'Wareneingang sauber bestätigen',d:'Lieferung prüfen, Mengen abgleichen und im Bestelleingang buchen.',mod:6},
-    {tag:'Praxis',t:'Etiketten für neue Lagerplätze drucken',d:'Vom fertigen Template bis zum Druck auf OrKan-Etikettenpapier.',mod:4}
-  ],
-  'Einkäufer':[
-    {tag:'Praxis',t:'MIN/MAX realistisch festlegen',d:'Verbrauch und Lieferzeit richtig einschätzen – ohne Über- oder Unterbestand.',mod:2},
-    {tag:'Best Practice',t:'Artikelstamm per Excel importieren',d:'Mit der Importvorlage viele Artikel auf einmal anlegen.',mod:3},
-    {tag:'Praxis',t:'Lieferanten-Shop anbinden',d:'Shop-URL hinterlegen, damit Bestellungen direkt weitergeleitet werden.',mod:3}
-  ],
-  'Geschäftsführer':[
-    {tag:'Überblick',t:'Warenwert im Lager auswerten',d:'Ist-Bestand und gebundenes Kapital je Artikel auf einen Blick.',mod:10},
-    {tag:'Überblick',t:'Maschinenpark transparent machen',d:'Standorte, Nutzung und Wartungstermine aller Maschinen zentral sehen.',mod:7},
-    {tag:'Überblick',t:'Projektkosten nachvollziehen',d:'Material und Maschinen je Projekt auswerten und nachkalkulieren.',mod:9}
-  ],
-  'Monteur':[
-    {tag:'Praxis',t:'Weißes Etikett richtig einsetzen',d:'Wann Sie das Etikett ziehen und wohin es kommt – in 2 Minuten erklärt.',mod:4},
-    {tag:'Praxis',t:'Maschine entnehmen und zurückgeben',d:'Schnell buchen, damit Kollegen die Maschine finden.',mod:7},
-    {tag:'Praxis',t:'Material auf die Baustelle buchen',d:'Verbrauchtes Material direkt dem Projekt zuordnen.',mod:9}
-  ]
-};
 
 /* Simulierte unternehmensweite KI-Aggregation aller bisherigen Pilotnutzer.
    Bildet die in Kapitel 2.3.1 beschriebene Rückkopplung von Wissenslücken
@@ -2172,7 +2116,7 @@ function selectRole(el, role){
 }
 function checkStart(){
   const name = document.getElementById('onbName').value.trim();
-  document.getElementById('startBtn').disabled = !(name && state.role);
+  document.getElementById('startBtn').disabled = !name;
 }
 document.addEventListener('input', e=>{ if(e.target.id==='onbName'||e.target.id==='onbCompany') checkStart(); });
 
@@ -2223,7 +2167,7 @@ function loadState(){
     const saved = JSON.parse(raw);
     Object.assign(state, saved);
     MODULES.forEach(m=>{ if(!state.moduleProgress[m.id]) state.moduleProgress[m.id] = {started:false,completed:false,quizScore:null,checklist:[]}; });
-    return !!(state.name && state.role);
+    return !!state.name;
   }catch(e){ return false; }
 }
 function manualSaveProgress(){
@@ -2368,10 +2312,10 @@ function renderDashboard(){
       <div class="hero-main">
         
         <h1 class="page-title">Guten Tag, ${state.name}.</h1>
-        <p class="page-sub">Hier ist Ihr Onboarding-Überblick als ${state.role}.</p>
+        <p class="page-sub">Hier ist Ihr Onboarding-Überblick.</p>
         <div class="status-overview-text">
           <strong>Willkommen auf der OrKan-Cloud-Trainingsplattform</strong>
-          <p>Sie durchlaufen ${MODULES.length} Module in 3 Phasen (Grundlagen → Prozesse & Integration → Optimierung & Zertifizierung) — insgesamt rund ${MODULES.reduce((s,m)=>s+parseInt(m.time),0)} Minuten. Bereits nach den Grundlagen (Module 1–6) erhalten Sie Ihr Zertifikat inkl. Rabattcode.</p>
+          <p>Sie durchlaufen ${MODULES.length} Module in zwei Bereichen (Grundlagen Onboarding → Expertenwissen) — insgesamt rund ${MODULES.reduce((s,m)=>s+parseInt(m.time),0)} Minuten. Bereits nach den Grundlagen (Module 1–6) erhalten Sie Ihr Zertifikat inkl. Rabattcode.</p>
         </div>
         <button class="status-overview-btn" onclick="openModule(${MODULES[0].id})">Jetzt starten</button>
       </div>
@@ -2382,7 +2326,7 @@ function renderDashboard(){
       <div class="hero-main">
         
         <h1 class="page-title">Guten Tag, ${state.name}.</h1>
-        <p class="page-sub">Hier ist Ihr Onboarding-Überblick als ${state.role}.</p>
+        <p class="page-sub">Hier ist Ihr Onboarding-Überblick.</p>
         <div class="status-overview-grid">
           <div><span class="status-label">Aktuelle Phase</span><span class="status-value">Phase ${phase}/3 — ${phaseNames[phase]}</span></div>
           <div><span class="status-label">${done>=MODULES.length?'Status':'Nächstes Modul'}</span><span class="status-value">${done>=MODULES.length?'Alle Module abgeschlossen':nextModule.title}</span></div>
@@ -2431,12 +2375,6 @@ const DASHBOARD_WIDGETS = {
     if(!latest) return '';
     return `<div class="update-item" style="margin-bottom:0"><div class="update-top"><span class="version-badge">${latest.v}</span><span class="update-date">${latest.date}</span>${latest.isNew?'<span class="new-badge">Neu</span>':''}</div><h4>${latest.title}</h4><ul>${latest.items.slice(0,2).map(i=>`<li>${i}</li>`).join('')}</ul><div style="margin-top:10px"><a onclick="showView('updates')" style="font-size:14px;font-weight:700;color:var(--green-dark);cursor:pointer">Alle Neuigkeiten ansehen →</a></div></div>`;
   } },
-  rolefocus: { title:'Rollenfokus', render: () => { const rf = ROLE_FOCUS[state.role]; if(!rf) return '<p style="font-size:14px;color:var(--gray)">Für Ihre Rolle sind keine zusätzlichen Kennzahlen hinterlegt.</p>'; return `
-    <div class="stats-row">
-      ${rf.cards.map(c=>`<div class="stat-card" ${c.mod?`style="cursor:pointer" onclick="openModule(${c.mod})"`:c.link?`style="cursor:pointer" onclick="showView('${c.link}')"`:''}><div class="stat-label">${c.label}</div><div class="stat-val" style="font-size:18px">${c.val}</div><div class="stat-sub">${c.sub}</div></div>`).join('')}
-    </div>`; } },
-  recos: { title:'Empfohlen für Ihre Rolle', render: () => `
-    <div class="reco-grid">${(ROLE_RECOS[state.role]||[]).map(r=>`<div class="reco-card" style="cursor:pointer" onclick="${r.mod?`openModule(${r.mod})`:`showView('${r.view}')`}"><div class="reco-tag">${r.tag}</div><h4>${r.t}</h4><p>${r.d}</p><span class="w-link">${r.mod?'Zum Modul':'Öffnen'} →</span></div>`).join('')}</div>` }
 };
 /* ===== Zusätzliche Dashboard-Kacheln ===== */
 function todayKey(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -2525,8 +2463,8 @@ Object.assign(DASHBOARD_WIDGETS, {
   } }
 });
 function switchTabTo(tab){ state.currentTab=tab; document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['content','task','quiz','summary'][i]===tab)); renderTab(); }
-const DEFAULT_WIDGET_ORDER = ['nextstep','stats','rolefocus','recos','activity','recent','phases'];
-const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:false, gaps:false, updates:false, rolefocus:false, recos:false};
+const DEFAULT_WIDGET_ORDER = ['nextstep','stats','activity','recent','phases'];
+const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:false, gaps:false, updates:false};
 
 function loadDashboardPrefs(){
   try{
@@ -2610,7 +2548,6 @@ function moduleCardHtml(m, isPriority){
   </div>`;
 }
 
-const MODULE_GROUPS=[{title:'Grundlagen Onboarding',sub:'Die Basis für die tägliche Arbeit mit der OrKan Cloud',ids:[1,2,3,4,5,6]},{title:'Expertenwissen',sub:'Vertiefende Module für Maschinen, Schlüssel, Projekte, Bestandsführung, Inventur und Preise',ids:[7,8,9,10,11,12]}];
 function moduleGroupStart(id){ return MODULE_GROUPS.find(g=>g.ids[0]===id); }
 function certDoneCount(){ return MODULE_GROUPS[0].ids.filter(id=>state.moduleProgress[id]&&state.moduleProgress[id].completed).length; }
 function certTotal(){ return MODULE_GROUPS[0].ids.length; }
@@ -2638,7 +2575,7 @@ function renderRoadmap(){
       <div class="roadmap-side">
         ${progressRing(progressPct(), 188, 14, 'abgeschlossen')}
         <div class="roadmap-side-count"><span data-count="${completedCount()}">${completedCount()}</span> von ${MODULES.length} Modulen abgeschlossen</div>
-        <div class="roadmap-note">Ihr Lernpfad wurde basierend auf Ihrer Rolle als <strong>${state.role}</strong> personalisiert. Die Reihenfolge berücksichtigt typische Arbeitsabläufe dieser Rolle.${state.adaptiveLog.length?` Zusätzlich wurde der Pfad <strong>${state.adaptiveLog.length}×</strong> adaptiv angepasst, nachdem Wissenslücken erkannt wurden — Details siehe „Wissenslücken-Analyse".`:''}</div>
+        <div class="roadmap-note">Ihr Lernpfad führt Sie Schritt für Schritt durch die OrKan Cloud.${state.adaptiveLog.length?` Zusätzlich wurde der Pfad <strong>${state.adaptiveLog.length}×</strong> adaptiv angepasst, nachdem Wissenslücken erkannt wurden — Details siehe „Wissenslücken-Analyse".`:''}</div>
         ${state.adaptiveLog.length?`<div class="adaptive-log" style="margin-top:14px">${state.adaptiveLog.slice(0,4).map(l=>`<div class="log-item"><span class="log-dot"></span><span>${l.time} — ${l.text}</span></div>`).join('')}</div>`:''}
       </div>
     </div>
@@ -2678,13 +2615,7 @@ function openModule(id){
 }
 function moduleIntroCoachMsg(id){
   const m = MODULES.find(x=>x.id===id);
-  const intros = {
-    'Lagerleiter':'Als Lagerleiter empfehle ich, besonders auf die Praxisaufgabe zu achten — die Inhalte hier wirken sich direkt auf Ihr Team aus.',
-    'Einkäufer':'Für Sie als Einkäufer ist dieser Bereich besonders relevant für Ihre tägliche Bestellpraxis.',
-    'Geschäftsführer':'Als Geschäftsführer reicht Ihnen vermutlich der Überblick — die Kernaussagen finden Sie nach dem Wissenscheck in der Zusammenfassung.',
-    'Monteur':'Als Monteur reicht es meist, wenn Sie das Zwei-Etiketten-System sicher beherrschen — bei den übrigen Modulen genügt ein grober Überblick.'
-  };
-  return `Los geht's mit „${m.title}". ${intros[state.role]||'Schauen Sie sich zunächst das Video an, bearbeiten Sie danach die Praxisaufgabe und schließen Sie mit dem Wissenscheck ab.'} Bei Fragen bin ich jederzeit hier.`;
+  return `Los geht's mit „${m.title}". Schauen Sie sich zunächst das Video an, bearbeiten Sie danach die Praxisaufgabe und schließen Sie mit dem Wissenscheck ab. Bei Fragen bin ich jederzeit hier.`;
 }
 function coachProactive(text){
   addAIMsg('bot', text);
@@ -3254,10 +3185,9 @@ function renderGaps(){
 function refreshProfileMenu(){
   document.getElementById('profileMenuAvatar').textContent = state.name.charAt(0).toUpperCase();
   document.getElementById('profileMenuName').textContent = state.name;
-  document.getElementById('profileMenuRole').textContent = `${state.role} · ${state.company}`;
+  document.getElementById('profileMenuRole').textContent = `${state.company}`;
   document.getElementById('profileNameInput').value = state.name;
   document.getElementById('profileCompanyInput').value = state.company;
-  document.getElementById('profileRoleInput').value = state.role;
 }
 function toggleProfileMenu(){
   document.getElementById('profileMenu').classList.toggle('open');
@@ -3269,7 +3199,6 @@ document.addEventListener('click', e=>{
 function saveProfile(){
   state.name = document.getElementById('profileNameInput').value.trim() || state.name;
   state.company = document.getElementById('profileCompanyInput').value.trim() || state.company;
-  state.role = document.getElementById('profileRoleInput').value;
   document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
   refreshProfileMenu();
   updateSidebarProgress();
@@ -3282,17 +3211,16 @@ function autoSaveProfile(){
   const n=document.getElementById('profileNameInput').value.trim();
   const c=document.getElementById('profileCompanyInput').value.trim();
   if(n) state.name=n; if(c) state.company=c;
-  state.role=document.getElementById('profileRoleInput').value;
   document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
   document.getElementById('profileMenuAvatar').textContent = state.name.charAt(0).toUpperCase();
   document.getElementById('profileMenuName').textContent = state.name;
-  document.getElementById('profileMenuRole').textContent = `${state.role} · ${state.company}`;
+  document.getElementById('profileMenuRole').textContent = `${state.company}`;
   updateSidebarProgress();
   saveState();
   const st=document.getElementById('profileSaved'); if(st){ st.textContent='✓ Automatisch gespeichert'; st.classList.add('on'); clearTimeout(st.__t); st.__t=setTimeout(()=>st.classList.remove('on'),1800); }
 }
 document.addEventListener('input', e=>{ if(e.target.id==='profileNameInput'||e.target.id==='profileCompanyInput'){ clearTimeout(__profileTimer); __profileTimer=setTimeout(autoSaveProfile,500); } });
-document.addEventListener('change', e=>{ if(e.target.id==='profileRoleInput'||e.target.id==='profileNameInput'||e.target.id==='profileCompanyInput'){ clearTimeout(__profileTimer); autoSaveProfile(); } });
+document.addEventListener('change', e=>{ if(e.target.id==='profileNameInput'||e.target.id==='profileCompanyInput'){ clearTimeout(__profileTimer); autoSaveProfile(); } });
 function logoutProfile(){
   document.getElementById('profileMenu').classList.remove('open');
   document.getElementById('app').style.display='none';
@@ -3304,7 +3232,7 @@ function toggleAI(){
   if(state.aiOpen) document.getElementById('aiNotifDot').style.display='none';
 }
 function seedAIMessages(){
-  document.getElementById('aiMessages').innerHTML = `<div class="ai-msg bot">Willkommen, ${state.name}. Ich habe Ihren Lernpfad basierend auf Ihrer Rolle als ${state.role} zusammengestellt. Wie kann ich Ihnen helfen?</div>`;
+  document.getElementById('aiMessages').innerHTML = `<div class="ai-msg bot">Willkommen, ${state.name}. Ich habe Ihren Lernpfad zusammengestellt. Wie kann ich Ihnen helfen?</div>`;
   document.getElementById('suggChips').innerHTML = ['Wo stehe ich im Onboarding?','Was sollte ich als Nächstes lernen?','Habe ich Wissenslücken?','Wie funktioniert der DATANORM-Import?'].map(s=>`<div class="sugg-chip" onclick="sendAI('${s}')">${s}</div>`).join('');
 }
 function coachWidgetGreeting(){
@@ -3411,7 +3339,7 @@ function appointmentMailData(){
   const email = document.getElementById('appointmentEmail').value.trim();
   const message = document.getElementById('appointmentMessage').value.trim();
   const subject = `Persönlicher Termin – OrKan Cloud Onboarding (${name})`;
-  const body = `${message}\n\n---\nName: ${name}\nE-Mail: ${email}\nUnternehmen: ${state.company||''}\nRolle: ${state.role||''}`;
+  const body = `${message}\n\n---\nName: ${name}\nE-Mail: ${email}\nUnternehmen: ${state.company||''}`;
   return {name,email,message,subject,body,href:`mailto:${appointmentSelected?appointmentSelected.email:''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`};
 }
 function updateAppointmentMailLink(){ if(appointmentSelected) document.getElementById('appointmentSendBtn').href = appointmentMailData().href; }
@@ -3502,7 +3430,7 @@ function getAIResponse(text){
     const adaptive = getAdaptiveRecommendation();
     if(adaptive) return `Ich habe bei „${adaptive.topic}" eine Wissenslücke erkannt. Ihr Lernpfad wurde adaptiv angepasst: Ich empfehle vorrangig „${adaptive.module.title}" zur Vertiefung, bevor Sie regulär fortfahren.`;
     const next = MODULES.find(m=>!state.moduleProgress[m.id].completed);
-    return next ? `Empfehlung: Setzen Sie fort mit „${next.title}" (${next.time}). Dies passt am besten zu Ihrer Rolle als ${state.role}.` : 'Sie haben alle Module abgeschlossen — besuchen Sie den Bereich Zertifikate, um Ihr Zertifikat zu erhalten.';
+    return next ? `Empfehlung: Setzen Sie fort mit „${next.title}" (${next.time}).` : 'Sie haben alle Module abgeschlossen — besuchen Sie den Bereich Zertifikate, um Ihr Zertifikat zu erhalten.';
   }
   if(t.includes('wissenslück')||t.includes('lücke')||t.includes('schwäch')){
     const topics = Object.entries(state.weakTopics).sort((a,b)=>b[1]-a[1]);
@@ -3692,7 +3620,7 @@ const __origCheckStart = checkStart;
 checkStart = function(){
   const name = document.getElementById('onbName').value.trim();
   const code = (document.getElementById('onbTeamCode')||{}).value||'';
-  document.getElementById('startBtn').disabled = !(name && state.role);
+  document.getElementById('startBtn').disabled = !name;
 };
 document.addEventListener('input', e=>{ if(e.target.id==='onbTeamCode') checkStart(); });
 function cleanSeg(s){ return String(s||'').replace(/[^A-Za-z0-9_\-.~:@+]/g,'_').slice(0,120) || 'x'; }
