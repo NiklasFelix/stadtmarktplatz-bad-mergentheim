@@ -1755,7 +1755,7 @@ const MODULES = [
       funk:['Bestellvorschlag per Scan mit Auto-Enter','Teilbestellungen je Lieferant','Drei-Fenster-Bestellabschluss'], hand:['Bestellbox täglich zur festen Uhrzeit leeren','Zusammenfassung vor dem Senden immer prüfen'] }
   },
   { id:6, phase:3, title:'Wareneingang und Lagerbestand', time:'8 Min.', diff:2,
-    gist:['Wareneingang bestätigen','Lagerbestand & Warenwert','Inventur'],
+    gist:['Wareneingang buchen','Weißes Etikett zurück','Lagerbestand & Warenwert'],
     points:[
       "## 1. Wareneingang bestätigen",
       "<div>Den Wareneingang buchen Sie auf verschiedenen Wegen:<ul class=\"sub-points\"><li><strong>Über den Kalender:</strong> Auf den Tag klicken – die erweiterte Ansicht mit den „B“-Einträgen (Bestellungen) erscheint. Durch Ankreuzen des Hakens buchen Sie den Wareneingang.</li><li><strong>Über „Bestellungen“:</strong> Rechts oben den Filter auf „Offene Bestellungen“ setzen, die Bestellung anklicken und auf „Wareneingang“ klicken – es erscheint dieselbe Ansicht wie im Kalender, dort buchen Sie den Wareneingang.</li><li><strong>Abgeschlossene Bestellungen</strong> sehen Sie, indem Sie den Filter rechts oben auf „Abgeschlossene Bestellungen“ umstellen.</li></ul></div>",
@@ -1763,9 +1763,7 @@ const MODULES = [
       "<div><strong>Wichtig beim Einlagern:</strong> Nehmen Sie das weiße Etikett mit und bringen Sie es wieder am Regal an – nur so funktioniert das Zwei-Etiketten-System für die nächste Bestellung.</div>",
       "## 2. Lagerbestand und Warenwert",
       "Der Reiter „Lagerbestand\" zeigt je Artikel den aktuellen Bestand, Lager MIN/MAX sowie den geschätzten Warenwert; über „Buchungen\" lässt sich die komplette Bewegungshistorie eines Artikels einsehen.",
-      "Ist keine Bestandsführung aktiviert, lässt sich der Warenwert näherungsweise schätzen: Mittelwert aus Lager MIN und Lager MAX × Einkaufspreis, aufsummiert über alle Artikel – trifft in der Praxis zu rund 90 % zu.",
-      "## 3. Inventur",
-      "Für die Inventur gibt es zwei Wege: Export als Excel-Liste mit manuell ergänzter Zählmenge, oder – mit aktivierter (kostenpflichtiger) Bestandsführung – die App-Funktion „Inventur\" mit direkter Scan-Erfassung."
+      "Ist keine Bestandsführung aktiviert, lässt sich der Warenwert näherungsweise schätzen: Mittelwert aus Lager MIN und Lager MAX × Einkaufspreis, aufsummiert über alle Artikel – trifft in der Praxis zu rund 90 % zu."
     ],
     features:[
       {t:'Drei-Fenster-Bestellabschluss',d:'Wareneingangsprüfungs-Zettel, Bestellübersicht und Warenkorb im Händler-Shop in einem Schritt'},
@@ -1780,7 +1778,7 @@ const MODULES = [
       {q:"Ohne Bestandsführung: Ein Artikel hat Lager MIN = 10, Lager MAX = 30 und einen Einkaufspreis von 2 €. Wie hoch ist der geschätzte Warenwert?",o:["20 €", "40 €", "60 €", "80 €"],a:1,t:"Warenwert-Näherung"},
       {q:"Im Scan-Bestelleingang zeigt sich: Bestellt waren 10 Stück, geliefert wurden 8. Wie gehen Sie richtig vor?",o:["Den Wareneingang sofort vollständig bestätigen", "Die Bestellung löschen und neu bestellen", "Die Abweichung zuerst mit dem Lieferanten klären und danach den Wareneingang bestätigen", "Nichts tun – OrKan Cloud gleicht die Menge automatisch aus"],a:2,t:"Mengenabweichung"},
       {q:"Was bedeutet eine rot markierte offene Bestellung im Scan-Bestelleingang?",o:["Sie ist überfällig", "Sie ist heute fällig", "Sie ist erst künftig fällig", "Sie wurde bereits bestätigt"],a:0,t:"Scan-Bestelleingang"},
-      {q:"Wie führen Sie eine Inventur durch, wenn die kostenpflichtige Bestandsführung NICHT aktiviert ist?",o:["Über die App-Funktion „Inventur“ mit Scan-Erfassung", "Eine Inventur ist dann nicht möglich", "Nur über einen Auftrag an den OrKan-Support", "Lagerbestand als Excel-Liste exportieren und die gezählte Menge manuell ergänzen"],a:3,t:"Inventur"},
+      {q:"Sie haben eine Lieferung eingelagert. Was müssen Sie mit dem weißen Etikett tun?",o:["Es wegwerfen – es wird neu gedruckt", "Es mitnehmen und wieder am Regal anbringen", "Es in der Bestellbox lassen", "Es beim Lieferanten abgeben"],a:1,t:"Weißes Etikett zurück"},
       {q:"Wo sehen Sie die komplette Bewegungshistorie eines einzelnen Artikels?",o:["Unter „Bestellungen“", "Im Lagerbestand über „Buchungen“", "Im Druck-Dialog der Artikel", "Im Kalender der Startseite"],a:1,t:"Buchungshistorie"}
     ],
     summary:{ kern:['Der Bestellabschluss verbindet Wareneingangsprüfungs-Zettel, Bestellübersicht und Warenkorb im Händler-Shop in einem durchgängigen Drei-Fenster-Prozess.','Der Scan-Bestelleingang bestätigt Lieferungen per Ampelfarbe und macht Mengenabweichungen direkt sichtbar.','Ohne Bestandsführung lässt sich der Warenwert über Lager MIN/MAX und Einkaufspreis mit rund 90 % Genauigkeit schätzen.'],
