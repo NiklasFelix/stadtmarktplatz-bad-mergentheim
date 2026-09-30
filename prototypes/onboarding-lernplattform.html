@@ -1949,13 +1949,9 @@ const MODULES = [
 ];
 
 (function(){
-  const base = MODULE_GROUPS[0].ids;
-  const min = MODULES.filter(m=>base.includes(m.id)).reduce((t,m)=>t+parseInt(m.time),0);
   const ic = d => `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
   document.getElementById('onbRoadmapPreview').innerHTML = `
-    <div class="onb-hero-stat"><strong>ca. ${min} Min.</strong><span>Lernzeit für die Grundlagen – in kleinen Etappen, jederzeit unterbrechbar. Ihr Fortschritt wird automatisch gespeichert.</span></div>
     <div class="onb-perk">${ic('<rect x="3" y="4" width="18" height="14" rx="2"/><path d="m10 8 5 3-5 3z"/><path d="M8 21h8"/>')}<div><strong>Praxisnah lernen</strong><span>Video, Praxisaufgabe und Wissenscheck – direkt in der OrKan Cloud ausprobieren</span></div></div>
-    <div class="onb-perk">${ic('<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="m9 12 2 2 4-4"/>')}<div><strong>Zweite Chance im Wissenscheck</strong><span>Jede falsch beantwortete Frage dürfen Sie ein zweites Mal beantworten</span></div></div>
     <div class="onb-perk">${ic('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>')}<div><strong>Jederzeit nachschlagen</strong><span>Wissensdatenbank und Best Practices mit Schritt-für-Schritt-Anleitungen</span></div></div>`;
 })();
 
