@@ -1546,8 +1546,9 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
       <span class="appointment-field-error" id="appointmentMessageError"></span>
       <div class="appointment-form-actions">
         <button type="button" class="btn btn-outline" onclick="backToContactList()">Zurück</button>
-        <button type="button" class="btn btn-primary" id="appointmentSendBtn" onclick="openMailChooser()">Per E-Mail senden</button>
+        <a class="btn btn-primary" id="appointmentSendBtn" href="#" target="_blank" rel="noopener" style="text-align:center;text-decoration:none" onclick="return appointmentMailClick(event)">Per E-Mail senden</a>
       </div>
+      <p style="text-align:center;margin-top:8px;font-size:13px"><a href="#" onclick="copyAppointmentMail();return false" style="color:#8EA752">Öffnet sich nichts? Nachricht kopieren</a></p>
       <p id="appointmentSendStatus" class="appointment-send-status"></p>
     </form>
   </div>
