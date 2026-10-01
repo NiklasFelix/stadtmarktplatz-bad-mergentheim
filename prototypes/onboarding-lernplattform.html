@@ -1772,17 +1772,31 @@ const MODULES = [
     summary:{ kern:['Der Wareneingang lässt sich über den Kalender oder über „Bestellungen“ (Filter: offene Bestellungen) buchen.','Abgeschlossene Bestellungen finden Sie über den Filter „Abgeschlossene Bestellungen“.','Beim Einlagern kommt das weiße Etikett wieder ans Regal – so bleibt das Zwei-Etiketten-System intakt.'],
       funk:['Wareneingang im Kalender','Wareneingang über Bestellungen','Scan-Bestelleingang'], hand:['Wareneingang zeitnah buchen','Weißes Etikett immer wieder anbringen'] }
   },
-  { id:7, phase:3, title:'Maschinenverwaltung', time:'12 Min.', diff:2,
+  { id:7, phase:3, title:'Maschinenverwaltung', time:'15 Min.', diff:2,
     gist:['Maschinen anlegen','Buchungslogik','Service & Wartung'],
     points:[
-      "## 1. Maschinen anlegen",
-      "Maschinen werden mit Name, Seriennummer, Wert, Heimatstandort (Fahrzeug, Lagerort, Gebäude oder Person) und Anschaffungsdatum angelegt – was als „Maschine\" geführt wird, definiert der Kunde selbst, auch eine Leiter kann so erfasst sein.",
+      "## 1. Grundlagen Gebrauchsgut",
+      "Im Bereich „Gebrauchsgut“ verwalten Sie alles, was nicht verbraucht, sondern ausgegeben und zurückgebracht wird: Maschinen, Schlüssel, Anlagen, Bauteile und Flaschen.",
+      "Jedes Gebrauchsgut hat einen <strong>Heimatstandort</strong> (wo es hingehört) und einen <strong>aktuellen Standort</strong> (wo es gerade ist). Eine Buchung verschiebt nur den aktuellen Standort – z. B. auf eine Person, ein Fahrzeug oder ein Projekt.",
+      "<div>Menü (☰) → „Gebrauchsgut“:<ul class=\"sub-points\"><li><strong>Übersicht:</strong> Bestandsliste – anlegen, buchen, Heimatstandort ändern</li><li><strong>Standorte:</strong> alle Standorte mit Materialliste und Historie</li><li><strong>Buchungen:</strong> alle Buchungen, neue Buchung, Rückgabe</li><li><strong>Reservierungen:</strong> Gebrauchsgüter für einen Zeitraum vormerken</li><li><strong>Service/Wartung:</strong> E-Check, Service, Wartung, TÜV, Eichung, Reparatur</li></ul></div>",
+      "## 2. Maschinen anlegen",
+      "Klickweg: „Gebrauchsgut“ → „Übersicht“ → oben rechts die Gebrauchsgutart „Maschine“ wählen → „Erstellen“. Wichtig: Erst die Gebrauchsgutart wählen – sie bestimmt die Felder im Formular.",
+      "<div>Felder im Fenster „Maschine“:<ul class=\"sub-points\"><li><strong>Pflichtfelder (*):</strong> Nummer (wird vorgeschlagen, z. B. 831), Name (z. B. „Bohrhammer“), Beschreibung (z. B. Modell „DUSS P26 C“), Standorttyp und Standort als Heimatstandort</li><li><strong>Optional:</strong> Seriennummer, Wert in €, zuständiger Mitarbeiter, Projekt, Anschaffungsdatum, Kommentar (z. B. „mit 2 Akkus und Lader“), Farbe und Foto</li></ul></div>",
+      "Bei mehreren gleichen Geräten (z. B. zwei Pressmaschinen) hilft „Eingaben beibehalten“ – die Werte bleiben für die nächste Maschine stehen.",
+      "Was als „Maschine“ geführt wird, definiert der Betrieb selbst – auch eine Leiter kann so erfasst werden.",
       "Das erste hochgeladene Dokument erscheint auf dem Etikett, weitere Dokumente wie der Kaufbeleg werden nicht gedruckt, sind aber entscheidend für Garantiefälle.",
-      "## 2. Maschinen buchen",
+      "## 3. Maschinen buchen",
+      "<div>Gebucht wird immer auf einen Standort – zwei Wege führen zur gleichen Buchung:<ul class=\"sub-points\"><li><strong>Aus der Übersicht (ein Gerät):</strong> Checkbox vor der Maschine setzen → „Buchen“ → Standorttyp (Person, Projekt, Lagerort, Fahrzeug …) und Standort wählen → Häkchen</li><li><strong>Über „Buchungen“ (mehrere Geräte):</strong> „Erstellen“ → Standort wählen (z. B. Person „Andreas Lebert 201“) → Gebrauchsgutart und Gebrauchsgut wählen → Speichern. Mit „fortlaufende Eingabe“ bleibt das Fenster offen – ideal, wenn ein Monteur morgens mehrere Geräte bekommt.</li></ul></div>",
+      "<div><strong>Rückgabe:</strong> Unter „Buchungen“ die Buchung markieren und auf „Rückgabe“ klicken – oder das Gerät einfach zurück auf seinen Lagerort buchen.</div>",
+      "<div><strong>Heimatstandort ändern:</strong> Zieht eine Maschine dauerhaft um (z. B. ins Fahrzeug eines Monteurs), Zeile markieren → „Heimatstandort ändern“. Eine normale Buchung ändert nur den aktuellen Standort.</div>",
       "Ein Administrator kann jede Maschine auf jeden Standort buchen; ein Monteur kann über die App ausschließlich Maschinen zu sich selbst buchen, nicht stellvertretend auf andere Personen.",
-      "## 3. Service, Wartung und Anlagen",
+      "## 4. Service, Wartung und Reservierungen",
+      "Unter „Service/Wartung“ → „Erstellen“ erfassen Sie Prüfungen und Wartungen: Gebrauchsgut, Typ (E-Check, Service, Wartung, TÜV, Eichung oder Reparatur), Datum, ausführende Firma und Intervall in Monaten. Über den Status „Offen“ sehen Sie, welche Prüfungen anstehen.",
       "Service & Wartung muss als Zusatzfunktion separat aktiviert werden (verursacht aber keine Zusatzkosten) – erst dann lassen sich Intervalle wie eine jährliche VDE-Prüfung hinterlegen, bei deren Bestätigung automatisch ein Folgetermin angelegt wird.",
-      "Mehrere Einzelteile lassen sich zu einer „Anlage\" bündeln (z. B. Kernbohrgerät, Befestigungsset und Staubsauger): Ein einziger Scan bucht alle Teile gemeinsam, jedes bleibt aber ein eigener Artikel mit eigener Wartungshistorie. Eine „Reservierung\" ist dabei keine technische Sperre, sondern nur ein Hinweis in einer Liste."
+      "Unter „Reservierungen“ → „Erstellen“ merken Sie ein Gebrauchsgut für einen Zeitraum vor. Eine Reservierung ist dabei keine technische Sperre, sondern nur ein Hinweis in einer Liste.",
+      "Mehrere Einzelteile lassen sich zu einer „Anlage\" bündeln (z. B. Kernbohrgerät, Befestigungsset und Staubsauger): Ein einziger Scan bucht alle Teile gemeinsam, jedes bleibt aber ein eigener Artikel mit eigener Wartungshistorie.",
+      "## 5. Wo ist was?",
+      "<div>Drei Stellen beantworten diese Frage:<ul class=\"sub-points\"><li><strong>Wo ist Maschine X gerade?:</strong> „Übersicht“ → Spalte „Aktueller Standort“, das + vor der Zeile zeigt Details</li><li><strong>Wer hatte X wann?:</strong> „Buchungen“ – mit Suche und Filtern, + zeigt gebucht und ausgebucht am</li><li><strong>Was hat Person Y oder Projekt Z?:</strong> „Standorte“ → Zeile markieren → „Materialliste“ (auch druckbar)</li></ul></div>"
     ],
     features:[
       {t:'Vollständige Maschinen-Stammdaten',d:'Inkl. Electronic ID als Alternative zum QR-Code-Scan (NFC/RFID)'},
@@ -1791,14 +1805,14 @@ const MODULES = [
     ],
     practice:'Bei 16 baugleichen Pressmaschinen für 20 Monteure lässt sich im Reparaturfall nur dank des digital hinterlegten Kaufbelegs pro Seriennummer zweifelsfrei klären, welche Maschine noch Garantie hat – ohne diese Zuordnung würden berechtigte Garantieansprüche abgelehnt.',
     task:'Legen Sie eine Testmaschine mit Kaufbeleg an, aktivieren Sie Service & Wartung und hinterlegen Sie ein Wartungsintervall.',
-    checklist:['Über „Gebrauchsgut" → „Maschinen" → „Erstellen" eine Testmaschine mit Name, Seriennummer und Heimatstandort anlegen','Kaufbeleg als zusätzliches Dokument hochladen','Service & Wartung aktivieren und ein Intervall festlegen (z. B. Jahresservice)','Buchung der Maschine auf eine Testperson durchführen'],
+    checklist:["„Gebrauchsgut“ → „Übersicht“ öffnen und die Gebrauchsgutart „Maschine“ wählen", "Über „Erstellen“ eine Testmaschine mit allen Pflichtfeldern (*) anlegen", "Kaufbeleg als zusätzliches Dokument hochladen", "Die Maschine aus der Übersicht über „Buchen“ auf eine Person buchen", "Unter „Buchungen“ die Buchung markieren und „Rückgabe“ ausprobieren", "Unter „Service/Wartung“ einen Termin mit Intervall anlegen (z. B. Service, 12 Monate)", "Unter „Standorte“ die Materialliste einer Person aufrufen"],
     tip:'Prüfen Sie vor dem Kauf zusätzlicher Werkzeuge wie Entfernungsmesser, ob diese bereits in der Maschinenverwaltung erfasst sind — gerade kleinere, wertvolle Geräte werden bei Versicherungsfällen sonst leicht vergessen.',
     quiz:[
       {q:"Ein Monteur möchte über die App eine Maschine auf seinen Kollegen buchen. Ist das möglich?",o:["Ja, uneingeschränkt", "Ja, wenn der Kollege per App zustimmt", "Nein – Monteure können Maschinen nur auf sich selbst buchen; stellvertretend buchen kann ein Administrator", "Nein – Buchungen sind nur am Desktop möglich"],a:2,t:"Maschinen-Buchungslogik"},
       {q:"Für eine Maschine ist eine jährliche VDE-Prüfung hinterlegt. Was passiert, wenn die Prüfung bestätigt wird?",o:["Es wird automatisch ein Folgetermin angelegt", "Das Intervall endet und muss neu angelegt werden", "Die Maschine wird bis zur Freigabe gesperrt", "Der Administrator erhält eine Rechnung"],a:0,t:"Service & Wartung"},
       {q:"Kernbohrgerät, Befestigungsset und Staubsauger sind zu einer „Anlage“ gebündelt. Was bewirkt ein einziger Scan?",o:["Nur das Hauptgerät wird gebucht", "Die Teile verschmelzen dauerhaft zu einem Artikel", "Anlagen können nicht per Scan gebucht werden", "Alle Teile werden gemeinsam gebucht – jedes bleibt ein eigener Artikel mit eigener Wartungshistorie"],a:3,t:"Anlagen"},
       {q:"Ein Gerät ist für Donnerstag reserviert. Kann ein anderer Mitarbeiter es am Mittwoch trotzdem entnehmen?",o:["Nein, das Gerät lässt sich nicht mehr scannen", "Ja – eine Reservierung ist nur ein Hinweis in einer Liste, keine technische Sperre", "Nur mit Freigabe des Administrators", "Reservierungen gibt es in der OrKan Cloud nicht"],a:1,t:"Reservierung"},
-      {q:"Von 16 baugleichen Pressmaschinen ist eine defekt. Was ist entscheidend, um den Garantieanspruch zu klären?",o:["Das Anschaffungsdatum der gesamten Gerätegruppe", "Die Farbe des Etiketts", "Der je Seriennummer hinterlegte Kaufbeleg", "Der Heimatstandort der Maschine"],a:2,t:"Kaufbeleg & Garantie"}
+      {q:"Eine Maschine soll dauerhaft im Fahrzeug eines Monteurs bleiben. Was ist der richtige Weg?",o:["Die Maschine einfach auf das Fahrzeug buchen", "„Heimatstandort ändern“ – eine normale Buchung ändert nur den aktuellen Standort", "Die Maschine löschen und neu anlegen", "Eine Reservierung anlegen"],a:1,t:"Heimatstandort"}
     ],
     summary:{ kern:['Maschinen werden mit vollständigen Stammdaten inkl. Heimatstandort und Kaufbeleg erfasst; was als „Maschine" gilt, bestimmt der Betrieb selbst.','Die Buchungslogik ist rollenabhängig: Admins buchen für alle, Monteure nur für sich selbst.','Service & Wartung ist separat aktivierbar und erzeugt nach Bestätigung automatisch Folgetermine; Anlagen bündeln mehrere Teile zu einer Sammelbuchung.'],
       funk:['Maschinen-Stammdaten & Electronic ID','Rollenbasierte Buchungslogik','Anlagen & Service/Wartung mit Automatik'], hand:['Kaufbelege konsequent bei jeder Maschine hinterlegen','Wartungsintervalle für prüfpflichtige Geräte sofort bei Anlage festlegen'] }
@@ -1810,9 +1824,14 @@ const MODULES = [
       "Schlüssel-Etiketten sind spezielle gefaltete Anhänger: außen nur eine Nummer und ein QR-Code, innen (nur beim Öffnen sichtbar) die Kundenadresse.",
       "Diese Trennung ist ein Sicherheitsprinzip: Beim traditionellen Schlüsselkasten mit Nummern 1 bis n und separatem Zuordnungsordner werden bei einem Einbruch meist beide zusammen entwendet – die Adressliste liegt dann offen. Bei OrKan steckt die Adresse digital hinter der Nummer und bleibt bei Diebstahl geschützt.",
       "Ein Finderlohn-Hinweis auf dem Etikett (Richtwert ca. 50 €) erhöht die Rückgabewahrscheinlichkeit – wichtig, da die Erneuerung hochwertiger Schließanlagen im Verlustfall deutlich teurer wird.",
-      "## 2. Suchen, buchen und zurückgeben",
+      "## 2. Schlüssel anlegen",
+      "Klickweg: „Gebrauchsgut“ → „Übersicht“ → oben rechts die Gebrauchsgutart „Schlüssel“ wählen → „Erstellen“.",
+      "<div>Felder im Fenster „Schlüssel“:<ul class=\"sub-points\"><li><strong>Pflichtfelder (*):</strong> Nummer (wird vorgeschlagen, z. B. 1009), Name – was der Schlüssel öffnet, z. B. „Heizraum“ –, Beschreibung – der genaue Ort, z. B. „unten rechts 2. Tür“ –, Standorttyp und Standort, z. B. „Hauptlager – Schlüsselkasten“</li><li><strong>Nur bei Schlüsseln:</strong> Anschrift, PLZ, Ort, Land, Telefon und Anzahl</li><li><strong>Optional:</strong> Projekt, Anschaffungsdatum, Kommentar, Farbe und Foto</li></ul></div>",
+      "Bei mehreren ähnlichen Schlüsseln bleiben mit „Eingaben beibehalten“ die Werte stehen. Einen Button „Service/Wartung“ gibt es bei Schlüsseln nicht.",
+      "## 3. Suchen, ausgeben und zurücknehmen",
       "Die Adresse muss als Suchkriterium in der Standardansicht verfügbar sein, da im Alltag primär über die Adresse gesucht wird (z. B. „Lerchenweg\"), nicht über die interne Schlüsselnummer.",
-      "Buchen funktioniert wie bei Maschinen: Schlüssel scannen, Zielperson (auch temporäre Trupps möglich) wählen, speichern – Rückgabe erfolgt durch erneutes Buchen auf den Schlüsselkasten."
+      "Ausgabe und Rückgabe laufen wie bei Maschinen über Buchungen: aus der Übersicht über „Buchen“ oder über „Buchungen“ → „Erstellen“. Zurück geht es über „Rückgabe“ oder durch erneutes Buchen auf den Schlüsselkasten.",
+      "<div><strong>Wer hat welchen Schlüssel?</strong> In der Übersicht zeigt das + vor der Zeile den aktuellen Standort; unter „Standorte“ → „Materialliste“ sehen Sie alle Schlüssel einer Person oder eines Projekts.</div>"
     ],
     features:[
       {t:'Gefaltetes Sicherheits-Etikett',d:'Nummer und QR-Code außen, Adresse nur innen sichtbar'},
@@ -1821,28 +1840,36 @@ const MODULES = [
     ],
     practice:'Bei einem Einbruch in eine Bankfiliale wird traditionell der komplette, unbeschriftete Schlüsselkasten samt separatem Zuordnungsordner entwendet – die Täter haben dann Zeit, anhand der Adressliste gezielt weitere Objekte aufzusuchen. Mit dem OrKan-Etikettenkonzept bleibt die Adresse digital geschützt, da sie nicht auf einem mitgeführten Zettel steht.',
     task:'Legen Sie einen Testschlüssel an und buchen Sie ihn auf eine Testperson.',
-    checklist:['Über „Gebrauchsgut" → „Schlüssel" → „Erstellen" einen Testschlüssel mit Adresse als Suchkriterium anlegen','Sicherheitsprinzip des gefalteten Etiketts nachvollziehen (außen anonym, innen Adresse)','Schlüssel auf eine Testperson buchen','Rückgabe durch erneutes Buchen auf den Schlüsselkasten simulieren'],
+    checklist:["„Gebrauchsgut“ → „Übersicht“ öffnen und die Gebrauchsgutart „Schlüssel“ wählen", "Über „Erstellen“ einen Testschlüssel mit allen Pflichtfeldern (*) und Adresse anlegen", "Sicherheitsprinzip des gefalteten Etiketts nachvollziehen (außen anonym, innen Adresse)", "Den Schlüssel auf eine Testperson buchen", "Über „Standorte“ → „Materialliste“ prüfen, dass die Person den Schlüssel hat", "Rückgabe über „Buchungen“ → „Rückgabe“ oder Buchen auf den Schlüsselkasten durchführen"],
     tip:'Schlüsselkästen dürfen niemals mit sichtbaren Adressangaben versehen sein — weder am Schlüssel selbst noch in einem danebenliegenden Zuordnungs-Ordner. Das ist kein Detail, sondern ein zentrales Sicherheitsprinzip.',
     quiz:[
       {q:"Was ist auf der Außenseite eines OrKan-Schlüsselanhängers zu sehen?",o:["Nur eine Nummer und ein QR-Code", "Die vollständige Kundenadresse", "Der Name des zuständigen Monteurs", "Die Adresse und der QR-Code"],a:0,t:"Schlüssel-Etikett"},
       {q:"Ein Monteur braucht „den Schlüssel für den Lerchenweg 12“. Wie finden Sie ihn am schnellsten?",o:["Über die interne Schlüsselnummer aus dem Gedächtnis", "Über die Adresssuche in der Standardansicht", "Über einen Zuordnungsordner neben dem Schlüsselkasten", "Durch Aufklappen aller Anhänger"],a:1,t:"Adresssuche"},
       {q:"Warum ist der klassische Schlüsselkasten mit separatem Zuordnungsordner ein Sicherheitsrisiko?",o:["Die Schlüssel sind nicht nummeriert", "Der Ordner ist zu schnell veraltet", "Es gibt kein Risiko", "Bei einem Einbruch werden Kasten und Ordner meist gemeinsam entwendet – die Adressen liegen dann offen"],a:3,t:"Sicherheitsprinzip"},
       {q:"Wie wird die Rückgabe eines ausgeliehenen Schlüssels erfasst?",o:["Das Etikett wird abgetrennt", "Der Administrator löscht die Buchung", "Durch erneutes Buchen auf den Schlüsselkasten", "Die Buchung läuft nach 24 Stunden automatisch aus"],a:2,t:"Buchung & Rückgabe"},
-      {q:"Wozu dient ein Finderlohn-Hinweis (ca. 50 €) auf dem Schlüsselanhänger?",o:["Er erhöht die Rückgabewahrscheinlichkeit – der Ersatz einer Schließanlage wäre deutlich teurer", "Er ist gesetzlich vorgeschrieben", "Er ersetzt die Adressangabe", "Er dient nur der Optik"],a:0,t:"Finderlohn"}
+      {q:"Ein Kollege fragt, welche Schlüssel ein bestimmter Monteur gerade hat. Wo sehen Sie das am schnellsten?",o:["Unter „Service/Wartung“", "Unter „Standorte“ → Person markieren → „Materialliste“", "Im Lieferantenstamm", "Im Druck-Dialog der Etiketten"],a:1,t:"Wer hat welchen Schlüssel"}
     ],
     summary:{ kern:['Schlüssel-Etiketten trennen aus Sicherheitsgründen Nummer/QR-Code (außen) von der Adresse (innen) – anders als beim klassischen Kasten mit offenliegendem Zuordnungsordner.','Die Adresssuche ist bei größeren Schlüsselbeständen essenziell und muss in der Standardansicht verfügbar sein.','Buchung und Rückgabe folgen derselben Logik wie bei der Maschinenverwaltung, inklusive Finderlohn-Option auf dem Etikett.'],
       funk:['Gefaltetes Sicherheits-Etikett','Adresssuche als Standard'], hand:['Adressfilter bei der täglichen Schlüsselsuche konsequent nutzen','Nie Adressinformationen sichtbar am Schlüsselkasten anbringen'] }
   },
-  { id:9, phase:3, title:'Projekte und Baustellen', time:'10 Min.', diff:2,
+  { id:9, phase:3, title:'Projekte und Baustellen', time:'12 Min.', diff:2,
     gist:['Materialentnahme per App','Projekt-Statistik','Branchensoftware-Anbindung'],
     points:[
       "## 1. Warum Entnahmen dokumentieren?",
       "Das Projekte-Modul dokumentiert Materialentnahmen auf Baustellen, die sonst nur handschriftlich per „Aufmaß\" erfasst und leicht vergessen werden.",
       "Wird eine Entnahme vergessen, entsteht ein realer Verlust: Beispiel Armatur mit Einkaufspreis 200 € und Verkaufspreis 600 € – ohne dokumentiertes Aufmaß gehen dem Betrieb die 400 € Differenz verloren.",
-      "## 2. Buchen per App",
+      "## 2. Projekte anlegen",
+      "Klickweg: Menü → „Projekte“ → „Projekte“ → „Erstellen“. Sobald ein Projekt angelegt ist, erscheint es automatisch als Standort vom Typ „Projekt“ – Material und Gebrauchsgüter lassen sich dann direkt darauf buchen.",
+      "<div>Felder im Fenster „Projekt erstellen“:<ul class=\"sub-points\"><li><strong>Pflichtfelder (*):</strong> Name (z. B. „Umbau Sprügel“) und Auftragsnummer (z. B. 2204001)</li><li><strong>Optional:</strong> Baustellenadresse, verantwortlicher Mitarbeiter, Lager/Gebäude, Vorgängerprojekt, Laufzeit und Farbe</li></ul></div>",
+      "<div><strong>Projektorte:</strong> Hat ein Auftrag mehrere Adressen, legen Sie unter der Projektliste beim angeklickten Projekt weitere Projektorte an – wahlweise als Warenstandort und/oder Fahrzeugstandort. Auch Projektorte sind beim Buchen als Standort wählbar.</div>",
+      "Die Projektliste lässt sich über den Filter oben rechts nach „Aktiv“ oder „Abgeschlossen“ anzeigen; Projekte können importiert und exportiert werden.",
+      "## 3. Material und Gebrauchsgüter auf das Projekt buchen",
       "Übersteigt eine gebuchte Entnahme den verfügbaren Lagerbestand, warnt die App zwar, lässt die Buchung aber trotzdem zu – so bleibt die physische Entnahme in jedem Fall dokumentiert.",
       "Die volle Nutzung erfordert drei zusammenwirkende Module (Projekte, Bestandsführung, OrKan-App) für zusammen ca. 25–30 €/Monat – über die Desktop-Oberfläche ist keine Materialbuchung im Feld möglich.",
-      "## 3. Alternative: Branchensoftware",
+      "Maschinen und Schlüssel buchen Sie mit dem Standorttyp „Projekt“ (oder „Projektort“) auf die Baustelle. Was gerade auf dem Projekt liegt, zeigt „Gebrauchsgut“ → „Standorte“ → Projekt markieren → „Materialliste“.",
+      "## 4. Projekt abschließen",
+      "Projekt anklicken → „Abschließen“. Vorher die Materialliste prüfen und alle Gebrauchsgüter zurückbuchen. Abgeschlossene Projekte finden Sie über den Filter „Abgeschlossen“.",
+      "## 5. Alternative: Branchensoftware",
       "Meist sinnvoller: Der OrKan-Artikelstamm wird per Matchcode (interne Artikelnummer) direkt in die Branchensoftware importiert, sodass Monteure Entnahmen dort buchen, wo sie ohnehin schon für Baustellen und Zeiterfassung arbeiten – ohne zusätzliche OrKan-Modulkosten."
     ],
     features:[
@@ -1852,14 +1879,14 @@ const MODULES = [
     ],
     practice:'Ein Monteur baut ungeplant eine zusätzliche Infrarotheizung aus dem eigenen Lager statt vom Großhändler ein. Ohne App-Buchung fehlt der Beleg komplett – das Material wird nie nachkalkuliert und der Verkaufspreis geht verloren.',
     task:'Simulieren Sie eine Materialentnahme für ein Testprojekt, auch mit einer Menge über dem verfügbaren Bestand.',
-    checklist:['Über „Projekte" → „Erstellen" ein Projekt mit Name und Auftragsnummer anlegen','Materialentnahme über die App simulieren: „Lagerverwaltung" → „Entnahme" → Artikel scannen, Menge angeben, Projekt auswählen','Eine Entnahme über dem verfügbaren Bestand testen und den Warnhinweis beobachten','Über „Statistik" → „Projekte" die Buchungsliste für die Nachkalkulation aufrufen','Alternative Matchcode-Integration mit der Branchensoftware nachvollziehen'],
+    checklist:["Über „Projekte“ → „Projekte“ → „Erstellen“ ein Projekt mit Name und Auftragsnummer anlegen", "Beim Projekt einen Projektort mit Adresse anlegen", "Eine Maschine oder einen Schlüssel mit Standorttyp „Projekt“ auf das Projekt buchen", "Materialentnahme über die App simulieren: „Lagerverwaltung“ → „Entnahme“ → Artikel scannen, Menge angeben, Projekt auswählen", "Unter „Standorte“ die Materialliste des Projekts prüfen", "Alle Gebrauchsgüter zurückbuchen und das Projekt abschließen"],
     tip:'Achten Sie bei der Projekt-Statistik darauf, dass jeder gebuchte Artikel eine gepflegte Bezeichnung im Artikelstamm hat — sonst erscheint in der Auswertung nur eine bedeutungslose Artikelnummer statt eines lesbaren Namens.',
     quiz:[
       {q:"Eine per App gebuchte Materialentnahme übersteigt den verfügbaren Lagerbestand. Was passiert?",o:["Die Buchung wird blockiert", "Die überschüssige Menge wird automatisch storniert", "Es erscheint keine Warnung", "Die App warnt, lässt die Buchung aber zu – damit die Entnahme dokumentiert bleibt"],a:3,t:"Materialentnahme-Warnung"},
       {q:"Eine entnommene Armatur (EK 200 €, VK 600 €) wird nicht dokumentiert. Welcher Verlust entsteht dem Betrieb?",o:["Kein Verlust, nur ein Formfehler", "200 € – der Einkaufspreis", "400 € – die Differenz zwischen Verkaufs- und Einkaufspreis", "600 € – der volle Verkaufspreis"],a:2,t:"Nachkalkulations-Risiko"},
       {q:"Welche Module werden für die volle Projektbuchung per App benötigt?",o:["Projekte, Bestandsführung und die OrKan-App", "Nur das Projekte-Modul", "Projekte und Schlüsselverwaltung", "Keine – das ist im Standard enthalten"],a:0,t:"Benötigte Module"},
       {q:"Ihr Betrieb nutzt bereits eine Branchensoftware für Baustellen und Zeiterfassung. Welche Lösung ist meist sinnvoller?",o:["Zusätzlich alle Buchungen doppelt in der OrKan-App erfassen", "Den OrKan-Artikelstamm per Matchcode in die Branchensoftware importieren und dort buchen", "Entnahmen nur noch per Papier-Aufmaß erfassen", "Auf die Dokumentation verzichten"],a:1,t:"Matchcode-Integration"},
-      {q:"In der Projekt-Statistik erscheinen nur Artikelnummern statt lesbarer Namen. Was ist die Ursache?",o:["Der Export ist fehlerhaft", "Das Projekt wurde falsch angelegt", "Die App ist veraltet", "Die Artikelbezeichnungen sind im Artikelstamm nicht gepflegt"],a:3,t:"Projekt-Statistik"}
+      {q:"Sie möchten ein Projekt abschließen. Was sollten Sie vorher tun?",o:["Nichts – abschließen geht jederzeit ohne Folgen", "Die Materialliste prüfen und alle Gebrauchsgüter zurückbuchen", "Das Projekt löschen und neu anlegen", "Die Auftragsnummer entfernen"],a:1,t:"Projekt abschließen"}
     ],
     summary:{ kern:['Das Projekte-Modul verhindert, dass Materialentnahmen auf Baustellen unkalkuliert bleiben – Buchungen werden auch bei Bestandsüberschreitung mit Warnhinweis zugelassen, damit nichts undokumentiert bleibt.','Die volle App-Lösung kostet mit drei zusammenwirkenden Modulen ca. 25–30 €/Monat.','Als meist kostengünstigere Alternative gilt die direkte Matchcode-Integration mit der ohnehin genutzten Branchensoftware.'],
       funk:['Entnahme & Einlagerung per App','Alternative Matchcode-Integration'], hand:['Vor Projektstart sicherstellen, dass Artikelbezeichnungen im Stamm gepflegt sind','Bei bereits genutzter Branchensoftware die Matchcode-Integration als kostengünstigere Alternative prüfen'] }
