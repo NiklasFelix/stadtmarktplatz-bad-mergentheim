@@ -3033,7 +3033,8 @@ function renderBest(){
   document.getElementById('view-best').innerHTML = `
     <h1 class="page-title">Praxiserprobte Anleitungen für häufige Aufgaben</h1>
     <p class="page-sub">Schritt-für-Schritt-Anleitungen, nach Themen geordnet.</p>
-    ${groupByModule(BEST_PRACTICES, card).replace(/class="kb-grid"/g,'class="bp-grid"')}
+    <div class="chip-row">${['Alle',...KB_TOPICS.map(t=>t.t)].map(c=>`<div class="chip ${(state.bpFilter||'Alle')===c?'active':''}" onclick="state.bpFilter='${c}';renderBest()">${c}</div>`).join('')}</div>
+    ${groupByModule(BEST_PRACTICES.filter(b=>{const t=KB_TOPICS.find(x=>x.t===state.bpFilter);return !t||t.m.includes(b.mod);}), card).replace(/class="kb-grid"/g,'class="bp-grid"')}
   `;
 }
 function openBP(idx){
