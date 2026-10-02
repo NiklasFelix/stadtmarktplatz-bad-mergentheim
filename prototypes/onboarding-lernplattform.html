@@ -1581,7 +1581,7 @@ function templateDownloadCallout(){
 }
 
 /* ============ DATA ============ */
-const MODULE_GROUPS=[{title:'Grundlagen Onboarding',sub:'Die Basis für die tägliche Arbeit mit der OrKan Cloud',ids:[1,2,3,4,5,6]},{title:'Expertenwissen',sub:'Vertiefende Module für Maschinen, Schlüssel, Projekte, Bestandsführung, Inventur und Preise',ids:[7,8,9,10,11,12]}];
+const MODULE_GROUPS=[{title:'Grundlagen Onboarding',sub:'Die Basis für die tägliche Arbeit mit der OrKan Cloud',ids:[1,2,3,4,5,6]},{title:'Expertenwissen',sub:'Vertiefende Module für Maschinen, Schlüssel, Projekte, Bestandsführung, Inventur, Preise und Kommission/Retoure',ids:[7,8,9,10,11,12,13]}];
 const MODULES = [
   { id:1, phase:1, title:'Grundlagen der OrKan Cloud', time:'12 Min.', diff:1,
     intro:{"title": "Was ist die OrKan Cloud?", "points": ["Ein lieferantenunabhängiges Software-Tool für Lagerführung und Bestellwesen – bereits bei über 100 Betrieben im Einsatz.", "Funktioniert nach dem Kanban-Prinzip: Nachbestellt wird, was am Lagerplatz tatsächlich verbraucht wurde – einfach per Scan.", "Ihr Nutzen: gesicherter Nachschub, keine Doppelbestellungen oder Suchzeiten und voller Überblick über Material und Maschinen.", "Webbasiert: Es muss kein Programm und keine App installiert werden – die OrKan Cloud erreichen Sie im Browser unter <a href=\"https://cloud.orkan-system.de\" target=\"_blank\" rel=\"noopener\" style=\"color:#8EA752;font-weight:700\">cloud.orkan-system.de</a>. Tipp: Legen Sie die Seite in Ihrer Favoritenleiste ab, um direkt und schnell darauf zuzugreifen."]},
@@ -1590,7 +1590,8 @@ const MODULES = [
       'Die Startseite ist individuell anpassbar: Kacheln wie Artikel, Lieferant, Bestellvorschläge erstellen oder Meine Einstellungen lassen sich im Bearbeitungsmodus (Stift-Symbol) verschieben, umbenennen, farblich anpassen oder entfernen.',
       'Über die drei Striche oben links gelangen Sie jederzeit zurück zum Home-Bereich und zur Hauptnavigation. Über das Smiley-Symbol können Sie OrKan System kontaktieren, einen Vorschlag einreichen oder ein Problem melden.',
       'Der Kalender arbeitet mit einem vierstufigen Ampelsystem: Grau (bestätigt/erledigt), Grün (künftig fällig), Gelb (heute fällig) und Rot (überfällig) – Buchstaben wie „B" (Bestellung) oder „S" (Service/Wartung) zeigen zusätzlich die Art des Termins.',
-      '<div>Die Lagerverwaltung gliedert sich in sieben Bereiche:<ul class="sub-points"><li><strong>Artikel:</strong> Das Herzstück der OrKan Cloud: Hier pflegen Sie alle Artikel, die Sie wiederkehrend im Lager haben bzw. bestellen – jeweils mit eindeutiger Lagerkennzeichnung.</li><li><strong>Lieferant:</strong> Hier legen Sie alle Lieferanten an und verwalten sie, bei denen Sie Ihre Artikel nachbestellen.</li><li><strong>Standorte:</strong> Hier legen Sie Standorte wie Lagergebäude, Lagerort, Lagerplatz, Fahrzeuge, Personen oder Projekte an. Sie sehen, was welchem Standort zugeordnet ist – z. B. welche Maschine (mit ihrer Nummer) zu welchem Mitarbeiter gehört.</li><li><strong>Bestellvorschlag:</strong> Hier lösen Sie Ihre Bestellungen aus – die gesammelten Artikel werden zur fertigen Bestellung.</li><li><strong>Bestellungen:</strong> Übersicht über alle getätigten Bestellungen – offene ebenso wie abgeschlossene.</li><li><strong>Scan-Bestelleingang:</strong> Hier sehen und bestätigen Sie Ihre eingehenden Lieferungen.</li><li><strong>Lagerbestand:</strong> Für Bestandsführung und Inventur: Sie sehen, wie viel von jedem Artikel vorhanden ist. Mit dem Scanner gehen Sie durchs Lager, scannen die Artikel und tragen die gezählte Menge ein – so ergibt sich der tatsächliche Bestand und Warenwert für Ihre Inventur.</li></ul></div>'
+      '<div>Die Lagerverwaltung gliedert sich in sieben Bereiche:<ul class="sub-points"><li><strong>Artikel:</strong> Das Herzstück der OrKan Cloud: Hier pflegen Sie alle Artikel, die Sie wiederkehrend im Lager haben bzw. bestellen – jeweils mit eindeutiger Lagerkennzeichnung.</li><li><strong>Lieferant:</strong> Hier legen Sie alle Lieferanten an und verwalten sie, bei denen Sie Ihre Artikel nachbestellen.</li><li><strong>Standorte:</strong> Hier legen Sie Standorte wie Lagergebäude, Lagerort, Lagerplatz, Fahrzeuge, Personen oder Projekte an. Sie sehen, was welchem Standort zugeordnet ist – z. B. welche Maschine (mit ihrer Nummer) zu welchem Mitarbeiter gehört.</li><li><strong>Bestellvorschlag:</strong> Hier lösen Sie Ihre Bestellungen aus – die gesammelten Artikel werden zur fertigen Bestellung.</li><li><strong>Bestellungen:</strong> Übersicht über alle getätigten Bestellungen – offene ebenso wie abgeschlossene.</li><li><strong>Scan-Bestelleingang:</strong> Hier sehen und bestätigen Sie Ihre eingehenden Lieferungen.</li><li><strong>Lagerbestand:</strong> Für Bestandsführung und Inventur: Sie sehen, wie viel von jedem Artikel vorhanden ist. Mit dem Scanner gehen Sie durchs Lager, scannen die Artikel und tragen die gezählte Menge ein – so ergibt sich der tatsächliche Bestand und Warenwert für Ihre Inventur.</li></ul></div>',
+      "<div><strong>Benutzer anlegen:</strong> Unter „Einstellungen“ → „Mandant“ → „Mandantenverwaltung“ → „Benutzer“ verwalten Sie, wer mit der OrKan Cloud arbeitet.<ul class=\"sub-points\"><li><strong>Erstellen:</strong> Pflichtfelder sind E-Mail und Passwort (mit Bestätigung); optional Name, Anschrift, Telefon, Position sowie Avatar und Unterschrift.</li><li><strong>Rolle:</strong> Legen Sie fest, ob die Person „Admin“ oder „User“ ist.</li><li><strong>Sicherheit & Rechte:</strong> Auf Wunsch die zweistufige Verifizierung einschalten; über „Berechtigung“ steuern Sie, was jemand sehen und bearbeiten darf. Benutzerlisten lassen sich importieren und exportieren.</li></ul></div>"
     ],
     features:[
       {t:'Individuell anpassbare Startseite',d:'Kacheln per Bearbeitungsmodus frei verschieben, umbenennen und einfärben'},
@@ -1973,6 +1974,34 @@ const MODULES = [
     ],
     summary:{ kern:['Einkaufspreise werden in der Artikelkarte beim Lieferanten gepflegt – bei vielen Artikeln per DATANORM Preis Import.','Preise lassen sich über den Händler-Shop abfragen: Bestellung anlegen, an den Shop senden, dort „Preisabfrage“ nutzen.','Voraussetzung ist ein per Shop-URL (IDS) angebundener Lieferant.'],
       funk:['DATANORM Preis Import','Preisabfrage über den Shop'], hand:['Preise regelmäßig aktualisieren','Vor größeren Bestellungen Preise abfragen'] }
+  },
+  { id:13, phase:3, title:'Kommission / Retoure', time:'5 Min.', diff:1,
+    gist:['Kommissions-Etiketten','Retouren-Etiketten','Vorlagendruck'],
+    points:[
+      "## 1. Wofür die Etiketten?",
+      "Mit Kommissions- und Retouren-Etiketten kennzeichnen Sie Ware, die für einen bestimmten Auftrag bereitgestellt wird (Kommission) oder an den Lieferanten zurückgeht (Retoure) – so ist auf einen Blick klar, wohin sie gehört.",
+      "## 2. Etiketten drucken",
+      "Klickweg: „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Vorlagendruck“. Dort wählen Sie die passende Vorlage für Kommission oder Retoure.",
+      "<div>Zwei Größen stehen zur Wahl:<ul class=\"sub-points\"><li><strong>„Kommission“ bzw. „Retoure“:</strong> 4 Etiketten pro Blatt.</li><li><strong>„Kommission klein“ bzw. „Retoure klein“:</strong> 8 Etiketten pro Blatt.</li></ul></div>"
+    ],
+    features:[
+      {t:'Vorlagendruck',d:'Etiketten für Kommission und Retoure direkt aus den Einstellungen drucken'},
+      {t:'Zwei Größen',d:'Normal mit 4 Etiketten oder „klein“ mit 8 Etiketten pro Blatt'},
+      {t:'Klare Kennzeichnung',d:'Bereitgestellte und zurückgehende Ware auf einen Blick erkennen'}
+    ],
+    practice:'Für eine Baustelle wird Material im Lager zusammengestellt. Der Lagermitarbeiter druckt über den Vorlagendruck Kommissions-Etiketten und klebt sie auf die Kisten – so wird die Ware nicht versehentlich anderweitig verwendet.',
+    task:'Drucken Sie testweise ein Blatt Kommissions- und ein Blatt Retouren-Etiketten.',
+    checklist:["„Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Vorlagendruck“ öffnen","Die Vorlage „Kommission“ (4 pro Blatt) auswählen und drucken","Die Vorlage „Retoure klein“ (8 pro Blatt) auswählen und drucken"],
+    tip:'Halten Sie einen kleinen Vorrat an gedruckten Kommissions- und Retouren-Etiketten im Lager bereit – dann sind sie sofort zur Hand.',
+    quiz:[
+      {q:"Wo drucken Sie die Etiketten für Kommission und Retoure?",o:["Unter „Lagerverwaltung“ → „Artikel“ → „Drucken“", "Unter „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Vorlagendruck“", "Im Bestellvorschlag", "Unter „Gebrauchsgut“ → „Übersicht“"],a:1,t:"Vorlagendruck"},
+      {q:"Wie viele Etiketten passen bei der Vorlage „Retoure klein“ auf ein Blatt?",o:["2", "4", "8", "12"],a:2,t:"Kleine Vorlage"},
+      {q:"Wie viele Etiketten passen bei der normalen Vorlage „Kommission“ auf ein Blatt?",o:["4", "8", "10", "16"],a:0,t:"Normale Vorlage"},
+      {q:"Ware soll an den Lieferanten zurückgehen. Welches Etikett nutzen Sie?",o:["Das weiße Bestell-Etikett", "Ein Retouren-Etikett", "Das blaue Lagerplatz-Etikett", "Gar keins"],a:1,t:"Retoure"},
+      {q:"Material wird für einen bestimmten Auftrag bereitgestellt. Welches Etikett passt?",o:["Ein Kommissions-Etikett", "Ein Retouren-Etikett", "Ein Schlüsselanhänger", "Das blaue Lagerplatz-Etikett"],a:0,t:"Kommission"}
+    ],
+    summary:{ kern:['Kommissions- und Retouren-Etiketten kennzeichnen bereitgestellte bzw. zurückgehende Ware.','Gedruckt wird über „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Vorlagendruck“.','Normal: 4 Etiketten pro Blatt, „klein“: 8 Etiketten pro Blatt.'],
+      funk:['Vorlagendruck','Zwei Etikettengrößen'], hand:['Etiketten-Vorrat im Lager bereithalten'] }
   }
 ];
 
@@ -2606,7 +2635,7 @@ function renderRoadmap(){
   `;
 }
 function nextStepHint(id){
-  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',3:'Weiter geht es mit Etiketten-Templates, dem Etikettendruck und dem Zwei-Etiketten-System.',4:'Die Etiketten hängen – als Nächstes lernen Sie, wie daraus eine Bestellung wird.',5:'Weiter geht es mit dem Wareneingang.',6:'Grundlagen geschafft! Vertiefung: Die Maschinenverwaltung mit Service & Wartung.',7:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',8:'Als Nächstes folgt das Projekte-Modul für Baustellen.',9:'Weiter geht es mit der Bestandsführung – dem laufenden Ist-Bestand im Lager.',10:'Weiter geht es mit der Inventur.',11:'Zum Abschluss: Preise pflegen und abfragen.'};
+  const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',3:'Weiter geht es mit Etiketten-Templates, dem Etikettendruck und dem Zwei-Etiketten-System.',4:'Die Etiketten hängen – als Nächstes lernen Sie, wie daraus eine Bestellung wird.',5:'Weiter geht es mit dem Wareneingang.',6:'Grundlagen geschafft! Vertiefung: Die Maschinenverwaltung mit Service & Wartung.',7:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',8:'Als Nächstes folgt das Projekte-Modul für Baustellen.',9:'Weiter geht es mit der Bestandsführung – dem laufenden Ist-Bestand im Lager.',10:'Weiter geht es mit der Inventur.',11:'Weiter geht es mit Preisen pflegen und abfragen.',12:'Zum Abschluss: Etiketten für Kommission und Retoure.'};
   return hints[id]||'';
 }
 
@@ -3286,7 +3315,8 @@ const CLOUD_DEEPLINKS = {
   9:{label:'Projekte'},
   10:{label:'Lagerverwaltung → Lagerbestand'},
   11:{label:'Lagerverwaltung → Lagerbestand'},
-  12:{label:'Lagerverwaltung → Lieferant'}
+  12:{label:'Lagerverwaltung → Lieferant'},
+  13:{label:'Einstellungen → Mandant → Lagerverwaltung → Vorlagendruck'}
 };
 const ORKAN_CLOUD_BASE = 'https://cloud.orkan-system.de/';
 const APPOINTMENT_CONTACTS = [
