@@ -1422,7 +1422,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
       <section class="view" id="view-modules"></section>
 
       <!-- WISSENSLÜCKEN -->
-      <section class="view" id="view-gaps"></section>
 
       <!-- KB -->
       <section class="view" id="view-kb"></section>
@@ -1430,37 +1429,16 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
       <!-- BEST PRACTICES -->
       <section class="view" id="view-best"></section>
 
-      <!-- UPDATES -->
-      <section class="view" id="view-updates"></section>
-
       <!-- CERT -->
       <section class="view" id="view-cert"></section>
 
       <!-- TEAM -->
-      <section class="view" id="view-team"></section>
 
       <!-- CLOUD INTEGRATION -->
-      <section class="view" id="view-cloudintegration"></section>
 
     </main>
 
-    <aside class="ai-panel" id="aiPanel">
-      <div class="ai-panel-inner">
-        <div class="ai-panel-head">
-          <h4>Lerncoach</h4>
-          <span class="close-x" onclick="toggleAI()">&times;</span>
-        </div>
-        <div class="ai-status-line" id="aiStatusLine">Aktiv — begleitet Ihren Lernfortschritt</div>
-        <div class="suggestion-chips" id="suggChips"></div>
-        <div class="ai-messages" id="aiMessages"></div>
-        <div class="ai-input-row">
-          <input type="text" id="aiInput" placeholder="Frage stellen..." onkeydown="if(event.key==='Enter')sendAI()">
-          <button class="ai-send" onclick="sendAI()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          </button>
-        </div>
-      </div>
-    </aside>
+    
   </div>
 </div>
 
@@ -2183,36 +2161,13 @@ const BEST_PRACTICES = [
    ]}
 ];
 
-const UPDATES = [
-  {v:'v2.4.1',date:'03. Juli 2026',isNew:true,title:'Lernempfehlungen erweitert',items:['Personalisierte Modulvorschläge basierend auf Rolle und Fortschritt','Verbesserte Erkennung offener Lerninhalte','Performance-Optimierung des Lerncoaches']},
-  {v:'v2.4.0',date:'18. Juni 2026',isNew:false,title:'Neues Update-Center eingeführt',items:['Zentrale Übersicht aller Produktneuerungen','Abonnierbare Benachrichtigungen','Versionierte Änderungsprotokolle']},
-  {v:'v2.3.2',date:'02. Juni 2026',isNew:false,title:'Best-Practice-Bereich veröffentlicht',items:['Sechs praxiserprobte Schritt-für-Schritt-Anleitungen','Schwierigkeitsgrad- und Zeitangaben je Anleitung','Direkte Verlinkung zu relevanten Lernmodulen']},
-  {v:'v2.3.0',date:'14. Mai 2026',isNew:false,title:'Rollenbasierte Lernpfade',items:['Individuelle Lernpfade für vier Nutzerrollen','Angepasste Dashboard-Empfehlungen je Rolle','Verbesserte Fortschrittsvisualisierung']}
-];
 
 
 /* Simulierte unternehmensweite KI-Aggregation aller bisherigen Pilotnutzer.
    Bildet die in Kapitel 2.3.1 beschriebene Rückkopplung von Wissenslücken
    in die Produktdokumentation ab. */
-const AGGREGATE_GAPS = [
-  {topic:'Lieferanten-Shop-Anbindung', pct:47, moduleId:4},
-  {topic:'Import-Datenformat', pct:38, moduleId:4},
-  {topic:'Maschinen-Buchungslogik', pct:33, moduleId:6},
-  {topic:'Bestellauslösung', pct:29, moduleId:3},
-  {topic:'Projekte-App-Pflicht', pct:26, moduleId:8},
-  {topic:'Bestellmengen-Berechnung', pct:24, moduleId:2},
-  {topic:'Sicherheitsprinzip', pct:20, moduleId:7},
-  {topic:'Lagerbestand & Warenwert', pct:18, moduleId:5},
-  {topic:'Lager MIN/MAX', pct:11, moduleId:2}
-];
 
 /* Simulierte Teamdaten für die Vorgesetzten-Ansicht (Team-Fortschritt) */
-const TEAM_MEMBERS = [
-  {name:'Julia Herrmann', role:'Einkäufer', completed:10, quizAvg:96, weakTopic:null},
-  {name:'Tobias Krämer', role:'Monteur', completed:1, quizAvg:78, weakTopic:'Bestellauslösung'},
-  {name:'Sabine Wolf', role:'Lagerleiter', completed:6, quizAvg:88, weakTopic:'Maschinen-Buchungslogik'},
-  {name:'David Brenner', role:'Monteur', completed:1, quizAvg:60, weakTopic:'Bestellabschluss'}
-];
 
 /* ============ STATE ============ */
 let state = {
@@ -2229,12 +2184,6 @@ let state = {
 MODULES.forEach(m=>{ if(!state.moduleProgress[m.id]) state.moduleProgress[m.id]={started:false,completed:false,quizScore:null,checklist:[]}; });
 const __initialState = JSON.parse(JSON.stringify(state));
 /* ============ ONBOARDING ============ */
-function selectRole(el, role){
-  document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.role = role;
-  checkStart();
-}
 function checkStart(){
   const name = document.getElementById('onbName').value.trim();
   document.getElementById('startBtn').disabled = !name;
@@ -2258,10 +2207,7 @@ function initializeApp(){
   renderModulesList();
   renderKB();
   renderBest();
-  renderUpdates();
   renderCert();
-  renderCloudIntegration();
-  seedAIMessages();
   updateSidebarProgress();
   animateCounts(document.getElementById('view-dashboard'));
 }
@@ -2320,20 +2266,17 @@ function closeResetConfirm(){
 function confirmResetProgress(){
   __resetting = true;
   clearInterval(__autosaveInterval);
-  try{ clearTimeout(__memberTimer); }catch(e){}
   try{ ['orkanTrainingProgress_v1','orkanDashboardPrefs','orkanTeam_v1','orkanTourDone'].forEach(k=>localStorage.removeItem(k)); }catch(e){}
   // Zustand im laufenden Fenster zurücksetzen (funktioniert auch dort, wo ein Neuladen blockiert ist)
   Object.keys(state).forEach(k=>delete state[k]);
   Object.assign(state, JSON.parse(JSON.stringify(__initialState)));
   state.quizAnswers = {}; state.quizTries = {};
   document.getElementById('tabContentHost') && (document.getElementById('tabContentHost').innerHTML='');
-  state.dashboardPrefs = null; state.teamLive = []; state.teamCode = null; state.isLead = false; state.teamMode = null;
-  try{ if(typeof __teamUnsub==='function'){ __teamUnsub(); } __teamUnsub = null; __lastMemberJson=''; }catch(e){}
+  state.dashboardPrefs = null;
   document.getElementById('resetConfirmModal').classList.remove('open');
   document.getElementById('profileMenu').classList.remove('open');
   ['onbName','onbCompany','onbTeamCode'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   document.querySelectorAll('.role-card.selected,.team-mode-btn.selected').forEach(el=>el.classList.remove('selected'));
-  const tcf=document.getElementById('teamCodeField'); if(tcf) tcf.hidden=true;
   const sb=document.getElementById('startBtn'); if(sb){ sb.disabled=true; sb.textContent='Lernpfad starten'; }
   document.getElementById('app').style.display='none';
   document.getElementById('onboarding').style.display='flex';
@@ -2480,22 +2423,6 @@ const DASHBOARD_WIDGETS = {
       <div class="phase-step ${phase>=2?'active':''} ${done>=4?'unlocked':''}"><div class="phase-num">2</div><div class="phase-title">Prozesse & Integration</div><div class="phase-desc">Module 3–4</div></div>
       <div class="phase-step ${phase>=3?'active':''} ${done>=MODULES.length?'unlocked':''}"><div class="phase-num">3</div><div class="phase-title">Optimierung & Zertifizierung</div><div class="phase-desc">Module 5–${MODULES.length} + Zertifikat</div></div>
     </div>`; } },
-  gaps: { title:'Ihre Wissenslücken', render: () => {
-    const personal = Object.entries(state.weakTopics).sort((a,b)=>b[1]-a[1]);
-    if(!personal.length){
-      return `<p style="font-size:14px;color:var(--gray)">Noch keine Wissenslücken erkannt — weiter so! Sobald ein Wissenscheck nicht vollständig richtig beantwortet wird, erscheint hier eine gezielte Empfehlung zum Wiederholen.</p>`;
-    }
-    const top = personal.slice(0,2);
-    return `<div class="stats-row">${top.map(([topic,count])=>{
-      const module = MODULES.find(m=>m.quiz.some(q=>q.t===topic));
-      return `<div class="stat-card" style="cursor:pointer" onclick="openModule(${module?module.id:1});switchTab('content')"><div class="stat-label">${topic}</div><div class="stat-val" style="font-size:16px">${count}× unsicher</div><div class="stat-sub">Klicken zum Wiederholen</div></div>`;
-    }).join('')}</div><div style="margin-top:12px"><a onclick="showView('gaps')" style="font-size:14px;font-weight:700;color:var(--green-dark);cursor:pointer">Alle Wissenslücken ansehen →</a></div>`;
-  } },
-  updates: { title:'Neuigkeiten', render: () => {
-    const latest = UPDATES[0];
-    if(!latest) return '';
-    return `<div class="update-item" style="margin-bottom:0"><div class="update-top"><span class="version-badge">${latest.v}</span><span class="update-date">${latest.date}</span>${latest.isNew?'<span class="new-badge">Neu</span>':''}</div><h4>${latest.title}</h4><ul>${latest.items.slice(0,2).map(i=>`<li>${i}</li>`).join('')}</ul><div style="margin-top:10px"><a onclick="showView('updates')" style="font-size:14px;font-weight:700;color:var(--green-dark);cursor:pointer">Alle Neuigkeiten ansehen →</a></div></div>`;
-  } },
 };
 /* ===== Zusätzliche Dashboard-Kacheln ===== */
 function todayKey(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -2536,7 +2463,6 @@ function saveRatingComment(id){
   state.ratings[id]=Object.assign({stars:0},state.ratings[id]||{},{comment:c?c.value.trim():''});
   saveState(); showToast('Feedback gespeichert – vielen Dank!');
 }
-const TEAM_DURATIONS = [{name:'Julia Herrmann',days:11},{name:'Pilotgruppe Sprügel (Ø)',days:16}];
 Object.assign(DASHBOARD_WIDGETS, {
   nextstep: { title:'Ihr nächster Schritt', render: () => {
     const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
@@ -2569,19 +2495,6 @@ Object.assign(DASHBOARD_WIDGETS, {
     const avg = rs.length? rs.reduce((s,[,v])=>s+v.stars,0)/rs.length : 0;
     return `<div class="w-fb"><div class="w-fb-score"><strong>${rs.length?avg.toFixed(1).replace('.',','):'–'}</strong>${starsHtml(Math.round(avg),18)}<span>${rs.length} von ${MODULES.length} Modulen bewertet</span></div><div class="w-fb-list">${MODULES.map(m=>{ const v=(state.ratings||{})[m.id]; const done=state.moduleProgress[m.id].completed; return `<div class="w-fb-row"><span>${String(m.id).padStart(2,'0')} ${m.title}</span>${v&&v.stars?starsHtml(v.stars,14):done?`<a onclick="openModule(${m.id});switchTabTo('summary')">Jetzt bewerten</a>`:'<em>nach Abschluss</em>'}</div>`; }).join('')}</div></div>`;
   } },
-  teamsummary: { title:'Team-Übersicht (für Vorgesetzte)', render: () => {
-    const all=[...TEAM_MEMBERS,{completed:completedCount()}]; const n=all.length;
-    const done=all.filter(x=>x.completed>=MODULES.length).length, open=all.filter(x=>x.completed===0).length, prog=n-done-open;
-    const avg=Math.round(all.reduce((s,x)=>s+x.completed/MODULES.length,0)/n*100);
-    return `<div class="w-team"><div class="w-team-bar"><i class="d" style="flex:${done||0.001}"></i><i class="p" style="flex:${prog||0.001}"></i><i class="o" style="flex:${open||0.001}"></i></div>
-      <div class="w-team-legend"><span><b class="d"></b>${done} abgeschlossen</span><span><b class="p"></b>${prog} in Bearbeitung</span><span><b class="o"></b>${open} noch nicht gestartet</span></div>
-      <div class="w-team-avg"><strong data-count="${avg}">${avg}</strong><small>%</small><span>Ø Fortschritt im Team (${n} Personen)</span></div>
-      </div>`;
-  } },
-  completiontime: { title:'Dauer bis zum Abschluss (für Vorgesetzte)', render: () => {
-    const max=Math.max(...TEAM_DURATIONS.map(x=>x.days),21);
-    return `<div class="w-dur"><div class="w-dur-big"><strong>Ø 14</strong><span>Tage vom Start bis zum Zertifikat</span></div><div class="w-bars">${TEAM_DURATIONS.map(x=>`<div class="w-bar-row"><span class="w-bar-lbl">${x.name}</span><div class="w-bar"><i class="ok" style="width:${x.days/max*100}%"></i></div><span class="w-bar-val">${x.days} T.</span></div>`).join('')}<div class="w-bar-row"><span class="w-bar-lbl">Ziel</span><div class="w-bar"><i class="goal" style="width:${21/max*100}%"></i></div><span class="w-bar-val">21 T.</span></div></div><p class="w-note">Beispielwerte aus der Pilotgruppe – im Echtbetrieb automatisch berechnet.</p></div>`;
-  } }
 });
 function switchTabTo(tab){ state.currentTab=tab; document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['content','task','quiz','summary'][i]===tab)); renderTab(); }
 const DEFAULT_WIDGET_ORDER = ['nextstep','stats','activity','recent','phases'];
@@ -2731,19 +2644,7 @@ function openModule(id){
   renderModuleDetail();
   buildModuleSubNav();
   updateSidebarProgress();
-  if(!wasStarted) coachProactive(moduleIntroCoachMsg(id));
   saveState();
-}
-function moduleIntroCoachMsg(id){
-  const m = MODULES.find(x=>x.id===id);
-  return `Los geht's mit „${m.title}". Schauen Sie sich zunächst das Video an, bearbeiten Sie danach die Praxisaufgabe und schließen Sie mit dem Wissenscheck ab. Bei Fragen bin ich jederzeit hier.`;
-}
-function coachProactive(text){
-  addAIMsg('bot', text);
-  if(!state.aiOpen){
-    const dot = document.getElementById('aiNotifDot');
-    if(dot) dot.style.display = 'block';
-  }
 }
 
 function renderModuleDetail(){
@@ -2887,7 +2788,6 @@ function toggleCheck(mid,i){
   if(idx>-1) p.checklist.splice(idx,1); else p.checklist.push(i);
   if(p.checklist.length===m.checklist.length && idx===-1 && !p.checklistCoached){
     p.checklistCoached = true;
-    coachProactive(`Gut gemacht — alle Schritte der Praxisaufgabe in „${m.title}" sind erledigt. Wechseln Sie jetzt zum Wissenscheck, um das Modul abzuschließen.`);
   }
   renderTab();
   saveState();
@@ -2953,9 +2853,7 @@ function renderQuizResult(m){
     state.totalTime += parseInt(m.time);
     buildModuleSubNav();
     const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
-    coachProactive(next ? `Modul „${m.title}" ist abgeschlossen — stark! Als Nächstes passt „${next.title}" gut zu Ihrem Lernpfad.` : `Herzlichen Glückwunsch — Sie haben alle fünf Module abgeschlossen. Ihr Zertifikat wartet im Bereich „Zertifikate".`);
   } else if(justLogged && !passed){
-    coachProactive(`Kein Problem — beim Wissenscheck zu „${m.title}" hat es noch nicht ganz gereicht. Schauen Sie sich den Inhalt noch einmal an, ich habe die betroffenen Themen bereits in Ihrer Wissenslücken-Analyse vorgemerkt.`);
   }
   if(justLogged) updateSidebarProgress();
   saveState();
@@ -3052,15 +2950,6 @@ function openBP(idx){
   `;
 }
 
-/* ============ UPDATES ============ */
-function renderUpdates(){
-  document.getElementById('view-updates').innerHTML = `
-    <h1 class="page-title">Neue Funktionen und Verbesserungen</h1>
-    <p class="page-sub">Bleiben Sie über alle Neuerungen der OrKan Cloud informiert.</p>
-    ${UPDATES.map(u=>`<div class="update-item"><div class="update-top"><span class="version-badge">${u.v}</span><span class="update-date">${u.date}</span>${u.isNew?'<span class="new-badge">Neu</span>':''}</div><h4>${u.title}</h4><ul>${u.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('')}
-    <div class="subscribe-cta"><h4 style="margin-bottom:6px">Abonnieren Sie Update-Benachrichtigungen</h4><p>Erhalten Sie eine kurze Zusammenfassung, sobald neue Funktionen verfügbar sind.</p><button class="btn btn-primary" onclick="this.textContent='Abonniert'">Jetzt abonnieren</button></div>
-  `;
-}
 
 /* ============ CERTIFICATE ============ */
 function renderCert(){
@@ -3103,7 +2992,7 @@ function renderCert(){
         <div class="cert-body">hat die ${certTotal()} Grundlagen-Module der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen und die zugehörigen Wissenschecks bestanden.</div>
         <div style="font-size:13.5px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')} &middot; Gültig für 24 Monate</div>
       </div>
-      <div class="cert-actions"><button class="btn btn-primary" onclick="window.print()">Zertifikat drucken</button><button class="btn btn-outline" onclick="downloadCert()">Als Text herunterladen</button></div>
+      <div class="cert-actions"><button class="btn btn-primary" id="certPdfBtn" onclick="downloadCertPdf()">Zertifikat als PDF speichern</button>${window.self===window.top?'<button class="btn btn-outline" onclick="window.print()">Drucken</button>':''}</div>
       <div class="cert-renewal-note">Sie erhalten automatisch 60 Tage vor Ablauf eine Erinnerung zur Auffrischung – z. B. bei neuen OrKan-Cloud-Funktionen.</div>
       <div class="cert-discount">
         <div class="cert-discount-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41 11 3.83A2 2 0 0 0 9.59 3.24L3.24 9.59A2 2 0 0 0 3.83 11l9.58 9.59a2 2 0 0 0 2.83 0l6.35-6.35a2 2 0 0 0 0-2.83Z"/><circle cx="8.5" cy="8.5" r="1.5"/></svg></div>
@@ -3123,144 +3012,32 @@ function getDiscountCode(){
   }
   return state.discountCode;
 }
-function downloadCert(){
-  const text = `OrKan Cloud – Zertifikat der Absolvierung\n\n${state.name}\n${state.company}\n\nhat die ${certTotal()} Grundlagen-Module der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen.\n\nAusgestellt am ${new Date().toLocaleDateString('de-DE')}\nGerhard Sprügel, Geschäftsführer – OrKan System GmbH\n\nRabattcode für den SPRÜGEL-Onlineshop: ${getDiscountCode()}`;
-  const blob = new Blob([text],{type:'text/plain;charset=utf-8'});
-  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='orkan-zertifikat.txt'; a.click();
+function loadScriptOnce(src){
+  return new Promise((res,rej)=>{ if(document.querySelector(`script[src="${src}"]`)) return res();
+    const sc=document.createElement('script'); sc.src=src; sc.onload=res; sc.onerror=rej; document.head.appendChild(sc); });
+}
+async function downloadCertPdf(){
+  const btn=document.getElementById('certPdfBtn'); const label=btn?btn.textContent:'';
+  try{
+    if(btn){ btn.disabled=true; btn.textContent='PDF wird erstellt …'; }
+    await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+    await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    const el=document.getElementById('certPrint');
+    const canvas=await html2canvas(el,{scale:2,backgroundColor:'#ffffff'});
+    const { jsPDF } = window.jspdf;
+    const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+    const pw=297, ph=210, m=12; const r=Math.min((pw-2*m)/canvas.width,(ph-2*m)/canvas.height);
+    const w=canvas.width*r, h=canvas.height*r;
+    pdf.addImage(canvas.toDataURL('image/png'),'PNG',(pw-w)/2,(ph-h)/2,w,h);
+    const filename='OrKan-Zertifikat-'+(state.name||'Teilnehmer').replace(/[^A-Za-z0-9ÄÖÜäöüß_-]+/g,'_')+'.pdf';
+    let dl=null; try{ if(window.claude&&typeof claude.use==='function') dl=await claude.use('downloads'); }catch(e){}
+    if(dl){ try{ await dl.save({filename,data:pdf.output('arraybuffer')}); showToast('Zertifikat gespeichert.'); }catch(e){ if(!e||e.code!=='declined') showToast('Speichern ist in dieser Ansicht leider nicht möglich.'); } }
+    else { pdf.save(filename); showToast('Zertifikat wird heruntergeladen.'); }
+  }catch(e){ showToast('Das PDF konnte nicht erstellt werden. Bitte später erneut versuchen.'); }
+  finally{ if(btn){ btn.disabled=false; btn.textContent=label; } }
 }
 
-/* ============ TEAM-FORTSCHRITT (Vorgesetzten-Ansicht) ============ */
-function renderTeam(){
-  const el = document.getElementById('view-team');
-  if(!el) return;
-  const allMembers = [...TEAM_MEMBERS, {name:`${state.name} (Sie)`, role:state.role, completed:completedCount(), quizAvg: (()=>{ const s=Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore); return s.length?Math.round(s.reduce((a,b)=>a+b,0)/s.length):0; })(), weakTopic: Object.keys(state.weakTopics)[0]||null}];
-  const teamAvgPct = Math.round(allMembers.reduce((a,m)=>a+m.completed,0)/allMembers.length/MODULES.length*100);
 
-  el.innerHTML = `
-    <h1 class="page-title">Team-Fortschritt</h1>
-    <p class="page-sub">Übersicht für Vorgesetzte: Onboarding-Status aller Teammitglieder im Blick.</p>
-
-    <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">Team-Mitglieder</div><div class="stat-val">${allMembers.length}</div><div class="stat-sub">im Onboarding erfasst</div></div>
-      <div class="stat-card"><div class="stat-label">Ø Fortschritt</div><div class="stat-val">${teamAvgPct}%</div><div class="stat-sub">über alle Module</div></div>
-      <div class="stat-card"><div class="stat-label">Vollständig abgeschlossen</div><div class="stat-val">${allMembers.filter(m=>m.completed===MODULES.length).length}</div><div class="stat-sub">von ${allMembers.length} Personen</div></div>
-      <div class="stat-card"><div class="stat-label">Auffällige Wissenslücken</div><div class="stat-val">${allMembers.filter(m=>m.weakTopic).length}</div><div class="stat-sub">benötigen Vertiefung</div></div>
-    </div>
-
-    <div class="section-heading">Teammitglieder</div>
-    <div class="team-list">
-      ${allMembers.map(m=>`
-        <div class="team-row">
-          <div class="team-avatar">${m.name.split(' ').map(n=>n[0]).slice(0,2).join('')}</div>
-          <div class="team-info">
-            <div class="team-name">${m.name}</div>
-            <div class="team-role">${m.role}</div>
-          </div>
-          <div class="team-progress-wrap">
-            <div class="gap-track" style="width:140px"><div class="gap-fill company" style="width:${m.completed/MODULES.length*100}%"></div></div>
-            <span class="team-progress-text">${m.completed}/${MODULES.length} Module</span>
-          </div>
-          <div class="team-quiz">Ø ${m.quizAvg}%</div>
-          <div class="team-flag">${m.weakTopic ? `<span class="gap-count">Lücke: ${m.weakTopic}</span>` : `<span class="team-ok">Keine Lücken</span>`}</div>
-        </div>
-      `).join('')}
-    </div>
-
-    <div class="insight-callout" style="margin-top:24px">
-      <strong>Hinweis für Vorgesetzte</strong>
-      <p>Diese Ansicht zeigt simulierte Beispieldaten für den Pilotversuch. In der produktiven Version würde sie auf echten Fortschrittsdaten aller Mandanten-Nutzer basieren und Vorgesetzten erlauben, gezielt bei erkannten Wissenslücken nachzusteuern.</p>
-    </div>
-  `;
-}
-
-/* ============ CLOUD-INTEGRATION (Konzept-Demo) ============ */
-const CLOUD_EVENTS = [
-  {text:'Startseite geöffnet, Kalender geprüft', status:'ok'},
-  {text:'Artikel „T-Stück 28 mm" angelegt', status:'ok'},
-  {text:'Lieferant „Neugart GmbH" angelegt — Shop-URL leer gelassen', status:'warn', topic:'Lieferanten-Shop-Anbindung', moduleId:4},
-  {text:'Bestellvorschlag erstellt und gesendet', status:'ok'},
-  {text:'Artikelimport gestartet — Zeichensatz-Fehler in 12 Zeilen', status:'warn', topic:'Import-Datenformat', moduleId:4},
-  {text:'Lager MIN und MAX bei 3 Artikeln auf denselben Wert gesetzt', status:'warn', topic:'Lager MIN/MAX', moduleId:2},
-  {text:'Wareneingang bestätigt, Lagerbestand aktualisiert', status:'ok'},
-  {text:'Zwei-Etiketten-Bestellvorschlag mehrfach abgebrochen', status:'warn', topic:'Bestellauslösung', moduleId:3},
-  {text:'Maschine angelegt — kein Kaufbeleg hochgeladen', status:'warn', topic:'Kaufbeleg & Garantie', moduleId:6},
-  {text:'Versuch, eine fremde Maschine auf einen Kollegen zu buchen (als Monteur)', status:'warn', topic:'Maschinen-Buchungslogik', moduleId:6},
-  {text:'Schlüssel über die interne Nummer statt der Adresse gesucht', status:'warn', topic:'Adresssuche', moduleId:7},
-  {text:'Projekt angelegt, Materialentnahme über die App gebucht', status:'ok'},
-  {text:'Projekt-Statistik exportiert — mehrere Artikel ohne Bezeichnung', status:'warn', topic:'Projekte-App-Pflicht', moduleId:8},
-  {text:'Service-&-Wartung-Termin für Pressmaschine bestätigt', status:'ok'}
-];
-let ciEventIndex = 0;
-const INTEGRATION_OPTIONS = [
-  { key:'behavioral', title:'Automatische Lernpfad-Anpassung', desc:'Die Plattform erkennt selbstständig, wo Sie in der OrKan Cloud unsicher sind, und passt Ihren Lernpfad automatisch an — ganz ohne eigene Wissenschecks.' },
-  { key:'help', title:'Hilfe-Symbole direkt in der Cloud', desc:'An passenden Stellen in der OrKan Cloud (z. B. beim Anlegen eines Lieferanten) erscheint ein kleines Fragezeichen, das direkt zur passenden Erklärung führt.' },
-  { key:'central', title:'Schnellzugriff-Button', desc:'Ein durchgängig sichtbarer Button öffnet die Trainingsplattform von jeder Stelle der OrKan Cloud aus mit einem Klick.' }
-];
-function renderCloudIntegration(){
-  const el = document.getElementById('view-cloudintegration');
-  if(!el) return;
-  const behavioralOn = state.integrationOptions.behavioral;
-  el.innerHTML = `
-    <h1 class="page-title">Integrationseinstellungen</h1>
-    <p class="page-sub">Wählen Sie, wie die Trainingsplattform mit Ihrer OrKan Cloud verbunden werden soll. Sie können mehrere Optionen gleichzeitig aktivieren.</p>
-
-    <div class="ci-concept-grid" style="grid-template-columns:repeat(3,1fr)">
-      ${INTEGRATION_OPTIONS.map(o=>`
-        <div class="ci-concept-card">
-          <h4>${o.title}</h4>
-          <p>${o.desc}</p>
-          <button class="btn ${state.integrationOptions[o.key]?'btn-primary':'btn-outline'}" style="width:100%" onclick="toggleIntegrationOption('${o.key}')">${state.integrationOptions[o.key]?'Aktiviert — ausschalten':'Aktivieren'}</button>
-        </div>
-      `).join('')}
-    </div>
-
-    <div class="section-heading">Vorschau: Automatische Lernpfad-Anpassung${behavioralOn?'':' (deaktiviert)'}</div>
-    ${behavioralOn ? `
-    <p class="ci-intro">So sieht es aus, wenn die Plattform Ihre Arbeitsschritte in der OrKan Cloud verfolgt. Testen Sie es mit dem Button unten — jeder Schritt zeigt, was in Ihrer Cloud passiert wäre.</p>
-    <div class="ci-mockup">
-      <div class="ci-mockup-bar"><span class="ci-mockup-dot"></span><span class="ci-mockup-dot"></span><span class="ci-mockup-dot"></span><span class="ci-mockup-url">cloud.orkan-system.de · Live-Aktivität von ${state.name}</span></div>
-      <div class="ci-mockup-body">
-        <div class="ci-event-log" id="ciEventLog">
-          <div class="ci-empty">Noch keine Aktivität simuliert — klicken Sie unten auf „Nächsten Cloud-Schritt simulieren".</div>
-        </div>
-      </div>
-    </div>
-    <div class="ci-actions">
-      <button class="btn btn-primary" onclick="simulateCloudEvent()">Nächsten Cloud-Schritt simulieren</button>
-      <button class="btn btn-outline" onclick="resetCloudSimulation()">Zurücksetzen</button>
-    </div>
-    ` : `<div class="ci-badge-demo"><span style="font-size:14px;color:var(--gray)">Aktivieren Sie oben „Automatische Lernpfad-Anpassung", um die Vorschau zu testen.</span></div>`}
-  `;
-}
-function toggleIntegrationOption(key){
-  state.integrationOptions[key] = !state.integrationOptions[key];
-  showToast(state.integrationOptions[key] ? 'Option aktiviert.' : 'Option deaktiviert.');
-  renderCloudIntegration();
-}
-function simulateCloudEvent(){
-  if(ciEventIndex >= CLOUD_EVENTS.length){ showToast('Alle simulierten Cloud-Ereignisse wurden bereits durchlaufen.'); return; }
-  const ev = CLOUD_EVENTS[ciEventIndex++];
-  const log = document.getElementById('ciEventLog');
-  if(log.querySelector('.ci-empty')) log.innerHTML = '';
-  const time = new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  const div = document.createElement('div');
-  div.className = 'ci-event';
-  div.innerHTML = `<span class="ci-event-dot ${ev.status}"></span><span>${ev.text}</span><span class="ci-event-time">${time}</span>`;
-  log.appendChild(div);
-  log.scrollTop = log.scrollHeight;
-
-  if(ev.status === 'warn'){
-    state.weakTopics[ev.topic] = (state.weakTopics[ev.topic]||0)+1;
-    state.adaptiveLog.unshift({ time, text: `Wissenslücke aus Cloud-Beobachtung erkannt: „${ev.topic}" (Ereignis: „${ev.text}") — Lernpfad automatisch angepasst.` });
-    const module = MODULES.find(m=>m.id===ev.moduleId);
-    coachProactive(`Mir ist in der OrKan Cloud aufgefallen: „${ev.text}". Ich habe dazu „${module.title}" priorisiert — schauen Sie es sich gerne an.`);
-    updateSidebarProgress();
-  }
-}
-function resetCloudSimulation(){
-  ciEventIndex = 0;
-  renderCloudIntegration();
-}
 
 /* ============ SIDEBAR PROGRESS ============ */
 function updateSidebarProgress(){
@@ -3269,59 +3046,9 @@ function updateSidebarProgress(){
   renderDashboard();
   renderRoadmap();
   renderCert();
-  renderGaps();
-  renderTeam();
 }
 
 /* ============ ADAPTIVE LERNPFAD / WISSENSLÜCKEN-ERKENNUNG ============ */
-function getAdaptiveRecommendation(){
-  const topics = Object.entries(state.weakTopics).sort((a,b)=>b[1]-a[1]);
-  if(!topics.length) return null;
-  const [topTopic] = topics[0];
-  const module = MODULES.find(m=>m.quiz.some(q=>q.t===topTopic));
-  if(!module) return null;
-  return { topic:topTopic, module };
-}
-function renderGaps(){
-  const el = document.getElementById('view-gaps');
-  if(!el) return;
-  const personal = Object.entries(state.weakTopics).sort((a,b)=>b[1]-a[1]);
-  const maxCount = Math.max(1, ...personal.map(t=>t[1]));
-
-  el.innerHTML = `
-    <h1 class="page-title">Wissenslücken-Analyse</h1>
-    <p class="page-sub">Automatische Erkennung von Wissenslücken — persönlich und unternehmensweit.</p>
-
-    ${personal.length ? `
-      <div class="section-heading">Ihre persönlichen Wissenslücken</div>
-      ${personal.map(([topic,count])=>{
-        const module = MODULES.find(m=>m.quiz.some(q=>q.t===topic));
-        return `<div class="gap-card">
-          <div class="gap-top"><span class="gap-topic">${topic}</span><span class="gap-count">${count}× falsch beantwortet</span></div>
-          <div class="gap-track"><div class="gap-fill" style="width:${Math.round(count/maxCount*100)}%"></div></div>
-          <div class="gap-action">Empfehlung: <a onclick="openModule(${module?module.id:1});switchTab('content')">Inhalt zu „${module?module.title:''}" erneut ansehen</a></div>
-        </div>`;
-      }).join('')}
-    ` : `<div class="gap-empty">Noch keine Wissenslücken erkannt. Sobald Sie einen Wissenscheck nicht vollständig richtig beantworten, werden die betroffenen Themen automatisch analysiert und passt Ihren Lernpfad an.</div>`}
-
-    <div class="section-heading">Unternehmensweite Wissenslücken (alle Pilotnutzer)</div>
-    ${AGGREGATE_GAPS.map(g=>`<div class="gap-card">
-      <div class="gap-top"><span class="gap-topic">${g.topic}</span><span class="gap-count">${g.pct}% der Nutzer unsicher</span></div>
-      <div class="gap-track"><div class="gap-fill company" style="width:${g.pct}%"></div></div>
-      <div class="gap-action">Betroffenes Modul: <a onclick="openModule(${g.moduleId});switchTab('content')">${MODULES.find(m=>m.id===g.moduleId).title}</a></div>
-    </div>`).join('')}
-
-    <div class="insight-callout">
-      <strong>Mehrwert für OrKan System</strong>
-      <p>Diese aggregierten Erkenntnisse fließen automatisch in die Produktdokumentation und Content-Pflege zurück: Häufig missverstandene Themen wie „ERP-Anbindungen" oder „CSV-Zeichensatz" markieren konkreten Überarbeitungsbedarf in Lerninhalten und UI-Texten — noch bevor sie zu Supportanfragen führen.</p>
-    </div>
-
-    ${state.adaptiveLog.length ? `
-      <div class="section-heading">Adaptionsverlauf</div>
-      <div class="adaptive-log">${state.adaptiveLog.map(l=>`<div class="log-item"><span class="log-dot"></span><span>${l.time} — ${l.text}</span></div>`).join('')}</div>
-    ` : ''}
-  `;
-}
 
 /* ============ AI PANEL ============ */
 /* ============ PROFILMENÜ ============ */
@@ -3368,30 +3095,6 @@ function logoutProfile(){
   document.getElementById('profileMenu').classList.remove('open');
   document.getElementById('app').style.display='none';
   document.getElementById('onboarding').style.display='flex';
-}
-function toggleAI(){
-  state.aiOpen = !state.aiOpen;
-  document.getElementById('aiPanel').classList.toggle('open', state.aiOpen);
-  if(state.aiOpen) document.getElementById('aiNotifDot').style.display='none';
-}
-function seedAIMessages(){
-  document.getElementById('aiMessages').innerHTML = `<div class="ai-msg bot">Willkommen, ${state.name}. Ich habe Ihren Lernpfad zusammengestellt. Wie kann ich Ihnen helfen?</div>`;
-  document.getElementById('suggChips').innerHTML = ['Wo stehe ich im Onboarding?','Was sollte ich als Nächstes lernen?','Habe ich Wissenslücken?','Wie funktioniert der DATANORM-Import?'].map(s=>`<div class="sugg-chip" onclick="sendAI('${s}')">${s}</div>`).join('');
-}
-function coachWidgetGreeting(){
-  const adaptive = getAdaptiveRecommendation();
-  if(adaptive) return `Mir ist aufgefallen, dass es bei „${adaptive.topic}" noch hakt. Soll ich Ihnen „${adaptive.module.title}" kurz genauer erklären?`;
-  const next = MODULES.find(m=>!state.moduleProgress[m.id].completed);
-  if(!next) return `Sie haben alle Module abgeschlossen, ${state.name.split(' ')[0]}. Fragen Sie mich gerne noch etwas oder holen Sie sich Ihr Zertifikat ab.`;
-  return `Hallo ${state.name.split(' ')[0]}, ich bin Ihr Lerncoach. Fragen Sie mich jederzeit zu „${next.title}" oder jedem anderen Thema aus der OrKan Cloud.`;
-}
-function sendFromWidget(){
-  const input = document.getElementById('coachWidgetInput');
-  const text = input.value.trim();
-  if(!text) return;
-  input.value = '';
-  if(!state.aiOpen) toggleAI();
-  sendAI(text);
 }
 const CLOUD_DEEPLINKS = {
   1:{label:'Startseite'},
@@ -3546,94 +3249,6 @@ function showToast(text){
   clearTimeout(window.__toastTimer);
   window.__toastTimer = setTimeout(()=>toast.classList.remove('show'), 3800);
 }
-function askCoach(mid){
-  toggleAI();
-  const m = MODULES.find(x=>x.id===mid);
-  addAIMsg('bot', `Sie befinden sich im Modul „${m.title}". Stellen Sie mir gerne eine Frage dazu, zum Beispiel „Fasse dieses Kapitel zusammen" oder „Welche Schritte sind besonders wichtig?".`);
-}
-function addAIMsg(role,text){
-  const wrap = document.getElementById('aiMessages');
-  const div = document.createElement('div'); div.className='ai-msg '+role; div.textContent = text;
-  wrap.appendChild(div); wrap.scrollTop = wrap.scrollHeight;
-}
-function sendAI(preset){
-  const input = document.getElementById('aiInput');
-  const text = preset || input.value.trim();
-  if(!text) return;
-  if(!preset) input.value='';
-  addAIMsg('user', text);
-  setTimeout(()=>{ addAIMsg('bot', getAIResponse(text)); }, 500);
-}
-function getAIResponse(text){
-  const t = text.toLowerCase();
-  const done = completedCount();
-  if(t.includes('stehe')||t.includes('status')||t.includes('fortschritt')){
-    return `Sie haben ${done} von ${MODULES.length} Modulen abgeschlossen (${progressPct()}%). Sie befinden sich in Phase ${done>=6?3:(done>=2?2:1)} des Onboardings.`;
-  }
-  if(t.includes('nächst')||t.includes('weiter')){
-    const adaptive = getAdaptiveRecommendation();
-    if(adaptive) return `Ich habe bei „${adaptive.topic}" eine Wissenslücke erkannt. Ihr Lernpfad wurde adaptiv angepasst: Ich empfehle vorrangig „${adaptive.module.title}" zur Vertiefung, bevor Sie regulär fortfahren.`;
-    const next = MODULES.find(m=>!state.moduleProgress[m.id].completed);
-    return next ? `Empfehlung: Setzen Sie fort mit „${next.title}" (${next.time}).` : 'Sie haben alle Module abgeschlossen — besuchen Sie den Bereich Zertifikate, um Ihr Zertifikat zu erhalten.';
-  }
-  if(t.includes('wissenslück')||t.includes('lücke')||t.includes('schwäch')){
-    const topics = Object.entries(state.weakTopics).sort((a,b)=>b[1]-a[1]);
-    if(!topics.length) return 'Bisher wurden bei Ihnen keine Wissenslücken erkannt. Sobald ein Wissenscheck nicht vollständig richtig beantwortet wird, analysiere ich automatisch die betroffenen Themen und passe Ihren Lernpfad an — Details finden Sie im Bereich „Wissenslücken-Analyse".';
-    return `Ich habe bei Ihnen folgende Wissenslücken erkannt: ${topics.map(t=>t[0]).join(', ')}. Diese Themen wurden priorisiert in Ihren Lernpfad eingeplant. Zusätzlich fließen unternehmensweit aggregierte Lücken automatisch in die Produktdokumentation von OrKan System zurück.`;
-  }
-  if(t.includes('adapt')||t.includes('anpassung')||t.includes('lernpfad')){
-    return state.adaptiveLog.length ? `Ihr Lernpfad wurde bereits ${state.adaptiveLog.length}× automatisch angepasst, basierend auf erkannten Wissenslücken in Ihren Wissenschecks. Details finden Sie im Bereich „Mein Lernpfad" unter Adaptionsverlauf.` : 'Ihr Lernpfad passt sich automatisch an, sobald ich Wissenslücken in Ihren Wissenschecks erkenne — bislang war das noch nicht nötig, da Sie alle Fragen korrekt beantwortet haben.';
-  }
-  if(t.includes('etikett')||t.includes('kanban')){
-    return 'An jedem Lagerplatz hängen zwei Etiketten: Das blaue bleibt fest am Regal zur Lagerplatzkennzeichnung. Das weiße wird bei Mindestbestand gezogen und in die Bestellbox gelegt — von dort werden die Artikel unter „Bestellvorschlag" gescannt und bestellt.';
-  }
-  if(t.includes('mindestmenge')||t.includes('lager min')||t.includes('lager max')||t.includes(' min')||t.includes(' max')){
-    return 'Lager MIN ist Ihr Sicherheitsbestand, ab dem nachbestellt wird. Lager MAX ist der gewünschte Höchstbestand. Die vorgeschlagene Bestellmenge ergibt sich automatisch aus MAX minus MIN — bei MIN=2 und MAX=6 werden also 4 Stück vorgeschlagen.';
-  }
-  if(t.includes('zusammenfass')||t.includes('kapitel')){
-    return 'Öffnen Sie im aktuellen Modul den Tab „Zusammenfassung" nach Abschluss des Wissenschecks — dort finden Sie Kernaussagen, wichtigste Funktionen und konkrete Handlungsempfehlungen.';
-  }
-  if(t.includes('datanorm')){
-    return 'Der Artikelimport hat zwei Reiter: Neben dem Cloud-Import (Excel + ZIP) gibt es den DATANORM Preis Import. Damit importieren Sie eine DATANORM-Preisdatei eines Lieferanten und aktualisieren automatisch die hinterlegten Artikelpreise und -daten — ideal bei häufigen Preisänderungen großer Lieferanten.';
-  }
-  if(t.includes('csv')||t.includes('import')||t.includes('excel')){
-    return 'Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei mit den Artikelbildern (max. 40 MB) — der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen. Ein Schalter „Protokoll per Mail senden" schickt Ihnen nach dem Import automatisch einen Ergebnisbericht. Details finden Sie in Modul 4 oder in der Wissensdatenbank unter „Artikelimport per Excel und ZIP".';
-  }
-  if(t.includes('statistik')||t.includes('bericht')||t.includes('auswertung')){
-    return 'Unter „Statistik" finden Sie drei aufklappbare Berichtsbereiche: Mandant (übergreifende Kennzahlen), Lagerverwaltung (Artikel, Bestellung, Artikelbuchung) und Gebrauchsgut (Buchungen und Nutzung). So müssen Sie Kennzahlen nicht mehr einzeln aus den Listen zusammensuchen.';
-  }
-  if(t.includes('startseite')||t.includes('kachel')||t.includes('feedback')||t.includes('home')){
-    return 'Über das Stift-Symbol oben in der Kopfzeile können Sie die Startseiten-Kacheln frei anpassen: verschieben, Icon und Farbe ändern, löschen oder per „+" neue hinzufügen. Über das Smiley-Symbol erreichen Sie das Feedback-Menü mit Kontakt, Vorschlag einreichen und Problem melden.';
-  }
-  if(t.includes('fahrzeug')||t.includes('fuhrpark')){
-    return 'Unter Gebrauchsgut → Fahrzeuge führen Sie Ihre Fuhrpark-Liste mit Kennzeichen, Modell, Fahrgestellnummer und zugeordnetem Mitarbeiter. Über „Buchungen" weisen Sie ein Fahrzeug einem Mitarbeiter oder Standort zu — genau wie bei anderen Gebrauchsgütern.';
-  }
-  if(t.includes('reservier')){
-    return 'Über Gebrauchsgut → Reservierungen können Sie eine Maschine, Anlage oder ein Werkzeug für einen bestimmten Zeitraum im Voraus vormerken, damit es zwischenzeitlich nicht anderweitig gebucht wird.';
-  }
-  if(t.includes('scan') || t.includes('barcode') || t.includes('bestelleingang')){
-    return 'Unter „Scan-Bestelleingang" starten Sie über den grünen Scanner-Button je Zeile die Wareneingangsbuchung: Artikel werden per Barcode-/EAN-Scan gegen die Bestellposition geprüft, die gelieferte Menge wird automatisch erfasst und Abweichungen zur bestellten Menge werden sofort sichtbar. Ein grüner Haken markiert vollständig abgeschlossene Eingänge.';
-  }
-  if(t.includes('bestellvariante')||t.includes('bestellmenge')){
-    return 'Sobald Sie im Lieferanten-Bereich der Artikelmaske Menge (VPE), Mengeneinheit und eine eventuell abweichende Bestellmenge/-einheit eintragen, berechnet die OrKan Cloud automatisch die Zeile „Ihre Bestellvariante: X Stück" — so sehen Sie sofort, welche Menge tatsächlich bestellt wird.';
-  }
-  if(t.includes('kommission')){
-    return 'Im Bestellvorschlag können Sie markierte Positionen über „Kommission" einer Kommissions- bzw. Projektnummer zuordnen — so lässt sich eine Bestellung gezielt einem Projekt statt dem allgemeinen Lagerbestand zuordnen.';
-  }
-  if(t.includes('modul')&&(t.includes('buchen')||t.includes('lizenz')||t.includes('kaufen'))){
-    return 'Unter Einstellungen → Firma → Module sehen Sie eine Kachelübersicht der Module Ihrer OrKan Cloud mit dem jeweiligen Laufzeitende.';
-  }
-  if(t.includes('shop')||t.includes('lieferant')){
-    return 'Die OrKan Cloud ist lieferantenunabhängig. Entscheidend für die Anbindung ist die Shop-URL im Lieferantenstamm sowie Benutzer und Passwort für den Systemzugang — darüber kann die OrKan Cloud Bestellungen direkt an das System des Lieferanten übermitteln (z. B. per „Erneut Senden" oder „Export UGL").';
-  }
-  if(t.includes('gebrauchsgut')||t.includes('maschine')){
-    return 'Über die Gebrauchsgutverwaltung sehen Sie, welcher Mitarbeiter oder welches Fahrzeug aktuell welche Maschine hat. Zusätzlich lassen sich Service- und Wartungstermine sowie Reservierungen direkt an der Maschine hinterlegen.';
-  }
-  if(t.includes('zertifikat')){
-    return done===MODULES.length ? 'Herzlichen Glückwunsch — Ihr Zertifikat ist im Bereich „Zertifikate" verfügbar.' : `Noch ${MODULES.length-done} Module bis zu Ihrem Zertifikat. Sie schaffen das.`;
-  }
-  return 'Das ist eine gute Frage. Ich empfehle einen Blick in die Wissensdatenbank oder das passende Lernmodul — dort finden Sie eine ausführliche Erklärung. Sie können mich auch nach Ihrem Fortschritt oder den nächsten Lernschritten fragen.';
-}
 bootApp();
 </script>
 <script>
@@ -3746,146 +3361,7 @@ function renderTour(){
   if(typeof orig==='function') window.startApp=function(){ orig.apply(this,arguments); setTimeout(startTour,700); };
 })();
 </script>
-<script>
-/* ===== Team-Konten: Teamcode, gemeinsame Speicherung, Team-Fortschritt ===== */
-let __teamDb=null, __teamUser=null, __teamUnsub=null, __lastMemberJson='', __memberTimer=null;
-const __dbReady = (async()=>{
-  try{ if(window.claude && typeof claude.use==='function'){ __teamDb = await claude.use('db'); __teamUser = await claude.use('user'); } }catch(e){ __teamDb=null; }
-  return __teamDb;
-})();
-function selectTeamMode(mode){
-  state.teamMode = mode;
-  document.querySelectorAll('.team-mode-btn').forEach(b=>b.classList.toggle('selected', b.dataset.mode===mode));
-  document.getElementById('teamCodeField').hidden = mode!=='join';
-  document.getElementById('teamCodeError').textContent='';
-  checkStart();
-}
-const __origCheckStart = checkStart;
-checkStart = function(){
-  const name = document.getElementById('onbName').value.trim();
-  const code = (document.getElementById('onbTeamCode')||{}).value||'';
-  document.getElementById('startBtn').disabled = !name;
-};
-document.addEventListener('input', e=>{ if(e.target.id==='onbTeamCode') checkStart(); });
-function cleanSeg(s){ return String(s||'').replace(/[^A-Za-z0-9_\-.~:@+]/g,'_').slice(0,120) || 'x'; }
-async function memberId(){
-  try{ if(__teamUser && __teamUser.id){ const id = await __teamUser.id(); if(id) return cleanSeg(id); } }catch(e){}
-  let id=null; try{ id=localStorage.getItem('orkanMemberId'); }catch(e){}
-  if(!id){ id='m'+Date.now().toString(36)+Math.random().toString(36).slice(2,8); try{localStorage.setItem('orkanMemberId',id)}catch(e){} }
-  return id;
-}
-function makeTeamCode(company){
-  const base=(company||'TEAM').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]/g,'').toUpperCase().slice(0,8)||'TEAM';
-  return base+'-'+String(Math.floor(1000+Math.random()*9000));
-}
-const __origStartApp = window.startApp;
-window.startApp = function(){ state.teamCode=null; state.isLead=false; __origStartApp.apply(this, arguments); };
-function applyTeamAccess(){
-  
-  const pt=document.getElementById('profileTeam');
-  if(pt) pt.innerHTML = state.teamCode ? `${state.isLead?'Teamleitung':'Team'} · Code <b>${state.teamCode}</b>` : '';
-}
-function memberPayload(){
-  const s=Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore);
-  const rs=Object.values(state.ratings||{}).filter(r=>r.stars);
-  return { name:state.name, role:state.role, company:state.company, isLead:!!state.isLead,
-    completed:completedCount(), quizAvg: s.length?Math.round(s.reduce((a,b)=>a+b,0)/s.length):null,
-    weakTopic: Object.entries(state.weakTopics||{}).sort((a,b)=>b[1]-a[1]).map(x=>x[0])[0]||null,
-    doneModules: MODULES.filter(m=>state.moduleProgress[m.id].completed).map(m=>m.id),
-    ratingAvg: rs.length? Math.round(rs.reduce((a,r)=>a+r.stars,0)/rs.length*10)/10 : null };
-}
-async function syncMember(force){
-  if(!state.teamCode) return;
-  const db=await __dbReady; if(!db) return;
-  const p=memberPayload(); const j=JSON.stringify(p);
-  if(!force && j===__lastMemberJson) return;
-  __lastMemberJson=j;
-  try{ await db.doc('teams/'+cleanSeg(state.teamCode)+'/members/'+(await memberId())).set(Object.assign(p,{updatedAt:new Date().toISOString()})); }catch(e){ __lastMemberJson=''; }
-}
-const __origSaveState = saveState;
-saveState = function(){ __origSaveState(); clearTimeout(__memberTimer); __memberTimer=setTimeout(()=>syncMember(false),1500); };
-async function subscribeTeam(){
-  if(!state.isLead || !state.teamCode || __teamUnsub) return;
-  const db=await __dbReady; if(!db) return;
-  const myId=await memberId();
-  __teamUnsub = db.collection('teams/'+cleanSeg(state.teamCode)+'/members').onSnapshot(snap=>{
-    state.teamLive = snap.docs.filter(d=>d.id!==myId).map(d=>Object.assign({id:d.id},d.data()));
-    state.teamDbOk = true;
-    if(state.currentView==='team') renderTeam();
-    if(state.currentView==='dashboard' && document.getElementById('dashWidgets')) document.getElementById('dashWidgets').innerHTML=renderDashboardWidgets();
-  }, ()=>{ state.teamDbOk=false; });
-}
-function selfMember(){ const p=memberPayload(); return {name:`${state.name}`, you:true, role:state.role, completed:p.completed, quizAvg:p.quizAvg??0, weakTopic:p.weakTopic}; }
-function getTeamMembers(){
-  const live=(state.teamLive||[]).filter(m=>!m.isLead || true).map(m=>({name:m.name||'Mitarbeiter', role:m.role||'', completed:m.completed||0, quizAvg:m.quizAvg??0, weakTopic:m.weakTopic||null}));
-  const showDemo = state.showDemoTeam!==undefined ? state.showDemoTeam : !live.length;
-  return [selfMember(), ...live, ...(showDemo? TEAM_MEMBERS.map(m=>Object.assign({demo:true},m)) : [])];
-}
-function toggleDemoTeam(on){ state.showDemoTeam=on; renderTeam(); }
-function copyTeamCode(){
-  const c=state.teamCode||''; const done=()=>showToast('Teamcode kopiert: '+c);
-  try{ navigator.clipboard.writeText(c).then(done,()=>showToast('Teamcode: '+c)); }catch(e){ showToast('Teamcode: '+c); }
-}
-renderTeam = function(){
-  const el=document.getElementById('view-team'); if(!el) return;
-  if(!state.isLead){
-    el.innerHTML=`<h1 class="page-title">Team-Fortschritt</h1><div class="team-locked"><p>Diese Ansicht ist nur für die Teamleitung (Lagerleitung oder Geschäftsführung) sichtbar.</p></div>`; return;
-  }
-  const all=getTeamMembers(); const liveCount=(state.teamLive||[]).length;
-  const showDemo = state.showDemoTeam!==undefined ? state.showDemoTeam : !liveCount;
-  const avg=Math.round(all.reduce((a,m)=>a+m.completed,0)/all.length/MODULES.length*100);
-  el.innerHTML=`
-    <h1 class="page-title">Team-Fortschritt</h1>
-    <p class="page-sub">Onboarding-Status aller Mitarbeiter, die Ihrem Team beigetreten sind. ${state.teamDbOk?'<span class="team-live">Live</span>':''}</p>
-    <div class="team-code-card">
-      <span class="tc-code">${state.teamCode||'—'}</span>
-      <div class="tc-text"><strong>Ihr Teamcode</strong>Geben Sie diesen Code an Ihre Mitarbeiter weiter. Bei der Anmeldung wählen sie „Einem Team beitreten“ und tragen den Code ein – ihr Fortschritt erscheint dann automatisch hier.</div>
-      <button class="btn btn-primary" onclick="copyTeamCode()">Code kopieren</button>
-    </div>
-    <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">Team-Mitglieder</div><div class="stat-val">${all.length}</div><div class="stat-sub">${liveCount} beigetreten${showDemo?' + Demo':''}</div></div>
-      <div class="stat-card"><div class="stat-label">Ø Fortschritt</div><div class="stat-val">${avg}%</div><div class="stat-sub">über alle Module</div></div>
-      <div class="stat-card"><div class="stat-label">Vollständig abgeschlossen</div><div class="stat-val">${all.filter(m=>m.completed>=MODULES.length).length}</div><div class="stat-sub">von ${all.length} Personen</div></div>
-      <div class="stat-card"><div class="stat-label">Auffällige Wissenslücken</div><div class="stat-val">${all.filter(m=>m.weakTopic).length}</div><div class="stat-sub">benötigen Vertiefung</div></div>
-    </div>
-    <div class="section-heading">Teammitglieder</div>
-    <label class="team-demo-toggle"><input type="checkbox" ${showDemo?'checked':''} onchange="toggleDemoTeam(this.checked)"> Beispiel-Mitarbeiter anzeigen (Demo)</label>
-    <div class="team-list">${all.map(m=>`
-      <div class="team-row">
-        <div class="team-avatar">${(m.name||'?').split(' ').map(n=>n[0]).slice(0,2).join('')}</div>
-        <div class="team-info"><div class="team-name">${m.name}${m.you?'<span class="team-you-tag">Sie</span>':''}${m.demo?'<span class="team-demo-tag">Demo</span>':''}</div><div class="team-role">${m.role}</div></div>
-        <div class="team-progress-wrap"><div class="gap-track" style="width:140px"><div class="gap-fill company" style="width:${m.completed/MODULES.length*100}%"></div></div><span class="team-progress-text">${m.completed}/${MODULES.length} Module</span></div>
-        <div class="team-quiz">Ø ${m.quizAvg}%</div>
-        <div class="team-flag">${m.weakTopic?`<span class="gap-count">Lücke: ${m.weakTopic}</span>`:`<span class="team-ok">Keine Lücken</span>`}</div>
-      </div>`).join('')}</div>
-    ${liveCount?'':`<div class="insight-callout" style="margin-top:24px"><strong>Noch niemand beigetreten</strong><p>Sobald ein Mitarbeiter sich mit Ihrem Teamcode anmeldet, erscheint er hier – inklusive Fortschritt, Quiz-Ergebnissen und Wissenslücken.</p></div>`}`;
-};
-DASHBOARD_WIDGETS.teamsummary.render = (orig => () => {
-  const all=getTeamMembers(); const n=all.length;
-  const done=all.filter(x=>x.completed>=MODULES.length).length, open=all.filter(x=>x.completed===0).length, prog=n-done-open;
-  const avg=Math.round(all.reduce((s,x)=>s+x.completed/MODULES.length,0)/n*100);
-  return `<div class="w-team"><div class="w-team-bar"><i class="d" style="flex:${done||0.001}"></i><i class="p" style="flex:${prog||0.001}"></i><i class="o" style="flex:${open||0.001}"></i></div>
-    <div class="w-team-legend"><span><b class="d"></b>${done} abgeschlossen</span><span><b class="p"></b>${prog} in Bearbeitung</span><span><b class="o"></b>${open} noch nicht gestartet</span></div>
-    <div class="w-team-avg"><strong>${avg}</strong><small>%</small><span>Ø Fortschritt im Team (${n} Personen) · Teamcode <b>${state.teamCode||'—'}</b></span></div>
-    </div>`;
-})();
-const __origRenderWidgets = renderDashboardWidgets;
-renderDashboardWidgets = function(){
-  const prefs = state.dashboardPrefs || (state.dashboardPrefs = loadDashboardPrefs());
-  const saved = Object.assign({}, prefs.hidden);
-  prefs.hidden = Object.assign({}, saved, {teamsummary:true, completiontime:true});
-  try{ return __origRenderWidgets(); } finally { prefs.hidden = saved; }
-};
-const __origSnapshotSave = saveState;
-(function(){
-  // Teamdaten mit speichern/laden
-  const key='orkanTeam_v1';
-  const persist=()=>{ try{ localStorage.setItem(key, JSON.stringify({teamCode:state.teamCode, isLead:state.isLead, teamMode:state.teamMode})); }catch(e){} };
-  const s2=saveState; saveState=function(){ persist(); s2(); };
-  try{ localStorage.removeItem(key); }catch(e){} state.teamCode=null; state.isLead=false;
-  if(document.getElementById('app') && document.getElementById('app').style.display==='flex'){ applyTeamAccess(); renderTeam(); renderDashboard(); syncMember(true); subscribeTeam(); }
-})();
-</script>
+
 
 <div class="mail-chooser" id="mailChooser" hidden onclick="if(event.target===this)closeMailChooser()">
   <div class="mail-chooser-box" role="dialog" aria-label="E-Mail-App auswählen">
