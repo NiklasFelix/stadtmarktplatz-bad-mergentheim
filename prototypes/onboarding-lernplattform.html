@@ -2967,19 +2967,21 @@ function retryQuiz(mid){ delete state.quizAnswers[mid]; if(state.quizTries) dele
 
 /* ============ KNOWLEDGE BASE ============ */
 function modLabel(id){ const m=MODULES.find(x=>x.id===id); return m?`Modul ${String(id).padStart(2,'0')} · ${m.title}`:''; }
+const KB_TOPICS=[{t:'Erste Schritte',m:[1]},{t:'Artikel & Lagerplätze',m:[2]},{t:'Lieferanten & Preise',m:[3,12]},{t:'Etiketten',m:[4,13]},{t:'Bestellen & Wareneingang',m:[5,6]},{t:'Bestand & Inventur',m:[10,11]},{t:'Gebrauchsgut & Schlüssel',m:[7,8]},{t:'Projekte & Baustellen',m:[9]}];
+function topicOf(mod){ const t=KB_TOPICS.find(x=>x.m.includes(mod)); return t?t.t:''; }
 function groupByModule(list, card){
-  return MODULE_GROUPS.map(g=>{
-    const mods=g.ids.filter(id=>list.some(x=>x.mod===id));
-    if(!mods.length) return '';
-    return `<div class="module-group-head"><h2>${g.title}</h2></div>`+mods.map(id=>`<div class="kb-mod-head">${modLabel(id)}</div><div class="kb-grid">${list.filter(x=>x.mod===id).map(card).join('')}</div>`).join('');
+  return KB_TOPICS.map(t=>{
+    const items=t.m.flatMap(id=>list.filter(x=>x.mod===id));
+    if(!items.length) return '';
+    return `<div class="module-group-head"><h2>${t.t}</h2><span>${items.length} ${items.length===1?'Eintrag':'Einträge'}</span></div><div class="kb-grid">${items.map(card).join('')}</div>`;
   }).join('');
 }
 function renderKB(){
   document.getElementById('view-kb').innerHTML = `
     <h1 class="page-title">Wissensdatenbank</h1>
-    <p class="page-sub">Nachschlagen nach Lernmodulen geordnet – mit Suchfunktion.</p>
+    <p class="page-sub">Nachschlagen nach Themen geordnet – mit Suchfunktion.</p>
     <input type="text" class="kb-search" placeholder="Suchen Sie nach Themen, Funktionen oder Prozessen..." oninput="kbSearchInput(this.value)" value="${(state.kbSearch||'').replace(/"/g,'&quot;')}">
-    <div class="chip-row" id="kbChips">${['Alle','Grundlagen Onboarding','Expertenwissen'].map(c=>`<div class="chip ${state.kbFilter===c?'active':''}" onclick="kbFilterClick('${c}')">${c}</div>`).join('')}</div>
+    <div class="chip-row" id="kbChips">${['Alle',...KB_TOPICS.map(t=>t.t)].map(c=>`<div class="chip ${state.kbFilter===c?'active':''}" onclick="kbFilterClick('${c}')">${c}</div>`).join('')}</div>
     <div id="kbGridHost"></div>
   `;
   renderKBGrid();
@@ -2989,9 +2991,9 @@ function kbSearchInput(v){ state.kbSearch=v; renderKBGrid(); }
 function renderKBGrid(){
   const host = document.getElementById('kbGridHost');
   if(!host) return;
-  const q=(state.kbSearch||'').toLowerCase();
-  const grp=MODULE_GROUPS.find(g=>g.title===state.kbFilter);
-  const filtered = KB_ARTICLES.filter(a=>(!grp||grp.ids.includes(a.mod)) && (!q || (a.title+' '+a.desc+' '+a.body.join(' ')).toLowerCase().includes(q)));
+  const q=(state.kbSearch||'').toLowerCase(); if(state.kbFilter!=='Alle'&&!KB_TOPICS.some(t=>t.t===state.kbFilter)) state.kbFilter='Alle';
+  const grp=KB_TOPICS.find(t=>t.t===state.kbFilter);
+  const filtered = KB_ARTICLES.filter(a=>(!grp||grp.m.includes(a.mod)) && (!q || (a.title+' '+a.desc+' '+a.body.join(' ')).toLowerCase().includes(q)));
   host.innerHTML = filtered.length ? groupByModule(filtered, a=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(a)})"><h4>${a.title}</h4><p>${a.desc}</p><span class="kb-link">Lesen &rarr;</span></div>`) : '<p style="color:var(--gray)">Keine Artikel gefunden.</p>';
 }
 function openArticle(idx){
@@ -2999,11 +3001,11 @@ function openArticle(idx){
   markActivity(); pushRecent({type:'article',id:idx});
   const a = KB_ARTICLES[idx];
   if(typeof showView==='function' && state.currentView!=='kb') showView('kb');
-  const rel = KB_ARTICLES.filter(x=>x.mod===a.mod && x!==a);
+  const rel = KB_ARTICLES.filter(x=>topicOf(x.mod)===topicOf(a.mod) && x!==a);
   document.getElementById('view-kb').innerHTML = `
     <div class="md-back" onclick="renderKB()">&larr; Zurück zur Wissensdatenbank</div>
     <div class="kb-article">
-      <div class="kb-article-crumb">Wissensdatenbank / ${modLabel(a.mod)}</div>
+      <div class="kb-article-crumb">Wissensdatenbank / ${topicOf(a.mod)}</div>
       <h2>${a.title}</h2>
       <p class="kb-lead">${a.desc}</p>
       ${a.path?`<div class="kb-path"><span>So kommen Sie hin</span>${a.path}</div>`:''}
@@ -3015,7 +3017,7 @@ function openArticle(idx){
         <button class="helpful-btn" onclick="this.textContent='Danke für Ihr Feedback'">Ja, hilfreich</button>
         <button class="helpful-btn" onclick="this.textContent='Danke für Ihr Feedback'">Nein, verbesserungswürdig</button>
       </div>
-      ${rel.length?`<div class="section-heading" style="margin-top:8px">Weitere Artikel zu diesem Modul</div>
+      ${rel.length?`<div class="section-heading" style="margin-top:8px">Weitere Artikel zu diesem Thema</div>
       <div class="kb-grid">${rel.slice(0,3).map(x=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(x)})"><h4>${x.title}</h4><p>${x.desc}</p><span class="kb-link">Lesen &rarr;</span></div>`).join('')}</div>`:''}
     </div>
   `;
@@ -3030,7 +3032,7 @@ function renderBest(){
       <button class="btn btn-primary" style="width:100%" onclick="openBP(${i})">Anleitung starten</button></div>`; };
   document.getElementById('view-best').innerHTML = `
     <h1 class="page-title">Praxiserprobte Anleitungen für häufige Aufgaben</h1>
-    <p class="page-sub">Schritt-für-Schritt-Anleitungen – in derselben Reihenfolge wie die Lernmodule.</p>
+    <p class="page-sub">Schritt-für-Schritt-Anleitungen, nach Themen geordnet.</p>
     ${groupByModule(BEST_PRACTICES, card).replace(/class="kb-grid"/g,'class="bp-grid"')}
   `;
 }
@@ -3038,7 +3040,7 @@ function openBP(idx){
   const b = BEST_PRACTICES[idx];
   document.getElementById('view-best').innerHTML = `
     <div class="md-back" onclick="renderBest()">&larr; Zurück zu Best Practices</div>
-    <div class="kb-article-crumb">Best Practices / ${modLabel(b.mod)}</div>
+    <div class="kb-article-crumb">Best Practices / ${topicOf(b.mod)}</div>
     <h1 class="page-title">${b.title}</h1>
     <p class="page-sub">${b.desc} · ca. ${b.time} Minuten · ${b.steps.length} Schritte</p>
     ${b.downloadable ? templateDownloadCallout() : ''}
