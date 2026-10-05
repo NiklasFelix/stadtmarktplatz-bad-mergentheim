@@ -1351,6 +1351,7 @@ html.theme-light .help-menu{background:#fff}
 .fs-out b{font-size:22px;font-variant-numeric:tabular-nums}
 .fs-out .fs-save{background:var(--green);color:#15191C}.fs-out .fs-save span{color:#15191C}
 .fs-grid>.bp-card{height:auto}
+#view-fives .bp-card,#view-fives .bp-card:hover{transform:none!important;transition:none}
 .fs-5s li{margin:6px 0;font-size:14px;line-height:1.45}
 @media(max-width:640px){.fs-n{padding:2px}.fs-res-row{grid-template-columns:100px minmax(0,1fr) 44px}}
 </style>
@@ -3585,7 +3586,7 @@ bootApp();
   const CARD = '.module-card,.kb-card,.bp-card,.stat-card,.milestone-card,.feature-card,.role-card,.team-row';
   // 3D-Neigung + Lichtkegel
   document.addEventListener('pointermove', e=>{
-    const c = e.target.closest && e.target.closest(CARD); if(!c) return;
+    const c = e.target.closest && e.target.closest(CARD); if(!c||c.closest("#view-fives")) return;
     c.classList.add('ix-card');
     const r = c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
     c.style.setProperty('--mx',(x*100)+'%'); c.style.setProperty('--my',(y*100)+'%');
