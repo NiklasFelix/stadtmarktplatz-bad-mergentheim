@@ -3306,31 +3306,66 @@ function favItem(k){
 }
 const GS_SYN={bestellung:'bestell',bestellen:'bestell',kaufen:'bestell',einkauf:'bestell',nachbestellen:'bestell',order:'bestell',lager:'lager',regal:'lagerplatz',fach:'lagerplatz',ort:'lagerplatz',label:'etikett',barcode:'etikett',qr:'etikett',scannen:'scan',scanner:'scan',werkzeug:'maschine',geraet:'maschine',gerat:'maschine',baustelle:'baustelle',projekt:'projekt',auftrag:'projekt',ruecksendung:'retoure',rueckgabe:'retoure',zurueck:'retoure',kommissionierung:'kommission',zaehlung:'inventur',zaehlen:'inventur',stichtag:'inventur',bestand:'bestand',menge:'bestand',kosten:'preis',ek:'preis',vk:'preis',import:'import',excel:'import',csv:'import',hochladen:'import',lieferung:'wareneingang',anlieferung:'wareneingang',warenannahme:'wareneingang',haendler:'lieferant',login:'anmeld',passwort:'anmeld',einloggen:'anmeld',key:'schluessel',zertifikat:'zertifikat'};
 const gsNorm=t=>String(t).replace(/<[^>]+>/g,' ').toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,' ');
-const gsStem=w=>{ for(const suf of ['ungen','ung','en','er','es','e','n','s']) if(w.length-suf.length>=4&&w.endsWith(suf)) return w.slice(0,-suf.length); return w; };
-function gsTermMatch(w,text){
-  const st=gsStem(w), syn=GS_SYN[w]||GS_SYN[st];
-  if(text.includes(st)||(syn&&text.includes(syn))) return 1;
-  // Komposita zerlegen, z. B. "artikelbestellung" -> "artikel" + "bestell"
-  for(let i=3;i<=w.length-3;i++){ const a=w.slice(0,i), b=w.slice(i);
-    const ok=x=>{ const s2=gsStem(x), y=GS_SYN[x]||GS_SYN[s2]; return text.includes(s2)||(y&&text.includes(y)); };
-    if(ok(a)&&ok(b)) return .8; }
-  // Tippfehler-Toleranz: Wortanfang
-  if(st.length>=5&&text.includes(st.slice(0,st.length-1))) return .5;
-  return 0;
+// Grundform bilden: Endungen, Partizip (an-ge-legt) und Ablaut (Anlage/anlegen, Ausgabe/ausgeben …) vereinheitlichen
+const gsStem=w=>{
+  w=w.replace(/^(an|ab|auf|aus|ein|zu|vor|nach|um|zurueck|weiter)ge(?=[a-z]{3})/,'$1');
+  for(const suf of ['ungen','ung','ern','en','er','es','e','n','s','et','t']) if(w.length-suf.length>=4&&w.endsWith(suf)){ w=w.slice(0,-suf.length); break; }
+  return w.replace(/lag$/,'leg').replace(/gab$/,'geb').replace(/nahm$/,'nehm').replace(/gang$/,'geh').replace(/zug$/,'zieh').replace(/fuhr$/,'fahr').replace(/schrieb$/,'schreib').replace(/stell$/,'stell');
+};
+const gsCanon=t=>' '+gsNorm(t).split(' ').filter(Boolean).map(gsStem).join(' ')+' ';
+function gsDist(a,b){ // Damerau-Levenshtein (Tippfehler, Buchstabendreher)
+  const d=[]; for(let i=0;i<=a.length;i++){ d[i]=[i]; } for(let j=0;j<=b.length;j++) d[0][j]=j;
+  for(let i=1;i<=a.length;i++) for(let j=1;j<=b.length;j++){ const c=a[i-1]===b[j-1]?0:1;
+    d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c); if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1]) d[i][j]=Math.min(d[i][j],d[i-2][j-2]+1); }
+  return d[a.length][b.length];
 }
-function gsScore(words,title,rest){
-  const t=' '+gsNorm(title)+' ', r=gsNorm(rest); let sc=0;
-  for(const w of words){ const a=gsTermMatch(w,t), b=gsTermMatch(w,r); if(!a&&!b) return 0; sc+=a*5+b; }
+let GS_VOCAB=null, GS_ITEMS=null; const GS_NCACHE={};
+function gsNeedles(w){ // Schreibweisen, unter denen ein Suchwort im Text vorkommen darf: [[needle, Gewicht]]
+  if(GS_NCACHE[w]) return GS_NCACHE[w];
+  const st=gsStem(w), syn=GS_SYN[w]||GS_SYN[st], out=[[st,1]]; if(syn) out.push([gsStem(syn),.9]);
+  const known=syn||GS_VOCAB.some(v=>v.includes(st));
+  if(!known&&st.length>=4){ const k=st.length>=10?2:1; // nur bei unbekannten Wörtern: Tippfehler tolerieren
+    for(const v of GS_VOCAB){ if(Math.abs(v.length-st.length)>k&&v.length<st.length) continue;
+      if(gsDist(st,v)<=k||(v.length>st.length&&gsDist(st,v.slice(0,st.length))<=k)) out.push([v,.6]); } }
+  return GS_NCACHE[w]=out;
+}
+const gsHit=(w,text)=>Math.max(0,...gsNeedles(w).filter(([n])=>text.includes(n)).map(([,g])=>g));
+// Suchwort in Teile zerlegen, falls es als Ganzes nicht vorkommt (Artikelanlage -> artikel + anleg)
+function gsParts(w){
+  const st=gsStem(w); if(st.length<6||gsNeedles(w).length>1||GS_SYN[w]||GS_SYN[st]) return [w];
+  // Teil zählt, wenn Wörter mit ihm beginnen; gewählt wird die Zerlegung mit den häufigsten Teilwörtern
+  const freq=x=>{ if(GS_SYN[x]) return 50; const y=gsStem(x); return GS_VOCAB.filter(v=>v.startsWith(y)).length; };
+  let best=null;
+  for(let i=4;i<=w.length-4;i++){ const a=w.slice(0,i), b=w.slice(i), fa=freq(a), fb=freq(b);
+    if(fa&&fb){ const sc=Math.log(1+fa)+Math.log(1+fb); if(!best||sc>best[0]) best=[sc,[a,b]]; } }
+  return best?best[1]:[w];
+}
+function gsScore(words,item){
+  if(!item._c) item._c=[gsCanon(item.t),gsCanon(item.r)];
+  const [t,r]=item._c; let sc=0;
+  for(let parts of words){ // ganzes Wort oder alle Wortteile müssen vorkommen
+    const [w,...sub]=parts; let a=gsHit(w,t), b=gsHit(w,r);
+    if(sub.length){ parts=sub; const pa=parts.map(x=>gsHit(x,t)), pb=parts.map(x=>gsHit(x,r)), both=parts.map((x,i)=>pa[i]||pb[i]);
+      if(both.every(Boolean)){ a=Math.max(a,.8*pa.reduce((s,x)=>s+x,0)/parts.length); b=Math.max(b,.8); }
+      else if(!a&&!b&&both.some(Boolean)){ a=.3*Math.max(...pa); b=.3*Math.max(...pb); } } // Teiltreffer, z. B. Schlüssel-übergabe
+    if(!a&&!b) return 0; sc+=a*10+b; }
   return sc;
 }
 function globalSearch(q){
   const box=document.getElementById('gsearchResults'); q=(q||'').trim();
   if(q.length<2){ box.hidden=true; box.innerHTML=''; return; }
-  const words=gsNorm(q).split(' ').filter(w=>w.length>=2);
+  const rawWords=gsNorm(q).split(' ').filter(w=>w.length>=2);
+  if(!GS_VOCAB){ const all=[...MODULES.map(m=>[m.title,(m.points||[]).join(' '),(m.gist||[]).join(' ')].join(' ')),...KB_ARTICLES.map(a=>a.title+' '+a.desc+' '+a.body.join(' ')),...BEST_PRACTICES.map(b=>b.title+' '+b.desc+' '+b.steps.map(x=>x.t+' '+x.d).join(' '))].join(' ');
+    GS_VOCAB=[...new Set(gsCanon(all).split(' ').filter(v=>v.length>=4))]; }
   const rank=list=>list.filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc).slice(0,5);
-  const mods=rank(MODULES.map(m=>({sc:gsScore(words,m.title,[(m.points||[]).join(' '),(m.gist||[]).join(' '),m.desc||''].join(' ')),tag:'Modul '+m.id,title:m.title,open:`openModule(${m.id})`})));
-  const kbs=rank(KB_ARTICLES.map((a,i)=>({sc:gsScore(words,a.title,[a.desc,a.path||'',a.body.join(' '),(MODULES.find(m=>m.id===a.mod)||{}).title||''].join(' ')),tag:'Wissensdatenbank',title:a.title,open:`showView('kb');openArticle(${i})`})));
-  const bps=rank(BEST_PRACTICES.map((b,i)=>({sc:gsScore(words,b.title,[b.desc,b.steps.map(x=>x.t+' '+x.d).join(' '),(MODULES.find(m=>m.id===b.mod)||{}).title||''].join(' ')),tag:'Best Practice',title:b.title,open:`showView('best');openBP(${i})`})));
+  const words=rawWords.map(w=>{ const p=gsParts(w); return p.length>1?[w,...p]:[w]; });
+  if(!GS_ITEMS) GS_ITEMS=[
+    ...MODULES.map(m=>({t:m.title,r:[(m.points||[]).join(' '),(m.gist||[]).join(' '),m.desc||''].join(' '),tag:'Modul '+m.id,title:m.title,open:`openModule(${m.id})`})),
+    ...KB_ARTICLES.map((a,i)=>({t:a.title,r:[a.desc,a.path||'',a.body.join(' '),(MODULES.find(m=>m.id===a.mod)||{}).title||''].join(' '),tag:'Wissensdatenbank',title:a.title,open:`showView('kb');openArticle(${i})`})),
+    ...BEST_PRACTICES.map((b,i)=>({t:b.title,r:[b.desc,b.steps.map(x=>x.t+' '+x.d).join(' '),(MODULES.find(m=>m.id===b.mod)||{}).title||''].join(' '),tag:'Best Practice',title:b.title,open:`showView('best');openBP(${i})`}))];
+  const scored=GS_ITEMS.map(it=>({...it,sc:gsScore(words,it)}));
+  const grp=tag=>rank(scored.filter(x=>x.tag.startsWith(tag)));
+  const mods=grp('Modul'), kbs=grp('Wissens'), bps=grp('Best');
   const all=[...mods,...kbs,...bps];
   box.innerHTML = all.length ? all.map(r=>`<button class="gs-item" onmousedown="event.preventDefault()" onclick="${r.open};closeGlobalSearch()"><span class="w-tag">${r.tag}</span><span>${r.title}</span></button>`).join('') : '<div class="gs-empty">Keine Treffer</div>';
   box.hidden=false;
