@@ -2340,6 +2340,7 @@ function showView(name){
   document.getElementById('mainScroll').scrollTop = 0;
   toggleMobileSidebar(false);
   if(name==='modules') renderModulesList();
+  if(name==='dashboard') renderDashboard();
   animateCounts(document.getElementById('view-'+name));
 }
 function toggleMobileSidebar(force){
