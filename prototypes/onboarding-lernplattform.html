@@ -1289,6 +1289,8 @@ html .mail-chooser-foot .btn{background:#fff!important;color:#1B1B1B!important;b
 #onboarding .onb-logo{justify-content:center!important;width:100%}
 #onboarding .onb-logo .orkan-logo-img{height:72px!important}
 @media(max-width:700px){#onboarding .onb-logo .orkan-logo-img{height:56px!important}}
+.nav-sub-item.current{background:rgba(166,191,104,.18)!important;color:var(--ink)!important;font-weight:700;border-radius:8px;box-shadow:inset 3px 0 0 #8EA752}
+html.theme-light .nav-sub-item.current{background:rgba(142,167,82,.16)!important}
 </style>
 </head>
 <body>
@@ -2294,6 +2296,8 @@ function confirmResetProgress(){
 const VIEW_LABELS = {dashboard:'Dashboard',roadmap:'Mein Lernpfad',modules:'Lernmodule',gaps:'Wissenslücken-Analyse',kb:'Wissensdatenbank',best:'Best Practices',updates:'Update-Center',cert:'Zertifikate',team:'Team-Fortschritt',cloudintegration:'Cloud-Integration'};
 function showView(name){
   state.currentView = name;
+  state.currentModule=null;
+  setTimeout(()=>{try{buildModuleSubNav()}catch(e){}},0);
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -2320,7 +2324,7 @@ function buildModuleSubNav(){
     const p = state.moduleProgress[m.id];
     const cls = p.completed?'done':(p.started?'active':'');
     const grp=moduleGroupStart(m.id);
-    return `${grp?`<div class="nav-sub-group">${grp.title}</div>`:''}<div class="nav-sub-item" onclick="openModule(${m.id});event.stopPropagation()"><span class="status-dot ${cls}"></span>${m.title}</div>`;
+    return `${grp?`<div class="nav-sub-group">${grp.title}</div>`:''}<div class="nav-sub-item ${state.currentView==='modules'&&state.currentModule===m.id?'current':''}" onclick="openModule(${m.id});event.stopPropagation()"><span class="status-dot ${cls}"></span>${m.title}</div>`;
   }).join('');
 }
 
@@ -2643,8 +2647,11 @@ function openModule(id){
   state.currentModule = id;
   state.currentTab = 'content';
   state.moduleProgress[id].started = true;
+  setTimeout(buildModuleSubNav,0);
   markActivity(); pushRecent({type:'module',id});
   showView('modules');
+  state.currentModule = id;
+  document.getElementById('moduleSubNav').classList.add('open');
   renderModuleDetail();
   buildModuleSubNav();
   updateSidebarProgress();
