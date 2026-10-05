@@ -3304,14 +3304,33 @@ function favItem(k){
   if(type==='bp'&&BEST_PRACTICES[id]) return {tag:'Best Practice',title:BEST_PRACTICES[id].title,open:`showView('best');openBP(${id})`};
   return null;
 }
+const GS_SYN={bestellung:'bestell',bestellen:'bestell',kaufen:'bestell',einkauf:'bestell',nachbestellen:'bestell',order:'bestell',lager:'lager',regal:'lagerplatz',fach:'lagerplatz',ort:'lagerplatz',label:'etikett',barcode:'etikett',qr:'etikett',scannen:'scan',scanner:'scan',werkzeug:'maschine',geraet:'maschine',gerat:'maschine',baustelle:'baustelle',projekt:'projekt',auftrag:'projekt',ruecksendung:'retoure',rueckgabe:'retoure',zurueck:'retoure',kommissionierung:'kommission',zaehlung:'inventur',zaehlen:'inventur',stichtag:'inventur',bestand:'bestand',menge:'bestand',kosten:'preis',ek:'preis',vk:'preis',import:'import',excel:'import',csv:'import',hochladen:'import',lieferung:'wareneingang',anlieferung:'wareneingang',warenannahme:'wareneingang',haendler:'lieferant',login:'anmeld',passwort:'anmeld',einloggen:'anmeld',key:'schluessel',zertifikat:'zertifikat'};
+const gsNorm=t=>String(t).replace(/<[^>]+>/g,' ').toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,' ');
+const gsStem=w=>{ for(const suf of ['ungen','ung','en','er','es','e','n','s']) if(w.length-suf.length>=4&&w.endsWith(suf)) return w.slice(0,-suf.length); return w; };
+function gsTermMatch(w,text){
+  const st=gsStem(w), syn=GS_SYN[w]||GS_SYN[st];
+  if(text.includes(st)||(syn&&text.includes(syn))) return 1;
+  // Komposita zerlegen, z. B. "artikelbestellung" -> "artikel" + "bestell"
+  for(let i=3;i<=w.length-3;i++){ const a=w.slice(0,i), b=w.slice(i);
+    const ok=x=>{ const s2=gsStem(x), y=GS_SYN[x]||GS_SYN[s2]; return text.includes(s2)||(y&&text.includes(y)); };
+    if(ok(a)&&ok(b)) return .8; }
+  // Tippfehler-Toleranz: Wortanfang
+  if(st.length>=5&&text.includes(st.slice(0,st.length-1))) return .5;
+  return 0;
+}
+function gsScore(words,title,rest){
+  const t=' '+gsNorm(title)+' ', r=gsNorm(rest); let sc=0;
+  for(const w of words){ const a=gsTermMatch(w,t), b=gsTermMatch(w,r); if(!a&&!b) return 0; sc+=a*5+b; }
+  return sc;
+}
 function globalSearch(q){
-  const box=document.getElementById('gsearchResults'); q=(q||'').trim().toLowerCase();
+  const box=document.getElementById('gsearchResults'); q=(q||'').trim();
   if(q.length<2){ box.hidden=true; box.innerHTML=''; return; }
-  const strip=t=>String(t).replace(/<[^>]+>/g,' ');
-  const hit=(...parts)=>strip(parts.join(' ')).toLowerCase().includes(q);
-  const mods=MODULES.filter(m=>hit(m.title,(m.points||[]).join(' '),(m.gist||[]).join(' '))).slice(0,5).map(m=>({tag:'Modul '+m.id,title:m.title,open:`openModule(${m.id})`}));
-  const kbs=KB_ARTICLES.map((a,i)=>[a,i]).filter(([a])=>hit(a.title,a.desc,a.path||'',a.body.join(' '))).slice(0,5).map(([a,i])=>({tag:'Wissensdatenbank',title:a.title,open:`showView('kb');openArticle(${i})`}));
-  const bps=BEST_PRACTICES.map((b,i)=>[b,i]).filter(([b])=>hit(b.title,b.desc,b.steps.map(x=>x.t+' '+x.d).join(' '))).slice(0,5).map(([b,i])=>({tag:'Best Practice',title:b.title,open:`showView('best');openBP(${i})`}));
+  const words=gsNorm(q).split(' ').filter(w=>w.length>=2);
+  const rank=list=>list.filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc).slice(0,5);
+  const mods=rank(MODULES.map(m=>({sc:gsScore(words,m.title,[(m.points||[]).join(' '),(m.gist||[]).join(' '),m.desc||''].join(' ')),tag:'Modul '+m.id,title:m.title,open:`openModule(${m.id})`})));
+  const kbs=rank(KB_ARTICLES.map((a,i)=>({sc:gsScore(words,a.title,[a.desc,a.path||'',a.body.join(' '),(MODULES.find(m=>m.id===a.mod)||{}).title||''].join(' ')),tag:'Wissensdatenbank',title:a.title,open:`showView('kb');openArticle(${i})`})));
+  const bps=rank(BEST_PRACTICES.map((b,i)=>({sc:gsScore(words,b.title,[b.desc,b.steps.map(x=>x.t+' '+x.d).join(' '),(MODULES.find(m=>m.id===b.mod)||{}).title||''].join(' ')),tag:'Best Practice',title:b.title,open:`showView('best');openBP(${i})`})));
   const all=[...mods,...kbs,...bps];
   box.innerHTML = all.length ? all.map(r=>`<button class="gs-item" onmousedown="event.preventDefault()" onclick="${r.open};closeGlobalSearch()"><span class="w-tag">${r.tag}</span><span>${r.title}</span></button>`).join('') : '<div class="gs-empty">Keine Treffer</div>';
   box.hidden=false;
