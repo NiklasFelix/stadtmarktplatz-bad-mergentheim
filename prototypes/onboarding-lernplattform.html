@@ -2236,7 +2236,9 @@ function startApp(){
   saveState();
 }
 function initializeApp(){
-  const hf=document.getElementById('helpFab'); if(hf) hf.hidden=false;
+  // Hilfe-Button steht im HTML erst nach diesem Skript -> beim Neuladen ggf. auf DOM warten
+  const showFab=()=>{ const hf=document.getElementById('helpFab'); if(hf&&state.name) hf.hidden=false; };
+  document.getElementById('helpFab') ? showFab() : document.addEventListener('DOMContentLoaded', showFab);
   document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
   refreshProfileMenu();
   buildModuleSubNav();
