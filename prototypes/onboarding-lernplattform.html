@@ -1291,6 +1291,32 @@ html .mail-chooser-foot .btn{background:#fff!important;color:#1B1B1B!important;b
 @media(max-width:700px){#onboarding .onb-logo .orkan-logo-img{height:56px!important}}
 .nav-sub-item.current{background:rgba(166,191,104,.18)!important;color:var(--ink)!important;font-weight:700;border-radius:8px;box-shadow:inset 3px 0 0 #8EA752}
 html.theme-light .nav-sub-item.current{background:rgba(142,167,82,.16)!important}
+.gsearch{position:relative;display:flex;align-items:center;gap:8px;margin-right:16px;padding:0 12px;height:38px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--gray);width:min(340px,32vw)}
+html.theme-light .gsearch{background:#fff}
+.gsearch input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:inherit;font-size:14px;outline:none}
+.gsearch:focus-within{border-color:#8EA752}
+.gsearch-results{position:absolute;top:44px;right:0;width:min(440px,92vw);max-height:60vh;overflow:auto;padding:8px;border-radius:14px;border:1px solid var(--line);background:#1C2125;box-shadow:0 24px 50px -20px rgba(0,0,0,.6);z-index:300;display:flex;flex-direction:column;gap:2px}
+html.theme-light .gsearch-results{background:#fff}
+.gs-item{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px;border:0;border-radius:10px;background:none;color:var(--ink);font:inherit;font-size:14px;cursor:pointer}
+.gs-item:hover{background:rgba(166,191,104,.12)}
+.gs-empty{padding:12px;color:var(--gray);font-size:14px}
+.kb-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.fav-btn{flex-shrink:0;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:8px 14px;font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
+.fav-btn.on{border-color:#E8B53D;color:#E8B53D}
+.help-fab{position:fixed;right:24px;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:900;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.help-fab-btn{width:54px;height:54px;border-radius:50%;border:0;background:linear-gradient(135deg,#B5CC78,#8EA752);color:#10150a;font-size:24px;font-weight:700;cursor:pointer;box-shadow:0 14px 30px -10px rgba(0,0,0,.6)}
+.help-menu{display:none;flex-direction:column;gap:4px;width:270px;padding:14px;border-radius:16px;border:1px solid var(--line);background:#1C2125;box-shadow:0 24px 50px -20px rgba(0,0,0,.6)}
+html.theme-light .help-menu{background:#fff}
+.help-fab.open .help-menu{display:flex}
+.help-menu strong{font-size:15px;margin-bottom:6px;color:var(--ink)}
+.help-menu button{text-align:left;padding:10px 12px;border:0;border-radius:10px;background:rgba(166,191,104,.1);color:var(--ink);font:inherit;font-size:14px;cursor:pointer}
+.help-menu button:hover{background:rgba(166,191,104,.22)}
+@media(max-width:700px){.gsearch{width:auto;flex:1;margin:0 8px}.gsearch input::placeholder{font-size:12px}.help-fab{right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px))}.help-fab-btn{width:48px;height:48px}}
+.gsearch-results[hidden],.help-fab[hidden]{display:none!important}
+.app-header .profile-wrap{flex-shrink:0}
+@media(max-width:700px){.app-header .hdr-spacer,.app-header .hdr-divider{display:none}.gsearch-results{position:fixed;top:64px;left:12px;right:12px;width:auto}}
+.app-header{z-index:950!important}
+.app-header:not([style*=fixed]){position:relative}
 </style>
 </head>
 <body>
@@ -1340,6 +1366,11 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
     <div class="hdr-divider"></div>
     <div class="breadcrumb">Onboarding / <strong id="breadcrumbCurrent">Dashboard</strong></div>
     <div class="hdr-spacer"></div>
+    <div class="gsearch" id="gsearch">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" id="gsearchInput" placeholder="Suchen in Modulen, Artikeln, Anleitungen …" autocomplete="off" oninput="globalSearch(this.value)" onfocus="globalSearch(this.value)" onkeydown="if(event.key==='Escape'){this.value='';globalSearch('');this.blur();}">
+      <div class="gsearch-results" id="gsearchResults" hidden></div>
+    </div>
     <div class="profile-wrap">
       <div class="hdr-avatar" id="hdrAvatar" onclick="toggleProfileMenu()">?</div>
       <div class="profile-menu" id="profileMenu">
@@ -2184,7 +2215,7 @@ let state = {
   weakTopics:{}, adaptiveLog:[],
   integrationOptions:{ behavioral:false, help:false, central:false },
   moduleVideos:{}, videoManagerModuleId:null, discountCode:null,
-  activityDays:{}, recent:[], ratings:{}
+  activityDays:{}, recent:[], ratings:{}, favorites:[]
 };
 
 MODULES.forEach(m=>{ if(!state.moduleProgress[m.id]) state.moduleProgress[m.id]={started:false,completed:false,quizScore:null,checklist:[]}; });
@@ -2205,6 +2236,7 @@ function startApp(){
   saveState();
 }
 function initializeApp(){
+  const hf=document.getElementById('helpFab'); if(hf) hf.hidden=false;
   document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
   refreshProfileMenu();
   buildModuleSubNav();
@@ -2228,7 +2260,7 @@ function saveState(){
       moduleProgress: state.moduleProgress, totalTime: state.totalTime,
       quizAnswers: state.quizAnswers, weakTopics: state.weakTopics, adaptiveLog: state.adaptiveLog,
       integrationOptions: state.integrationOptions, discountCode: state.discountCode,
-      activityDays: state.activityDays, recent: state.recent, ratings: state.ratings
+      activityDays: state.activityDays, recent: state.recent, ratings: state.ratings, favorites: state.favorites
     };
     localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(snapshot));
   }catch(e){}
@@ -2286,6 +2318,7 @@ function confirmResetProgress(){
   const sb=document.getElementById('startBtn'); if(sb){ sb.disabled=true; sb.textContent='Lernpfad starten'; }
   document.getElementById('app').style.display='none';
   document.getElementById('onboarding').style.display='flex';
+  { const hf=document.getElementById('helpFab'); if(hf) hf.hidden=true; }
   const ms=document.querySelector('.main-scroll'); if(ms) ms.scrollTop=0;
   __resetting = false;
   __autosaveInterval = setInterval(saveState, 3000);
@@ -2472,6 +2505,11 @@ function saveRatingComment(id){
   saveState(); showToast('Feedback gespeichert – vielen Dank!');
 }
 Object.assign(DASHBOARD_WIDGETS, {
+  favorites: { title:'Meine Merkliste', render: () => {
+    const f=(state.favorites||[]).map(favItem).filter(Boolean);
+    if(!f.length) return `<p class="w-note" style="margin:0">Markieren Sie Artikel der Wissensdatenbank oder Best Practices mit dem Stern ☆ – sie erscheinen dann hier.</p>`;
+    return `<div class="w-recent">${f.map(x=>`<button class="w-recent-item" onclick="${x.open}"><span class="w-tag">${x.tag}</span><strong>${x.title}</strong><span class="w-arrow">→</span></button>`).join('')}</div>`;
+  } },
   nextstep: { title:'Ihr nächster Schritt', render: () => {
     const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
     if(!next) return `<div class="w-next done"><div><strong>Alle Module abgeschlossen!</strong><p>Ihr Zertifikat inklusive Rabattcode ist freigeschaltet.</p></div><button class="btn btn-primary" onclick="showView('cert')">Zum Zertifikat</button></div>`;
@@ -2505,7 +2543,7 @@ Object.assign(DASHBOARD_WIDGETS, {
   } },
 });
 function switchTabTo(tab){ state.currentTab=tab; document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['content','task','quiz','summary'][i]===tab)); renderTab(); }
-const DEFAULT_WIDGET_ORDER = ['nextstep','stats','activity','recent','phases'];
+const DEFAULT_WIDGET_ORDER = ['nextstep','stats','favorites','activity','recent','phases'];
 const DEFAULT_WIDGET_HIDDEN = {stats:false, phases:false, gaps:false, updates:false};
 
 function loadDashboardPrefs(){
@@ -2917,7 +2955,7 @@ function openArticle(idx){
     <div class="md-back" onclick="renderKB()">&larr; Zurück zur Wissensdatenbank</div>
     <div class="kb-article">
       <div class="kb-article-crumb">Wissensdatenbank / ${topicOf(a.mod)}</div>
-      <h2>${a.title}</h2>
+      <div class="kb-title-row"><h2>${a.title}</h2>${favBtn('kb',idx)}</div>
       <p class="kb-lead">${a.desc}</p>
       ${a.path?`<div class="kb-path"><span>So kommen Sie hin</span>${a.path}</div>`:''}
       <ul class="kb-points">${a.body.map(p=>`<li>${p}</li>`).join('')}</ul>
@@ -2953,7 +2991,7 @@ function openBP(idx){
   document.getElementById('view-best').innerHTML = `
     <div class="md-back" onclick="renderBest()">&larr; Zurück zu Best Practices</div>
     <div class="kb-article-crumb">Best Practices / ${topicOf(b.mod)}</div>
-    <h1 class="page-title">${b.title}</h1>
+    <div class="kb-title-row"><h1 class="page-title">${b.title}</h1>${favBtn('bp',idx)}</div>
     <p class="page-sub">${b.desc} · ca. ${b.time} Minuten · ${b.steps.length} Schritte</p>
     ${b.downloadable ? templateDownloadCallout() : ''}
     <div class="step-list">${b.steps.map((s,i)=>`<div class="step-item"><div class="step-num">${i+1}</div><div class="step-body"><h5>${s.t}</h5><p>${s.d}</p>${s.hint?`<div class="step-hint">Hinweis: ${s.hint}</div>`:''}</div></div>`).join('')}</div>
@@ -3106,6 +3144,7 @@ function logoutProfile(){
   document.getElementById('profileMenu').classList.remove('open');
   document.getElementById('app').style.display='none';
   document.getElementById('onboarding').style.display='flex';
+  { const hf=document.getElementById('helpFab'); if(hf) hf.hidden=true; }
 }
 const CLOUD_DEEPLINKS = {
   1:{label:'Startseite'},
@@ -3247,6 +3286,38 @@ function openCloudLink(mid){
   showToast(`Die OrKan Cloud öffnet sich in einem neuen Tab. Melden Sie sich dort an und navigieren Sie zu „${target.label}", um das Gelernte direkt anzuwenden.`);
   window.open(ORKAN_CLOUD_BASE, '_blank', 'noopener');
 }
+function favKey(type,id){ return type+':'+id; }
+function isFav(type,id){ return (state.favorites||[]).includes(favKey(type,id)); }
+function toggleFav(type,id,btn){
+  state.favorites=state.favorites||[]; const k=favKey(type,id); const i=state.favorites.indexOf(k);
+  if(i>=0) state.favorites.splice(i,1); else state.favorites.unshift(k);
+  saveState();
+  if(btn){ const on=isFav(type,id); btn.classList.toggle('on',on); btn.innerHTML=favLabel(on); }
+  showToast(isFav(type,id)?'Zur Merkliste hinzugefügt.':'Von der Merkliste entfernt.');
+}
+function favLabel(on){ return on?'★ Gemerkt':'☆ Merken'; }
+function favBtn(type,id){ const on=isFav(type,id); return `<button class="fav-btn ${on?'on':''}" onclick="toggleFav('${type}',${id},this)">${favLabel(on)}</button>`; }
+function favItem(k){
+  const [type,idS]=k.split(':'); const id=+idS;
+  if(type==='kb'&&KB_ARTICLES[id]) return {tag:'Wissensdatenbank',title:KB_ARTICLES[id].title,open:`showView('kb');openArticle(${id})`};
+  if(type==='bp'&&BEST_PRACTICES[id]) return {tag:'Best Practice',title:BEST_PRACTICES[id].title,open:`showView('best');openBP(${id})`};
+  return null;
+}
+function globalSearch(q){
+  const box=document.getElementById('gsearchResults'); q=(q||'').trim().toLowerCase();
+  if(q.length<2){ box.hidden=true; box.innerHTML=''; return; }
+  const strip=t=>String(t).replace(/<[^>]+>/g,' ');
+  const hit=(...parts)=>strip(parts.join(' ')).toLowerCase().includes(q);
+  const mods=MODULES.filter(m=>hit(m.title,(m.points||[]).join(' '),(m.gist||[]).join(' '))).slice(0,5).map(m=>({tag:'Modul '+m.id,title:m.title,open:`openModule(${m.id})`}));
+  const kbs=KB_ARTICLES.map((a,i)=>[a,i]).filter(([a])=>hit(a.title,a.desc,a.path||'',a.body.join(' '))).slice(0,5).map(([a,i])=>({tag:'Wissensdatenbank',title:a.title,open:`showView('kb');openArticle(${i})`}));
+  const bps=BEST_PRACTICES.map((b,i)=>[b,i]).filter(([b])=>hit(b.title,b.desc,b.steps.map(x=>x.t+' '+x.d).join(' '))).slice(0,5).map(([b,i])=>({tag:'Best Practice',title:b.title,open:`showView('best');openBP(${i})`}));
+  const all=[...mods,...kbs,...bps];
+  box.innerHTML = all.length ? all.map(r=>`<button class="gs-item" onmousedown="event.preventDefault()" onclick="${r.open};closeGlobalSearch()"><span class="w-tag">${r.tag}</span><span>${r.title}</span></button>`).join('') : '<div class="gs-empty">Keine Treffer</div>';
+  box.hidden=false;
+}
+function closeGlobalSearch(){ const i=document.getElementById('gsearchInput'); i.value=''; i.blur(); document.getElementById('gsearchResults').hidden=true; }
+document.addEventListener('click',e=>{ if(!e.target.closest('#gsearch')){ const b=document.getElementById('gsearchResults'); if(b) b.hidden=true; } const h=document.getElementById('helpFab'); if(h&&!e.target.closest('#helpFab')) h.classList.remove('open'); });
+function toggleHelp(){ document.getElementById('helpFab').classList.toggle('open'); }
 function showToast(text){
   let toast = document.getElementById('appToast');
   if(!toast){
@@ -3374,6 +3445,17 @@ function renderTour(){
 </script>
 
 
+
+<div class="help-fab" id="helpFab" hidden>
+  <div class="help-menu">
+    <strong>Wie können wir helfen?</strong>
+    <button onclick="toggleHelp();bookAppointment()">Persönlichen Termin vereinbaren</button>
+    <button onclick="toggleHelp();showView('kb')">Wissensdatenbank durchsuchen</button>
+    <button onclick="toggleHelp();showView('best')">Schritt-für-Schritt-Anleitungen</button>
+    <button onclick="toggleHelp();startTour()">Einführungstour erneut starten</button>
+  </div>
+  <button class="help-fab-btn" onclick="toggleHelp()" aria-label="Hilfe">?</button>
+</div>
 <div class="mail-chooser" id="mailChooser" hidden onclick="if(event.target===this)closeMailChooser()">
   <div class="mail-chooser-box" role="dialog" aria-label="E-Mail-App auswählen">
     <h3>Wählen Sie eine App aus, um die E-Mail zu senden</h3>
