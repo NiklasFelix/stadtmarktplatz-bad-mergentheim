@@ -3470,12 +3470,15 @@ function gsScore(words,item){
     if(!a&&!b) return 0; sc+=a*10+b; }
   return sc;
 }
+function gsInit(){
+  if(!GS_VOCAB){ const all=[...MODULES.map(m=>[m.title,(m.points||[]).join(' '),(m.gist||[]).join(' ')].join(' ')),...KB_ARTICLES.map(a=>a.title+' '+a.desc+' '+a.body.join(' ')),...BEST_PRACTICES.map(b=>b.title+' '+b.desc+' '+b.steps.map(x=>x.t+' '+x.d).join(' '))].join(' ');
+    GS_VOCAB=[...new Set(gsCanon(all).split(' ').filter(v=>v.length>=4))]; }
+}
 function globalSearch(q){
   const box=document.getElementById('gsearchResults'); q=(q||'').trim();
   if(q.length<2){ box.hidden=true; box.innerHTML=''; return; }
   const rawWords=gsNorm(q).split(' ').filter(w=>w.length>=2);
-  if(!GS_VOCAB){ const all=[...MODULES.map(m=>[m.title,(m.points||[]).join(' '),(m.gist||[]).join(' ')].join(' ')),...KB_ARTICLES.map(a=>a.title+' '+a.desc+' '+a.body.join(' ')),...BEST_PRACTICES.map(b=>b.title+' '+b.desc+' '+b.steps.map(x=>x.t+' '+x.d).join(' '))].join(' ');
-    GS_VOCAB=[...new Set(gsCanon(all).split(' ').filter(v=>v.length>=4))]; }
+  gsInit();
   const rank=list=>list.filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc).slice(0,5);
   const words=rawWords.map(w=>{ const p=gsParts(w); return p.length>1?[w,...p]:[w]; });
   if(!GS_ITEMS) GS_ITEMS=[
@@ -3615,17 +3618,6 @@ function fsCalc(){
 }
 
 /* ===== KI-Lerncoach ===== */
-const COACH_PLATFORM=`AUFBAU DER LERNPLATTFORM (OrKan Cloud Training-Plattform):
-- Dashboard: Begrüßung, Fortschritt, anpassbare Kacheln („Dashboard anpassen“: ein-/ausblenden, per Drag & Drop sortieren) – u. a. nächster Schritt, Kennzahlen, Meine Merkliste, Lernaktivität, Zuletzt angesehen, Onboarding-Phasen.
-- Mein Lernpfad: die Module in Reihenfolge mit Status.
-- Lernmodule: zwei Bereiche – „Grundlagen Onboarding“ (Module 1–6) und „Expertenwissen“ (Module 7–14). Jedes Modul hat die Reiter Inhalt (mit Video-Bereich), Praxisaufgabe (Checkliste), Wissenscheck (5 Fragen, bestanden ab 4 richtigen; pro Frage gibt es einen zweiten Versuch) und Zusammenfassung. Ein Modul gilt als abgeschlossen, wenn der Wissenscheck bestanden ist.
-- Zertifikat: Nach Abschluss der Grundlagen-Module 1–6 wird das Zertifikat freigeschaltet (Menü „Zertifikate“), inklusive Rabattcode für den Online-Shop; es kann als PDF heruntergeladen werden.
-- Wissensdatenbank: Artikel zum Nachschlagen, nach Themen filterbar. Best Practices: Schritt-für-Schritt-Anleitungen, nach Themen filterbar. Beides lässt sich mit dem Stern auf die Merkliste setzen (erscheint dann im Dashboard unter „Meine Merkliste“).
-- Suche oben in der Kopfzeile: durchsucht Module, Wissensdatenbank und Best Practices.
-- Hilfe-Button (Fragezeichen unten rechts): persönlichen Termin vereinbaren, Wissensdatenbank, Anleitungen, Einführungstour, KI-Lerncoach.
-- Profilmenü (Kreis mit Initiale oben rechts): Name/Unternehmen, Darstellung Hell/Dunkel, persönlichen Termin vereinbaren, Einführungstour starten, Fortschritt speichern, Abmelden, Fortschritt zurücksetzen. Der Fortschritt wird automatisch im Browser gespeichert.
-- OrKan Shop (Link in der Seitenleiste) und „5S-Übung & Kostenrechner“ (Zahlen-Suchspiel in 4 Runden, das zeigt, wie Ordnung Suchzeit spart, plus Rechner für die Kosten von Suchzeiten).
-- Ansprechpartner für persönliche Termine: über den Hilfe-Button bzw. das Profilmenü „Persönlichen Termin vereinbaren“.`;
 const coachStrip=t=>String(t||'').replace(/<li>/g,'\n- ').replace(/<br\s*\/?>/g,'\n').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/[ \t]+/g,' ').replace(/\n\s+/g,'\n').trim();
 function coachModuleText(m){
   const pts=(m.points||[]).map(x=>x.startsWith('## ')?'\n'+x.slice(3):'- '+coachStrip(x)).join('\n');
@@ -3636,7 +3628,7 @@ const coachKbText=a=>`WISSENSDATENBANK „${a.title}“ (Modul ${a.mod}; Pfad: $
 const coachBpText=b=>`BEST PRACTICE „${b.title}“ (Modul ${b.mod}): `+b.steps.map((x,i)=>`${i+1}. ${coachStrip(x.t)}: ${coachStrip(x.d)}${x.hint?' (Hinweis: '+coachStrip(x.hint)+')':''}`).join(' ');
 function coachRetrieve(q){
   // relevante Inhalte über die Suchlogik der globalen Suche finden
-  globalSearch(''); if(!GS_VOCAB) { try{ const el=document.getElementById('gsearchResults'); globalSearch('xx'); if(el) el.hidden=true; }catch(e){} }
+  gsInit();
   const raw=gsNorm(q).split(' ').filter(w=>w.length>=3&&!['wie','was','ich','ein','eine','einen','der','die','das','und','oder','kann','wo','wann','warum','mit','fuer','von','zum','zur','bei','auf','im','in','ist','sind','den','dem','des','mir','man','mache','machen','gibt','es','welche','welcher','welches'].includes(w));
   if(!raw.length) return {mods:[],kbs:[],bps:[]};
   const words=raw.map(w=>w.length<=5&&w.endsWith('e')?w.slice(0,-1):w).map(w=>{ const p=gsParts(w); return p.length>1?[w,...p]:[w]; });
@@ -3654,36 +3646,8 @@ function coachUserState(){
   const next=MODULES.find(m=>!state.moduleProgress[m.id]?.completed);
   return `STAND DES NUTZERS: Name ${state.name||'–'}, Unternehmen ${state.company||'–'}. Abgeschlossene Module: ${done.join(', ')||'keine'} (${done.length}/${MODULES.length}). Begonnen: ${started.join(', ')||'keine'}. Nächstes Modul: ${next?next.id+' '+next.title:'alle abgeschlossen'}. Zertifikat: ${certUnlocked()?'freigeschaltet':'noch nicht freigeschaltet (Module 1–6 nötig)'}.${state.currentModule?' Aktuell geöffnet: Modul '+state.currentModule+'.':''}`;
 }
-function coachRules(q){
-  const {mods,kbs,bps}=coachRetrieve(q);
-  const ctx=[...mods.map(coachModuleText),...kbs.map(coachKbText),...bps.map(coachBpText)].join('\n\n').slice(0,36000);
-  return `Du bist der KI-Lerncoach der OrKan Cloud Training-Plattform. Die OrKan Cloud ist eine webbasierte Software für Lagerverwaltung und Bestellwesen nach dem Kanban-Prinzip (Zwei-Etiketten-System) mit Gebrauchsgut-, Maschinen-, Schlüssel- und Projektverwaltung. Du hilfst Kunden beim Lernen.
-
-REGELN:
-- Antworte auf Deutsch, freundlich, in der Sie-Form, kurz und konkret (meist 3–8 Sätze oder eine nummerierte Schritt-Liste mit Klickwegen wie „Lagerverwaltung“ → „Artikel“ → „Erstellen“).
-- Stütze dich auf die INHALTE unten. Für Details zu einem Modul, die unten fehlen, nutze das Werkzeug modul_lesen; für andere Themen das Werkzeug suchen. Erfinde keine Funktionen, Menüpunkte, Preise oder Kontaktdaten. Wenn etwas nicht in den Inhalten steht, sag das ehrlich und empfiehl, einen persönlichen Termin über den Hilfe-Button zu vereinbaren.
-- Nenne am Ende passende Stellen zum Weiterlernen in der Form „Modul 2“ (ggf. mit Abschnitt) – sie werden als Link angezeigt.
-- Allgemeine Fragen (z. B. zu Lagerorganisation, Kanban, 5S) darfst du allgemein beantworten und mit der OrKan Cloud verknüpfen. Fragen ohne jeden Bezug beantwortest du kurz und lenkst freundlich zurück.
-- Formatierung: einfaches Markdown (**fett**, Listen mit „- “ oder „1. “). Keine Tabellen, keine Überschriften mit #.
-
-ALLE MODULE: ${MODULES.map(m=>m.id+' '+m.title).join(' | ')}
-
-${COACH_PLATFORM}
-
-${coachUserState()}
-
-INHALTE ZUR FRAGE:
-${ctx||'(keine direkten Treffer – nutze bei Bedarf die Werkzeuge)'}`;
-}
-const COACH_TOOLS=[
-  {name:'modul_lesen',description:'Liefert den vollständigen Inhalt eines Lernmoduls (Text, Praxisaufgabe, Tipp).',inputSchema:{type:'object',properties:{id:{type:'integer',description:'Modulnummer 1–14'}},required:['id']},
-   execute:({id})=>{ const m=MODULES.find(x=>x.id===+id); if(!m) throw new Error('Modul nicht gefunden'); return {text:coachModuleText(m).slice(0,12000)}; }},
-  {name:'suchen',description:'Durchsucht Module, Wissensdatenbank und Best Practices nach Stichworten und liefert passende Inhalte.',inputSchema:{type:'object',properties:{stichworte:{type:'string'}},required:['stichworte']},
-   execute:({stichworte})=>{ const {mods,kbs,bps}=coachRetrieve(String(stichworte||'')); return {treffer:[...kbs.map(coachKbText),...bps.map(coachBpText),...mods.map(m=>coachModuleText(m).slice(0,4000))].join('\n\n').slice(0,14000)||'Keine Treffer'}; }}
-];
-let COACH={turns:[],busy:false,ctl:null,tts:false,rec:null,sample:undefined};
+let COACH={turns:[],busy:false,tts:false,rec:null};
 try{ COACH.tts=localStorage.getItem('orkanCoachTts')==='1'; }catch(e){}
-(async()=>{ try{ COACH.sample=window.claude?await claude.use('sample'):null; }catch(e){ COACH.sample=null; } })();
 function openCoach(){
   const c=document.getElementById('coach'); c.hidden=false; document.getElementById('coachTts').checked=COACH.tts;
   if(!document.getElementById('coachMsgs').children.length) coachWelcome();
@@ -3692,10 +3656,10 @@ function openCoach(){
 function closeCoach(){ document.getElementById('coach').hidden=true; try{speechSynthesis.cancel()}catch(e){} }
 function coachWelcome(){
   const box=document.getElementById('coachMsgs');
-  box.innerHTML=`<div class="cm a">Hallo${state.name?' '+escapeHtml(state.name):''}! Ich bin Ihr KI-Lerncoach. Fragen Sie mich alles zur OrKan Cloud, zu den Lernmodulen oder zur Lernplattform – per Tastatur oder über das Mikrofon.</div>
+  box.innerHTML=`<div class="cm a">Hallo${state.name?' '+escapeHtml(state.name):''}! Ich bin Ihr Lerncoach. Fragen Sie mich alles zur OrKan Cloud, zu den Lernmodulen oder zur Lernplattform – per Tastatur oder über das Mikrofon.</div>
   <div class="coach-sugg">${['Wie lege ich einen Artikel an?','Wie funktioniert das Zwei-Etiketten-System?','Welches Modul sollte ich als Nächstes machen?','Wie bekomme ich das Zertifikat?'].map(q=>`<button onclick="coachSend(this.textContent)">${q}</button>`).join('')}</div>`;
 }
-function coachClear(){ if(COACH.ctl) COACH.ctl.abort(); COACH.turns=[]; try{speechSynthesis.cancel()}catch(e){} coachWelcome(); }
+function coachClear(){ COACH.turns=[]; try{speechSynthesis.cancel()}catch(e){} coachWelcome(); }
 function escapeHtml(t){ return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function coachMd(t){
   let h=escapeHtml(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
@@ -3716,43 +3680,71 @@ function coachSpeak(t){
     const v=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith('de')); if(v) u.voice=v; speechSynthesis.speak(u); }catch(e){ showToast('Vorlesen wird von diesem Browser nicht unterstützt.'); }
 }
 function coachSetTts(on){ COACH.tts=on; try{localStorage.setItem('orkanCoachTts',on?'1':'0')}catch(e){} if(!on) try{speechSynthesis.cancel()}catch(e){} }
+const COACH_STOP=['wie','was','ich','ein','eine','einen','der','die','das','und','oder','kann','wo','wann','warum','mit','fuer','von','zum','zur','bei','auf','im','in','ist','sind','den','dem','des','mir','man','mache','machen','gibt','es','welche','welcher','welches','funktioniert','geht','bitte','mein','meine','meinen','erklaer','erklaere','sie','wir','uns','soll','muss','darf'];
+const COACH_FAQ=[
+  {k:['naechst','weiter mach','als naechst','womit','anfang','start','beginn','empfehl'],a:()=>{ const n=MODULES.find(m=>!state.moduleProgress[m.id]?.completed); return n?`Als Nächstes empfehle ich **Modul ${n.id}: ${n.title}** (ca. ${n.time}). Die Module bauen aufeinander auf – am besten gehen Sie sie der Reihe nach durch.`:'Sie haben bereits alle Module abgeschlossen – herzlichen Glückwunsch! Zum Nachschlagen eignen sich die Wissensdatenbank und die Best Practices.'; }},
+  {k:['fortschritt','stand','wie weit','abgeschlossen','geschafft'],a:()=>{ const d=MODULES.filter(m=>state.moduleProgress[m.id]?.completed); return `Sie haben **${d.length} von ${MODULES.length} Modulen** abgeschlossen${d.length?' ('+d.map(m=>'Modul '+m.id).join(', ')+')':''}. Ihren Fortschritt sehen Sie jederzeit im Dashboard und unter „Mein Lernpfad“. Er wird automatisch im Browser gespeichert.`; }},
+  {k:['zertifikat','urkunde','rabatt','gutschein'],a:()=>`Das **Zertifikat** wird freigeschaltet, sobald Sie die Grundlagen-Module 1–6 abgeschlossen haben (${certUnlocked()?'bei Ihnen ist es bereits freigeschaltet':'aktuell noch nicht freigeschaltet'}). Sie finden es in der Seitenleiste unter „Zertifikate“ und können es als PDF herunterladen – inklusive Rabattcode für den Online-Shop.`},
+  {k:['wissenscheck','quiz','test','pruefung','bestehen','bestanden','frage falsch'],a:()=>'Jedes Modul endet mit einem **Wissenscheck** aus 5 Fragen. Bestanden haben Sie ab 4 richtigen Antworten; bei jeder Frage haben Sie einen zweiten Versuch. Mit dem bestandenen Wissenscheck gilt das Modul als abgeschlossen.'},
+  {k:['lernpfad','reihenfolge','aufbau','module gibt','welche module','uebersicht module'],a:()=>`Die Plattform hat **${MODULES.length} Module** in zwei Bereichen:\n- **Grundlagen Onboarding:** ${MODULE_GROUPS[0].ids.map(i=>'Modul '+i).join(', ')}\n- **Expertenwissen:** ${MODULE_GROUPS[1].ids.map(i=>'Modul '+i).join(', ')}\nJedes Modul hat die Reiter Inhalt, Praxisaufgabe, Wissenscheck und Zusammenfassung. Unter „Mein Lernpfad“ sehen Sie die Reihenfolge mit Status.`},
+  {k:['merkliste','merken','stern','favorit'],a:()=>'Artikel der Wissensdatenbank und Best Practices können Sie mit dem **Stern** neben dem Titel auf Ihre Merkliste setzen. Sie erscheinen dann im Dashboard unter „Meine Merkliste“.'},
+  {k:['dashboard','kachel','startseite plattform'],a:()=>'Ihr **Dashboard** zeigt Ihren nächsten Schritt, Kennzahlen, die Merkliste, Ihre Lernaktivität und zuletzt angesehene Inhalte. Über „Dashboard anpassen“ blenden Sie Kacheln ein oder aus und sortieren sie per Drag & Drop.'},
+  {k:['termin','ansprechpartner','kontakt','anrufen','persoenlich','mensch','support'],a:()=>'Einen **persönlichen Termin** vereinbaren Sie über den Hilfe-Button (Fragezeichen unten rechts) oder im Profilmenü oben rechts unter „Persönlichen Termin vereinbaren“.'},
+  {k:['tour','einfuehrung','rundgang'],a:()=>'Die **Einführungstour** starten Sie über den Hilfe-Button (Fragezeichen unten rechts) oder im Profilmenü oben rechts unter „Einführungstour starten“.'},
+  {k:['dunkel','hell','dark','light','darstellung','farbe plattform'],a:()=>'Die **Darstellung** (Hell oder Dunkel) stellen Sie im Profilmenü oben rechts (Kreis mit Ihrer Initiale) um.'},
+  {k:['zuruecksetz','reset','neu anfangen','loeschen fortschritt'],a:()=>'Ihren Fortschritt können Sie im Profilmenü oben rechts unter „Fortschritt zurücksetzen“ löschen. Achtung: Das lässt sich nicht rückgängig machen.'},
+  {k:['abmeld','ausloggen','logout'],a:()=>'Abmelden können Sie sich im Profilmenü oben rechts unter „Abmelden“. Ihr Fortschritt bleibt im Browser gespeichert.'},
+  {k:['video'],a:()=>'Im Reiter „Inhalt“ jedes Moduls finden Sie oben den **Video-Bereich**. Die Lernvideos werden nach und nach ergänzt.'},
+  {k:['5s','kostenrechner','suchzeit','zahlenspiel'],a:()=>'Die **5S-Übung** finden Sie in der Seitenleiste unter „5S-Übung & Kostenrechner“: In vier Runden suchen Sie Zahlen und erleben, wie viel Zeit Ordnung spart. Der Kostenrechner zeigt, was Suchzeiten Ihren Betrieb pro Jahr kosten.'},
+  {k:['shop','etiketten kaufen','scanner kaufen','bestellen zubehoer'],a:()=>'Den **OrKan Shop** erreichen Sie über den Link „OrKan Shop“ in der Seitenleiste.'},
+  {k:['suche','suchfeld','finden plattform'],a:()=>'Über die **Suche** oben in der Kopfzeile durchsuchen Sie Module, Wissensdatenbank und Best Practices gleichzeitig – auch zusammengeschriebene Begriffe und kleine Tippfehler werden gefunden.'},
+  {k:['wissensdatenbank','best practice','anleitung'],a:()=>'Die **Wissensdatenbank** enthält kurze Artikel zum Nachschlagen, die **Best Practices** Schritt-für-Schritt-Anleitungen. Beide sind nach Themen gefiltert und über die Seitenleiste erreichbar.'},
+  {k:['wer bist','was kannst','hilfe coach','lerncoach'],a:()=>'Ich bin Ihr KI-Lerncoach. Ich beantworte Fragen zur OrKan Cloud (z. B. „Wie lege ich einen Artikel an?“), zu den Lernmodulen und zur Lernplattform – und verweise Sie auf die passenden Module.'},
+  {k:['hallo','guten tag','moin','servus','hi '],a:()=>`Hallo${state.name?' '+state.name:''}! Wie kann ich Ihnen helfen?`},
+  {k:['danke','super','perfekt'],a:()=>'Gern geschehen! Fragen Sie jederzeit wieder.'}
+];
+function coachSection(m,words){
+  // besten Abschnitt ("## ...") eines Moduls zur Frage finden
+  const secs=[]; let cur=null;
+  (m.points||[]).forEach(x=>{ if(x.startsWith('## ')){ cur={h:x.slice(3).replace(/^\d+\.\s*/,''),p:[]}; secs.push(cur); } else { if(!cur){ cur={h:m.title,p:[]}; secs.push(cur); } cur.p.push(x); } });
+  let best=null,bs=0; secs.forEach(sec=>{ const sc=gsScore(words,{t:sec.h,r:sec.p.join(' ')})||words.reduce((s,w)=>s+gsScore([w],{t:sec.h,r:sec.p.join(' ')}),0); if(sc>bs){bs=sc;best=sec;} });
+  return best;
+}
 function coachLocalAnswer(q){
-  const {mods,kbs,bps}=coachRetrieve(q);
-  if(!mods.length&&!kbs.length&&!bps.length) return 'Dazu habe ich in den Lerninhalten leider nichts gefunden. Formulieren Sie die Frage gern anders oder vereinbaren Sie über den Hilfe-Button einen persönlichen Termin.';
+  gsInit();
+  const n=' '+gsNorm(q)+' ';
+  const faq=COACH_FAQ.find(f=>f.k.some(k=>n.includes(k)));
+  const isHow=/\b(wie|anleitung|schritt|vorgehen|mache|macht|funktioniert)\b/.test(n);
+  const topic=/(artikel|lager|bestell|etikett|maschin|schluessel|projekt|inventur|preis|lieferant|kommission|retour|wareneingang|bestand|gebrauchsgut|scan|warenannahme)/.test(n);
+  const words=gsNorm(q).split(' ').filter(w=>w.length>=3&&!COACH_STOP.includes(w)).map(w=>w.length<=5&&w.endsWith('e')?w.slice(0,-1):w).map(w=>{ const p=gsParts(w); return p.length>1?[w,...p]:[w]; });
+  // Kandidaten bewerten: alle Wörter müssen vorkommen (UND); Treffer im Titel zählen mehr
+  const cands=[];
+  BEST_PRACTICES.forEach(b=>cands.push({k:'bp',o:b,mod:b.mod,s:gsScore(words,{t:b.title,r:b.desc+' '+b.steps.map(x=>x.t+' '+x.d).join(' ')})*(isHow?1.3:1)}));
+  KB_ARTICLES.forEach(a=>cands.push({k:'kb',o:a,mod:a.mod,s:gsScore(words,{t:a.title,r:a.desc+' '+a.body.join(' ')})*(isHow?1:1.2)}));
+  MODULES.forEach(m=>{ const sec=coachSection(m,words); if(sec) cands.push({k:'sec',o:sec,m,mod:m.id,s:gsScore(words,{t:sec.h+' '+m.title,r:sec.p.join(' ')})*.9}); });
+  cands.sort((x,y)=>y.s-x.s); const best=cands[0];
+  if(faq&&(!topic||!best||!best.s)) return faq.a();
+  if(!best||best.s<=0) return faq?faq.a():'Dazu habe ich in den Lerninhalten leider nichts gefunden. Formulieren Sie die Frage gern anders – oder vereinbaren Sie über den Hilfe-Button einen persönlichen Termin mit unseren Ansprechpartnern.';
   let t='';
-  if(kbs[0]) t+=`**${kbs[0].title}**\n`+kbs[0].body.map(x=>'- '+coachStrip(x)).join('\n')+'\n';
-  else if(bps[0]) t+=`**${bps[0].title}**\n`+bps[0].steps.map((x,i)=>`${i+1}. ${coachStrip(x.t)}: ${coachStrip(x.d)}`).join('\n')+'\n';
-  if(mods.length) t+='\nMehr dazu: '+mods.map(m=>'Modul '+m.id).join(', ');
+  if(best.k==='bp') t+=`**${best.o.title}**\n`+best.o.steps.map((x,i)=>`${i+1}. **${coachStrip(x.t)}:** ${coachStrip(x.d)}`).join('\n');
+  else if(best.k==='kb') t+=`**${best.o.title}**\n`+(best.o.path?'Klickweg: '+coachStrip(best.o.path)+'\n':'')+best.o.body.map(x=>'- '+coachStrip(x)).join('\n');
+  else t+=`**${best.m.title} – ${best.o.h}**\n`+best.o.p.map(x=>coachStrip(x).split('\n').map(l=>l.replace(/^-\s*/,'')).filter(Boolean).map(l=>'- '+l).join('\n')).join('\n');
+  t+=`\n\nAusführlich erklärt in Modul ${best.mod}.`;
   return t;
 }
-async function coachSend(text){
+function coachSend(text){
   const ta=document.getElementById('coachText'); const q=(text||ta.value).trim(); if(!q||COACH.busy) return;
   ta.value=''; const box=document.getElementById('coachMsgs'); box.querySelector('.coach-sugg')?.remove();
-  box.insertAdjacentHTML('beforeend',`<div class="cm u">${escapeHtml(q)}</div><div class="cm a"><span class="cm-think">Einen Moment, ich denke nach …</span></div>`);
-  const bubble=box.lastElementChild; box.scrollTop=box.scrollHeight;
-  COACH.busy=true; document.getElementById('coachSendBtn').disabled=true;
-  let answer='';
-  if(COACH.sample===undefined){ for(let i=0;i<20&&COACH.sample===undefined;i++) await new Promise(r=>setTimeout(r,250)); }
-  if(COACH.sample){
-    COACH.ctl=new AbortController();
-    const turns=[...COACH.turns.slice(-8),{role:'user',content:q}];
-    try{
-      const r=await COACH.sample([{role:'user',content:coachRules(q)},{role:'assistant',content:'Verstanden. Ich beantworte die Fragen des Kunden auf Basis dieser Inhalte.'},...turns],
-        {cache:false,signal:COACH.ctl.signal,tools:COACH_TOOLS,onText:({text})=>{ bubble.innerHTML=coachMd(text); box.scrollTop=box.scrollHeight; }});
-      answer=r.text;
-    }catch(e){
-      answer=e.text||'';
-      if(e.code==='cancelled'){ if(!answer) answer='(abgebrochen)'; }
-      else if(!answer){ answer=e.code==='not_granted'?'Der KI-Lerncoach braucht Ihre Zustimmung, um Fragen an Claude zu senden. Bis dahin zeige ich passende Inhalte aus der Plattform:\n\n'+coachLocalAnswer(q)
-        : e.code==='rate_limited'?'Gerade kommen zu viele Anfragen auf einmal. Bitte versuchen Sie es in einer Minute erneut.'
-        : 'Die Antwort konnte gerade nicht erstellt werden. Passende Inhalte aus der Plattform:\n\n'+coachLocalAnswer(q); }
-    }
-  } else answer=coachLocalAnswer(q);
-  COACH.turns.push({role:'user',content:q},{role:'assistant',content:answer||'–'});
-  bubble.innerHTML=coachMd(answer)+`<div>${coachLinks(answer)}</div><div class="cm-tools"><button onclick="coachSpeak(this.closest('.cm').dataset.t)">🔊 Vorlesen</button></div>`;
-  bubble.dataset.t=answer; box.scrollTop=box.scrollHeight;
-  if(COACH.tts) coachSpeak(answer);
-  COACH.busy=false; document.getElementById('coachSendBtn').disabled=false;
+  box.insertAdjacentHTML('beforeend',`<div class="cm u">${escapeHtml(q)}</div><div class="cm a"><span class="cm-think">…</span></div>`);
+  const bubble=box.lastElementChild; box.scrollTop=box.scrollHeight; COACH.busy=true;
+  setTimeout(()=>{
+    let answer; try{ answer=coachLocalAnswer(q); }catch(e){ answer='Da ist etwas schiefgelaufen. Bitte formulieren Sie die Frage noch einmal.'; }
+    COACH.turns.push({q,a:answer});
+    bubble.innerHTML=coachMd(answer)+`<div>${coachLinks(answer)}</div><div class="cm-tools"><button onclick="coachSpeak(this.closest('.cm').dataset.t)">🔊 Vorlesen</button></div>`;
+    bubble.dataset.t=answer; box.scrollTop=Math.max(0,bubble.offsetTop-box.offsetTop-70);
+    if(COACH.tts) coachSpeak(answer);
+    COACH.busy=false;
+  },350);
 }
 function coachMic(){
   const btn=document.getElementById('coachMic');
