@@ -1383,6 +1383,7 @@ html.theme-light .help-menu{background:#fff}
 .coach-input textarea{flex:1;resize:none;max-height:120px;padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--white);color:var(--ink);font:inherit;font-size:14px}
 .coach-mic,.coach-send{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--white);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer}
 .coach-send{background:var(--green);border-color:var(--green);color:#15191C}
+.coach-mic[hidden]{display:none!important}
 .coach-mic.rec{background:#D9534F;border-color:#D9534F;color:#fff;animation:coachPulse 1.2s infinite}
 @keyframes coachPulse{50%{box-shadow:0 0 0 6px rgba(217,83,79,.25)}}
 @media(max-width:700px){.coach{right:8px;left:8px;width:auto;max-width:none;bottom:calc(76px + env(safe-area-inset-bottom,0px));height:calc(100vh - 150px)}}
@@ -3649,6 +3650,7 @@ function coachUserState(){
 let COACH={turns:[],busy:false,tts:false,rec:null};
 try{ COACH.tts=localStorage.getItem('orkanCoachTts')==='1'; }catch(e){}
 function openCoach(){
+  const mic=document.getElementById('coachMic'); if(mic) mic.hidden=!!window.claude||!(window.SpeechRecognition||window.webkitSpeechRecognition);
   const c=document.getElementById('coach'); c.hidden=false; document.getElementById('coachTts').checked=COACH.tts;
   if(!document.getElementById('coachMsgs').children.length) coachWelcome();
   setTimeout(()=>document.getElementById('coachText').focus(),50);
@@ -3656,7 +3658,7 @@ function openCoach(){
 function closeCoach(){ document.getElementById('coach').hidden=true; try{speechSynthesis.cancel()}catch(e){} }
 function coachWelcome(){
   const box=document.getElementById('coachMsgs');
-  box.innerHTML=`<div class="cm a">Hallo${state.name?' '+escapeHtml(state.name):''}! Ich bin Ihr Lerncoach. Fragen Sie mich alles zur OrKan Cloud, zu den Lernmodulen oder zur Lernplattform – per Tastatur oder über das Mikrofon.</div>
+  box.innerHTML=`<div class="cm a">Hallo${state.name?' '+escapeHtml(state.name):''}! Ich bin Ihr Lerncoach. Fragen Sie mich alles zur OrKan Cloud, zu den Lernmodulen oder zur Lernplattform – per Tastatur${(window.claude||!(window.SpeechRecognition||window.webkitSpeechRecognition))?'':' oder über das Mikrofon'}.</div>
   <div class="coach-sugg">${['Wie lege ich einen Artikel an?','Wie funktioniert das Zwei-Etiketten-System?','Welches Modul sollte ich als Nächstes machen?','Wie bekomme ich das Zertifikat?'].map(q=>`<button onclick="coachSend(this.textContent)">${q}</button>`).join('')}</div>`;
 }
 function coachClear(){ COACH.turns=[]; try{speechSynthesis.cancel()}catch(e){} coachWelcome(); }
@@ -3740,9 +3742,9 @@ function coachSend(text){
   setTimeout(()=>{
     let answer; try{ answer=coachLocalAnswer(q); }catch(e){ answer='Da ist etwas schiefgelaufen. Bitte formulieren Sie die Frage noch einmal.'; }
     COACH.turns.push({q,a:answer});
-    bubble.innerHTML=coachMd(answer)+`<div>${coachLinks(answer)}</div><div class="cm-tools"><button onclick="coachSpeak(this.closest('.cm').dataset.t)">🔊 Vorlesen</button></div>`;
+    bubble.innerHTML=coachMd(answer)+`<div>${coachLinks(answer)}</div>`;
     bubble.dataset.t=answer; box.scrollTop=Math.max(0,bubble.offsetTop-box.offsetTop-70);
-    if(COACH.tts) coachSpeak(answer);
+    if(document.getElementById('coachTts').checked) coachSpeak(answer);
     COACH.busy=false;
   },350);
 }
