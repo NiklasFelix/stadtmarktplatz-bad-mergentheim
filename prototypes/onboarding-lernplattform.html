@@ -1888,12 +1888,13 @@ const MODULES = [
     points:[
       "## 1. Wareneingang bestätigen",
       "<div>Den Wareneingang bestätigen Sie auf verschiedenen Wegen:<ul class=\"sub-points\"><li><strong>Über den Kalender:</strong> Auf den Tag klicken – die erweiterte Ansicht mit den „B“-Einträgen (Bestellungen) erscheint. Durch Ankreuzen des Hakens bestätigen Sie den Wareneingang.</li><li><strong>Über „Bestellungen“:</strong> Rechts oben den Filter auf „Offene Bestellungen“ setzen, die Bestellung anklicken und auf „Wareneingang“ klicken – es erscheint dieselbe Ansicht wie im Kalender, dort bestätigen Sie den Wareneingang.</li><li><strong>Abgeschlossene Bestellungen</strong> sehen Sie, indem Sie den Filter rechts oben auf „Abgeschlossene Bestellungen“ umstellen.</li></ul></div>",
+      "Der Scan-Bestelleingang zeigt offene Bestellungen eines Lieferanten nach Ampelfarbe (Rot = überfällig, Gelb = heute fällig, Grün = zukünftig) – Positionen lassen sich einzeln oder als komplette Liste auf einmal bestätigen, Mengenabweichungen werden dabei sichtbar gemacht.",
       "<div><strong>Wichtig beim Einlagern:</strong> Nehmen Sie das weiße Etikett mit und bringen Sie es wieder am Regal an – nur so funktioniert das Zwei-Etiketten-System für die nächste Bestellung.</div>"
     ],
     features:[
       {t:'Wareneingang im Kalender',d:'Tag anklicken, beim „B“-Eintrag den Haken setzen – fertig'},
       {t:'Wareneingang über „Bestellungen“',d:'Filter auf offene Bestellungen, Bestellung anklicken, „Wareneingang“ bestätigen'},
-      {t:'Abgeschlossene Bestellungen',d:'Über den Filter rechts oben jederzeit wiederfinden'}
+      {t:'Scan-Bestelleingang mit Ampelfarben',d:'Offene Bestellungen nach Rot/Gelb/Grün, Mengenabweichungen werden sichtbar'}
     ],
     practice:'Nach der Anlieferung klickt ein Lagermitarbeiter im Kalender auf den heutigen Tag, prüft die Lieferung gegen den Wareneingangsprüfungs-Zettel und setzt beim „B“-Eintrag den Haken. Beim Einlagern hängt er das weiße Etikett wieder ans Regal.',
     task:'Bestätigen Sie einen Wareneingang einmal über den Kalender und einmal über „Bestellungen“.',
@@ -1902,12 +1903,12 @@ const MODULES = [
     quiz:[
       {q:"Wie bestätigen Sie einen Wareneingang über den Kalender?",o:["Auf den Tag klicken, in der erweiterten Ansicht beim „B“-Eintrag den Haken setzen", "Den Kalendereintrag löschen", "Den Eintrag auf Grau ziehen", "Das ist über den Kalender nicht möglich"],a:0,t:"Wareneingang im Kalender"},
       {q:"Sie möchten den Wareneingang über „Bestellungen“ bestätigen, sehen aber die Bestellung nicht. Was prüfen Sie zuerst?",o:["Ob der Filter rechts oben auf „Offene Bestellungen“ steht", "Ob der Lieferant ein Logo hat", "Ob die Bestellung bereits gedruckt wurde", "Ob der Artikel ein Bild hat"],a:0,t:"Filter offene Bestellungen"},
-      {q:"Bei der Lieferung zeigt sich: Bestellt waren 10 Stück, geliefert wurden 8. Wie gehen Sie richtig vor?",o:["Den Wareneingang sofort vollständig bestätigen", "Die Bestellung löschen und neu bestellen", "Die Abweichung zuerst mit dem Lieferanten klären und danach den Wareneingang bestätigen", "Nichts tun – OrKan Cloud gleicht die Menge automatisch aus"],a:2,t:"Mengenabweichung"},
-      {q:"Wo finden Sie eine Bestellung wieder, deren Wareneingang Sie bereits bestätigt haben?",o:["Unter „Bestellungen“ mit dem Filter „Abgeschlossene Bestellungen“", "Im Bestellvorschlag", "Unter „Lagerbestand“", "Gar nicht mehr – sie wird gelöscht"],a:0,t:"Abgeschlossene Bestellungen"},
+      {q:"Im Scan-Bestelleingang zeigt sich: Bestellt waren 10 Stück, geliefert wurden 8. Wie gehen Sie richtig vor?",o:["Den Wareneingang sofort vollständig bestätigen", "Die Bestellung löschen und neu bestellen", "Die Abweichung zuerst mit dem Lieferanten klären und danach den Wareneingang bestätigen", "Nichts tun – OrKan Cloud gleicht die Menge automatisch aus"],a:2,t:"Mengenabweichung"},
+      {q:"Was bedeutet eine rot markierte offene Bestellung im Scan-Bestelleingang?",o:["Sie ist überfällig", "Sie ist heute fällig", "Sie ist erst künftig fällig", "Sie wurde bereits bestätigt"],a:0,t:"Scan-Bestelleingang"},
       {q:"Sie haben eine Lieferung eingelagert. Was müssen Sie mit dem weißen Etikett tun?",o:["Es wegwerfen – es wird neu gedruckt", "Es mitnehmen und wieder am Regal anbringen", "Es in der Bestellbox lassen", "Es beim Lieferanten abgeben"],a:1,t:"Weißes Etikett zurück"}
     ],
     summary:{ kern:['Der Wareneingang lässt sich über den Kalender oder über „Bestellungen“ (Filter: offene Bestellungen) bestätigen.','Abgeschlossene Bestellungen finden Sie über den Filter „Abgeschlossene Bestellungen“.','Beim Einlagern kommt das weiße Etikett wieder ans Regal – so bleibt das Zwei-Etiketten-System intakt.'],
-      funk:['Wareneingang im Kalender','Wareneingang über Bestellungen','Abgeschlossene Bestellungen'], hand:['Wareneingang zeitnah bestätigen','Weißes Etikett immer wieder anbringen'] }
+      funk:['Wareneingang im Kalender','Wareneingang über Bestellungen','Scan-Bestelleingang'], hand:['Wareneingang zeitnah bestätigen','Weißes Etikett immer wieder anbringen'] }
   },
   { id:7, phase:3, title:'Maschinenverwaltung', time:'15 Min.', diff:2,
     gist:['Maschinen anlegen','Buchungslogik','Service & Wartung'],
