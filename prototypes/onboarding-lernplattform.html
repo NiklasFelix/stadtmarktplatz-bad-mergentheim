@@ -1402,10 +1402,21 @@ html.theme-light .help-menu{background:#fff}
 .orki-bubble{position:relative;max-width:190px;margin-bottom:46px;padding:9px 12px;border-radius:14px 14px 4px 14px;background:var(--white);color:var(--ink);border:1px solid var(--border);font-size:13px;font-weight:600;line-height:1.35;text-align:left;box-shadow:0 12px 24px -12px rgba(0,0,0,.4);opacity:0;transform:translateY(6px) scale(.95);transition:.3s;pointer-events:none}
 .orki.talk .orki-bubble,.orki:hover .orki-bubble{opacity:1;transform:none}
 .orki.open .orki-bubble{opacity:0!important}
-.coach{right:24px;bottom:calc(196px + env(safe-area-inset-bottom,0px));height:min(600px,calc(100vh - 230px))}
+.coach{right:24px;bottom:calc(220px + env(safe-area-inset-bottom,0px));height:min(600px,calc(100vh - 230px))}
 .coach-title{display:flex;gap:10px;align-items:center}
 @media(max-width:700px){.orki{right:10px;bottom:calc(70px + env(safe-area-inset-bottom,0px))}.orki-svg{width:62px;height:68px}.orki-bubble{margin-bottom:38px;max-width:150px}.coach{bottom:calc(150px + env(safe-area-inset-bottom,0px));height:calc(100vh - 220px)}}
 @media (prefers-reduced-motion:reduce){.orki-svg,.orki-swirl,.orki-eye{animation:none}}
+
+/* Orki starr + klar getrennt vom Hilfe-Button */
+.orki-svg,.orki-swirl,.orki-eye,.orki:hover .orki-svg{animation:none!important}
+.orki{flex-direction:row;align-items:flex-end;bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+.orki .orki-col{display:flex;flex-direction:column;align-items:center}
+.orki-label{position:absolute;right:0;bottom:-20px;width:88px;text-align:center;font-size:11px;font-weight:800;letter-spacing:.02em;padding:3px 0;border-radius:999px;background:#1D2327;color:#C9F27A;border:1px solid #5E7233}
+.orki-bubble{margin-bottom:52px}
+.help-fab-btn{width:auto!important;height:44px!important;border-radius:999px!important;padding:0 16px 0 6px!important;display:flex;align-items:center;gap:8px;font-size:14px!important}
+.hf-q{width:32px;height:32px;border-radius:50%;background:rgba(16,21,10,.18);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800}
+.hf-l{font-weight:700;white-space:nowrap}
+@media(max-width:700px){.orki{bottom:calc(86px + env(safe-area-inset-bottom,0px))}.orki-label{width:70px;font-size:10px}.help-fab-btn{height:40px!important}.hf-l{font-size:13px}}
 </style>
 </head>
 <body>
@@ -3920,6 +3931,7 @@ function renderTour(){
         <path d="M30 74C30 70 70 70 70 74C70 80 62 82 60 87C58 92 62 95 57 99C53 102 55 106 50 110C46 105 44 101 45 96C46 90 38 88 40 83C42 78 30 79 30 74Z" fill="#A6BF68"/>
         <path class="orki-swirl" d="M34 76C44 80 56 80 66 76M42 90C47 92 53 92 56 90" stroke="#5E7233" stroke-width="2.4" fill="none" stroke-linecap="round"/></g>
   </svg>
+  <span class="orki-label">KI-Lerncoach</span>
 </button>
 <aside class="coach" id="coach" hidden aria-label="KI-Lerncoach">
   <div class="coach-head">
@@ -3946,7 +3958,7 @@ function renderTour(){
     <button onclick="toggleHelp();showView('best')">Schritt-für-Schritt-Anleitungen</button>
     <button onclick="toggleHelp();startTour()">Einführungstour erneut starten</button>
   </div>
-  <button class="help-fab-btn" onclick="toggleHelp()" aria-label="Hilfe">?</button>
+  <button class="help-fab-btn" onclick="toggleHelp()" aria-label="Hilfe und Kontakt"><span class="hf-q">?</span><span class="hf-l">Hilfe &amp; Kontakt</span></button>
 </div>
 <div class="mail-chooser" id="mailChooser" hidden onclick="if(event.target===this)closeMailChooser()">
   <div class="mail-chooser-box" role="dialog" aria-label="E-Mail-App auswählen">
