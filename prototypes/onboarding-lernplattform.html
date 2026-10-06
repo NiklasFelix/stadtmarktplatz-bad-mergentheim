@@ -1387,6 +1387,25 @@ html.theme-light .help-menu{background:#fff}
 .coach-mic.rec{background:#D9534F;border-color:#D9534F;color:#fff;animation:coachPulse 1.2s infinite}
 @keyframes coachPulse{50%{box-shadow:0 0 0 6px rgba(217,83,79,.25)}}
 @media(max-width:700px){.coach{right:8px;left:8px;width:auto;max-width:none;bottom:calc(76px + env(safe-area-inset-bottom,0px));height:calc(100vh - 150px)}}
+
+/* ===== Orki-Avatar ===== */
+.orki{position:fixed;right:20px;bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:955;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:flex-end;gap:6px;-webkit-tap-highlight-color:transparent}
+.orki[hidden]{display:none!important}
+.orki-svg{filter:drop-shadow(0 10px 14px rgba(0,0,0,.35));transform-origin:50% 95%;animation:orkiFloat 3.2s ease-in-out infinite}
+.orki:hover .orki-svg{animation:orkiSpin .9s ease-in-out}
+.orki-swirl{animation:orkiSwirl 2.4s linear infinite;stroke-dasharray:6 6}
+.orki-eye{animation:orkiBlink 5s infinite;transform-origin:center;transform-box:fill-box}
+@keyframes orkiFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-6px) rotate(2deg)}}
+@keyframes orkiSpin{0%{transform:rotate(0)}30%{transform:rotate(-10deg) scale(1.05)}60%{transform:rotate(8deg) scale(1.05)}100%{transform:rotate(0)}}
+@keyframes orkiSwirl{to{stroke-dashoffset:-24}}
+@keyframes orkiBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.orki-bubble{position:relative;max-width:190px;margin-bottom:46px;padding:9px 12px;border-radius:14px 14px 4px 14px;background:var(--white);color:var(--ink);border:1px solid var(--border);font-size:13px;font-weight:600;line-height:1.35;text-align:left;box-shadow:0 12px 24px -12px rgba(0,0,0,.4);opacity:0;transform:translateY(6px) scale(.95);transition:.3s;pointer-events:none}
+.orki.talk .orki-bubble,.orki:hover .orki-bubble{opacity:1;transform:none}
+.orki.open .orki-bubble{opacity:0!important}
+.coach{right:24px;bottom:calc(196px + env(safe-area-inset-bottom,0px));height:min(600px,calc(100vh - 230px))}
+.coach-title{display:flex;gap:10px;align-items:center}
+@media(max-width:700px){.orki{right:10px;bottom:calc(70px + env(safe-area-inset-bottom,0px))}.orki-svg{width:62px;height:68px}.orki-bubble{margin-bottom:38px;max-width:150px}.coach{bottom:calc(150px + env(safe-area-inset-bottom,0px));height:calc(100vh - 220px)}}
+@media (prefers-reduced-motion:reduce){.orki-svg,.orki-swirl,.orki-eye{animation:none}}
 </style>
 </head>
 <body>
@@ -1493,10 +1512,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
         Lernmodule
       </div>
       <div class="nav-sub" id="moduleSubNav"></div>
-      <div class="nav-item nav-coach" onclick="openCoach()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg>
-        KI-Lerncoach
-      </div>
       <div class="nav-item" data-view="kb" onclick="showView('kb')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
         Wissensdatenbank
@@ -2353,7 +2368,7 @@ function startApp(){
 }
 function initializeApp(){
   // Hilfe-Button steht im HTML erst nach diesem Skript -> beim Neuladen ggf. auf DOM warten
-  const showFab=()=>{ const hf=document.getElementById('helpFab'); if(hf&&state.name) hf.hidden=false; };
+  const showFab=()=>{ const hf=document.getElementById('helpFab'); if(hf&&state.name) hf.hidden=false; const o=document.getElementById('orki'); if(o&&state.name){ o.hidden=false; orkiGreet(); } };
   document.getElementById('helpFab') ? showFab() : document.addEventListener('DOMContentLoaded', showFab);
   document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
   refreshProfileMenu();
@@ -2436,7 +2451,7 @@ function confirmResetProgress(){
   const sb=document.getElementById('startBtn'); if(sb){ sb.disabled=true; sb.textContent='Lernpfad starten'; }
   document.getElementById('app').style.display='none';
   document.getElementById('onboarding').style.display='flex';
-  { const hf=document.getElementById('helpFab'); if(hf) hf.hidden=true; }
+  { const hf=document.getElementById('helpFab'); if(hf) hf.hidden=true; const o=document.getElementById('orki'); if(o) o.hidden=true; const c=document.getElementById('coach'); if(c) c.hidden=true; }
   const ms=document.querySelector('.main-scroll'); if(ms) ms.scrollTop=0;
   __resetting = false;
   __autosaveInterval = setInterval(saveState, 3000);
@@ -3264,7 +3279,7 @@ function logoutProfile(){
   document.getElementById('profileMenu').classList.remove('open');
   document.getElementById('app').style.display='none';
   document.getElementById('onboarding').style.display='flex';
-  { const hf=document.getElementById('helpFab'); if(hf) hf.hidden=true; }
+  { const hf=document.getElementById('helpFab'); if(hf) hf.hidden=true; const o=document.getElementById('orki'); if(o) o.hidden=true; const c=document.getElementById('coach'); if(c) c.hidden=true; }
 }
 const CLOUD_DEEPLINKS = {
   1:{label:'Startseite'},
@@ -3650,15 +3665,17 @@ function coachUserState(){
 let COACH={turns:[],busy:false,tts:false,rec:null};
 try{ COACH.tts=localStorage.getItem('orkanCoachTts')==='1'; }catch(e){}
 function openCoach(){
-  const mic=document.getElementById('coachMic'); if(mic) mic.hidden=!!window.claude||!(window.SpeechRecognition||window.webkitSpeechRecognition);
+  document.getElementById('orki')?.classList.add('open');
   const c=document.getElementById('coach'); c.hidden=false; document.getElementById('coachTts').checked=COACH.tts;
   if(!document.getElementById('coachMsgs').children.length) coachWelcome();
   setTimeout(()=>document.getElementById('coachText').focus(),50);
 }
-function closeCoach(){ document.getElementById('coach').hidden=true; try{speechSynthesis.cancel()}catch(e){} }
+function toggleCoach(){ document.getElementById('coach').hidden?openCoach():closeCoach(); }
+function orkiGreet(){ const o=document.getElementById('orki'); if(!o||orkiGreet.done) return; orkiGreet.done=1; setTimeout(()=>{ if(!o.classList.contains('open')){ o.classList.add('talk'); setTimeout(()=>o.classList.remove('talk'),7000);} },2500); }
+function closeCoach(){ document.getElementById('orki')?.classList.remove('open'); document.getElementById('coach').hidden=true; try{speechSynthesis.cancel()}catch(e){} }
 function coachWelcome(){
   const box=document.getElementById('coachMsgs');
-  box.innerHTML=`<div class="cm a">Hallo${state.name?' '+escapeHtml(state.name):''}! Ich bin Ihr Lerncoach. Fragen Sie mich alles zur OrKan Cloud, zu den Lernmodulen oder zur Lernplattform – per Tastatur${(window.claude||!(window.SpeechRecognition||window.webkitSpeechRecognition))?'':' oder über das Mikrofon'}.</div>
+  box.innerHTML=`<div class="cm a">Hallo${state.name?' '+escapeHtml(state.name):''}! Ich bin Orki, Ihr KI-Lerncoach. Fragen Sie mich alles zur OrKan Cloud, zu den Lernmodulen oder zur Lernplattform – per Tastatur oder über das Mikrofon.</div>
   <div class="coach-sugg">${['Wie lege ich einen Artikel an?','Wie funktioniert das Zwei-Etiketten-System?','Welches Modul sollte ich als Nächstes machen?','Wie bekomme ich das Zertifikat?'].map(q=>`<button onclick="coachSend(this.textContent)">${q}</button>`).join('')}</div>`;
 }
 function coachClear(){ COACH.turns=[]; try{speechSynthesis.cancel()}catch(e){} coachWelcome(); }
@@ -3701,7 +3718,7 @@ const COACH_FAQ=[
   {k:['shop','etiketten kaufen','scanner kaufen','bestellen zubehoer'],a:()=>'Den **OrKan Shop** erreichen Sie über den Link „OrKan Shop“ in der Seitenleiste.'},
   {k:['suche','suchfeld','finden plattform'],a:()=>'Über die **Suche** oben in der Kopfzeile durchsuchen Sie Module, Wissensdatenbank und Best Practices gleichzeitig – auch zusammengeschriebene Begriffe und kleine Tippfehler werden gefunden.'},
   {k:['wissensdatenbank','best practice','anleitung'],a:()=>'Die **Wissensdatenbank** enthält kurze Artikel zum Nachschlagen, die **Best Practices** Schritt-für-Schritt-Anleitungen. Beide sind nach Themen gefiltert und über die Seitenleiste erreichbar.'},
-  {k:['wer bist','was kannst','hilfe coach','lerncoach'],a:()=>'Ich bin Ihr KI-Lerncoach. Ich beantworte Fragen zur OrKan Cloud (z. B. „Wie lege ich einen Artikel an?“), zu den Lernmodulen und zur Lernplattform – und verweise Sie auf die passenden Module.'},
+  {k:['wer bist','was kannst','hilfe coach','lerncoach'],a:()=>'Ich bin Orki, Ihr KI-Lerncoach. Ich beantworte Fragen zur OrKan Cloud (z. B. „Wie lege ich einen Artikel an?“), zu den Lernmodulen und zur Lernplattform – und verweise Sie auf die passenden Module.'},
   {k:['hallo','guten tag','moin','servus','hi '],a:()=>`Hallo${state.name?' '+state.name:''}! Wie kann ich Ihnen helfen?`},
   {k:['danke','super','perfekt'],a:()=>'Gern geschehen! Fragen Sie jederzeit wieder.'}
 ];
@@ -3748,17 +3765,23 @@ function coachSend(text){
     COACH.busy=false;
   },350);
 }
+function coachMicHelp(){
+  const box=document.getElementById('coachMsgs'); if(box.querySelector('.cm-mic')) return;
+  const mac=/Mac/.test(navigator.platform), mob=/Android|iPhone|iPad/.test(navigator.userAgent);
+  box.insertAdjacentHTML('beforeend',`<div class="cm a cm-mic">Das Mikrofon ist in dieser Ansicht vom Browser gesperrt. So können Sie Ihre Frage trotzdem sprechen:<ul><li>${mob?'Tippen Sie ins Eingabefeld und dann auf das <b>Mikrofon der Tastatur</b>.':mac?'Klicken Sie ins Eingabefeld und drücken Sie zweimal die <b>Fn-Taste</b> (Diktierfunktion).':'Klicken Sie ins Eingabefeld und drücken Sie <b>Windows-Taste + H</b> (Diktierfunktion).'}</li><li>Anschließend auf „Senden“ tippen.</li></ul></div>`);
+  box.scrollTop=box.scrollHeight; document.getElementById('coachText').focus();
+}
 function coachMic(){
   const btn=document.getElementById('coachMic');
   if(COACH.rec){ COACH.rec.stop(); return; }
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){ showToast('Spracheingabe wird von diesem Browser nicht unterstützt – bitte tippen Sie Ihre Frage.'); return; }
+  if(!SR){ coachMicHelp(); return; }
   const rec=new SR(); rec.lang='de-DE'; rec.interimResults=true; rec.continuous=false; COACH.rec=rec;
   const ta=document.getElementById('coachText'); const before=ta.value; let finalText='';
   rec.onresult=e=>{ let t=''; for(const r of e.results) t+=r[0].transcript; ta.value=(before?before+' ':'')+t; finalText=t; };
-  rec.onerror=e=>{ showToast(e.error==='not-allowed'||e.error==='service-not-allowed'?'Kein Zugriff auf das Mikrofon in dieser Ansicht – bitte tippen Sie Ihre Frage.':'Spracheingabe nicht möglich ('+e.error+').'); };
+  rec.onerror=e=>{ if(e.error==='no-speech'){ showToast('Ich habe nichts gehört – bitte noch einmal versuchen.'); return; } coachMicHelp(); };
   rec.onend=()=>{ COACH.rec=null; btn.classList.remove('rec'); if(finalText.trim()) coachSend(); };
-  try{ rec.start(); btn.classList.add('rec'); }catch(e){ COACH.rec=null; showToast('Spracheingabe konnte nicht gestartet werden.'); }
+  try{ rec.start(); btn.classList.add('rec'); }catch(e){ COACH.rec=null; coachMicHelp(); }
 }
 bootApp();
 </script>
@@ -3875,9 +3898,30 @@ function renderTour(){
 
 
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="orkiGm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C9DE8C"/><stop offset="1" stop-color="#6E8A34"/></linearGradient></defs><symbol id="orkiMini" viewBox="0 0 100 110"><path d="M8 18 C8 6 92 6 92 18 C92 30 78 34 74 40 C70 46 76 52 68 58 C62 64 66 70 58 76 C52 82 56 90 50 100 C46 92 40 86 42 78 C44 70 34 66 36 58 C38 50 26 46 26 38 C26 32 8 30 8 18 Z" fill="url(#orkiGm)"/><ellipse cx="38" cy="30" rx="7" ry="8" fill="#fff"/><ellipse cx="62" cy="30" rx="7" ry="8" fill="#fff"/><circle cx="39.5" cy="31" r="3.6" fill="#1B2024"/><circle cx="63.5" cy="31" r="3.6" fill="#1B2024"/><path d="M42 41 Q50 48 58 41" stroke="#1B2024" stroke-width="3" fill="none" stroke-linecap="round"/></symbol></svg>
+<button class="orki" id="orki" hidden onclick="toggleCoach()" aria-label="KI-Lerncoach öffnen">
+  <span class="orki-bubble" id="orkiBubble">Brauchen Sie Hilfe? Fragen Sie mich!</span>
+  <svg class="orki-svg" viewBox="0 0 100 110" width="92" height="101" aria-hidden="true">
+    <defs>
+      <linearGradient id="orkiG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C9DE8C"/><stop offset="1" stop-color="#6E8A34"/></linearGradient>
+      <linearGradient id="orkiG2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5E7233"/><stop offset="1" stop-color="#A6BF68"/></linearGradient>
+    </defs>
+    <g class="orki-body">
+      <path d="M8 18 C8 6 92 6 92 18 C92 30 78 34 74 40 C70 46 76 52 68 58 C62 64 66 70 58 76 C52 82 56 90 50 100 C46 92 40 86 42 78 C44 70 34 66 36 58 C38 50 26 46 26 38 C26 32 8 30 8 18 Z" fill="url(#orkiG)"/>
+      <path class="orki-swirl" d="M14 20 C30 28 70 28 86 20 M30 40 C42 46 62 46 72 40 M38 58 C46 62 58 62 64 58 M44 76 C48 79 54 79 57 76" stroke="url(#orkiG2)" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>
+      <g class="orki-face">
+        <ellipse cx="38" cy="30" rx="7" ry="8" fill="#fff"/><ellipse cx="62" cy="30" rx="7" ry="8" fill="#fff"/>
+        <circle class="orki-eye" cx="39.5" cy="31" r="3.6" fill="#1B2024"/><circle class="orki-eye" cx="63.5" cy="31" r="3.6" fill="#1B2024"/>
+        <circle cx="40.8" cy="29.5" r="1.2" fill="#fff"/><circle cx="64.8" cy="29.5" r="1.2" fill="#fff"/>
+        <path d="M42 41 Q50 48 58 41" stroke="#1B2024" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <ellipse cx="30" cy="40" rx="4" ry="2.4" fill="#F29E8E" opacity=".55"/><ellipse cx="70" cy="40" rx="4" ry="2.4" fill="#F29E8E" opacity=".55"/>
+      </g>
+    </g>
+  </svg>
+</button>
 <aside class="coach" id="coach" hidden aria-label="KI-Lerncoach">
   <div class="coach-head">
-    <div><strong>KI-Lerncoach</strong><span>Fragen Sie alles zur OrKan Cloud und zur Lernplattform</span></div>
+    <div class="coach-title"><svg viewBox="0 0 100 110" width="34" height="38" aria-hidden="true"><use href="#orkiMini"/></svg><div><strong>Orki – Ihr KI-Lerncoach</strong><span>Fragen Sie alles zur OrKan Cloud und zur Lernplattform</span></div></div>
     <button class="coach-x" onclick="closeCoach()" aria-label="Schließen">×</button>
   </div>
   <div class="coach-opts">
@@ -3886,7 +3930,7 @@ function renderTour(){
   </div>
   <div class="coach-msgs" id="coachMsgs"></div>
   <form class="coach-input" onsubmit="event.preventDefault();coachSend()">
-    <button type="button" class="coach-mic" id="coachMic" onclick="coachMic()" title="Spracheingabe" aria-label="Spracheingabe"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5"/></svg></button>
+    <button type="button" class="coach-mic" id="coachMic" onclick="window.coachMic()" title="Spracheingabe" aria-label="Spracheingabe"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5"/></svg></button>
     <textarea id="coachText" rows="1" placeholder="Frage eingeben, z. B. „Wie lege ich einen Artikel an?“" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();coachSend()}"></textarea>
     <button type="submit" class="coach-send" id="coachSendBtn" aria-label="Senden"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </form>
