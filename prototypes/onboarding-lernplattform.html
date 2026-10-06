@@ -1402,21 +1402,21 @@ html.theme-light .help-menu{background:#fff}
 .orki-bubble{position:relative;max-width:190px;margin-bottom:46px;padding:9px 12px;border-radius:14px 14px 4px 14px;background:var(--white);color:var(--ink);border:1px solid var(--border);font-size:13px;font-weight:600;line-height:1.35;text-align:left;box-shadow:0 12px 24px -12px rgba(0,0,0,.4);opacity:0;transform:translateY(6px) scale(.95);transition:.3s;pointer-events:none}
 .orki.talk .orki-bubble,.orki:hover .orki-bubble{opacity:1;transform:none}
 .orki.open .orki-bubble{opacity:0!important}
-.coach{right:24px;bottom:calc(220px + env(safe-area-inset-bottom,0px));height:min(600px,calc(100vh - 230px))}
+.coach{right:24px;bottom:calc(150px + env(safe-area-inset-bottom,0px));height:min(600px,calc(100vh - 230px))}
 .coach-title{display:flex;gap:10px;align-items:center}
 @media(max-width:700px){.orki{right:10px;bottom:calc(70px + env(safe-area-inset-bottom,0px))}.orki-svg{width:62px;height:68px}.orki-bubble{margin-bottom:38px;max-width:150px}.coach{bottom:calc(150px + env(safe-area-inset-bottom,0px));height:calc(100vh - 220px)}}
 @media (prefers-reduced-motion:reduce){.orki-svg,.orki-swirl,.orki-eye{animation:none}}
 
-/* Orki starr + klar getrennt vom Hilfe-Button */
+/* Orki starr mit Beschriftung */
 .orki-svg,.orki-swirl,.orki-eye,.orki:hover .orki-svg{animation:none!important}
-.orki{flex-direction:row;align-items:flex-end;bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+.orki{flex-direction:row;align-items:flex-end;bottom:calc(36px + env(safe-area-inset-bottom,0px))}
 .orki .orki-col{display:flex;flex-direction:column;align-items:center}
 .orki-label{position:absolute;right:0;bottom:-20px;width:88px;text-align:center;font-size:11px;font-weight:800;letter-spacing:.02em;padding:3px 0;border-radius:999px;background:#1D2327;color:#C9F27A;border:1px solid #5E7233}
 .orki-bubble{margin-bottom:52px}
 .help-fab-btn{width:auto!important;height:44px!important;border-radius:999px!important;padding:0 16px 0 6px!important;display:flex;align-items:center;gap:8px;font-size:14px!important}
 .hf-q{width:32px;height:32px;border-radius:50%;background:rgba(16,21,10,.18);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800}
 .hf-l{font-weight:700;white-space:nowrap}
-@media(max-width:700px){.orki{bottom:calc(86px + env(safe-area-inset-bottom,0px))}.orki-label{width:70px;font-size:10px}.help-fab-btn{height:40px!important}.hf-l{font-size:13px}}
+@media(max-width:700px){.orki{bottom:calc(30px + env(safe-area-inset-bottom,0px))}.orki-label{width:70px;font-size:10px}.help-fab-btn{height:40px!important}.hf-l{font-size:13px}}
 </style>
 </head>
 <body>
@@ -2378,9 +2378,9 @@ function startApp(){
   saveState();
 }
 function initializeApp(){
-  // Hilfe-Button steht im HTML erst nach diesem Skript -> beim Neuladen ggf. auf DOM warten
-  const showFab=()=>{ const hf=document.getElementById('helpFab'); if(hf&&state.name) hf.hidden=false; const o=document.getElementById('orki'); if(o&&state.name){ o.hidden=false; orkiGreet(); } };
-  document.getElementById('helpFab') ? showFab() : document.addEventListener('DOMContentLoaded', showFab);
+  // Orki steht im HTML erst nach diesem Skript -> beim Neuladen ggf. auf DOM warten
+  const showFab=()=>{ const o=document.getElementById('orki'); if(o&&state.name){ o.hidden=false; orkiGreet(); } };
+  document.getElementById('orki') ? showFab() : document.addEventListener('DOMContentLoaded', showFab);
   document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
   refreshProfileMenu();
   buildModuleSubNav();
@@ -2462,7 +2462,7 @@ function confirmResetProgress(){
   const sb=document.getElementById('startBtn'); if(sb){ sb.disabled=true; sb.textContent='Lernpfad starten'; }
   document.getElementById('app').style.display='none';
   document.getElementById('onboarding').style.display='flex';
-  { const hf=document.getElementById('helpFab'); if(hf) hf.hidden=true; const o=document.getElementById('orki'); if(o) o.hidden=true; const c=document.getElementById('coach'); if(c) c.hidden=true; }
+  { const o=document.getElementById('orki'); if(o) o.hidden=true; const c=document.getElementById('coach'); if(c) c.hidden=true; }
   const ms=document.querySelector('.main-scroll'); if(ms) ms.scrollTop=0;
   __resetting = false;
   __autosaveInterval = setInterval(saveState, 3000);
@@ -3290,7 +3290,7 @@ function logoutProfile(){
   document.getElementById('profileMenu').classList.remove('open');
   document.getElementById('app').style.display='none';
   document.getElementById('onboarding').style.display='flex';
-  { const hf=document.getElementById('helpFab'); if(hf) hf.hidden=true; const o=document.getElementById('orki'); if(o) o.hidden=true; const c=document.getElementById('coach'); if(c) c.hidden=true; }
+  { const o=document.getElementById('orki'); if(o) o.hidden=true; const c=document.getElementById('coach'); if(c) c.hidden=true; }
 }
 const CLOUD_DEEPLINKS = {
   1:{label:'Startseite'},
@@ -3719,8 +3719,8 @@ const COACH_FAQ=[
   {k:['lernpfad','reihenfolge','aufbau','module gibt','welche module','uebersicht module'],a:()=>`Die Plattform hat **${MODULES.length} Module** in zwei Bereichen:\n- **Grundlagen Onboarding:** ${MODULE_GROUPS[0].ids.map(i=>'Modul '+i).join(', ')}\n- **Expertenwissen:** ${MODULE_GROUPS[1].ids.map(i=>'Modul '+i).join(', ')}\nJedes Modul hat die Reiter Inhalt, Praxisaufgabe, Wissenscheck und Zusammenfassung. Unter „Mein Lernpfad“ sehen Sie die Reihenfolge mit Status.`},
   {k:['merkliste','merken','stern','favorit'],a:()=>'Artikel der Wissensdatenbank und Best Practices können Sie mit dem **Stern** neben dem Titel auf Ihre Merkliste setzen. Sie erscheinen dann im Dashboard unter „Meine Merkliste“.'},
   {k:['dashboard','kachel','startseite plattform'],a:()=>'Ihr **Dashboard** zeigt Ihren nächsten Schritt, Kennzahlen, die Merkliste, Ihre Lernaktivität und zuletzt angesehene Inhalte. Über „Dashboard anpassen“ blenden Sie Kacheln ein oder aus und sortieren sie per Drag & Drop.'},
-  {k:['termin','ansprechpartner','kontakt','anrufen','persoenlich','mensch','support'],a:()=>'Einen **persönlichen Termin** vereinbaren Sie über den Hilfe-Button (Fragezeichen unten rechts) oder im Profilmenü oben rechts unter „Persönlichen Termin vereinbaren“.'},
-  {k:['tour','einfuehrung','rundgang'],a:()=>'Die **Einführungstour** starten Sie über den Hilfe-Button (Fragezeichen unten rechts) oder im Profilmenü oben rechts unter „Einführungstour starten“.'},
+  {k:['termin','ansprechpartner','kontakt','anrufen','persoenlich','mensch','support'],a:()=>'Einen **persönlichen Termin** vereinbaren Sie im Profilmenü oben rechts (Kreis mit Ihrer Initiale) unter „Persönlichen Termin vereinbaren“.'},
+  {k:['tour','einfuehrung','rundgang'],a:()=>'Die **Einführungstour** starten Sie im Profilmenü oben rechts (Kreis mit Ihrer Initiale) unter „Einführungstour starten“.'},
   {k:['dunkel','hell','dark','light','darstellung','farbe plattform'],a:()=>'Die **Darstellung** (Hell oder Dunkel) stellen Sie im Profilmenü oben rechts (Kreis mit Ihrer Initiale) um.'},
   {k:['zuruecksetz','reset','neu anfangen','loeschen fortschritt'],a:()=>'Ihren Fortschritt können Sie im Profilmenü oben rechts unter „Fortschritt zurücksetzen“ löschen. Achtung: Das lässt sich nicht rückgängig machen.'},
   {k:['abmeld','ausloggen','logout'],a:()=>'Abmelden können Sie sich im Profilmenü oben rechts unter „Abmelden“. Ihr Fortschritt bleibt im Browser gespeichert.'},
@@ -3754,7 +3754,7 @@ function coachLocalAnswer(q){
   MODULES.forEach(m=>{ const sec=coachSection(m,words); if(sec) cands.push({k:'sec',o:sec,m,mod:m.id,s:gsScore(words,{t:sec.h+' '+m.title,r:sec.p.join(' ')})*.9}); });
   cands.sort((x,y)=>y.s-x.s); const best=cands[0];
   if(faq&&(!topic||!best||!best.s)) return faq.a();
-  if(!best||best.s<=0) return faq?faq.a():'Dazu habe ich in den Lerninhalten leider nichts gefunden. Formulieren Sie die Frage gern anders – oder vereinbaren Sie über den Hilfe-Button einen persönlichen Termin mit unseren Ansprechpartnern.';
+  if(!best||best.s<=0) return faq?faq.a():'Dazu habe ich in den Lerninhalten leider nichts gefunden. Formulieren Sie die Frage gern anders – oder vereinbaren Sie über das Profilmenü oben rechts einen persönlichen Termin mit unseren Ansprechpartnern.';
   let t='';
   if(best.k==='bp') t+=`**${best.o.title}**\n`+best.o.steps.map((x,i)=>`${i+1}. **${coachStrip(x.t)}:** ${coachStrip(x.d)}`).join('\n');
   else if(best.k==='kb') t+=`**${best.o.title}**\n`+(best.o.path?'Klickweg: '+coachStrip(best.o.path)+'\n':'')+best.o.body.map(x=>'- '+coachStrip(x)).join('\n');
@@ -3949,17 +3949,6 @@ function renderTour(){
     <button type="submit" class="coach-send" id="coachSendBtn" aria-label="Senden"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </form>
 </aside>
-<div class="help-fab" id="helpFab" hidden>
-  <div class="help-menu">
-    <strong>Wie können wir helfen?</strong>
-    <button onclick="toggleHelp();openCoach()">KI-Lerncoach fragen</button>
-    <button onclick="toggleHelp();bookAppointment()">Persönlichen Termin vereinbaren</button>
-    <button onclick="toggleHelp();showView('kb')">Wissensdatenbank durchsuchen</button>
-    <button onclick="toggleHelp();showView('best')">Schritt-für-Schritt-Anleitungen</button>
-    <button onclick="toggleHelp();startTour()">Einführungstour erneut starten</button>
-  </div>
-  <button class="help-fab-btn" onclick="toggleHelp()" aria-label="Hilfe und Kontakt"><span class="hf-q">?</span><span class="hf-l">Hilfe &amp; Kontakt</span></button>
-</div>
 <div class="mail-chooser" id="mailChooser" hidden onclick="if(event.target===this)closeMailChooser()">
   <div class="mail-chooser-box" role="dialog" aria-label="E-Mail-App auswählen">
     <h3>Wählen Sie eine App aus, um die E-Mail zu senden</h3>
