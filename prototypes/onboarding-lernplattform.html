@@ -1417,6 +1417,10 @@ html.theme-light .help-menu{background:#fff}
 .hf-q{width:32px;height:32px;border-radius:50%;background:rgba(16,21,10,.18);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800}
 .hf-l{font-weight:700;white-space:nowrap}
 @media(max-width:700px){.orki{bottom:calc(30px + env(safe-area-inset-bottom,0px))}.orki-label{width:70px;font-size:10px}.help-fab-btn{height:40px!important}.hf-l{font-size:13px}}
+
+.key-points li .kp-key{display:block;padding:16px 18px;border-radius:14px;border:2px solid #8EA752;background:rgba(142,167,82,.12);font-size:15.5px}
+.key-points li .kp-key .kp-key-tag{display:inline-block;margin-bottom:8px;margin-right:8px;padding:2px 10px;border-radius:999px;background:#8EA752;color:#15191C;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.key-points li .kp-key strong{color:#8EA752}
 </style>
 </head>
 <body>
@@ -1929,7 +1933,7 @@ const MODULES = [
       "Unter „Reservierungen“ → „Erstellen“ merken Sie ein Gebrauchsgut für einen Zeitraum vor. Eine Reservierung ist dabei keine technische Sperre, sondern nur ein Hinweis in einer Liste.",
       "Mehrere Einzelteile lassen sich zu einer „Anlage\" bündeln (z. B. Kernbohrgerät, Befestigungsset und Staubsauger): Ein einziger Scan bucht alle Teile gemeinsam, jedes bleibt aber ein eigener Artikel mit eigener Wartungshistorie.",
       "## 5. Wo ist was?",
-      "<div>Drei Stellen beantworten diese Frage:<ul class=\"sub-points\"><li><strong>Wo ist Maschine X gerade?:</strong> „Übersicht“ → Spalte „Aktueller Standort“, das + vor der Zeile zeigt Details</li><li><strong>Wer hatte X wann?:</strong> „Buchungen“ – mit Suche und Filtern, + zeigt gebucht und ausgebucht am</li><li><strong>Was hat Person Y oder Projekt Z?:</strong> „Standorte“ → Zeile markieren → „Materialliste“ (auch druckbar)</li></ul></div>"
+      "<div class=\"kp-key\"><span class=\"kp-key-tag\">Wichtig</span>Drei Stellen beantworten diese Frage:<ul class=\"sub-points\"><li><strong>Wo ist Maschine X gerade?:</strong> „Übersicht“ → Spalte „Aktueller Standort“, das + vor der Zeile zeigt Details</li><li><strong>Wer hatte X wann?:</strong> „Buchungen“ – mit Suche und Filtern, + zeigt gebucht und ausgebucht am</li><li><strong>Was hat Person Y oder Projekt Z?:</strong> „Standorte“ → Zeile markieren → „Materialliste“ (auch druckbar)</li></ul></div>"
     ],
     features:[
       {t:'Vollständige Maschinen-Stammdaten',d:'Inkl. Electronic ID als Alternative zum QR-Code-Scan (NFC/RFID)'},
