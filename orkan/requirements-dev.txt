@@ -1,0 +1,5 @@
+# Nur für Tests und Entwicklung – nicht im Docker-Image enthalten.
+-r requirements.txt
+pytest==8.3.4
+httpx==0.28.1
+reportlab==5.0.0

@@ -1,0 +1,16 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "orkan-matching",
+      "runtimeExecutable": ".venv/Scripts/python.exe",
+      "runtimeArgs": ["-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"],
+      "port": 8000,
+      "env": {
+        "ADMIN_USER": "pruefer",
+        "ADMIN_PASSWORT": "bitte-aendern",
+        "BILDPOOL_EINGABE": "1"
+      }
+    }
+  ]
+}

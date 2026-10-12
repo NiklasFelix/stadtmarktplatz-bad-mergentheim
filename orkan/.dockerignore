@@ -1,0 +1,10 @@
+.venv/
+arbeitsdaten/
+daten/
+tests/
+__pycache__/
+*.pyc
+.pytest_cache/
+.git/
+*.md
+!README.md

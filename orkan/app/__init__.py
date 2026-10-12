@@ -1,0 +1,1 @@
+"""OrKan Artikel-Matching-Tool."""

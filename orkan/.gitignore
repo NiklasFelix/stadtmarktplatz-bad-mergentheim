@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+arbeitsdaten/
+.env
+einstellungen.json
+
+# Der Datenpool gehoert NICHT ins Repository und nicht in eine Weitergabe.
+# Er wird auf dem Server abgelegt bzw. als Docker-Volume gemountet.
+daten/Datenpool_bereinigt.csv
+daten/neuaufnahmen_queue.csv
+daten/*.backup-*.csv
+
+# Eigene Test- und Aufnahmedateien (nicht Teil der Anwendung)
+*.mp4
+pdf*.pdf
+Testdaten*.xlsx

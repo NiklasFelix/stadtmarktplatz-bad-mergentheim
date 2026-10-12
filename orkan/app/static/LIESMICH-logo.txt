@@ -1,0 +1,31 @@
+Firmenlogo austauschen
+======================
+
+Die Logo-Datei liegt in genau diesem Verzeichnis. Erlaubte Namen, in dieser
+Reihenfolge (die oberste vorhandene gewinnt):
+
+    logo.svg     skaliert verlustfrei, wenige Kilobyte - beste Wahl
+    logo.png     aktuell im Einsatz
+    logo.webp
+    logo.jpg
+
+WICHTIG: Immer nur EINE dieser Dateien behalten. Liegt versehentlich noch ein
+altes logo.svg daneben, verdraengt es das neue logo.png.
+
+Nach dem Austausch
+------------------
+Server neu starten - fertig. Der Browser bekommt automatisch die neue Fassung,
+weil die Adresse den Aenderungszeitpunkt enthaelt (/logo?v=...).
+
+Fuer die Desktop-Fassung zusaetzlich neu bauen:
+
+    .venv\Scripts\python -m PyInstaller orkan.spec --noconfirm
+
+Darstellung
+-----------
+Das Logo steht links neben der Ueberschrift und dient zugleich als Symbol im
+Browsertab. Die Hoehe wird auf 2,6rem (rund 42 Pixel) begrenzt, die Breite auf
+14rem; das Seitenverhaeltnis bleibt immer erhalten.
+
+Gut geeignet: querformatig, etwa 3:1, mit transparentem Hintergrund.
+Ohne Logo-Datei bleibt die Ueberschrift wie bisher - es fehlt nichts.

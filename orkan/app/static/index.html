@@ -1,0 +1,997 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artikelliste vervollständigen – OrKan-System</title>
+<style>
+/* ===========================================================================
+   OrKan Artikel-Matching – Gestaltung
+   Alles eingebettet: Die Anwendung lädt nichts aus dem Internet nach. Der
+   OrKan-Server hat nicht zwingend Internetzugang, die Desktop-Fassung ohnehin
+   nicht. Deshalb Systemschriften statt Webfonts.
+   ========================================================================= */
+
+/* ---------- Farben, Maße, Tiefe ---------- */
+:root{
+  color-scheme:light;
+
+  /* Farben aus dem Firmenlogo: Anthrazit #4a5259, Hellgrün #8ca94f.
+     Die Flächen sind leicht anthrazitstichig statt neutralgrau, damit die
+     Oberfläche zum Logo gehört statt daneben zu stehen. */
+  --grund:#ffffff;
+  --grund-erhoben:#ffffff;
+  --flaeche:#eceeec;
+  --flaeche2:#f7f8f6;
+  --rand:#e0e3e1;
+  --rand-stark:#bcc2c0;
+  --text:#232a2f;
+  --leise:#5a6469;
+  --sehr-leise:#5a6469;
+
+  /* Das Logogrün ist eine Fläche, keine Schriftfarbe: auf Weiß erreicht es
+     nur 2,7:1. Als Knopfgrund mit anthrazitfarbener Schrift dagegen 7,9:1.
+     Für grüne Schrift auf hellem Grund gibt es --akzent-text. */
+  --akzent:#8ca94f;
+  --akzent-dunkel:#79953f;
+  --akzent-text:#4f6b26;
+  --akzent-hell:#f0f4e7;
+  --akzent-rand:#cfdcaf;
+  --auf-akzent:#232a2f;
+
+  --gut:#25692a;
+  --auf-gut:#ffffff;
+  --gut-hell:#e8f3e4;
+  --gut-rand:#bcdcb4;
+  --warn:#8a5600;
+  --warn-hell:#fdf3dd;
+  --warn-rand:#f0dcae;
+  --schlecht:#a32626;
+  --schlecht-hell:#fceaea;
+  --schlecht-rand:#f2c9c9;
+
+  /* Gestaffelte Tiefe statt eines Einheitsschattens. */
+  --tiefe-1:0 1px 2px rgba(13,20,29,.04), 0 1px 3px rgba(13,20,29,.04);
+  --tiefe-2:0 1px 2px rgba(13,20,29,.05), 0 4px 12px rgba(13,20,29,.05);
+  --tiefe-3:0 2px 4px rgba(13,20,29,.06), 0 12px 32px rgba(13,20,29,.09);
+  --ring:0 0 0 3px color-mix(in srgb, var(--akzent) 24%, transparent);
+
+  --radius:14px;
+  --radius-klein:10px;
+  --radius-gross:20px;
+
+  --takt:.18s cubic-bezier(.2,.7,.3,1);
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme:dark;
+    /* Anthrazit wird hier zur Fläche, das Grün leuchtet darauf. */
+    --grund:#242b31;
+    --grund-erhoben:#2a3238;
+    --flaeche:#171c20;
+    --flaeche2:#2b3339;
+    --rand:#39424a;
+    --rand-stark:#525d65;
+    --text:#e9edec;
+    --leise:#a7b1b3;
+    --sehr-leise:#a7b1b3;
+    --akzent:#a5c463;
+    --akzent-dunkel:#bcd684;
+    --akzent-text:#a5c463;
+    --akzent-hell:#2b3527;
+    --akzent-rand:#4a5c33;
+    --auf-akzent:#1b2116;
+    --gut:#7bc96f;
+    --auf-gut:#16240f;
+    --gut-hell:#1e2c19;
+    --gut-rand:#33502a;
+    --warn:#e6b862;
+    --warn-hell:#2a2413;
+    --warn-rand:#4b3d1d;
+    --schlecht:#f58f8f;
+    --schlecht-hell:#2e1a1a;
+    --schlecht-rand:#502727;
+    --tiefe-1:0 1px 2px rgba(0,0,0,.4);
+    --tiefe-2:0 1px 2px rgba(0,0,0,.45), 0 4px 12px rgba(0,0,0,.35);
+    --tiefe-3:0 2px 4px rgba(0,0,0,.5), 0 12px 32px rgba(0,0,0,.45);
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important; animation-iteration-count:1 !important;
+    transition-duration:.01ms !important; scroll-behavior:auto !important;
+  }
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--flaeche); color:var(--text);
+  line-height:1.55; font-size:16px;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  font-variant-numeric:tabular-nums;
+}
+.verborgen{display:none !important}
+
+/* ---------- Kopf ---------- */
+header{
+  background:
+    radial-gradient(120% 140% at 12% -30%, var(--akzent-hell) 0%, transparent 62%),
+    var(--grund);
+  border-bottom:1px solid var(--rand);
+  padding:1.75rem 1.5rem 1.4rem;
+}
+.kopfinhalt{max-width:64rem; margin:0 auto}
+.titelzeile{display:flex; align-items:center; gap:1rem; flex-wrap:wrap}
+/* Das Logo behält sein Seitenverhältnis und wird nie verzerrt. */
+#logo{height:2.6rem; width:auto; max-width:14rem; object-fit:contain; flex:none}
+header h1{
+  margin:0; font-size:1.6rem; font-weight:680; letter-spacing:-.022em; line-height:1.2;
+}
+header p{
+  margin:.5rem 0 0; color:var(--leise); max-width:44rem;
+  font-size:.97rem; line-height:1.6;
+}
+
+/* ---------- Schrittleiste ---------- */
+/* Eine durchgehende Schiene statt loser Pillen – der Fortschritt ist so auf
+   einen Blick ablesbar. */
+.schritte{
+  display:flex; gap:0; margin-top:1.5rem; flex-wrap:wrap;
+  align-items:center;
+}
+.schritt{
+  display:flex; align-items:center; gap:.55rem;
+  font-size:.875rem; color:var(--sehr-leise); font-weight:500;
+  padding:.3rem .95rem .3rem .3rem; border-radius:999px;
+  background:none; border:1px solid transparent;
+  transition:color var(--takt), background var(--takt), border-color var(--takt);
+}
+.schritt + .schritt{margin-left:.15rem}
+/* Verbindungslinie zwischen den Schritten */
+.schritt + .schritt::before{
+  content:""; width:1.6rem; height:2px; border-radius:2px;
+  background:var(--rand); margin-right:.75rem; flex:none;
+  transition:background var(--takt);
+}
+.schritt .nr{
+  width:1.6rem; height:1.6rem; border-radius:50%; flex:none;
+  border:1.5px solid var(--rand-stark); background:var(--grund); color:var(--sehr-leise);
+  display:grid; place-items:center; font-size:.78rem; font-weight:700;
+  transition:background var(--takt), border-color var(--takt), color var(--takt),
+             box-shadow var(--takt);
+}
+.schritt.aktiv{
+  background:var(--akzent-hell); border-color:var(--akzent-rand);
+  color:var(--akzent-text); font-weight:640;
+}
+.schritt.aktiv .nr{
+  background:var(--akzent); border-color:var(--akzent); color:var(--auf-akzent);
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--akzent) 15%, transparent);
+}
+.schritt.fertig{color:var(--gut); font-weight:560}
+.schritt.fertig .nr{background:var(--gut); border-color:var(--gut); color:var(--auf-gut)}
+.schritt.fertig + .schritt::before,
+.schritt.aktiv + .schritt::before{background:var(--rand)}
+.schritt.fertig::before{background:var(--gut) !important}
+
+main{max-width:64rem; margin:0 auto; padding:1.75rem 1.5rem 1rem}
+
+/* ---------- Karten ---------- */
+.karte{
+  background:var(--grund); border:1px solid var(--rand);
+  border-radius:var(--radius); padding:1.6rem; margin-bottom:1.15rem;
+  box-shadow:var(--tiefe-2);
+}
+.karte h2{
+  margin:0 0 .3rem; font-size:1.18rem; font-weight:660; letter-spacing:-.016em;
+}
+.karte .unter{margin:0 0 1.2rem; color:var(--leise); font-size:.93rem}
+
+/* ---------- Ablagefeld ---------- */
+#ablage{
+  position:relative; overflow:hidden;
+  border:1.5px dashed var(--rand-stark); border-radius:var(--radius);
+  padding:3.25rem 1.5rem; text-align:center;
+  background:linear-gradient(180deg, var(--flaeche2), var(--grund));
+  cursor:pointer;
+  transition:border-color var(--takt), background var(--takt),
+             box-shadow var(--takt), transform var(--takt);
+}
+#ablage:hover{
+  border-color:var(--akzent); background:linear-gradient(180deg, var(--akzent-hell), var(--grund));
+  box-shadow:var(--tiefe-2);
+}
+#ablage.aktiv{
+  border-color:var(--akzent); border-style:solid;
+  background:linear-gradient(180deg, var(--akzent-hell), var(--grund));
+  box-shadow:var(--ring), var(--tiefe-3); transform:scale(1.006);
+}
+#ablage .zeichen{
+  width:3.4rem; height:3.4rem; margin:0 auto .9rem; border-radius:50%;
+  background:var(--akzent-hell); color:var(--akzent-text);
+  display:grid; place-items:center;
+  box-shadow:inset 0 0 0 1px var(--akzent-rand);
+  transition:transform var(--takt), box-shadow var(--takt);
+}
+#ablage:hover .zeichen,#ablage.aktiv .zeichen{
+  transform:translateY(-3px);
+  box-shadow:inset 0 0 0 1px var(--akzent-rand), var(--tiefe-2);
+}
+#ablage strong{display:block; font-size:1.08rem; font-weight:640; margin-bottom:.35rem}
+#ablage span{color:var(--leise); font-size:.89rem}
+
+/* ---------- Bedienelemente ---------- */
+button,.knopf{
+  font:inherit; font-weight:620; border:1px solid transparent;
+  border-radius:var(--radius-klein); padding:.68rem 1.35rem;
+  cursor:pointer; background:var(--akzent); color:var(--auf-akzent);
+  text-decoration:none; display:inline-flex; align-items:center; gap:.5rem;
+  line-height:1.25; box-shadow:var(--tiefe-1);
+  transition:background var(--takt), box-shadow var(--takt),
+             transform var(--takt), border-color var(--takt);
+}
+button:hover,.knopf:hover{
+  background:var(--akzent-dunkel); box-shadow:var(--tiefe-2); transform:translateY(-1px);
+}
+button:active,.knopf:active{transform:translateY(0); box-shadow:var(--tiefe-1)}
+button:disabled{opacity:.45; cursor:default; transform:none; box-shadow:none}
+button:disabled:hover{background:var(--akzent); transform:none}
+button:focus-visible,.knopf:focus-visible,summary:focus-visible,#ablage:focus-visible{
+  outline:2px solid var(--akzent); outline-offset:2px;
+}
+button:focus:not(:focus-visible){outline:none}
+
+button.zweit,.knopf.zweit{
+  background:var(--grund); color:var(--text); border-color:var(--rand-stark); font-weight:560;
+}
+button.zweit:hover,.knopf.zweit:hover{background:var(--flaeche2); border-color:var(--rand-stark)}
+button.schlicht{
+  background:none; color:var(--akzent-text); padding:.35rem 0; font-weight:620;
+  box-shadow:none; border:0;
+}
+button.schlicht:hover{background:none; text-decoration:underline; transform:none; box-shadow:none}
+
+label{
+  display:block; font-size:.8rem; color:var(--leise); margin-bottom:.3rem;
+  font-weight:560; letter-spacing:.005em;
+}
+select,input[type=text]{
+  font:inherit; width:100%; padding:.6rem .7rem; min-height:2.7rem;
+  border:1px solid var(--rand-stark); border-radius:var(--radius-klein);
+  background:var(--grund); color:var(--text);
+  transition:border-color var(--takt), box-shadow var(--takt);
+}
+select:hover,input[type=text]:hover{border-color:var(--sehr-leise)}
+select:focus,input[type=text]:focus{
+  outline:none; border-color:var(--akzent); box-shadow:var(--ring);
+}
+select.leer{color:var(--sehr-leise)}
+
+/* ---------- Zuordnung ---------- */
+.raster{display:grid; grid-template-columns:repeat(auto-fill,minmax(15.5rem,1fr)); gap:.95rem}
+.feld{position:relative}
+.feld.erkannt label::after{content:" ✓"; color:var(--gut); font-weight:700}
+.feld.noetig label{color:var(--text); font-weight:660}
+
+details.bereich{
+  border:1px solid var(--rand); border-radius:var(--radius-klein); margin-top:1.1rem;
+  background:var(--flaeche2); overflow:hidden;
+  transition:border-color var(--takt);
+}
+details.bereich[open]{border-color:var(--rand-stark)}
+details.bereich>summary{
+  cursor:pointer; padding:.8rem 1rem; font-weight:620; font-size:.92rem;
+  list-style:none; display:flex; align-items:center; gap:.55rem;
+  transition:background var(--takt);
+}
+details.bereich>summary:hover{background:var(--flaeche)}
+details.bereich>summary::-webkit-details-marker{display:none}
+details.bereich>summary::before{
+  content:"›"; color:var(--leise); font-size:1.15rem; line-height:1;
+  transition:transform var(--takt); display:inline-block;
+}
+details.bereich[open]>summary::before{transform:rotate(90deg)}
+details.bereich .inhalt{padding:0 1rem 1.1rem}
+
+.schalter{
+  display:flex; align-items:flex-start; gap:.75rem; padding:.9rem 1rem;
+  background:var(--akzent-hell); border:1px solid var(--akzent-rand);
+  border-radius:var(--radius-klein); margin-bottom:1.1rem;
+}
+.schalter input{width:1.15rem; height:1.15rem; margin:.22rem 0 0; flex:none; accent-color:var(--akzent)}
+.schalter .txt strong{display:block; font-size:.95rem; font-weight:620}
+.schalter .txt span{color:var(--leise); font-size:.86rem}
+
+/* ---------- Tabellen ---------- */
+.rollbar{
+  max-height:26rem; overflow:auto;
+  border:1px solid var(--rand); border-radius:var(--radius-klein);
+  background:var(--grund);
+}
+table{border-collapse:separate; border-spacing:0; width:100%; font-size:.875rem}
+th,td{border-bottom:1px solid var(--rand); padding:.6rem .75rem; text-align:left; vertical-align:top}
+th{
+  background:var(--flaeche2); font-weight:640; position:sticky; top:0; z-index:1;
+  white-space:nowrap; color:var(--leise); font-size:.8rem;
+  letter-spacing:.02em; text-transform:uppercase;
+  box-shadow:inset 0 -1px 0 var(--rand);
+}
+tbody tr:nth-child(even){background:color-mix(in srgb, var(--flaeche2) 55%, transparent)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr{transition:background var(--takt)}
+tbody tr:hover{background:var(--akzent-hell)}
+td.nr{white-space:nowrap; font-variant-numeric:tabular-nums; font-weight:560}
+
+/* ---------- Ergebnis ---------- */
+.quotekarte{display:flex; align-items:center; gap:1.75rem; flex-wrap:wrap}
+.quote{
+  font-size:3.6rem; font-weight:760; line-height:1; letter-spacing:-.04em;
+  color:var(--gut);
+  background:linear-gradient(135deg, var(--gut), color-mix(in srgb, var(--gut) 62%, var(--akzent)));
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-variant-numeric:tabular-nums;
+}
+.quotetext{font-size:1.03rem; max-width:30rem; color:var(--text)}
+.balken{
+  height:.6rem; background:var(--flaeche); border-radius:999px; overflow:hidden;
+  margin-top:1.2rem; box-shadow:inset 0 1px 2px rgba(13,20,29,.06);
+}
+.balken i{
+  display:block; height:100%; border-radius:999px;
+  background:linear-gradient(90deg, color-mix(in srgb, var(--gut) 78%, var(--akzent)), var(--gut));
+  transition:width .8s cubic-bezier(.2,.7,.3,1);
+}
+.zahlen{display:grid; grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr)); gap:.85rem; margin-top:1.4rem}
+.zahl{
+  background:var(--flaeche2); border:1px solid var(--rand);
+  border-radius:var(--radius-klein); padding:.9rem 1rem;
+  transition:border-color var(--takt), box-shadow var(--takt), transform var(--takt);
+}
+.zahl:hover{border-color:var(--rand-stark); box-shadow:var(--tiefe-1); transform:translateY(-1px)}
+.zahl b{
+  display:block; font-size:1.6rem; font-weight:700; line-height:1.15;
+  letter-spacing:-.02em; font-variant-numeric:tabular-nums;
+}
+.zahl span{color:var(--leise); font-size:.82rem; line-height:1.35; display:block; margin-top:.15rem}
+
+/* Statusmarken mit Punkt – auch ohne Farbwahrnehmung unterscheidbar. */
+.marke{
+  display:inline-flex; align-items:center; gap:.4rem;
+  padding:.2rem .6rem .2rem .5rem; border-radius:999px; font-size:.775rem;
+  font-weight:620; white-space:nowrap; border:1px solid transparent;
+}
+.marke::before{
+  content:""; width:.45rem; height:.45rem; border-radius:50%;
+  background:currentColor; flex:none;
+}
+.m-gut{background:var(--gut-hell); color:var(--gut); border-color:var(--gut-rand)}
+.m-warn{background:var(--warn-hell); color:var(--warn); border-color:var(--warn-rand)}
+.m-schlecht{background:var(--schlecht-hell); color:var(--schlecht); border-color:var(--schlecht-rand)}
+
+.dateien{display:flex; gap:.65rem; flex-wrap:wrap}
+
+/* ---------- Meldungen ---------- */
+.meldung{
+  padding:.9rem 1.1rem; border-radius:var(--radius-klein); margin-bottom:1rem;
+  font-size:.92rem; border:1px solid transparent;
+}
+.fehler{background:var(--schlecht-hell); border-color:var(--schlecht-rand); color:var(--schlecht)}
+.hinweis{background:var(--akzent-hell); border-color:var(--akzent-rand)}
+.warnung{background:var(--warn-hell); border-color:var(--warn-rand); color:var(--warn)}
+
+/* ---------- Laden ---------- */
+.laden{display:flex; align-items:center; gap:.95rem}
+.kreisel{
+  width:1.35rem; height:1.35rem; border:2.5px solid var(--rand);
+  border-top-color:var(--akzent); border-radius:50%;
+  animation:dreh .8s linear infinite; flex:none;
+}
+@keyframes dreh{to{transform:rotate(360deg)}}
+.fortschritt{
+  height:.45rem; background:var(--flaeche); border-radius:999px; overflow:hidden;
+  margin-top:1.1rem;
+}
+.fortschritt i{
+  display:block; height:100%; width:35%; border-radius:999px;
+  background:linear-gradient(90deg, transparent, var(--akzent), transparent);
+  animation:wandern 1.4s ease-in-out infinite;
+}
+@keyframes wandern{0%{margin-left:-35%}100%{margin-left:100%}}
+
+.werkzeugleiste{display:flex; gap:.75rem; flex-wrap:wrap; align-items:flex-end; margin-bottom:.9rem}
+.werkzeugleiste>div{min-width:11rem}
+
+footer{
+  color:var(--sehr-leise); font-size:.83rem; text-align:center;
+  padding:1.25rem 1.5rem 2.75rem;
+}
+footer a{
+  color:var(--leise); display:inline-block; padding:.5rem .25rem;
+  border-radius:var(--radius-klein); transition:color var(--takt), background var(--takt);
+}
+footer a:hover{color:var(--akzent-text); background:var(--akzent-hell)}
+footer a:focus-visible{outline:2px solid var(--akzent); outline-offset:2px}
+
+@media (max-width:640px){
+  body{font-size:15px}
+  main,header{padding-left:1rem; padding-right:1rem}
+  .karte{padding:1.2rem}
+  .quote{font-size:2.9rem}
+  .schritte{gap:.35rem}
+  .schritt{font-size:.82rem; padding-right:.7rem}
+  .schritt + .schritt::before{width:.9rem; margin-right:.5rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kopfinhalt">
+    <div class="titelzeile">
+      <img id="logo" class="verborgen" alt="OrKan-System">
+      <h1>Artikelliste vervollständigen</h1>
+    </div>
+    <p>Laden Sie Ihre Artikelliste hoch – wir ergänzen die fehlenden Angaben aus dem
+       OrKan-Datenbestand und erstellen Ihre fertige Importdatei.</p>
+    <div class="schritte">
+      <div class="schritt aktiv" id="s1"><span class="nr">1</span>Datei wählen</div>
+      <div class="schritt" id="s2"><span class="nr">2</span>Zuordnung bestätigen</div>
+      <div class="schritt" id="s3"><span class="nr">3</span>Ergebnis</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="fehler" class="meldung fehler verborgen"></div>
+
+  <!-- ============ Schritt 1 ============ -->
+  <section id="schritt1" class="karte">
+    <h2>Ihre Artikelliste</h2>
+    <p class="unter">Excel, CSV oder PDF – die Spalten erkennen wir automatisch.</p>
+    <div id="ablage">
+      <div class="zeichen">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+      <strong>Datei hierher ziehen oder klicken</strong>
+      <span id="formate">Excel, CSV oder PDF</span>
+    </div>
+    <input type="file" id="datei" class="verborgen"
+           accept=".xlsx,.xlsm,.xls,.csv,.pdf,.txt,.tsv">
+  </section>
+
+  <!-- ============ Ladeanzeige ============ -->
+  <section id="laden" class="karte verborgen">
+    <div class="laden"><div class="kreisel"></div><strong id="ladetext">Wir lesen Ihre Datei …</strong></div>
+    <div class="fortschritt"><i></i></div>
+  </section>
+
+  <!-- ============ Schritt 2 ============ -->
+  <section id="schritt2" class="karte verborgen">
+    <h2>Stimmt das so?</h2>
+    <p class="unter" id="erkannt"></p>
+
+    <div class="raster" id="hauptfelder"></div>
+
+    <details class="bereich" id="weitereFelder">
+      <summary>Weitere Felder zuordnen <span id="weitereZahl" style="color:var(--leise);font-weight:400"></span></summary>
+      <div class="inhalt"><div class="raster" id="restfelder"></div></div>
+    </details>
+
+    <details class="bereich">
+      <summary>Erweiterte Einstellungen</summary>
+      <div class="inhalt">
+        <div class="schalter">
+          <input type="checkbox" id="anreichern" checked>
+          <div class="txt">
+            <strong>Fehlende Angaben aus dem OrKan-Datenbestand ergänzen</strong>
+            <span>Ihre eigenen Angaben bleiben immer erhalten – ergänzt wird nur, was bei Ihnen fehlt.</span>
+          </div>
+        </div>
+        <div id="modusliste"></div>
+        <p style="color:var(--leise);font-size:.85rem;margin:.9rem 0 0">
+          Die Einstellung gilt nur für diesen Durchlauf.</p>
+      </div>
+    </details>
+
+    <details class="bereich" id="bildbereich">
+      <summary>Bildordner <span id="bildstand" style="color:var(--leise);font-weight:400"></span></summary>
+      <div class="inhalt">
+        <p style="color:var(--leise);font-size:.88rem;margin:0 0 .8rem">
+          Aus diesem Ordner werden die Bilder anhand ihres Dateinamens
+          zusammengesucht und als ZIP zum Herunterladen bereitgestellt –
+          nur die Bilder, die in Ihrer Liste vorkommen.</p>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:flex-end">
+          <div style="flex:1;min-width:18rem">
+            <label for="bildpfad">Pfad zum Bildordner</label>
+            <input type="text" id="bildpfad" placeholder="z. B. D:\OrKan\Artikelbilder">
+          </div>
+          <button class="zweit" id="bildpruefen">Ordner übernehmen</button>
+        </div>
+        <div id="bildmeldung" class="meldung verborgen" style="margin:.9rem 0 0"></div>
+      </div>
+    </details>
+
+    <div style="margin-top:1.25rem;max-width:23rem">
+      <label for="kunde">Ihr Betrieb <span style="font-weight:400">(erscheint im Dateinamen)</span></label>
+      <input type="text" id="kunde" placeholder="z. B. Mustermann-GmbH">
+    </div>
+
+    <h3 style="font-size:.95rem;margin:1.6rem 0 .6rem">Die ersten Zeilen Ihrer Datei</h3>
+    <div class="rollbar"><table id="vorschau"></table></div>
+
+    <div style="margin-top:1.4rem;display:flex;gap:.7rem;flex-wrap:wrap">
+      <button id="starten">Liste jetzt abgleichen</button>
+      <button class="zweit" onclick="location.reload()">Andere Datei wählen</button>
+    </div>
+  </section>
+
+  <!-- ============ Schritt 3 ============ -->
+  <section id="schritt3" class="karte verborgen">
+    <div class="quotekarte">
+      <div class="quote" id="quote">–</div>
+      <div class="quotetext" id="quotetext"></div>
+    </div>
+    <div class="balken"><i id="balken" style="width:0"></i></div>
+    <div class="zahlen" id="zahlen"></div>
+  </section>
+
+  <section id="dateienKarte" class="karte verborgen">
+    <h2>Ihre Dateien</h2>
+    <p class="unter">Stehen 24 Stunden zum Herunterladen bereit.</p>
+    <div class="dateien" id="downloads"></div>
+    <div id="bildhinweis" class="meldung warnung verborgen" style="margin:1rem 0 0"></div>
+  </section>
+
+  <section id="reportKarte" class="karte verborgen">
+    <h2>Was wir gefunden haben</h2>
+    <p class="unter" id="reportUnter"></p>
+    <div class="werkzeugleiste">
+      <div>
+        <label for="filter">Nach Ergebnis filtern</label>
+        <select id="filter"><option value="">Alle anzeigen</option></select>
+      </div>
+      <div style="flex:1;min-width:13rem">
+        <label for="suche">Artikelnummer suchen</label>
+        <input type="text" id="suche" placeholder="Nummer oder Bezeichnung">
+      </div>
+    </div>
+    <div class="rollbar"><table id="report"></table></div>
+    <div style="margin-top:1.25rem">
+      <button class="zweit" onclick="location.reload()">Nächste Liste hochladen</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div id="pruefzugang" class="verborgen" style="margin-bottom:.6rem">
+    <a href="/admin/neuaufnahmen" id="prueflink" class="knopf zweit"
+       style="padding:.65rem 1rem;font-size:.86rem">Neue Artikel prüfen</a>
+  </div>
+  OrKan-System GmbH · Ihre hochgeladene Datei wird nach der Verarbeitung gelöscht.
+</footer>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const zustand = {status:null, job:null, ergebnis:null};
+
+/* ---------- Hilfsmittel ---------- */
+function sicher(t){
+  return String(t ?? "").replace(/[&<>"']/g, c =>
+    ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+const zahl = n => Number(n || 0).toLocaleString("de-DE");
+/* Ein- und Mehrzahl: mehrzahl(1,"Bild","Bilder") -> "1 Bild" */
+const mehrzahl = (n, eins, viele) => `${zahl(n)} ${Number(n) === 1 ? eins : viele}`;
+
+function schritt(n){
+  [1,2,3].forEach(i => {
+    const e = $("#s"+i);
+    e.classList.toggle("aktiv", i === n);
+    e.classList.toggle("fertig", i < n);
+  });
+}
+function zeigeFehler(text){
+  $("#fehler").textContent = text;
+  $("#fehler").classList.remove("verborgen");
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+const versteckeFehler = () => $("#fehler").classList.add("verborgen");
+function laden(an, text){
+  $("#laden").classList.toggle("verborgen", !an);
+  if(text) $("#ladetext").textContent = text;
+}
+
+async function anfrage(url, optionen){
+  const antwort = await fetch(url, optionen);
+  let daten = null;
+  try { daten = await antwort.json(); } catch(e) {}
+  if(!antwort.ok){
+    throw new Error(daten?.fehler || daten?.detail ||
+      "Es ist etwas schiefgelaufen. Bitte versuchen Sie es erneut.");
+  }
+  return daten;
+}
+
+/* ---------- Schritt 1: Upload ---------- */
+const ablage = $("#ablage"), eingabe = $("#datei");
+ablage.addEventListener("click", () => eingabe.click());
+ablage.addEventListener("dragover", e => { e.preventDefault(); ablage.classList.add("aktiv"); });
+ablage.addEventListener("dragleave", () => ablage.classList.remove("aktiv"));
+ablage.addEventListener("drop", e => {
+  e.preventDefault(); ablage.classList.remove("aktiv");
+  if(e.dataTransfer.files.length) hochladen(e.dataTransfer.files[0]);
+});
+eingabe.addEventListener("change", () => { if(eingabe.files.length) hochladen(eingabe.files[0]); });
+
+async function hochladen(datei){
+  versteckeFehler();
+  $("#schritt1").classList.add("verborgen");
+  $("#schritt2").classList.add("verborgen");
+  const formular = new FormData();
+  formular.append("datei", datei);
+  try {
+    // Ohne Status kennen wir die zuordenbaren Felder nicht.
+    if(!zustand.status){
+      laden(true, "Einen Moment, wir sind gleich bereit …");
+      if(!await statusAbwarten()){
+        throw new Error(
+          "Die Anwendung ist noch nicht bereit. Bitte laden Sie die Seite neu " +
+          "(Taste F5). Bleibt es dabei, schließen Sie das Programm und starten " +
+          "es erneut."
+        );
+      }
+    }
+    laden(true, "Wir lesen Ihre Datei …");
+    zustand.job = await anfrage("/api/upload", {method:"POST", body:formular});
+    zeigeZuordnung();
+  } catch(e){
+    zeigeFehler(e.message);
+    $("#schritt1").classList.remove("verborgen");
+  } finally { laden(false); }
+}
+
+/* ---------- Schritt 2: Zuordnung ---------- */
+function feldElement(feld, gewaehlt, spalten){
+  const box = document.createElement("div");
+  box.className = "feld" + (gewaehlt ? " erkannt" : "") +
+                  (feld.name === "Artikelnummer" ? " noetig" : "");
+  const optionen = spalten
+    .map(s => `<option value="${sicher(s)}"${s===gewaehlt?" selected":""}>${sicher(s)}</option>`)
+    .join("");
+  box.innerHTML =
+    `<label for="f-${sicher(feld.name)}">${sicher(feld.beschriftung)}</label>
+     <select id="f-${sicher(feld.name)}" data-feld="${sicher(feld.name)}"
+             class="${gewaehlt ? "" : "leer"}">
+       <option value="">– nicht vorhanden –</option>${optionen}
+     </select>`;
+  box.querySelector("select").addEventListener("change", e => {
+    e.target.classList.toggle("leer", !e.target.value);
+    box.classList.toggle("erkannt", !!e.target.value);
+    baueModusliste();
+  });
+  return box;
+}
+
+function zeigeZuordnung(){
+  const job = zustand.job, felder = zustand.status.felder;
+  const unsicher = job.unsicher.length > 0;
+
+  $("#erkannt").innerHTML =
+    `Wir haben <strong>${zahl(job.zeilen)}</strong> Zeilen in
+     <strong>${sicher(job.dateiname)}</strong> gelesen.` +
+    (job.hinweis ? " " + sicher(job.hinweis) + "." : "") +
+    (job.ki_genutzt ? " Die PDF-Datei wurde automatisch ausgewertet." : "") +
+    (unsicher ? " <strong>Bitte prüfen Sie besonders die Artikelnummern-Spalte.</strong>"
+              : " Bitte prüfen Sie kurz die Zuordnung.");
+
+  const haupt = $("#hauptfelder"), rest = $("#restfelder");
+  haupt.innerHTML = ""; rest.innerHTML = "";
+  let restZahl = 0;
+
+  felder.forEach(feld => {
+    const gewaehlt = job.zuordnung[feld.name] || "";
+    const element = feldElement(feld, gewaehlt, job.spalten);
+    // Erkannte Felder und die Artikelnummer stehen oben, der Rest eingeklappt.
+    if(gewaehlt || feld.name === "Artikelnummer"){ haupt.appendChild(element); }
+    else { rest.appendChild(element); restZahl++; }
+  });
+  $("#weitereZahl").textContent = restZahl ? `(${restZahl} noch frei)` : "";
+  $("#weitereFelder").classList.toggle("verborgen", restZahl === 0);
+
+  const spalten = job.spalten;
+  $("#vorschau").innerHTML =
+    `<thead><tr>${spalten.map(s=>`<th>${sicher(s)}</th>`).join("")}</tr></thead><tbody>` +
+    job.vorschau.map(z => `<tr>${spalten.map(s=>`<td>${sicher(z[s] ?? "")}</td>`).join("")}</tr>`).join("") +
+    `</tbody>`;
+
+  baueModusliste();
+  zeigeBildordner();
+  schritt(2);
+  $("#schritt2").classList.remove("verborgen");
+}
+
+function zuordnungLesen(){
+  const z = {};
+  document.querySelectorAll("#schritt2 select[data-feld]").forEach(s => {
+    if(s.value) z[s.dataset.feld] = s.value;
+  });
+  return z;
+}
+
+/* Nur für Felder, die der Kunde tatsächlich mitbringt, gibt es etwas zu entscheiden. */
+function baueModusliste(){
+  const zugeordnet = zuordnungLesen();
+  const felder = zustand.status.felder.filter(
+    f => zugeordnet[f.name] && f.aus_pool && f.name !== "Artikelnummer");
+  const ziel = $("#modusliste");
+
+  if(!felder.length){
+    ziel.innerHTML = `<p style="color:var(--leise);font-size:.88rem;margin:0">
+      Sobald Sie oben Felder zuordnen, können Sie hier je Feld festlegen,
+      wessen Angabe gilt.</p>`;
+    return;
+  }
+  const vorher = {};
+  ziel.querySelectorAll("select[data-modus]").forEach(s => vorher[s.dataset.modus] = s.value);
+
+  ziel.innerHTML = `<div class="raster">` + felder.map(f => `
+    <div>
+      <label for="m-${sicher(f.name)}">${sicher(f.beschriftung)}</label>
+      <select id="m-${sicher(f.name)}" data-modus="${sicher(f.name)}">
+        <option value="ergaenzen">Meine Angabe gilt</option>
+        <option value="pool">OrKan-Angabe bevorzugen</option>
+        <option value="nur_kunde">Nur meine Daten</option>
+      </select>
+    </div>`).join("") + `</div>`;
+
+  Object.entries(vorher).forEach(([name, wert]) => {
+    const s = ziel.querySelector(`select[data-modus="${CSS.escape(name)}"]`);
+    if(s && wert) s.value = wert;
+  });
+}
+
+/* ---------- Bildordner ---------- */
+function zeigeBildordner(){
+  const b = zustand.status.bildpool || {};
+  const bereich = $("#bildbereich");
+  const eingabe = $("#bildpfad");
+
+  eingabe.value = b.pfad || "";
+  eingabe.disabled = !b.aenderbar;
+  $("#bildpruefen").classList.toggle("verborgen", !b.aenderbar);
+
+  if(b.eingerichtet){
+    $("#bildstand").textContent = `(${zahl(b.anzahl_bilder)} Bilder gefunden)`;
+  } else if(b.aenderbar){
+    $("#bildstand").textContent = "(noch nicht eingerichtet)";
+  } else {
+    $("#bildstand").textContent = "(nicht eingerichtet – wird von OrKan gesetzt)";
+  }
+  // Ohne Ordner und ohne Eingabemöglichkeit gibt es hier nichts zu tun.
+  bereich.classList.toggle("verborgen", !b.aenderbar && !b.eingerichtet);
+}
+
+$("#bildpruefen").addEventListener("click", async () => {
+  const kasten = $("#bildmeldung");
+  const knopf = $("#bildpruefen");
+  knopf.disabled = true;
+  try {
+    const antwort = await anfrage("/api/bildordner", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({pfad: $("#bildpfad").value})
+    });
+    zustand.status.bildpool = {...zustand.status.bildpool, ...antwort};
+    kasten.className = "meldung hinweis";
+    kasten.textContent = antwort.pfad
+      ? `${mehrzahl(antwort.anzahl_bilder, "Bild", "Bilder")} im Ordner gefunden.`
+      : "Bildordner entfernt – es wird kein ZIP erzeugt.";
+    zeigeBildordner();
+  } catch(e){
+    kasten.className = "meldung fehler";
+    kasten.textContent = e.message;
+  } finally {
+    kasten.classList.remove("verborgen");
+    knopf.disabled = false;
+  }
+});
+
+$("#starten").addEventListener("click", async () => {
+  versteckeFehler();
+  const zuordnung = zuordnungLesen();
+  if(!zuordnung.Artikelnummer){
+    zeigeFehler("Bitte wählen Sie die Spalte aus, in der die Artikelnummern stehen.");
+    return;
+  }
+  const modi = {};
+  document.querySelectorAll("#modusliste select[data-modus]").forEach(s => {
+    if(s.value !== "ergaenzen") modi[s.dataset.modus] = s.value;
+  });
+
+  $("#starten").disabled = true;
+  $("#schritt2").classList.add("verborgen");
+  laden(true, `Wir gleichen ${zahl(zustand.job.zeilen)} Artikel ab …`);
+  try {
+    zustand.ergebnis = await anfrage("/api/verarbeiten", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        job_id: zustand.job.job_id, zuordnung,
+        kundenkennung: $("#kunde").value,
+        anreichern: $("#anreichern").checked,
+        anreicherung_je_feld: modi,
+      })
+    });
+    zeigeErgebnis(zustand.ergebnis);
+  } catch(e){
+    zeigeFehler(e.message);
+    $("#schritt2").classList.remove("verborgen");
+  } finally { laden(false); $("#starten").disabled = false; }
+});
+
+/* ---------- Schritt 3: Ergebnis ---------- */
+const DATEINAMEN = {
+  xlsx:  ["Importdatei (Excel)", false],
+  csv:   ["Importdatei (CSV)", true],
+  report:["Übersicht (Excel)", true],
+  bilder:["Bilder (ZIP)", true],
+};
+
+function zeigeErgebnis(e){
+  const z = e.zusammenfassung;
+  $("#quote").textContent = z.trefferquote + " %";
+  $("#quotetext").innerHTML =
+    `Wir haben <strong>${z.trefferquote} %</strong> Ihrer Artikel erkannt und vervollständigt.` +
+    (z.neu ? ` ${mehrzahl(z.neu, "Artikel kennen wir", "Artikel kennen wir")} noch nicht –
+      ${z.neu === 1 ? "er ist" : "sie sind"} trotzdem in Ihrer Importdatei und
+      ${z.neu === 1 ? "wird" : "werden"} von uns geprüft.` : "");
+  requestAnimationFrame(() => $("#balken").style.width = z.trefferquote + "%");
+
+  const teile = [
+    [z.gesamt, "Artikel in Ihrer Liste"],
+    [z.gefunden, "sofort erkannt"],
+    [z.neu, "neu angelegt"],
+    [z.in_importdatei, "in der Importdatei"],
+  ];
+  if(z.ungueltig) teile.push([z.ungueltig, z.ungueltig === 1 ? "unklare Nummer" : "unklare Nummern"]);
+  $("#zahlen").innerHTML = teile
+    .map(([n,t]) => `<div class="zahl"><b>${zahl(n)}</b><span>${t}</span></div>`).join("");
+
+  $("#downloads").innerHTML = Object.entries(e.downloads).map(([art, url]) => {
+    const [text, zweit] = DATEINAMEN[art] || [art, true];
+    return `<a class="knopf${zweit ? " zweit" : ""}" href="${sicher(url)}">${sicher(text)}</a>`;
+  }).join("");
+
+  const b = e.bilder || {};
+  const kasten = $("#bildhinweis");
+  if(b.hinweis){
+    kasten.textContent = b.hinweis === "kein Bildordner eingerichtet"
+      ? "Für diese Liste gibt es Bilder, aber es ist kein Bildordner eingerichtet. Bitte an OrKan wenden."
+      : b.hinweis;
+    kasten.classList.remove("verborgen");
+  } else if(b.fehlend_gesamt){
+    const wurde = b.fehlend_gesamt === 1 ? "wurde" : "wurden";
+    kasten.className = "meldung warnung";
+    kasten.innerHTML =
+      `<strong>${mehrzahl(b.fehlend_gesamt, "Bild", "Bilder")} ${wurde} nicht gefunden</strong>
+       und ${b.fehlend_gesamt === 1 ? "fehlt" : "fehlen"} im ZIP:
+       ${sicher(b.fehlend.slice(0,8).join(", "))}` + (b.fehlend_gesamt > 8 ? " …" : "");
+    kasten.classList.remove("verborgen");
+  } else if(b.gepackt){
+    kasten.className = "meldung hinweis";
+    kasten.textContent =
+      `${mehrzahl(b.gepackt, "Bild", "Bilder")} für den Cloud-Import gepackt (${b.groesse_mb} MB).`;
+    kasten.classList.remove("verborgen");
+  } else {
+    kasten.classList.add("verborgen");
+  }
+
+  $("#reportUnter").textContent = e.report_gekuerzt
+    ? `Die ersten ${zahl(e.report.length)} von ${zahl(z.gesamt)} Artikeln – die vollständige Übersicht steht im Excel-Download.`
+    : `Alle ${zahl(e.report.length)} Artikel.`;
+
+  const zustaende = [...new Set(e.report.map(r => r.Status))];
+  $("#filter").innerHTML = `<option value="">Alle anzeigen</option>` +
+    zustaende.map(s => `<option value="${sicher(s)}">${sicher(s)}</option>`).join("");
+
+  zeichneReport();
+  schritt(3);
+  ["#schritt3","#dateienKarte","#reportKarte"].forEach(s => $(s).classList.remove("verborgen"));
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+const SPALTEN = [
+  ["Artikelnummer","Artikelnummer"], ["Status","Ergebnis"], ["Bezeichnung","Bezeichnung"],
+  ["MinMax","Min/Max"], ["Von Ihnen","Von Ihnen"], ["Aus dem Datenpool","Ergänzt"],
+];
+
+function zeichneReport(){
+  const filter = $("#filter").value;
+  const suche = $("#suche").value.trim().toLowerCase();
+  const zeilen = zustand.ergebnis.report.filter(r =>
+    (!filter || r.Status === filter) &&
+    (!suche || (r.Artikelnummer + " " + (r.Bezeichnung||"")).toLowerCase().includes(suche)));
+
+  const kopf = SPALTEN.map(([,t]) => `<th>${t}</th>`).join("");
+  const koerper = zeilen.length
+    ? zeilen.map(r => `<tr>${SPALTEN.map(([s]) =>
+        s === "Status" ? `<td>${marke(r[s])}</td>`
+        : `<td${s==="Artikelnummer"?' class="nr"':''}>${sicher(r[s] ?? "")}</td>`
+      ).join("")}</tr>`).join("")
+    : `<tr><td colspan="${SPALTEN.length}" style="text-align:center;color:var(--leise);padding:1.5rem">
+         Dazu passt kein Artikel.</td></tr>`;
+  $("#report").innerHTML = `<thead><tr>${kopf}</tr></thead><tbody>${koerper}</tbody>`;
+}
+$("#filter").addEventListener("change", zeichneReport);
+$("#suche").addEventListener("input", zeichneReport);
+
+function marke(status){
+  const s = status || "";
+  let klasse = "m-gut";
+  if(s.startsWith("NEU") || s.includes("Lieferant")) klasse = "m-warn";
+  else if(s.startsWith("UNGÜLTIG")) klasse = "m-schlecht";
+  return `<span class="marke ${klasse}">${sicher(s)}</span>`;
+}
+
+/* ---------- Start ---------- */
+/* Der Status liefert unter anderem die zuordenbaren Felder. Die Zusage wird
+   aufbewahrt: Zieht jemand eine Datei herein, bevor die Abfrage durch ist,
+   wird gewartet statt ins Leere gegriffen. Genau daran ist es auf einem
+   fremden Rechner einmal gescheitert („cannot read properties of null"). */
+let statusBereit = statusHolen();
+
+async function statusHolen(){
+  try {
+    const s = await anfrage("/api/status");
+    zustand.status = s;
+    statusAnzeigen(s);
+    return s;
+  } catch(fehler){
+    console.error("Status konnte nicht geladen werden:", fehler);
+    return null;
+  }
+}
+
+/** Wartet, bis der Status da ist – mit einem zweiten Versuch. */
+async function statusAbwarten(){
+  if(zustand.status) return true;
+  await statusBereit;
+  if(zustand.status) return true;
+  statusBereit = statusHolen();          // ein Anlauf noch
+  await statusBereit;
+  return !!zustand.status;
+}
+
+function statusAnzeigen(s){
+  const pl = s.pruefliste || {};
+  if(pl.erreichbar){
+    $("#prueflink").textContent = pl.offen
+      ? `${mehrzahl(pl.offen, "neuer Artikel wartet", "neue Artikel warten")} auf Prüfung`
+      : "Neue Artikel prüfen";
+    $("#pruefzugang").classList.remove("verborgen");
+  }
+  if(s.logo){
+    const bild = $("#logo");
+    bild.src = s.logo;                 // enthält die Fassung, umgeht alte Zwischenspeicher
+    bild.classList.remove("verborgen");
+    // Dasselbe Bild auch als Symbol im Browsertab
+    const symbol = document.createElement("link");
+    symbol.rel = "icon"; symbol.href = s.logo;
+    document.head.appendChild(symbol);
+  }
+  $("#formate").textContent =
+    (s.pdf_ki_aktiv ? "Excel, CSV oder PDF" : "Excel, CSV oder PDF mit Tabellen") +
+    ` · bis ${s.max_mb} MB · bis ${zahl(s.max_zeilen)} Zeilen`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+services:
+  matching:
+    build: .
+    image: orkan-matching:latest
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Der Datenpool liegt außerhalb des Images und ist ohne Rebuild
+      # austauschbar: Datei ersetzen, dann Container neu starten.
+      # In diesem Verzeichnis liegt auch neuaufnahmen_queue.csv.
+      - ./daten:/app/daten
+      # Bildpool für das ZIP zur Importdatei. Pfad auf dem Host anpassen;
+      # ohne diesen Mount entfällt der ZIP-Download.
+      - ${BILDPOOL_HOST:-./bilder}:/app/bilder:ro
+    environment:
+      POOL_PFAD: /app/daten/Datenpool_bereinigt.csv
+      QUEUE_PFAD: /app/daten/neuaufnahmen_queue.csv
+      ARBEITSVERZEICHNIS: /app/arbeitsdaten
+      BILDPOOL_PFAD: /app/bilder
+      MAX_ZIP_MB: "500"
+      MAX_UPLOAD_MB: "20"
+      MAX_ZEILEN: "20000"
+      ERGEBNIS_TTL_STUNDEN: "24"
+      # Zugang zum Admin-Bereich /admin/neuaufnahmen
+      ADMIN_USER: ${ADMIN_USER:-}
+      ADMIN_PASSWORT: ${ADMIN_PASSWORT:-}
+      # Ohne Key ist die KI-Auswertung von Scan-PDFs sauber deaktiviert.
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODELL: ${ANTHROPIC_MODELL:-claude-sonnet-5}
