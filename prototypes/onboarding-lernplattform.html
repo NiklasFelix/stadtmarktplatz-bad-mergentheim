@@ -2400,6 +2400,14 @@ function initializeApp(){
 
 /* ============ FORTSCHRITT SPEICHERN ============ */
 const PROGRESS_STORAGE_KEY = 'orkanTrainingProgress_v1';
+// Einmaliger Neustart: gespeicherten Fortschritt, Namen und Einstellungen aus älteren Versionen verwerfen
+const DATA_RESET_STAMP = '2026-10-14';
+try{
+  if(localStorage.getItem('orkanDataReset')!==DATA_RESET_STAMP){
+    ['orkanTrainingProgress_v1','orkanDashboardPrefs','orkanTeam_v1','orkanTourDone','orkanCoachTts'].forEach(k=>localStorage.removeItem(k));
+    localStorage.setItem('orkanDataReset', DATA_RESET_STAMP);
+  }
+}catch(e){}
 function saveState(){
   if(__resetting) return;
   try{
