@@ -1421,6 +1421,8 @@ html.theme-light .help-menu{background:#fff}
 .key-points li .kp-key{display:block;padding:16px 18px;border-radius:14px;border:2px solid #8EA752;background:rgba(142,167,82,.12);font-size:15.5px}
 .key-points li .kp-key .kp-key-tag{display:inline-block;margin-bottom:8px;margin-right:8px;padding:2px 10px;border-radius:999px;background:#8EA752;color:#15191C;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .key-points li .kp-key strong{color:#8EA752}
+
+.ui-btn{display:inline-block;padding:1px 10px;margin:1px 0;border-radius:999px;background:#7DA544;color:#fff;font-size:.86em;font-weight:600;line-height:1.55;white-space:nowrap;vertical-align:baseline;box-shadow:0 1px 0 rgba(0,0,0,.12)}
 </style>
 </head>
 <body>
@@ -2936,6 +2938,27 @@ function generateAiVideo(){
     setTimeout(()=>{ closeVideoManager(); renderTab(); showToast('KI-generiertes Video wurde dem Modul zugeordnet. Hinweis: Die Video-Generierung ist im Prototyp simuliert, in Produktion würde ein Dienst wie Synthesia oder Loom das eigentliche Video erzeugen.'); }, 700);
   }, 1600);
 }
+
+/* ===== Klickpfade als Buttons darstellen ===== */
+// „Begriffe“ in Klickpfaden werden als grüne Buttons gezeigt – Beispielwerte, Feldnamen und Buchstaben bleiben normaler Text.
+const UI_NOBTN=['Pack','Stück','Enter','Aufmaß','Anlage','klein','Befestigung','Abw. Bestelleinheit','Menge (VPE)','Mengeneinheit (VPE)','Standardbestellverfahren','Offset in Tagen'];
+function uiBtns(html){
+  if(!html||html.indexOf('„')<0) return html;
+  const plain=t=>t.replace(/<[^>]+>/g,'');
+  let out='', last=0, prevExcluded=false, prevEnd=-1;
+  const re=/„([^“"<>\n]{1,60})[“"]/g; let m;
+  while((m=re.exec(html))){
+    const label=m[1], before=plain(html.slice(Math.max(0,m.index-40),m.index)), after=plain(html.slice(re.lastIndex,re.lastIndex+12));
+    const arrow=/→\s*$/.test(before)||/^\s*→/.test(after);
+    const chained=prevEnd>=0&&/^\s*(bzw\.|und|oder|,|\/)\s*$/.test(plain(html.slice(prevEnd,m.index)));
+    let excluded=label.length<2||UI_NOBTN.includes(label)||/(z\.\s?B\.|wie|als|Feld|Feldern|Fenster|Spalte|Modul|Typ)\s*\(?\s*$/.test(before)||/Buchstaben\s/.test(before.slice(-14));
+    if(chained&&prevExcluded) excluded=true;
+    if(arrow&&label.length>1&&!UI_NOBTN.includes(label)) excluded=false;
+    out+=html.slice(last,m.index)+(excluded?m[0]:`<span class="ui-btn">${label}</span>`);
+    last=re.lastIndex; prevExcluded=excluded; prevEnd=re.lastIndex;
+  }
+  return out+html.slice(last);
+}
 function renderTab(){
   const m = MODULES.find(x=>x.id===state.currentModule);
   const p = state.moduleProgress[m.id];
@@ -2944,26 +2967,26 @@ function renderTab(){
     host.innerHTML = `
       ${videoBlockHtml(m)}
       ${m.intro?introBlockHtml(m.intro):''}
-      <ul class="key-points">${m.points.map(pt=>pt.startsWith('## ')?`<li class="kp-head">${pt.slice(3)}</li>`:`<li>${pt}</li>`).join('')}</ul>
+      <ul class="key-points">${m.points.map(pt=>pt.startsWith('## ')?`<li class="kp-head">${pt.slice(3)}</li>`:(pt.startsWith('<div')?`<li>${uiBtns(pt)}</li>`:`<li><div>${uiBtns(pt)}</div></li>`)).join('')}</ul>
       <div class="section-heading" style="margin-top:0">Wichtige Funktionen</div>
-      <div class="feature-cards">${m.features.map(f=>`<div class="feature-card"><div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></div><h5>${f.t}</h5><p>${f.d}</p></div>`).join('')}</div>
+      <div class="feature-cards">${m.features.map(f=>`<div class="feature-card"><div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></div><h5>${uiBtns(f.t)}</h5><p>${uiBtns(f.d)}</p></div>`).join('')}</div>
       ${m.id===3 ? templateDownloadCallout() : ''}
-      <div class="practice-callout"><strong>In der Praxis</strong><p>${m.practice}</p></div>
+      <div class="practice-callout"><strong>In der Praxis</strong><p>${uiBtns(m.practice)}</p></div>
       <div class="btn-row" style="margin-top:0">
         <button class="btn btn-outline" onclick="openCloudLink(${m.id})">Direkt in der OrKan Cloud üben</button>
       </div>
     `;
   } else if(state.currentTab==='task'){
     host.innerHTML = `
-      <p style="font-size:15px;margin-bottom:6px"><strong>Aufgabe:</strong> ${m.task}</p>
+      <p style="font-size:15px;margin-bottom:6px"><strong>Aufgabe:</strong> ${uiBtns(m.task)}</p>
       ${m.id===3 ? templateDownloadCallout() : ''}
       <ul class="checklist">${m.checklist.map((c,i)=>{
         const checked = p.checklist.includes(i);
-        return `<li class="check-item ${checked?'checked':''}" onclick="toggleCheck(${m.id},${i})"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span>${c}</span></li>`;
+        return `<li class="check-item ${checked?'checked':''}" onclick="toggleCheck(${m.id},${i})"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span>${uiBtns(c)}</span></li>`;
       }).join('')}</ul>
       <div class="collapsible" id="tipBox">
         <div class="collapsible-head" onclick="document.getElementById('tipBox').classList.toggle('open')">Praxistipps <span>+</span></div>
-        <div class="collapsible-body"><p>${m.tip}</p></div>
+        <div class="collapsible-body"><p>${uiBtns(m.tip)}</p></div>
       </div>
     `;
   } else if(state.currentTab==='quiz'){
@@ -2973,9 +2996,9 @@ function renderTab(){
       host.innerHTML = `<div class="quiz-result"><p>Die Zusammenfassung wird nach erfolgreichem Abschluss des Wissenschecks freigeschaltet.</p></div>`;
     } else {
       host.innerHTML = `
-        <div class="summary-block"><h5>Kernaussagen</h5><ul>${m.summary.kern.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="summary-block"><h5>Kernaussagen</h5><ul>${m.summary.kern.map(x=>`<li><span>${uiBtns(x)}</span></li>`).join('')}</ul></div>
         <div class="summary-block"><h5>Wichtigste Funktionen</h5><ul>${m.summary.funk.map(x=>`<li>${x}</li>`).join('')}</ul></div>
-        <div class="summary-block"><h5>Handlungsempfehlungen</h5><ul>${m.summary.hand.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="summary-block"><h5>Handlungsempfehlungen</h5><ul>${m.summary.hand.map(x=>`<li><span>${uiBtns(x)}</span></li>`).join('')}</ul></div>
         <div class="summary-block"><h5>Nächste Lernschritte</h5><ul><li>${nextModuleLink(m.id)}</li></ul></div>
         ${ratingBlock(m)}
       `;
