@@ -3157,9 +3157,9 @@ function openArticle(idx){
 /* ============ BEST PRACTICES ============ */
 function renderBest(){
   const card=b=>{ const i=BEST_PRACTICES.indexOf(b); return `
-      <div class="bp-card"><div class="bp-top"><span class="bp-time">ca. ${b.time} Min. · ${b.steps.length} Schritte</span><span class="bp-diff ${b.diff}">${b.diff==='easy'?'Einfach':'Mittel'}</span></div>
+      <div class="bp-card" style="cursor:pointer" role="button" tabindex="0" onclick="openBP(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openBP(${i})}"><div class="bp-top"><span class="bp-time">ca. ${b.time} Min. · ${b.steps.length} Schritte</span><span class="bp-diff ${b.diff}">${b.diff==='easy'?'Einfach':'Mittel'}</span></div>
       <h4>${b.title}</h4><p>${uiBtns(b.desc)}</p>
-      <button class="btn btn-primary" style="width:100%" onclick="openBP(${i})">Anleitung starten</button></div>`; };
+      <button class="btn btn-primary" style="width:100%" onclick="event.stopPropagation();openBP(${i})">Anleitung starten</button></div>`; };
   document.getElementById('view-best').innerHTML = `
     <h1 class="page-title">Praxiserprobte Anleitungen für häufige Aufgaben</h1>
     <p class="page-sub">Schritt-für-Schritt-Anleitungen, nach Themen geordnet.</p>
