@@ -3576,7 +3576,6 @@ function renderFives(){
         <p style="font-size:13px;color:var(--gray);line-height:1.5;margin-top:10px">Genau dieses Prinzip setzt die OrKan Cloud im Lager um: feste Lagerplätze, eindeutige Etiketten und das Zwei-Etiketten-System sorgen dafür, dass Material sofort gefunden und rechtzeitig nachbestellt wird.</p>
       </div>
     </div>
-    <div class="fs-calc-lock" id="fsCalcLock" ${fsPlayed()?'hidden':''}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span><strong>Kostenrechner</strong> – wird freigeschaltet, sobald Sie alle vier Runden der 5S-Übung gespielt haben.</span></div>
     <div class="bp-card fs-calc" id="fsCalcCard" style="margin-top:20px" ${fsPlayed()?'':'hidden'}>
       <h4>Kostenrechner: Was kostet Suchen?</h4>
       <p style="font-size:13px;color:var(--gray);margin:4px 0 14px">Tragen Sie Ihre Werte ein – alle Felder sind mit Beispielwerten vorbelegt.</p>
@@ -3622,7 +3621,7 @@ function fsEnd(){
   clearInterval(FS.timer); FS.running=false;
   const found=FS.next-1; FS.results[FS.round]=found; FS.results=FS.results.slice(0,FS.round+1);
   const last=FS.round===3, b=document.getElementById('fsBoard');
-  b.insertAdjacentHTML('beforeend',`<div class="fs-overlay"><h3>${found} von ${FS_MAX} gefunden</h3><p>${last?'Geschafft! Unten sehen Sie, wie sich Ihr Ergebnis durch Ordnung verbessert hat – und der Kostenrechner ist jetzt freigeschaltet.':'In der nächsten Runde wird aufgeräumt.'}</p>
+  b.insertAdjacentHTML('beforeend',`<div class="fs-overlay"><h3>${found} von ${FS_MAX} gefunden</h3><p>${last?'Geschafft! Unten sehen Sie, wie sich Ihr Ergebnis durch Ordnung verbessert hat – und was Suchzeiten Ihren Betrieb kosten.':'In der nächsten Runde wird aufgeräumt.'}</p>
     ${last?`<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><button class="btn btn-primary" onclick="document.getElementById('fsCalcCard').scrollIntoView({behavior:'smooth',block:'start'})">Zum Kostenrechner</button><button class="btn btn-outline" onclick="FS.results=[];fsRound(0,true)">Noch einmal spielen</button></div>`:`<button class="btn btn-primary" onclick="fsRound(${FS.round+1},true)">Weiter: ${FS_ROUNDS[FS.round+1].k}</button>`}</div>`);
   fsRenderResults();
   if(last){ fsUnlockCalc(); const red=document.getElementById('fcRed'); if(red&&fsGain()){ red.value=fsGain(); fsCalc(); } }
