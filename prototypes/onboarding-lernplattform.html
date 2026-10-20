@@ -2753,7 +2753,9 @@ function moduleCardHtml(m, isPriority){
 function moduleGroupStart(id){ return MODULE_GROUPS.find(g=>g.ids[0]===id); }
 function certDoneCount(){ return MODULE_GROUPS[0].ids.filter(id=>state.moduleProgress[id]&&state.moduleProgress[id].completed).length; }
 function certTotal(){ return MODULE_GROUPS[0].ids.length; }
-function certUnlocked(){ return certDoneCount()>=certTotal(); }
+// VORSCHAU: Zertifikat vorübergehend für alle freigeschaltet – vor der Weitergabe an Kunden wieder auf false setzen
+const CERT_PREVIEW = true;
+function certUnlocked(){ return CERT_PREVIEW || certDoneCount()>=certTotal(); }
 /* ============ ROADMAP ============ */
 function renderRoadmap(){
   const html = MODULES.map((m,i)=>{
