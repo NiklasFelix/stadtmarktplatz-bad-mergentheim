@@ -1387,6 +1387,23 @@ html.theme-light .onb-form-panel input{background:#fff;border-color:#CFDABB;box-
 html.theme-light .onb-form-panel input:focus{border-color:#8EA752;box-shadow:0 0 0 3px rgba(142,167,82,.22)}
 html.theme-light .onb-form-panel .onb-btn:disabled{background:#D5DDC7;color:#7A8670}
 html.theme-light #onboarding{background:radial-gradient(900px 500px at 80% 0%,rgba(142,167,82,.16),transparent 60%),#EEF1E9}
+
+.onb-eyebrow{display:inline-block;align-self:flex-start;font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#5E7233;background:rgba(142,167,82,.16);padding:4px 10px;border-radius:999px}
+html:not(.theme-light) .onb-eyebrow{color:#A6BF68}
+.onb-form-panel h2{margin-bottom:10px!important}
+.onb-lead{font-size:14.5px;line-height:1.55;color:var(--gray);margin:0 0 22px;max-width:44ch}
+.onb-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:22px}
+.onb-facts div{padding:12px 12px;border-radius:12px;background:rgba(255,255,255,.65);border:1px solid #D6E0C4;text-align:center}
+html:not(.theme-light) .onb-facts div{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08)}
+.onb-facts strong{display:block;font-size:19px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.onb-facts span{font-size:12px;color:var(--gray)}
+.onb-steps{list-style:none;margin:20px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;counter-reset:st}
+.onb-steps li{counter-increment:st;display:grid;grid-template-columns:28px 1fr;column-gap:12px;align-items:start;font-size:13.5px;line-height:1.4}
+.onb-steps li::before{content:counter(st);grid-row:span 2;width:28px;height:28px;border-radius:50%;background:#5E7233;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.onb-steps b{color:var(--ink)}
+.onb-steps span{color:var(--gray)}
+.onb-facts span{display:block;line-height:1.3}
+@media(max-width:700px){.onb-facts{gap:6px}.onb-facts div{padding:10px 6px}.onb-facts strong{font-size:14.5px;white-space:nowrap}.onb-facts span{font-size:11px}}
 </style>
 </head>
 <body>
@@ -1415,12 +1432,20 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
       </div>
     </div>
     <div class="onb-form-panel">
+      <span class="onb-eyebrow">In wenigen Sekunden startklar</span>
       <h2>Ihre Daten</h2>
+      <p class="onb-lead">Mit Ihrem Namen richten wir Ihren persönlichen Lernpfad ein – und er steht später auch auf Ihrem Zertifikat.</p>
       <div class="field-row">
         <div><span class="field-label">Name</span><input type="text" id="onbName" placeholder="Vor- und Nachname"></div>
         <div><span class="field-label">Unternehmen</span><input type="text" id="onbCompany" placeholder="Firmenname"></div>
       </div>
       <button class="onb-btn" id="startBtn" disabled onclick="startApp()">Lernpfad starten</button>
+      <div class="onb-facts" id="onbFacts"></div>
+      <ol class="onb-steps">
+        <li><b>Grundlagen</b><span>Module 1–6 mit Video, Praxisaufgabe und Wissenscheck</span></li>
+        <li><b>Zertifikat</b><span>Nach den Grundlagen – inklusive Rabattcode für den OrKan Shop</span></li>
+        <li><b>Expertenwissen</b><span>Vertiefung zu Maschinen, Projekten, Inventur und mehr</span></li>
+      </ol>
       <footer class="legal-foot onb-legal">
         <span>© OrKan System</span>
         <!-- Rechtliche Seiten liegen auf orkan-system.de -->
@@ -3305,6 +3330,12 @@ function logoutProfile(){
   document.getElementById('app').style.display='none';
   document.getElementById('onboarding').style.display='flex';
 }
+(function(){
+  const el=document.getElementById('onbFacts'); if(!el) return;
+  const min=MODULES.reduce((s,m)=>s+parseInt(m.time),0), h=Math.round(min/30)/2;
+  el.innerHTML=[[MODULES.length,'Lernmodule'],['ca. '+String(h).replace('.',',')+' Std.','Lernzeit gesamt'],[KB_ARTICLES.length+BEST_PRACTICES.length,'Artikel & Anleitungen']]
+    .map(([v,l])=>`<div><strong>${v}</strong><span>${l}</span></div>`).join('');
+})();
 const CLOUD_DEEPLINKS = {
   1:{label:'Startseite'},
   2:{label:'Lagerverwaltung → Artikel'},
