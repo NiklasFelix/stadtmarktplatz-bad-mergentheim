@@ -1392,9 +1392,18 @@ html.theme-light #onboarding{background:radial-gradient(900px 500px at 80% 0%,rg
 .onb-form-panel{position:relative;overflow-x:hidden}
 .onb-form-panel>*:not(.onb-deco){position:relative;z-index:1}
 .onb-form-panel>.onb-deco{position:absolute!important;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.onb-deco-logo{position:absolute;right:-70px;bottom:-40px;width:520px;max-width:none;height:auto;opacity:.10;filter:grayscale(.2)}
+.onb-deco-logo{position:absolute;right:-120px;bottom:-120px;width:600px;max-width:none;height:auto;opacity:.11;filter:grayscale(.2)}
 html:not(.theme-light) .onb-deco-logo{opacity:.07}
 @media(max-width:700px){.onb-deco-logo{width:300px;right:-70px;bottom:-75px;opacity:.07}}
+
+/* Startseite: Formular größer und luftiger, füllt die rechte Seite */
+#onboarding .onb-form-panel{justify-content:center;padding:56px 56px 64px}
+#onboarding .onb-form-panel h2{font-size:40px;margin:0 0 30px}
+#onboarding .field-row{grid-template-columns:1fr!important;gap:18px;margin-bottom:28px}
+#onboarding .field-label{font-size:13.5px;margin-bottom:8px;display:block}
+#onboarding .field-row input{padding:17px 18px;font-size:16.5px;border-radius:14px}
+#onboarding .onb-btn{padding:19px;font-size:17px;border-radius:14px}
+@media(max-width:700px){#onboarding .onb-form-panel{padding:32px 24px 40px}#onboarding .onb-form-panel h2{font-size:30px;margin-bottom:22px}#onboarding .field-row input{padding:15px 16px}}
 </style>
 </head>
 <body>
@@ -1430,13 +1439,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
         <div><span class="field-label">Unternehmen</span><input type="text" id="onbCompany" placeholder="Firmenname"></div>
       </div>
       <button class="onb-btn" id="startBtn" disabled onclick="startApp()">Lernpfad starten</button>
-      <footer class="legal-foot onb-legal">
-        <span>© OrKan System</span>
-        <!-- Rechtliche Seiten liegen auf orkan-system.de -->
-        <a href="https://orkan-system.de/impressum/" target="_blank" rel="noopener">Impressum</a>
-        <a href="https://orkan-system.de/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>
-        <a href="https://orkan-system.de/agb/" target="_blank" rel="noopener">AGB</a>
-      </footer>
     </div>
   </div>
 </div>
