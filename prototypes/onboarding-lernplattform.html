@@ -1388,22 +1388,22 @@ html.theme-light .onb-form-panel input:focus{border-color:#8EA752;box-shadow:0 0
 html.theme-light .onb-form-panel .onb-btn:disabled{background:#D5DDC7;color:#7A8670}
 html.theme-light #onboarding{background:radial-gradient(900px 500px at 80% 0%,rgba(142,167,82,.16),transparent 60%),#EEF1E9}
 
-.onb-eyebrow{display:inline-block;align-self:flex-start;font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#5E7233;background:rgba(142,167,82,.16);padding:4px 10px;border-radius:999px}
-html:not(.theme-light) .onb-eyebrow{color:#A6BF68}
-.onb-form-panel h2{margin-bottom:10px!important}
-.onb-lead{font-size:14.5px;line-height:1.55;color:var(--gray);margin:0 0 22px;max-width:44ch}
-.onb-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:22px}
-.onb-facts div{padding:12px 12px;border-radius:12px;background:rgba(255,255,255,.65);border:1px solid #D6E0C4;text-align:center}
-html:not(.theme-light) .onb-facts div{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08)}
-.onb-facts strong{display:block;font-size:19px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
-.onb-facts span{font-size:12px;color:var(--gray)}
-.onb-steps{list-style:none;margin:20px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;counter-reset:st}
-.onb-steps li{counter-increment:st;display:grid;grid-template-columns:28px 1fr;column-gap:12px;align-items:start;font-size:13.5px;line-height:1.4}
-.onb-steps li::before{content:counter(st);grid-row:span 2;width:28px;height:28px;border-radius:50%;background:#5E7233;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
-.onb-steps b{color:var(--ink)}
-.onb-steps span{color:var(--gray)}
-.onb-facts span{display:block;line-height:1.3}
-@media(max-width:700px){.onb-facts{gap:6px}.onb-facts div{padding:10px 6px}.onb-facts strong{font-size:14.5px;white-space:nowrap}.onb-facts span{font-size:11px}}
+/* Startseite: dekorative Gestaltung im Formularbereich */
+.onb-form-panel{position:relative;overflow-x:hidden}
+.onb-form-panel>*:not(.onb-deco){position:relative;z-index:1}
+.onb-form-panel>.onb-deco{position:absolute!important;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.onb-deco-swirl{position:absolute;right:-120px;bottom:-150px;width:360px;height:auto;transform:rotate(-8deg)}
+.onb-deco-swirl ellipse{stroke:rgba(94,114,51,.20)}
+.onb-deco-swirl ellipse:nth-child(odd){stroke:rgba(142,167,82,.32)}
+.onb-deco-tags{position:absolute;right:34px;top:30px;width:150px;height:auto;opacity:.85}
+.onb-deco .t-blue{fill:#2F6FB5;opacity:.85}.onb-deco .t-white{fill:#fff;stroke:#CFDABB;stroke-width:1.5}
+.onb-deco .t-qr{fill:#fff;opacity:.9}.onb-deco .t-qr2{fill:#1D2327;opacity:.75}.onb-deco .t-line{fill:#fff;opacity:.7}
+.onb-deco .t-dot{fill:#8EA752}.onb-deco .t-dot2{fill:#A6BF68;opacity:.7}.onb-deco .t-dot3{fill:#CFE0A8;opacity:.8}
+html:not(.theme-light) .onb-deco-swirl ellipse{stroke:rgba(142,167,82,.16)}
+html:not(.theme-light) .onb-deco-swirl ellipse:nth-child(odd){stroke:rgba(166,191,104,.24)}
+html:not(.theme-light) .onb-deco .t-white{fill:#2A3035;stroke:#3A4249}
+html:not(.theme-light) .onb-deco .t-qr2{fill:#A6BF68}
+@media(max-width:700px){.onb-deco-swirl{display:none}.onb-deco-tags{width:110px;right:16px;top:18px}}
 </style>
 </head>
 <body>
@@ -1432,20 +1432,16 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
       </div>
     </div>
     <div class="onb-form-panel">
-      <span class="onb-eyebrow">In wenigen Sekunden startklar</span>
+      <div class="onb-deco" aria-hidden="true">
+        <svg class="onb-deco-swirl" viewBox="0 0 400 380" width="400" height="380"><g fill="none" stroke-width="3"><ellipse cx="230" cy="60" rx="150" ry="20.0"/><ellipse cx="224" cy="94" rx="133" ry="18.6"/><ellipse cx="218" cy="128" rx="116" ry="17.2"/><ellipse cx="212" cy="162" rx="99" ry="15.8"/><ellipse cx="206" cy="196" rx="82" ry="14.4"/><ellipse cx="200" cy="230" rx="65" ry="13.0"/><ellipse cx="194" cy="264" rx="48" ry="11.6"/><ellipse cx="188" cy="298" rx="31" ry="10.2"/><ellipse cx="182" cy="332" rx="14" ry="8.8"/></g></svg>
+        <svg class="onb-deco-tags" viewBox="0 0 150 110" width="150" height="110"><rect x="8" y="22" width="56" height="40" rx="6" class="t-blue"/><rect x="16" y="30" width="20" height="20" rx="2" class="t-qr"/><rect x="40" y="31" width="18" height="4" rx="2" class="t-line"/><rect x="40" y="39" width="12" height="4" rx="2" class="t-line"/><rect x="74" y="8" width="56" height="40" rx="6" class="t-white" transform="rotate(8 102 28)"/><rect x="82" y="16" width="20" height="20" rx="2" class="t-qr2" transform="rotate(8 102 28)"/><circle cx="40" cy="88" r="7" class="t-dot"/><circle cx="62" cy="88" r="7" class="t-dot2"/><circle cx="84" cy="88" r="7" class="t-dot3"/></svg>
+      </div>
       <h2>Ihre Daten</h2>
-      <p class="onb-lead">Mit Ihrem Namen richten wir Ihren persönlichen Lernpfad ein – und er steht später auch auf Ihrem Zertifikat.</p>
       <div class="field-row">
         <div><span class="field-label">Name</span><input type="text" id="onbName" placeholder="Vor- und Nachname"></div>
         <div><span class="field-label">Unternehmen</span><input type="text" id="onbCompany" placeholder="Firmenname"></div>
       </div>
       <button class="onb-btn" id="startBtn" disabled onclick="startApp()">Lernpfad starten</button>
-      <div class="onb-facts" id="onbFacts"></div>
-      <ol class="onb-steps">
-        <li><b>Grundlagen</b><span>Module 1–6 mit Video, Praxisaufgabe und Wissenscheck</span></li>
-        <li><b>Zertifikat</b><span>Nach den Grundlagen – inklusive Rabattcode für den OrKan Shop</span></li>
-        <li><b>Expertenwissen</b><span>Vertiefung zu Maschinen, Projekten, Inventur und mehr</span></li>
-      </ol>
       <footer class="legal-foot onb-legal">
         <span>© OrKan System</span>
         <!-- Rechtliche Seiten liegen auf orkan-system.de -->
@@ -3330,12 +3326,6 @@ function logoutProfile(){
   document.getElementById('app').style.display='none';
   document.getElementById('onboarding').style.display='flex';
 }
-(function(){
-  const el=document.getElementById('onbFacts'); if(!el) return;
-  const min=MODULES.reduce((s,m)=>s+parseInt(m.time),0), h=Math.round(min/30)/2;
-  el.innerHTML=[[MODULES.length,'Lernmodule'],['ca. '+String(h).replace('.',',')+' Std.','Lernzeit gesamt'],[KB_ARTICLES.length+BEST_PRACTICES.length,'Artikel & Anleitungen']]
-    .map(([v,l])=>`<div><strong>${v}</strong><span>${l}</span></div>`).join('');
-})();
 const CLOUD_DEEPLINKS = {
   1:{label:'Startseite'},
   2:{label:'Lagerverwaltung → Artikel'},
