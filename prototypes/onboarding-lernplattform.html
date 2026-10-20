@@ -1372,6 +1372,7 @@ html.theme-light .help-menu{background:#fff}
 .fs-calc-lock{display:flex;align-items:center;gap:12px;margin-top:20px;padding:16px 18px;border-radius:14px;border:1px dashed var(--border);color:var(--gray);font-size:14px}
 .fs-calc-lock svg{flex-shrink:0;color:var(--green)}
 .fs-calc-lock strong{color:var(--ink)}
+.cert-discount p.cert-discount-note,.cert-gate p.cert-discount-note{font-size:12px;color:var(--gray);margin:10px 0 0;line-height:1.45}
 </style>
 </head>
 <body>
@@ -3153,7 +3154,7 @@ function renderCert(){
     document.getElementById('view-cert').innerHTML = `
       <h1 class="page-title">Zertifikate</h1>
       <p class="page-sub">So sieht Ihr Zertifikat aus, sobald Sie die Grundlagen des Onboardings (Module 1–6) abgeschlossen haben.</p>
-      <div class="cert-gate"><h3>Noch nicht verfügbar</h3><p>Schließen Sie die ${certTotal()} Grundlagen-Module ab, um Ihr Zertifikat freizuschalten — inklusive Rabattcode für den OrKan Shop.</p>
+      <div class="cert-gate"><h3>Noch nicht verfügbar</h3><p>Schließen Sie die ${certTotal()} Grundlagen-Module ab, um Ihr Zertifikat freizuschalten — inklusive Rabattcode* für den OrKan Shop.</p><p class="cert-discount-note">* Pro Unternehmen gibt es nur einen Rabattcode – er ist einmalig einlösbar, auch wenn mehrere Mitarbeiter das Zertifikat erwerben.</p>
       <div class="gate-track"><div class="gate-fill" style="width:${Math.round(certDoneCount()/certTotal()*100)}%"></div></div>
       <p style="margin-bottom:0">${done}/${certTotal()} Grundlagen-Module abgeschlossen</p></div>
       <div class="cert-preview-wrap cert-preview-locked">
@@ -3191,8 +3192,9 @@ function renderCert(){
         <div class="cert-discount-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41 11 3.83A2 2 0 0 0 9.59 3.24L3.24 9.59A2 2 0 0 0 3.83 11l9.58 9.59a2 2 0 0 0 2.83 0l6.35-6.35a2 2 0 0 0 0-2.83Z"/><circle cx="8.5" cy="8.5" r="1.5"/></svg></div>
         <div>
           <strong>Ihre Belohnung fürs Lernen</strong>
-          <p>Ihr Abschlusszertifikat schaltet einen Rabattcode für den OrKan Shop frei.</p>
+          <p>Ihr Abschlusszertifikat schaltet einen Rabattcode* für den OrKan Shop frei.</p>
           <div class="cert-discount-code" id="certDiscountCode">${getDiscountCode()}</div>
+          <p class="cert-discount-note">* Pro Unternehmen gibt es nur einen Rabattcode – er ist einmalig einlösbar, auch wenn mehrere Mitarbeiter das Zertifikat erwerben.</p>
         </div>
       </div>
     `;
