@@ -3187,7 +3187,6 @@ function renderCert(){
         <div style="font-size:13.5px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')} &middot; Gültig für 6 Monate</div>
       </div>
       <div class="cert-actions"><button class="btn btn-primary" id="certPdfBtn" onclick="downloadCertPdf()">Zertifikat als PDF speichern</button>${window.self===window.top?'<button class="btn btn-outline" onclick="window.print()">Drucken</button>':''}</div>
-      <div class="cert-renewal-note">Sie erhalten automatisch 60 Tage vor Ablauf eine Erinnerung zur Auffrischung – z. B. bei neuen OrKan-Cloud-Funktionen.</div>
       <div class="cert-discount">
         <div class="cert-discount-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41 11 3.83A2 2 0 0 0 9.59 3.24L3.24 9.59A2 2 0 0 0 3.83 11l9.58 9.59a2 2 0 0 0 2.83 0l6.35-6.35a2 2 0 0 0 0-2.83Z"/><circle cx="8.5" cy="8.5" r="1.5"/></svg></div>
         <div>
