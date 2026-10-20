@@ -1373,6 +1373,20 @@ html.theme-light .help-menu{background:#fff}
 .fs-calc-lock svg{flex-shrink:0;color:var(--green)}
 .fs-calc-lock strong{color:var(--ink)}
 .cert-discount p.cert-discount-note,.cert-gate p.cert-discount-note{font-size:12px;color:var(--gray);margin:10px 0 0;line-height:1.45}
+
+/* Startseite hell: rechte Seite grün getönt statt reinweiß */
+html.theme-light .onb-form-panel{position:relative;background:
+  radial-gradient(520px 320px at 100% 0%,rgba(142,167,82,.26),transparent 62%),
+  radial-gradient(460px 300px at 0% 100%,rgba(142,167,82,.14),transparent 60%),
+  linear-gradient(165deg,#F4F7EE 0%,#E6EDD8 100%)}
+html.theme-light .onb-form-panel::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(94,114,51,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(94,114,51,.07) 1px,transparent 1px);background-size:28px 28px;
+  -webkit-mask-image:linear-gradient(180deg,#000,transparent 70%);mask-image:linear-gradient(180deg,#000,transparent 70%)}
+html.theme-light .onb-form-panel>*{position:relative}
+html.theme-light .onb-form-panel input{background:#fff;border-color:#CFDABB;box-shadow:0 1px 2px rgba(94,114,51,.08)}
+html.theme-light .onb-form-panel input:focus{border-color:#8EA752;box-shadow:0 0 0 3px rgba(142,167,82,.22)}
+html.theme-light .onb-form-panel .onb-btn:disabled{background:#D5DDC7;color:#7A8670}
+html.theme-light #onboarding{background:radial-gradient(900px 500px at 80% 0%,rgba(142,167,82,.16),transparent 60%),#EEF1E9}
 </style>
 </head>
 <body>
