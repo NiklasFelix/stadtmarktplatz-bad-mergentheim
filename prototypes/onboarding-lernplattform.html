@@ -1402,12 +1402,15 @@ html.theme-light #onboarding{background:radial-gradient(900px 500px at 80% 0%,rg
 .ui-box{display:inline;padding:1px 7px;margin:0 1px;border-radius:6px;background:rgba(142,167,82,.13);border:1px solid rgba(142,167,82,.38);color:inherit;font-size:inherit;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 html:not(.theme-light) .ui-box{background:rgba(166,191,104,.12);border-color:rgba(166,191,104,.32)}
 
-.kp-sec{margin:0 0 18px;padding:22px 26px;border-radius:18px;border:1px solid rgba(166,191,104,.3);background:linear-gradient(145deg,rgba(166,191,104,.1),rgba(166,191,104,.02))}
-.kp-sec h3{font-size:19px;margin:0 0 14px}
-.kp-sec .key-points{margin:0}
-.kp-sec .key-points>li:last-child{margin-bottom:0}
-.kp-sec+.section-heading{margin-top:26px}
-@media(max-width:640px){.kp-sec{padding:18px 16px}}
+.kp-group{margin:0 0 22px}
+.kp-group-h{font-size:18px;margin:0 0 12px}
+.key-points.kp-cards{max-width:none;margin:0;display:flex;flex-direction:column;gap:12px}
+.key-points.kp-cards>li{max-width:none;margin:0;padding:16px 20px;border-radius:14px;border:1px solid rgba(166,191,104,.3);background:linear-gradient(145deg,rgba(166,191,104,.1),rgba(166,191,104,.02))}
+.key-points.kp-cards>li::before{display:none}
+.key-points.kp-cards>li>div{flex:1;min-width:0}
+.key-points.kp-cards>li .kp-key{padding:0;border:0;background:none}
+.kp-group+.section-heading{margin-top:26px}
+@media(max-width:640px){.key-points.kp-cards>li{padding:14px 14px}}
 </style>
 </head>
 <body>
@@ -2955,10 +2958,10 @@ function uiBtns(html){
   return out+html.slice(last);
 }
 function keyPointSections(m){
-  // Inhalte abschnittsweise ("## …") in Kästen gliedern
+  // Abschnitte ("## …") als Überschrift, jeder Punkt in einem eigenen Kasten
   const secs=[]; let cur=null;
-  m.points.forEach(pt=>{ if(pt.startsWith('## ')){ cur={h:pt.slice(3),p:[]}; secs.push(cur); } else { if(!cur){ cur={h:m.id===1?'Die OrKan Cloud im Überblick':m.title,p:[]}; secs.push(cur); } cur.p.push(pt); } });
-  return secs.map(sec=>`<section class="kp-sec"><h3>${sec.h}</h3><ul class="key-points">${sec.p.map(pt=>pt.startsWith('<div')?`<li>${uiBtns(pt)}</li>`:`<li><div>${uiBtns(pt)}</div></li>`).join('')}</ul></section>`).join('');
+  m.points.forEach(pt=>{ if(pt.startsWith('## ')){ cur={h:pt.slice(3),p:[]}; secs.push(cur); } else { if(!cur){ cur={h:'',p:[]}; secs.push(cur); } cur.p.push(pt); } });
+  return secs.map(sec=>`<div class="kp-group">${sec.h?`<h3 class="kp-group-h">${sec.h}</h3>`:''}<ul class="key-points kp-cards">${sec.p.map(pt=>pt.startsWith('<div')?`<li>${uiBtns(pt)}</li>`:`<li><div>${uiBtns(pt)}</div></li>`).join('')}</ul></div>`).join('');
 }
 function renderTab(){
   const m = MODULES.find(x=>x.id===state.currentModule);
