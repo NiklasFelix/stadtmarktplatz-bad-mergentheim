@@ -1399,8 +1399,8 @@ html.theme-light #onboarding{background:radial-gradient(900px 500px at 80% 0%,rg
 #onboarding .onb-btn{padding:19px;font-size:17px;border-radius:14px}
 @media(max-width:700px){#onboarding .onb-form-panel{padding:32px 24px 40px}#onboarding .onb-form-panel h2{font-size:30px;margin-bottom:22px}#onboarding .field-row input{padding:15px 16px}}
 
-.ui-box{display:inline;padding:2px 8px;margin:0 1px;border-radius:6px;background:#E8EFDA;border:0;box-shadow:inset 0 0 0 1px rgba(94,114,51,.14);color:#3F4D24;font-weight:600;font-size:.95em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
-html:not(.theme-light) .ui-box{background:rgba(166,191,104,.16);box-shadow:inset 0 0 0 1px rgba(166,191,104,.22);color:#D3E3A6}
+.ui-box{display:inline-block;padding:1px 10px;margin:1px 0;border-radius:999px;background:#CFE0A8;color:#15191C;font-size:inherit;font-weight:600;line-height:1.55;white-space:nowrap;vertical-align:baseline;box-shadow:0 1px 0 rgba(0,0,0,.12)}
+html:not(.theme-light) .ui-box{background:#C9DE8C;color:#15191C}
 
 .kp-group{margin:0 0 22px}
 .kp-group-h{font-size:18px;margin:0 0 12px}
@@ -1875,6 +1875,7 @@ const MODULES = [
       "## 1. Etiketten erfassen",
       "[Bestellbox scannen] Ein Mitarbeiter scannt die Etiketten aus der Bestellbox unter „Lagerverwaltung“ → „Bestellvorschlag“ → „Erstellen“ – z. B. abends. Schneller geht es mit dem Shortcut „Bestellvorschläge“ auf der Startseite, der direkt ins Scan-Feld führt.",
       "[Scan mit Auto-Enter] Nach „Erstellen“ steht der Cursor automatisch im Scan-Feld. Jeder OrKan-Scanner löst nach dem Scan selbst „Enter“ aus – manuelles Bestätigen ist nicht nötig.",
+      "[Manuell bestellen] Artikel können Sie auch ohne Etikett manuell bestellen: Per Doppelklick auf den Artikel übernehmen Sie ihn in den Bestellvorschlag.",
       "## 2. Bestellungen erstellen",
       "[Mehrere Lieferanten] Bei Artikeln mehrerer Lieferanten senden Sie jede Teilbestellung einzeln über „Bestellungen erstellen“ und „Senden“. Mengen korrigieren Sie vorher per Doppelklick.",
       "## 3. Bestellung auslösen",
@@ -1904,8 +1905,7 @@ const MODULES = [
     gist:['Wareneingang bestätigen','Offene & abgeschlossene Bestellungen','Weißes Etikett zurück'],
     points:[
       "## 1. Wareneingang bestätigen",
-      "[Wareneingang bestätigen] <div>Wege zum Bestätigen:<ul class=\"sub-points\"><li><strong>Über den Kalender:</strong> Auf den Tag klicken – die erweiterte Ansicht mit den „B“-Einträgen erscheint. Mit dem Haken bestätigen Sie den Wareneingang.</li><li><strong>Über „Bestellungen“:</strong> Filter rechts oben auf „Offene Bestellungen“, Bestellung anklicken, „Wareneingang“ klicken und dort bestätigen.</li><li><strong>Abgeschlossene Bestellungen</strong> finden Sie über den Filter „Abgeschlossene Bestellungen“.</li></ul></div>",
-      "[Scan-Bestelleingang] Der <strong>Scan-Bestelleingang</strong> zeigt offene Bestellungen eines Lieferanten nach Ampelfarbe (Rot = überfällig, Gelb = heute, Grün = zukünftig). Positionen bestätigen Sie einzeln oder komplett; Mengenabweichungen werden sichtbar. Mehr dazu im Expertenwissen-Modul „Digitale Warenannahme“.",
+      "[Wareneingang bestätigen] <div>Wege zum Bestätigen:<ul class=\"sub-points\"><li><strong>Über den Kalender:</strong> Auf den Tag klicken – die erweiterte Ansicht mit den „B“-Einträgen erscheint. Mit dem Haken bestätigen Sie den Wareneingang.</li><li><strong>Über „Bestellungen“:</strong> Filter rechts oben auf „Offene Bestellungen“, Bestellung anklicken, „Wareneingang“ klicken und dort bestätigen. Abgeschlossene Bestellungen finden Sie über den Filter „Abgeschlossene Bestellungen“.</li><li><strong>Über den Scan-Bestelleingang:</strong> Er zeigt offene Bestellungen eines Lieferanten nach Ampelfarbe (Rot = überfällig, Gelb = heute, Grün = zukünftig). Positionen bestätigen Sie einzeln oder komplett; Mengenabweichungen werden sichtbar. Mehr dazu im Expertenwissen-Modul „Digitale Warenannahme“.</li></ul></div>",
       "[Weißes Etikett zurück] <div><strong>Wichtig beim Einlagern:</strong> Bringen Sie das weiße Etikett wieder am Regal an – nur so funktioniert das Zwei-Etiketten-System bei der nächsten Bestellung.</div>"
     ],
     features:[
