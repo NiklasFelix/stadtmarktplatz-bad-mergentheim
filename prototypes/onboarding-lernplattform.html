@@ -2106,7 +2106,8 @@ const MODULES = [
       "Mit Kommissions- und Retouren-Etiketten kennzeichnen Sie Ware, die für einen bestimmten Auftrag bereitgestellt wird (Kommission) oder an den Lieferanten zurückgeht (Retoure) – so ist auf einen Blick klar, wohin sie gehört.",
       "## 2. Etiketten drucken",
       "Klickweg: „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Vorlagendruck“. Dort wählen Sie die passende Vorlage für Kommission oder Retoure.",
-      "<div>Zwei Größen stehen zur Wahl:<ul class=\"sub-points\"><li><strong>„Kommission“ bzw. „Retoure“:</strong> 4 Etiketten pro Blatt.</li><li><strong>„Kommission klein“ bzw. „Retoure klein“:</strong> 8 Etiketten pro Blatt.</li></ul></div>"
+      "<div>Zwei Größen stehen zur Wahl:<ul class=\"sub-points\"><li><strong>„Kommission“ bzw. „Retoure“:</strong> 4 Etiketten pro Blatt.</li><li><strong>„Kommission klein“ bzw. „Retoure klein“:</strong> 8 Etiketten pro Blatt.</li></ul></div>",
+      "<div>Die passenden Kommissions- und Retouren-Etiketten erhalten Sie im <a href=\"https://orkan-system.de/shop/\" target=\"_blank\" rel=\"noopener\">OrKan System Shop</a>.</div>"
     ],
     features:[
       {t:'Vorlagendruck',d:'Etiketten für Kommission und Retoure direkt aus den Einstellungen drucken'},
@@ -2936,6 +2937,7 @@ function uiBtns(html){
     const chained=prevEnd>=0&&/^\s*(bzw\.|und|oder|,|\/)\s*$/.test(plain(html.slice(prevEnd,m.index)));
     let excluded=label.length<2||UI_NOBTN.includes(label)||/(z\.\s?B\.|wie|als|Feld|Feldern|Fenster|Spalte|Modul|Typ)\s*\(?\s*$/.test(before)||/Buchstaben\s/.test(before.slice(-14));
     if(chained&&prevExcluded) excluded=true;
+    if(/^[BKS]$/.test(label)) excluded=false; // Kalender-Buchstaben (B = Bestellung, K = Kommission, S = Service)
     if(arrow&&label.length>1&&!UI_NOBTN.includes(label)) excluded=false;
     out+=html.slice(last,m.index)+(excluded?m[0]:`<span class="ui-btn">${label}</span>`);
     last=re.lastIndex; prevExcluded=excluded; prevEnd=re.lastIndex;
