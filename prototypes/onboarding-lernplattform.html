@@ -1411,6 +1411,8 @@ html:not(.theme-light) .ui-box{background:rgba(166,191,104,.12);border-color:rgb
 .key-points.kp-cards>li .kp-key{padding:0;border:0;background:none}
 .kp-group+.section-heading{margin-top:26px}
 @media(max-width:640px){.key-points.kp-cards>li{padding:14px 14px}}
+
+.kp-lead{font-weight:700;font-size:16px;line-height:1.5;color:var(--ink);margin:-4px 0 12px;padding-left:12px;border-left:3px solid #8EA752}
 </style>
 </head>
 <body>
@@ -1721,11 +1723,12 @@ const MODULES = [
     intro:{"title": "Was ist die OrKan Cloud?", "points": ["Ein lieferantenunabhängiges Software-Tool für Lagerführung und Bestellwesen – bereits bei über 100 Betrieben im Einsatz.", "Funktioniert nach dem Kanban-Prinzip: Nachbestellt wird, was am Lagerplatz tatsächlich verbraucht wurde – einfach per Scan.", "Ihr Nutzen: gesicherter Nachschub, keine Doppelbestellungen oder Suchzeiten und voller Überblick über Material und Maschinen.", "Webbasiert: Es muss kein Programm und keine App installiert werden – die OrKan Cloud erreichen Sie im Browser unter <a href=\"https://cloud.orkan-system.de\" target=\"_blank\" rel=\"noopener\" style=\"color:#8EA752;font-weight:700\">cloud.orkan-system.de</a>. Tipp: Legen Sie die Seite in Ihrer Favoritenleiste ab, um direkt und schnell darauf zuzugreifen."]},
     gist:['Startseite & Kalender','Ampelsystem','Lagerverwaltung im Überblick'],
     points:[
-      'Die Startseite ist individuell anpassbar: Kacheln wie Artikel, Lieferant, Bestellvorschläge erstellen oder Meine Einstellungen lassen sich im Bearbeitungsmodus (Stift-Symbol) verschieben, umbenennen, farblich anpassen oder entfernen.',
-      'Über die drei Striche oben links gelangen Sie jederzeit zurück zum Home-Bereich und zur Hauptnavigation. Über das Smiley-Symbol können Sie OrKan System kontaktieren, einen Vorschlag einreichen oder ein Problem melden.',
-      'Der Kalender arbeitet mit einem vierstufigen Ampelsystem: Grau (bestätigt/erledigt), Grün (künftig fällig), Gelb (heute fällig) und Rot (überfällig) – Buchstaben wie „B" (Bestellung) oder „S" (Service/Wartung) zeigen zusätzlich die Art des Termins.',
-      '<div>Die Lagerverwaltung gliedert sich in sieben Bereiche:<ul class="sub-points"><li><strong>Artikel:</strong> Das Herzstück der OrKan Cloud: Hier pflegen Sie alle Artikel, die Sie wiederkehrend im Lager haben bzw. bestellen – jeweils mit eindeutiger Lagerkennzeichnung.</li><li><strong>Lieferant:</strong> Hier legen Sie alle Lieferanten an und verwalten sie, bei denen Sie Ihre Artikel nachbestellen.</li><li><strong>Standorte:</strong> Hier sehen Sie Ihre Standorte wie Lagergebäude, Lagerorte, Fahrzeuge, Personen oder Projekte und was ihnen zugeordnet ist – z. B. welche Maschine zu welchem Mitarbeiter gehört. Angelegt werden Standorte hier nicht. Praktisch: Für jeden Lagerort lässt sich ein Schild für die Stirnseite der Regalzeile drucken, damit jeder sofort erkennt, um welchen Lagerort es sich handelt. Zusätzlich können Sie für jeden Lagerort die Materialliste – also alle Artikel dieser Regalzeile – exportieren.</li><li><strong>Bestellvorschlag:</strong> Hier lösen Sie Ihre Bestellungen aus – die gesammelten Artikel werden zur fertigen Bestellung.</li><li><strong>Bestellungen:</strong> Übersicht über alle getätigten Bestellungen – offene ebenso wie abgeschlossene.</li><li><strong>Scan-Bestelleingang:</strong> Hier sehen und bestätigen Sie Ihre eingehenden Lieferungen.</li><li><strong>Lagerbestand:</strong> Für Bestandsführung und Inventur: Sie sehen, wie viel von jedem Artikel vorhanden ist. Mit dem Scanner gehen Sie durchs Lager, scannen die Artikel und tragen die gezählte Menge ein – so ergibt sich der tatsächliche Bestand und Warenwert für Ihre Inventur. Auch ohne Inventur zeigt der Lagerbestand bereits einen gemittelten Lagerwert in Euro: den Mittelwert aus Lager MIN und Lager MAX multipliziert mit dem Einkaufspreis – vorausgesetzt, die Preise sind gepflegt.</li></ul></div>',
-      "<div><strong>Benutzer anlegen:</strong> Unter „Einstellungen“ → „Mandant“ → „Mandantenverwaltung“ → „Benutzer“ verwalten Sie, wer mit der OrKan Cloud arbeitet.<ul class=\"sub-points\"><li><strong>Erstellen:</strong> Pflichtfelder sind E-Mail und Passwort (mit Bestätigung); optional Name, Anschrift, Telefon, Position sowie Avatar und Unterschrift.</li><li><strong>Rolle:</strong> Legen Sie fest, ob die Person „Admin“ oder „User“ ist.</li><li><strong>Sicherheit & Rechte:</strong> Auf Wunsch die zweistufige Verifizierung einschalten; über „Berechtigung“ steuern Sie, was jemand sehen und bearbeiten darf. Benutzerlisten lassen sich importieren und exportieren.</li></ul></div>"
+      ">> Startseite, Kalender und Lagerverwaltung sind Ihre wichtigsten Anlaufstellen in der OrKan Cloud.",
+      "Die Startseite ist frei anpassbar: Kacheln wie Artikel, Lieferant, Bestellvorschläge erstellen oder Meine Einstellungen verschieben, umbenennen, einfärben oder entfernen Sie im Bearbeitungsmodus (Stift-Symbol).",
+      "Die drei Striche oben links führen jederzeit zurück zum Home-Bereich und zur Hauptnavigation. Über das Smiley-Symbol kontaktieren Sie OrKan System, reichen Vorschläge ein oder melden Probleme.",
+      "Der Kalender zeigt Termine im vierstufigen Ampelsystem: Grau (bestätigt/erledigt), Grün (künftig fällig), Gelb (heute fällig), Rot (überfällig). Buchstaben wie „B“ (Bestellung) oder „S“ (Service/Wartung) zeigen die Art des Termins.",
+      "<div>Die Lagerverwaltung gliedert sich in sieben Bereiche:<ul class=\"sub-points\"><li><strong>Artikel:</strong> Das Herzstück: alle Artikel, die Sie wiederkehrend lagern oder bestellen – jeweils mit eindeutiger Lagerkennzeichnung.</li><li><strong>Lieferant:</strong> Anlegen und Verwalten aller Lieferanten, bei denen Sie nachbestellen.</li><li><strong>Standorte:</strong> Zeigt Lagergebäude, Lagerorte, Fahrzeuge, Personen oder Projekte und was ihnen zugeordnet ist – z. B. welche Maschine welcher Mitarbeiter hat. Angelegt werden Standorte hier nicht. Je Lagerort können Sie ein Schild für die Stirnseite der Regalzeile drucken und die Materialliste (alle Artikel dieser Regalzeile) exportieren.</li><li><strong>Bestellvorschlag:</strong> Hier werden die gesammelten Artikel zur fertigen Bestellung.</li><li><strong>Bestellungen:</strong> Übersicht aller offenen und abgeschlossenen Bestellungen.</li><li><strong>Scan-Bestelleingang:</strong> Eingehende Lieferungen sehen und bestätigen.</li><li><strong>Lagerbestand:</strong> Zeigt den Bestand je Artikel für Bestandsführung und Inventur. Zum Zählen scannen Sie die Artikel mit dem Scanner und tragen die Menge ein – daraus ergeben sich Bestand und Warenwert. Auch ohne Inventur zeigt er einen gemittelten Lagerwert: (Lager MIN + Lager MAX) ÷ 2 × Einkaufspreis, sofern Preise gepflegt sind.</li></ul></div>",
+      "<div><strong>Benutzer anlegen:</strong> Unter „Einstellungen“ → „Mandant“ → „Mandantenverwaltung“ → „Benutzer“ verwalten Sie, wer mit der OrKan Cloud arbeitet.<ul class=\"sub-points\"><li><strong>Erstellen:</strong> Pflichtfelder sind E-Mail und Passwort (mit Bestätigung); optional Name, Anschrift, Telefon, Position, Avatar und Unterschrift.</li><li><strong>Rolle:</strong> „Admin“ oder „User“.</li><li><strong>Sicherheit & Rechte:</strong> Optional zweistufige Verifizierung einschalten; über „Berechtigung“ steuern Sie, was jemand sehen und bearbeiten darf. Benutzerlisten lassen sich importieren und exportieren.</li></ul></div>"
     ],
     features:[
       {t:'Individuell anpassbare Startseite',d:'Kacheln per Bearbeitungsmodus frei verschieben, umbenennen und einfärben'},
@@ -1750,20 +1753,25 @@ const MODULES = [
     gist:['Artikel anlegen','Lager MIN/MAX','Lagerorte'],
     points:[
       "## 1. Die Artikelübersicht",
-      "<div>Die Artikelliste unter „Lagerverwaltung“ → „Artikel“ lässt sich an Ihre Arbeitsweise anpassen:<ul class=\"sub-points\"><li><strong>Spalten:</strong> Über das Doppelpfeil-Symbol blenden Sie Spaltenüberschriften ein oder aus.</li><li><strong>Suchfeld:</strong> Die Suche ist eine Volltextsuche – angezeigt wird jeder Artikel, in dem das eingegebene Wort vorkommt.</li><li><strong>Anzahl:</strong> Rechts unten stellen Sie ein, wie viele Artikel pro Seite erscheinen; rechts daneben steht die Gesamtanzahl.</li></ul></div>",
-      "<div><strong>Wichtig:</strong> Die Gesamtanzahl bezieht sich immer auf das aktuelle Suchergebnis. Steht z. B. „Befestigung“ im Suchfeld, werden nur Artikel mit diesem Begriff gezählt – und auch nur diese gedruckt. Prüfen Sie vor dem Etikettendruck deshalb immer, ob etwas im Suchfeld steht.</div>",
+      ">> Die Artikelliste lässt sich anpassen – und zählt und druckt immer nur das aktuelle Suchergebnis.",
+      "<div>Die Artikelliste unter „Lagerverwaltung“ → „Artikel“ passen Sie so an:<ul class=\"sub-points\"><li><strong>Spalten:</strong> Über das Doppelpfeil-Symbol ein- oder ausblenden.</li><li><strong>Suchfeld:</strong> Volltextsuche – angezeigt wird jeder Artikel, der das Wort enthält.</li><li><strong>Anzahl:</strong> Rechts unten stellen Sie die Artikel pro Seite ein; daneben steht die Gesamtanzahl.</li></ul></div>",
+      "<div><strong>Wichtig:</strong> Die Gesamtanzahl bezieht sich auf das aktuelle Suchergebnis. Steht z. B. „Befestigung“ im Suchfeld, werden nur diese Artikel gezählt und gedruckt. Prüfen Sie vor dem Etikettendruck deshalb das Suchfeld.</div>",
       "## 2. Artikel anlegen",
-      "Es gibt vier Wege, einen Artikel anzulegen: manuelle Neuanlage über „Erstellen“, Serienanlage per „Eingabe behalten“, Kopieren eines bestehenden Artikels oder Excel-Import (wie der Import genau funktioniert, lernen Sie in Modul 3).",
-      "Pflichtfelder sind in der Artikelkarte mit einem Sternchen (*) gekennzeichnet und müssen ausgefüllt werden: Artikelgruppe, Bezeichnung 1, Lager/Gebäude, Lagerort, Lager MIN, Lager MAX, Lagereinheit, Lieferant, Menge (VPE) und Mengeneinheit (VPE).",
-      "Bei der internen Artikelnummer sind Sie flexibel: Die Systematik kann individuell für Ihren Betrieb festgelegt werden. Im Standard vergibt die OrKan Cloud die Nummern automatisch fortlaufend (höchste vergebene Nummer +1) – ungenutzte niedrigere Nummern werden dabei nicht rückwirkend aufgefüllt, wenn versehentlich eine hohe Nummer importiert wurde.",
-      "Bei der Serienanlage mit „Eingabe behalten“ übernimmt die OrKan Cloud alle Felder des vorherigen Artikels – außer der internen Artikelnummer und der Artikelnummer des Lieferanten, die für jeden Artikel individuell bleiben.",
+      ">> Artikel legen Sie auf vier Wegen an – Pflichtfelder sind mit * markiert.",
+      "Die vier Wege: Neuanlage über „Erstellen“, Serienanlage per „Eingabe behalten“, Kopieren eines bestehenden Artikels oder Excel-Import (siehe Modul 3).",
+      "Pflichtfelder (*): Artikelgruppe, Bezeichnung 1, Lager/Gebäude, Lagerort, Lager MIN, Lager MAX, Lagereinheit, Lieferant, Menge (VPE) und Mengeneinheit (VPE).",
+      "Die Systematik der internen Artikelnummer legen Sie flexibel für Ihren Betrieb fest. Im Standard wird fortlaufend vergeben (höchste Nummer +1). Niedrigere, ungenutzte Nummern werden nicht aufgefüllt – auch nicht, wenn versehentlich eine hohe Nummer importiert wurde.",
+      "Bei „Eingabe behalten“ übernimmt die OrKan Cloud alle Felder des vorherigen Artikels – außer der internen Artikelnummer und der Lieferanten-Artikelnummer.",
       "## 3. Bestand und Einheiten festlegen",
-      "Lager MIN definiert den Sicherheitsbestand, Lager MAX den gewünschten Höchstbestand am Lagerplatz – die Bestellmenge im Bestellvorschlag ergibt sich automatisch aus der Differenz zwischen Lager MAX und Lager MIN.",
-      "<div><strong>Einheiten richtig eintragen:</strong><ul class=\"sub-points\"><li><strong>1. Lagereinheit:</strong> Tragen Sie zuerst die Lagereinheit ein.</li><li><strong>2. Lagereinheit „Pack“:</strong> Im Feld „Abw. Bestelleinheit“ „Stück“ eintragen. Danach bei „Menge (VPE)“ die Anzahl pro Pack (z. B. Schrauben pro Pack) und bei „Mengeneinheit (VPE)“ „Stück“ eintragen.</li><li><strong>2.1 Lagereinheit „Stück“:</strong> „Abw. Bestelleinheit“, „Menge (VPE)“ und „Mengeneinheit (VPE)“ müssen nicht ausgefüllt werden.</li></ul></div>",
+      ">> Lager MIN und Lager MAX steuern die Bestellmenge; Einheiten tragen Sie in fester Reihenfolge ein.",
+      "Lager MIN ist der Sicherheitsbestand, Lager MAX der Höchstbestand. Die Bestellmenge ergibt sich automatisch aus Lager MAX minus Lager MIN.",
+      "<div><strong>Einheiten richtig eintragen:</strong><ul class=\"sub-points\"><li><strong>1. Lagereinheit:</strong> Zuerst die Lagereinheit eintragen.</li><li><strong>2. Lagereinheit „Pack“:</strong> Bei „Abw. Bestelleinheit“ „Stück“ eintragen, bei „Menge (VPE)“ die Anzahl pro Pack (z. B. Schrauben pro Pack) und bei „Mengeneinheit (VPE)“ „Stück“.</li><li><strong>2.1 Lagereinheit „Stück“:</strong> „Abw. Bestelleinheit“, „Menge (VPE)“ und „Mengeneinheit (VPE)“ bleiben leer.</li></ul></div>",
       "## 4. Bilder und Dokumente",
-      "Bilder und Dokumente fügen Sie per Drag & Drop unter „Dokumente“ hinzu. Das erste hochgeladene Dokument erscheint automatisch als Bild auf dem Etikett, weitere Dokumente (z. B. Sicherheitsdatenblätter) bleiben reine Anhänge.",
+      ">> Das erste hochgeladene Dokument wird zum Etikettenbild.",
+      "Bilder und Dokumente ziehen Sie per Drag & Drop unter „Dokumente“. Das erste erscheint automatisch auf dem Etikett, weitere (z. B. Sicherheitsdatenblätter) bleiben reine Anhänge.",
       "## 5. Lagerplätze verwalten",
-      "<div>Lager/Gebäude und Lagerorte (Lagerplätze) legen Sie auf zwei Wegen an:<ul class=\"sub-points\"><li><strong>Direkt in der Artikelkarte:</strong> Auf das Feld „Lager/Gebäude“ bzw. „Lagerort“ klicken und „Hinzufügen“ wählen – praktisch, wenn beim Anlegen eines Artikels ein Platz noch fehlt.</li><li><strong>Über die Einstellungen:</strong> Menü → „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Lager/Gebäude“ bzw. „Lagerorte/Lagerplätze“ → „Erstellen“ und die mit * gekennzeichneten Pflichtfelder ausfüllen.</li><li><strong>Viele auf einmal:</strong> Müssen viele Gebäude, Lagerorte oder Lagerplätze angelegt werden, lassen sie sich dort – wie Artikel – per Excel-Liste importieren. Ein Export ist jederzeit möglich.</li></ul></div>"
+      ">> Lagerplätze legen Sie direkt in der Artikelkarte oder gesammelt über die Einstellungen an.",
+      "<div>Lager/Gebäude und Lagerorte (Lagerplätze) anlegen:<ul class=\"sub-points\"><li><strong>Direkt in der Artikelkarte:</strong> Auf das Feld „Lager/Gebäude“ bzw. „Lagerort“ klicken und „Hinzufügen“ wählen – praktisch, wenn beim Anlegen ein Platz fehlt.</li><li><strong>Über die Einstellungen:</strong> Menü → „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Lager/Gebäude“ bzw. „Lagerorte/Lagerplätze“ → „Erstellen“, dann die Pflichtfelder (*) ausfüllen.</li><li><strong>Viele auf einmal:</strong> Dort auch per Excel-Liste importierbar, wie Artikel. Ein Export ist jederzeit möglich.</li></ul></div>"
     ],
     features:[
       {t:'Vier Wege der Artikelanlage',d:'Neuanlage, Serienanlage per „Eingabe behalten", Kopieren oder Import'},
@@ -1788,16 +1796,18 @@ const MODULES = [
     gist:['Excel-Import','Lieferanten anlegen','Shop-Anbindung'],
     points:[
       "## 1. Artikel per Excel importieren",
-      "Der Artikelimport erfolgt über eine Excel-Liste plus eine ZIP-Datei (max. 40 MB) mit den zugehörigen Artikelbildern – der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen.",
-      "Die drei Import-Modi verhalten sich klar unterschiedlich: „Nur importieren\" legt ausschließlich neue Artikel an und verändert nie bestehende; „Nur aktualisieren\" verändert ausschließlich bestehende Artikel und legt nie neue an; „Importieren und aktualisieren\" kombiniert beides.",
-      "Der Abgleich läuft wahlweise über die Lieferanten-Artikelnummer, die EAN-Nummer oder die interne Artikelnummer – bei einem Lieferantenwechsel für einen bestehenden Artikel muss zwingend über die interne Artikelnummer abgeglichen werden, sonst legt die OrKan Cloud den Artikel fälschlich doppelt neu an und Bestandsdaten gehen verloren.",
+      ">> Viele Artikel importieren Sie per Excel-Liste – der Import-Modus entscheidet, ob neu angelegt oder aktualisiert wird.",
+      "Sie brauchen eine Excel-Liste und optional eine ZIP-Datei (max. 40 MB) mit den Artikelbildern. Der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP entsprechen.",
+      "<div>Die drei Import-Modi:<ul class=\"sub-points\"><li><strong>„Nur importieren“:</strong> legt nur neue Artikel an, ändert nie bestehende.</li><li><strong>„Nur aktualisieren“:</strong> ändert nur bestehende Artikel, legt nie neue an.</li><li><strong>„Importieren und aktualisieren“:</strong> kombiniert beides.</li></ul></div>",
+      "Abgeglichen wird über die Lieferanten-Artikelnummer, die EAN oder die interne Artikelnummer. Wechselt bei einem bestehenden Artikel der Lieferant, gleichen Sie zwingend über die interne Artikelnummer ab – sonst entsteht der Artikel doppelt und Bestandsdaten gehen verloren.",
       "## 2. Lieferanten anbinden",
-      "Auch beim Anlegen eines Lieferanten gilt: Alle mit einem Sternchen (*) gekennzeichneten Pflichtfelder müssen ausgefüllt werden.",
-      "Die Shop-URL im Lieferantenstamm ist NICHT die normale Webadresse des Onlineshops, sondern die URL der IDS-Schnittstelle – sie ist die technische Grundlage dafür, dass die OrKan Cloud Bestellungen automatisiert an den Lieferanten übermitteln kann.",
-      "Die Shop-URL lässt sich über das Lupen-Symbol suchen – häufig ist der passende Händler dort bereits hinterlegt. Wird er nicht gefunden, fragen Sie einfach bei Ihrem Händler nach der Shop-URL oder schauen Sie in Ihrer Branchensoftware nach – dort ist sie oft bereits hinterlegt.",
-      "<div>Im Feld „Standardbestellverfahren“ legen Sie fest, wie Bestellungen an diesen Lieferanten gehen:<ul class=\"sub-points\"><li><strong>Online (IDS-Schnittstelle):</strong> Die Bestellung wird direkt an den Webshop des Händlers übergeben.</li><li><strong>PDF:</strong> Die Bestellung wird als PDF-Datei erzeugt.</li><li><strong>E-Mail:</strong> Die Bestellung wird per E-Mail an den Lieferanten verschickt.</li></ul></div>",
-      "<div><strong>Liefertage und Offset:</strong> Je Lieferant werden die Liefertage (z. B. Mo–Fr oder nur donnerstags) und ein „Offset in Tagen“ hinterlegt – die Tage zwischen Bestellung und Wareneingang: Offset 0 = Lieferung am nächsten Liefertag, Offset 1 = ein Tag Zwischenraum. <em>Beispiel:</em> Lieferung nur donnerstags, Offset 1, Bestellung am Mittwoch → Wareneingang am Donnerstag der Folgewoche. Der Wert gilt für alle Standardbestellungen und lässt sich pro Bestellung überschreiben.</div>",
-      "<div><strong>Wichtig:</strong> Der Offset bildet nur die Zustelldauer ab, keinen Bestellrhythmus. Wer gesammelt nur an bestimmten Tagen bestellen möchte, regelt das organisatorisch – am einfachsten mit einer Liste, wer wann bei welchem Lieferanten bestellt.</div>"
+      ">> Mit der richtigen Shop-URL und dem Bestellverfahren gehen Bestellungen automatisch an den Lieferanten.",
+      "Auch beim Lieferanten gilt: Alle Pflichtfelder (*) ausfüllen.",
+      "Die Shop-URL ist NICHT die normale Webadresse des Onlineshops, sondern die URL der IDS-Schnittstelle. Nur damit kann die OrKan Cloud Bestellungen automatisch übermitteln.",
+      "Die Shop-URL finden Sie über das Lupen-Symbol – oft ist der Händler dort hinterlegt. Sonst fragen Sie Ihren Händler oder schauen in Ihrer Branchensoftware nach.",
+      "<div>Im Feld „Standardbestellverfahren“ legen Sie fest, wie Bestellungen an diesen Lieferanten gehen:<ul class=\"sub-points\"><li><strong>Online (IDS-Schnittstelle):</strong> direkt an den Webshop des Händlers.</li><li><strong>PDF:</strong> als PDF-Datei.</li><li><strong>E-Mail:</strong> per E-Mail an den Lieferanten.</li></ul></div>",
+      "<div><strong>Liefertage und Offset:</strong> Je Lieferant hinterlegen Sie die Liefertage (z. B. Mo–Fr oder nur donnerstags) und ein „Offset in Tagen“ – die Tage zwischen Bestellung und Wareneingang. Offset 0 = Lieferung am nächsten Liefertag, Offset 1 = ein Tag dazwischen. <em>Beispiel:</em> Lieferung nur donnerstags, Offset 1, Bestellung am Mittwoch → Wareneingang am Donnerstag der Folgewoche. Der Wert gilt für alle Standardbestellungen und ist pro Bestellung änderbar.</div>",
+      "<div><strong>Wichtig:</strong> Der Offset bildet nur die Zustelldauer ab, keinen Bestellrhythmus. Wer nur an bestimmten Tagen bestellen will, regelt das organisatorisch – am einfachsten mit einer Liste, wer wann bei welchem Lieferanten bestellt.</div>"
     ],
     features:[
       {t:'Excel + ZIP-Import',d:'Artikeldaten und Bilder werden gemeinsam über Dateiname-Zuordnung importiert'},
@@ -1822,14 +1832,17 @@ const MODULES = [
     gist:['Etiketten-Templates','Etiketten drucken','Blau/Weiß-Etiketten'],
     points:[
       "## 1. Etiketten-Templates gestalten",
-      "Wie Ihre Etiketten aussehen, legen Sie im Etiketten-Designer fest: „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Artikelkarte“.",
-      "<div>Der Aufbau ist frei gestaltbar:<ul class=\"sub-points\"><li><strong>Elemente:</strong> z. B. Bezeichnung 1–3, Artikelbild, QR-Code, Lager MIN/MAX und Lagerort.</li><li><strong>Anordnung:</strong> Elemente per Drag & Drop positionieren und in der Größe anpassen.</li><li><strong>Mehrere Templates:</strong> parallel anlegbar, auch mit eigenem Firmenlogo.</li></ul></div>",
+      ">> Das Aussehen Ihrer Etiketten gestalten Sie frei im Etiketten-Designer.",
+      "Den Etiketten-Designer finden Sie unter „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Artikelkarte“.",
+      "<div>Gestaltungsmöglichkeiten:<ul class=\"sub-points\"><li><strong>Elemente:</strong> z. B. Bezeichnung 1–3, Artikelbild, QR-Code, Lager MIN/MAX und Lagerort.</li><li><strong>Anordnung:</strong> per Drag & Drop positionieren und in der Größe anpassen.</li><li><strong>Mehrere Templates:</strong> parallel anlegbar, auch mit Firmenlogo.</li></ul></div>",
       "## 2. Etiketten drucken",
-      "<div>So drucken Sie Etiketten:<ul class=\"sub-points\"><li><strong>1. Artikel markieren:</strong> Unter „Lagerverwaltung“ → „Artikel“ links das Kästchen des gewünschten Artikels anklicken – ein Häkchen bestätigt die Auswahl.</li><li><strong>2. Drucken:</strong> Auf „Drucken“ klicken und das Etiketten-Template auswählen.</li><li><strong>3. Auswahl festlegen:</strong> Bestimmen, welche Artikel gedruckt werden (alle, nur aktualisierte, nur nicht aktualisierte oder nur markierte).</li><li><strong>4. PDF:</strong> Nach „Speichern“ erhalten Sie eine PDF-Datei zum Druck auf das OrKan-Etikettenpapier. Etikettenpapier und weiteres Zubehör erhalten Sie im <a href=\"https://orkan-system.de/shop/\" target=\"_blank\" rel=\"noopener\">OrKan System Shop</a>.</li></ul></div>",
-      "Achtung: Steht im Suchfeld der Artikelliste ein Begriff, bezieht sich „Alle“ nur auf dieses Suchergebnis.",
+      ">> Gedruckt wird in vier Schritten als PDF auf OrKan-Etikettenpapier.",
+      "<div>So drucken Sie Etiketten:<ul class=\"sub-points\"><li><strong>1. Artikel markieren:</strong> Unter „Lagerverwaltung“ → „Artikel“ links das Kästchen anklicken – ein Häkchen bestätigt die Auswahl.</li><li><strong>2. Drucken:</strong> „Drucken“ klicken und das Template wählen.</li><li><strong>3. Auswahl festlegen:</strong> alle, nur aktualisierte, nur nicht aktualisierte oder nur markierte Artikel.</li><li><strong>4. PDF:</strong> Nach „Speichern“ erhalten Sie ein PDF zum Druck auf OrKan-Etikettenpapier. Papier und Zubehör gibt es im <a href=\"https://orkan-system.de/shop/\" target=\"_blank\" rel=\"noopener\">OrKan System Shop</a>.</li></ul></div>",
+      "Achtung: Steht ein Begriff im Suchfeld, bezieht sich „Alle“ nur auf dieses Suchergebnis.",
       "## 3. Das Zwei-Etiketten-System",
-      "An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, zur Kennzeichnung des Lagerplatzes) und ein weißes, das davor liegt und bei Mindestbestand als Bestellauslöser entnommen wird.",
-      "Wird der Mindestbestand erreicht, zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox – fehlt das weiße Etikett am Regal, sieht jeder sofort, dass der Artikel bereits bestellt ist. Wie daraus eine Bestellung wird, lernen Sie in Modul 5."
+      ">> Blau kennzeichnet den Lagerplatz, Weiß löst die Bestellung aus.",
+      "An jedem Lagerplatz hängen zwei Etiketten: ein blaues (fest, kennzeichnet den Platz) und ein weißes davor, das bei Mindestbestand entnommen wird.",
+      "Bei Mindestbestand zieht der Mitarbeiter das weiße Etikett und legt es in die Bestellbox. Fehlt es am Regal, sieht jeder: Der Artikel ist bereits bestellt. Wie daraus eine Bestellung wird, zeigt Modul 5."
     ],
     features:[
       {t:'Etiketten-Designer',d:'Eigene Templates mit Bezeichnung, Bild, QR-Code, Lager MIN/MAX, Lagerort und Firmenlogo gestalten'},
@@ -1854,13 +1867,16 @@ const MODULES = [
     gist:['Bestellbox scannen','Mehrere Lieferanten','Bestellung auslösen'],
     points:[
       "## 1. Etiketten erfassen",
-      "Abends nimmt ein Mitarbeiter die Bestellbox mit den gezogenen weißen Etiketten und erfasst die Artikel unter „Lagerverwaltung“ → „Bestellvorschlag“ → „Erstellen“. Alternativ fügen Sie auf der Startseite der OrKan Cloud den Shortcut „Bestellvorschläge“ hinzu – ein Klick darauf führt direkt ins Scan-Feld.",
-      "Ein Klick auf „Erstellen“ springt automatisch ins Scan-Feld, jeder OrKan-Scanner löst nach dem Scan selbstständig „Enter“ aus – ein manuelles Bestätigen ist nicht nötig.",
+      ">> Die weißen Etiketten aus der Bestellbox werden per Scan erfasst.",
+      "Ein Mitarbeiter scannt die Etiketten aus der Bestellbox unter „Lagerverwaltung“ → „Bestellvorschlag“ → „Erstellen“ – z. B. abends. Schneller geht es mit dem Shortcut „Bestellvorschläge“ auf der Startseite, der direkt ins Scan-Feld führt.",
+      "Nach „Erstellen“ steht der Cursor automatisch im Scan-Feld. Jeder OrKan-Scanner löst nach dem Scan selbst „Enter“ aus – manuelles Bestätigen ist nicht nötig.",
       "## 2. Bestellungen erstellen",
-      "Enthält der Bestellvorschlag Artikel mehrerer Lieferanten, muss für jeden Lieferanten die Teilbestellung einzeln über „Bestellungen erstellen“ und „Senden“ abgeschickt werden; Mengen lassen sich vorher per Doppelklick korrigieren.",
+      ">> Pro Lieferant wird eine eigene Teilbestellung erstellt und gesendet.",
+      "Bei Artikeln mehrerer Lieferanten senden Sie jede Teilbestellung einzeln über „Bestellungen erstellen“ und „Senden“. Mengen korrigieren Sie vorher per Doppelklick.",
       "## 3. Bestellung auslösen",
-      "<div>Beim finalen „Bestellen“ bestellt die OrKan Cloud je nach dem beim Lieferanten hinterlegten Bestellverfahren – vollständig vorbereitet mit Ansprechpartner, Liefertermin und Lieferadresse:<ul class=\"sub-points\"><li><strong>Onlineshop (IDS):</strong> Der Warenkorb im Shop des Händlers öffnet sich, dort lösen Sie die Bestellung final aus.</li><li><strong>E-Mail:</strong> Die Bestellung geht per E-Mail an den Lieferanten.</li><li><strong>PDF:</strong> Die Bestellung wird als PDF erzeugt und kann weitergegeben werden.</li></ul>Zusätzlich erhalten Sie den Wareneingangsprüfungs-Zettel und die Bestellübersicht.</div>",
-      "Nach dem Bestellen erscheint die Bestellung im Kalender der Startseite als grünes „B“ – und zwar an dem Tag, an dem laut Liefertagen und Lieferzeit des Lieferanten der Wareneingang erwartet wird."
+      ">> Bestellt wird über das beim Lieferanten hinterlegte Bestellverfahren.",
+      "<div>Beim finalen „Bestellen“ ist alles vorbereitet – Ansprechpartner, Liefertermin und Lieferadresse. Je nach Bestellverfahren:<ul class=\"sub-points\"><li><strong>Onlineshop (IDS):</strong> Der Warenkorb im Händler-Shop öffnet sich, dort lösen Sie final aus.</li><li><strong>E-Mail:</strong> Die Bestellung geht per E-Mail an den Lieferanten.</li><li><strong>PDF:</strong> Die Bestellung wird als PDF erzeugt.</li></ul>Zusätzlich erhalten Sie den Wareneingangsprüfungs-Zettel und die Bestellübersicht.</div>",
+      "Danach erscheint die Bestellung im Kalender als grünes „B“ – am Tag, an dem laut Liefertagen und Lieferzeit der Wareneingang erwartet wird."
     ],
     features:[
       {t:'Scan mit Auto-Enter',d:'Cursor springt automatisch ins Scan-Feld, jeder Scan löst selbstständig „Enter" aus'},
@@ -1885,9 +1901,10 @@ const MODULES = [
     gist:['Wareneingang bestätigen','Offene & abgeschlossene Bestellungen','Weißes Etikett zurück'],
     points:[
       "## 1. Wareneingang bestätigen",
-      "<div>Den Wareneingang bestätigen Sie auf verschiedenen Wegen:<ul class=\"sub-points\"><li><strong>Über den Kalender:</strong> Auf den Tag klicken – die erweiterte Ansicht mit den „B“-Einträgen (Bestellungen) erscheint. Durch Ankreuzen des Hakens bestätigen Sie den Wareneingang.</li><li><strong>Über „Bestellungen“:</strong> Rechts oben den Filter auf „Offene Bestellungen“ setzen, die Bestellung anklicken und auf „Wareneingang“ klicken – es erscheint dieselbe Ansicht wie im Kalender, dort bestätigen Sie den Wareneingang.</li><li><strong>Abgeschlossene Bestellungen</strong> sehen Sie, indem Sie den Filter rechts oben auf „Abgeschlossene Bestellungen“ umstellen.</li></ul></div>",
-      "Der <strong>Scan-Bestelleingang</strong> zeigt offene Bestellungen eines Lieferanten nach Ampelfarbe (Rot = überfällig, Gelb = heute fällig, Grün = zukünftig) – Positionen lassen sich einzeln oder als komplette Liste auf einmal bestätigen, Mengenabweichungen werden dabei sichtbar gemacht. Mehr dazu erfahren Sie im Expertenwissen-Modul „Digitale Warenannahme“.",
-      "<div><strong>Wichtig beim Einlagern:</strong> Nehmen Sie das weiße Etikett mit und bringen Sie es wieder am Regal an – nur so funktioniert das Zwei-Etiketten-System für die nächste Bestellung.</div>"
+      ">> Lieferungen bestätigen Sie im Kalender, unter Bestellungen oder im Scan-Bestelleingang – danach kommt das weiße Etikett zurück ans Regal.",
+      "<div>Wege zum Bestätigen:<ul class=\"sub-points\"><li><strong>Über den Kalender:</strong> Auf den Tag klicken – die erweiterte Ansicht mit den „B“-Einträgen erscheint. Mit dem Haken bestätigen Sie den Wareneingang.</li><li><strong>Über „Bestellungen“:</strong> Filter rechts oben auf „Offene Bestellungen“, Bestellung anklicken, „Wareneingang“ klicken und dort bestätigen.</li><li><strong>Abgeschlossene Bestellungen</strong> finden Sie über den Filter „Abgeschlossene Bestellungen“.</li></ul></div>",
+      "Der <strong>Scan-Bestelleingang</strong> zeigt offene Bestellungen eines Lieferanten nach Ampelfarbe (Rot = überfällig, Gelb = heute, Grün = zukünftig). Positionen bestätigen Sie einzeln oder komplett; Mengenabweichungen werden sichtbar. Mehr dazu im Expertenwissen-Modul „Digitale Warenannahme“.",
+      "<div><strong>Wichtig beim Einlagern:</strong> Bringen Sie das weiße Etikett wieder am Regal an – nur so funktioniert das Zwei-Etiketten-System bei der nächsten Bestellung.</div>"
     ],
     features:[
       {t:'Wareneingang im Kalender',d:'Tag anklicken, beim „B“-Eintrag den Haken setzen – fertig'},
@@ -1912,26 +1929,31 @@ const MODULES = [
     gist:['Maschinen anlegen','Buchungslogik','Service & Wartung'],
     points:[
       "## 1. Grundlagen Maschinenverwaltung",
+      ">> Gebrauchsgüter werden ausgegeben und zurückgebracht – jedes hat einen Heimat- und einen aktuellen Standort.",
       "Im Bereich „Gebrauchsgut“ verwalten Sie alles, was nicht verbraucht, sondern ausgegeben und zurückgebracht wird: Maschinen, Schlüssel, Anlagen, Bauteile und Flaschen.",
-      "<div>Jedes Gebrauchsgut hat zwei Standorte:<ul class=\"sub-points\"><li><strong>Heimatstandort:</strong> der feste Platz, an den es gehört – z. B. das Werkzeuglager.</li><li><strong>Aktueller Standort:</strong> wo es sich gerade befindet – z. B. beim Monteur, im Fahrzeug oder auf der Baustelle.</li></ul>Beispiel: Ein Bohrhammer gehört ins Werkzeuglager. Leiht ihn ein Monteur aus, wird er auf diesen Monteur gebucht. Sein Heimatstandort bleibt trotzdem das Werkzeuglager.</div>",
+      "<div>Jedes Gebrauchsgut hat zwei Standorte:<ul class=\"sub-points\"><li><strong>Heimatstandort:</strong> der feste Platz, z. B. das Werkzeuglager.</li><li><strong>Aktueller Standort:</strong> wo es gerade ist, z. B. beim Monteur, im Fahrzeug oder auf der Baustelle.</li></ul>Beispiel: Leiht ein Monteur den Bohrhammer aus, wird er auf ihn gebucht – der Heimatstandort bleibt das Werkzeuglager.</div>",
       "<div>Menü (☰) → „Gebrauchsgut“:<ul class=\"sub-points\"><li><strong>Übersicht:</strong> Bestandsliste – anlegen, buchen, Heimatstandort ändern</li><li><strong>Standorte:</strong> alle Standorte mit Materialliste und Historie</li><li><strong>Buchungen:</strong> alle Buchungen, neue Buchung, Rückgabe</li><li><strong>Reservierungen:</strong> Gebrauchsgüter für einen Zeitraum vormerken</li><li><strong>Service/Wartung:</strong> E-Check, Service, Wartung, TÜV, Eichung, Reparatur</li></ul></div>",
       "## 2. Maschinen anlegen",
-      "Klickweg: „Gebrauchsgut“ → „Übersicht“ → oben rechts die Gebrauchsgutart „Maschine“ wählen → „Erstellen“. Wichtig: Erst die Gebrauchsgutart wählen – sie bestimmt die Felder im Formular.",
-      "<div>Felder im Fenster „Maschine“:<ul class=\"sub-points\"><li><strong>Pflichtfelder (*):</strong> Nummer (wird automatisch vorgeschlagen), Name (z. B. „Bohrhammer“), Beschreibung (z. B. Modell oder Kurzinfo), Standorttyp und Standort als Heimatstandort</li><li><strong>Optional:</strong> Seriennummer, Wert in €, zuständiger Mitarbeiter, Projekt, Anschaffungsdatum, Kommentar (z. B. „mit 2 Akkus und Lader“), Farbe und Foto</li></ul></div>",
-      "Bei mehreren gleichen Geräten (z. B. zwei Pressmaschinen) hilft „Eingaben beibehalten“ – die Werte bleiben für die nächste Maschine stehen.",
-      "Was als „Maschine“ geführt wird, definiert der Betrieb selbst – auch eine Leiter kann so erfasst werden.",
-      "Das erste hochgeladene Dokument erscheint auf dem Etikett, weitere Dokumente wie der Kaufbeleg werden nicht gedruckt, sind aber entscheidend für Garantiefälle.",
+      ">> Erst die Gebrauchsgutart wählen, dann die Maschine mit ihren Pflichtfeldern anlegen.",
+      "Klickweg: „Gebrauchsgut“ → „Übersicht“ → oben rechts die Gebrauchsgutart „Maschine“ wählen → „Erstellen“. Die Gebrauchsgutart bestimmt die Felder im Formular – deshalb zuerst wählen.",
+      "<div>Felder im Fenster „Maschine“:<ul class=\"sub-points\"><li><strong>Pflichtfelder (*):</strong> Nummer (wird vorgeschlagen), Name (z. B. „Bohrhammer“), Beschreibung (z. B. Modell), Standorttyp und Standort als Heimatstandort</li><li><strong>Optional:</strong> Seriennummer, Wert in €, zuständiger Mitarbeiter, Projekt, Anschaffungsdatum, Kommentar (z. B. „mit 2 Akkus und Lader“), Farbe und Foto</li></ul></div>",
+      "Bei mehreren gleichen Geräten (z. B. zwei Pressmaschinen) bleiben mit „Eingaben beibehalten“ die Werte für die nächste Maschine stehen.",
+      "Was als „Maschine“ gilt, bestimmt der Betrieb selbst – auch eine Leiter ist möglich.",
+      "Das erste hochgeladene Dokument erscheint auf dem Etikett. Weitere, wie der Kaufbeleg, werden nicht gedruckt, sind aber für Garantiefälle entscheidend.",
       "## 3. Maschinen buchen",
-      "<div>Gebucht wird immer auf einen Standort – zwei Wege führen zur gleichen Buchung:<ul class=\"sub-points\"><li><strong>Aus der Übersicht (ein Gerät):</strong> Checkbox vor der Maschine setzen → „Buchen“ → Standorttyp (Person, Projekt, Lagerort, Fahrzeug …) und Standort wählen → Häkchen</li><li><strong>Über „Buchungen“ (mehrere Geräte):</strong> „Erstellen“ → Standort wählen (z. B. eine Person) → Gebrauchsgutart und Gebrauchsgut wählen → Speichern. Mit „fortlaufende Eingabe“ bleibt das Fenster offen – ideal, wenn ein Monteur morgens mehrere Geräte bekommt.</li></ul></div>",
-      "<div><strong>Rückgabe:</strong> Unter „Buchungen“ die Buchung markieren und auf „Rückgabe“ klicken – oder das Gerät einfach zurück auf seinen Lagerort buchen.</div>",
-      "<div><strong>Heimatstandort ändern:</strong> Zieht eine Maschine dauerhaft um (z. B. ins Fahrzeug eines Monteurs), gehen Sie wieder in die „Übersicht“, markieren die Zeile und klicken auf „Heimatstandort ändern“. Eine normale Buchung ändert nur den aktuellen Standort.</div>",
-      "Ein Administrator kann jede Maschine auf jeden Standort buchen; ein Monteur kann über die App ausschließlich Maschinen zu sich selbst buchen, nicht stellvertretend auf andere Personen.",
+      ">> Gebucht wird immer auf einen Standort – eine Buchung ändert nur den aktuellen Standort.",
+      "<div>Zwei Wege zur Buchung:<ul class=\"sub-points\"><li><strong>Aus der Übersicht (ein Gerät):</strong> Checkbox setzen → „Buchen“ → Standorttyp (Person, Projekt, Lagerort, Fahrzeug …) und Standort wählen → Häkchen</li><li><strong>Über „Buchungen“ (mehrere Geräte):</strong> „Erstellen“ → Standort wählen (z. B. eine Person) → Gebrauchsgutart und Gebrauchsgut wählen → Speichern. Mit „fortlaufende Eingabe“ bleibt das Fenster offen – ideal, wenn ein Monteur morgens mehrere Geräte bekommt.</li></ul></div>",
+      "<div><strong>Rückgabe:</strong> Unter „Buchungen“ die Buchung markieren und „Rückgabe“ klicken – oder das Gerät zurück auf seinen Lagerort buchen.</div>",
+      "<div><strong>Heimatstandort ändern:</strong> Zieht eine Maschine dauerhaft um (z. B. ins Fahrzeug), markieren Sie sie in der „Übersicht“ und klicken „Heimatstandort ändern“.</div>",
+      "Ein Administrator bucht jede Maschine auf jeden Standort. Ein Monteur bucht in der App nur auf sich selbst, nicht für andere.",
       "## 4. Service, Wartung und Reservierungen",
-      "Unter „Service/Wartung“ → „Erstellen“ erfassen Sie Prüfungen und Wartungen: Gebrauchsgut, Typ (E-Check, Service, Wartung, TÜV, Eichung oder Reparatur), Datum, ausführende Firma und Intervall in Monaten. Über den Status „Offen“ sehen Sie, welche Prüfungen anstehen.",
-      "Über Service & Wartung lassen sich Intervalle wie eine jährliche VDE-Prüfung hinterlegen – bei deren Bestätigung wird automatisch ein Folgetermin angelegt.",
-      "Unter „Reservierungen“ → „Erstellen“ merken Sie ein Gebrauchsgut für einen Zeitraum vor. Eine Reservierung ist dabei keine technische Sperre, sondern nur ein Hinweis in einer Liste.",
-      "Mehrere Einzelteile lassen sich zu einer „Anlage\" bündeln (z. B. Kernbohrgerät, Befestigungsset und Staubsauger): Ein einziger Scan bucht alle Teile gemeinsam, jedes bleibt aber ein eigener Artikel mit eigener Wartungshistorie.",
+      ">> Prüftermine laufen automatisch weiter, Reservierungen sind nur ein Hinweis.",
+      "Unter „Service/Wartung“ → „Erstellen“ erfassen Sie Gebrauchsgut, Typ (E-Check, Service, Wartung, TÜV, Eichung, Reparatur), Datum, ausführende Firma und Intervall in Monaten. Der Status „Offen“ zeigt anstehende Prüfungen.",
+      "Intervalle wie die jährliche VDE-Prüfung legen nach Bestätigung automatisch den Folgetermin an.",
+      "Unter „Reservierungen“ → „Erstellen“ merken Sie ein Gebrauchsgut für einen Zeitraum vor. Das ist keine Sperre, nur ein Hinweis in einer Liste.",
+      "Mehrere Teile lassen sich zu einer „Anlage“ bündeln (z. B. Kernbohrgerät, Befestigungsset, Staubsauger): Ein Scan bucht alle, jedes Teil behält seine eigene Wartungshistorie.",
       "## 5. Wo ist was?",
+      ">> Drei Ansichten beantworten, wo ein Gerät ist und wer es hat.",
       "<div class=\"kp-key\"><span class=\"kp-key-tag\">Wichtig</span>Drei Stellen beantworten diese Frage:<ul class=\"sub-points\"><li><strong>Wo ist Maschine X gerade?:</strong> „Übersicht“ → Spalte „Aktueller Standort“, das + vor der Zeile zeigt Details</li><li><strong>Wer hatte X wann?:</strong> „Buchungen“ – mit Suche und Filtern, + zeigt gebucht und ausgebucht am</li><li><strong>Was hat Person Y oder Projekt Z?:</strong> „Standorte“ → Zeile markieren → „Materialliste“ (auch druckbar)</li></ul></div>"
     ],
     features:[
@@ -1957,16 +1979,19 @@ const MODULES = [
     gist:['Sicherheits-Etikett','Adresssuche','Buchung & Rückgabe'],
     points:[
       "## 1. Das Sicherheits-Etikett",
-      "Schlüssel-Etiketten sind spezielle gefaltete Anhänger: außen nur eine Nummer und ein QR-Code, innen (nur beim Öffnen sichtbar) die Kundenadresse.",
-      "Diese Trennung ist ein Sicherheitsprinzip: Beim traditionellen Schlüsselkasten mit Nummern 1 bis n und separatem Zuordnungsordner werden bei einem Einbruch meist beide zusammen entwendet – die Adressliste liegt dann offen. Bei OrKan steckt die Adresse digital hinter der Nummer und bleibt bei Diebstahl geschützt.",
-      "Ein Finderlohn-Hinweis auf dem Etikett (Richtwert ca. 50 €) erhöht die Rückgabewahrscheinlichkeit – wichtig, da die Erneuerung hochwertiger Schließanlagen im Verlustfall deutlich teurer wird.",
+      ">> Nummer außen, Adresse innen – so bleiben Kundenadressen auch bei Diebstahl geschützt.",
+      "Schlüssel-Etiketten sind gefaltete Anhänger: außen nur Nummer und QR-Code, innen (nur beim Öffnen sichtbar) die Kundenadresse.",
+      "Beim klassischen Schlüsselkasten mit separatem Zuordnungsordner werden bei einem Einbruch meist beide gestohlen – die Adressen liegen offen. Bei OrKan steckt die Adresse digital hinter der Nummer und bleibt geschützt.",
+      "Ein Finderlohn-Hinweis (Richtwert ca. 50 €) erhöht die Chance auf Rückgabe – wichtig, weil der Austausch hochwertiger Schließanlagen deutlich teurer ist.",
       "## 2. Schlüssel anlegen",
+      ">> Schlüssel legen Sie wie Maschinen an – zusätzlich mit Anschrift.",
       "Klickweg: „Gebrauchsgut“ → „Übersicht“ → oben rechts die Gebrauchsgutart „Schlüssel“ wählen → „Erstellen“.",
-      "<div>Felder im Fenster „Schlüssel“:<ul class=\"sub-points\"><li><strong>Pflichtfelder (*):</strong> Nummer (wird automatisch vorgeschlagen), Name – was der Schlüssel öffnet, z. B. „Heizraum“ –, Beschreibung – der genaue Ort, z. B. „unten rechts 2. Tür“ –, Standorttyp und Standort, z. B. „Hauptlager – Schlüsselkasten“</li><li><strong>Nur bei Schlüsseln:</strong> Anschrift, PLZ, Ort, Land, Telefon und Anzahl</li><li><strong>Optional:</strong> Projekt, Anschaffungsdatum, Kommentar, Farbe und Foto</li></ul></div>",
-      "Bei mehreren ähnlichen Schlüsseln bleiben mit „Eingaben beibehalten“ die Werte stehen. Einen Button „Service/Wartung“ gibt es bei Schlüsseln nicht.",
+      "<div>Felder im Fenster „Schlüssel“:<ul class=\"sub-points\"><li><strong>Pflichtfelder (*):</strong> Nummer (wird vorgeschlagen), Name – was der Schlüssel öffnet, z. B. „Heizraum“ –, Beschreibung – der genaue Ort, z. B. „unten rechts 2. Tür“ –, Standorttyp und Standort, z. B. „Hauptlager – Schlüsselkasten“</li><li><strong>Nur bei Schlüsseln:</strong> Anschrift, PLZ, Ort, Land, Telefon und Anzahl</li><li><strong>Optional:</strong> Projekt, Anschaffungsdatum, Kommentar, Farbe und Foto</li></ul></div>",
+      "Bei ähnlichen Schlüsseln bleiben mit „Eingaben beibehalten“ die Werte stehen. „Service/Wartung“ gibt es bei Schlüsseln nicht.",
       "## 3. Suchen, ausgeben und zurücknehmen",
-      "Die Adresse muss als Suchkriterium in der Standardansicht verfügbar sein, da im Alltag primär über die Adresse gesucht wird (z. B. „Lerchenweg\"), nicht über die interne Schlüsselnummer.",
-      "Ausgabe und Rückgabe laufen wie bei Maschinen über Buchungen: aus der Übersicht über „Buchen“ oder über „Buchungen“ → „Erstellen“. Zurück geht es über „Rückgabe“ oder durch erneutes Buchen auf den Schlüsselkasten.",
+      ">> Gesucht wird über die Adresse, gebucht wie bei Maschinen.",
+      "Die Adresse muss als Suchkriterium in der Standardansicht verfügbar sein – im Alltag sucht man nach der Adresse (z. B. „Lerchenweg“), nicht nach der Schlüsselnummer.",
+      "Ausgabe und Rückgabe laufen über Buchungen: aus der Übersicht über „Buchen“ oder über „Buchungen“ → „Erstellen“. Zurück über „Rückgabe“ oder durch Buchen auf den Schlüsselkasten.",
       "<div><strong>Wer hat welchen Schlüssel?</strong> In der Übersicht zeigt das + vor der Zeile den aktuellen Standort; unter „Standorte“ → „Materialliste“ sehen Sie alle Schlüssel einer Person oder eines Projekts.</div>"
     ],
     features:[
@@ -1992,24 +2017,30 @@ const MODULES = [
     gist:['Materialentnahme per App','Projekt-Statistik','Branchensoftware-Anbindung'],
     points:[
       "## 1. Warum Entnahmen dokumentieren?",
-      "Das Projekte-Modul dokumentiert Materialentnahmen auf Baustellen, die sonst nur handschriftlich per „Aufmaß\" erfasst und leicht vergessen werden.",
-      "Wird eine Entnahme vergessen, entsteht ein realer Verlust: Beispiel Armatur mit Einkaufspreis 200 € und Verkaufspreis 600 € – ohne dokumentiertes Aufmaß gehen dem Betrieb die 400 € Differenz verloren.",
+      ">> Jede nicht dokumentierte Entnahme kostet den Betrieb Geld.",
+      "Das Projekte-Modul dokumentiert Materialentnahmen auf Baustellen, die sonst nur handschriftlich per „Aufmaß“ erfasst und leicht vergessen werden.",
+      "Beispiel: Eine Armatur kostet 200 € im Einkauf und 600 € im Verkauf. Wird die Entnahme vergessen, fehlen dem Betrieb 400 €.",
       "## 2. Projekte anlegen",
-      "Klickweg: Menü → „Projekte“ → „Projekte“ → „Erstellen“. Sobald ein Projekt angelegt ist, erscheint es automatisch als Standort vom Typ „Projekt“ – Material und Gebrauchsgüter lassen sich dann direkt darauf buchen.",
+      ">> Jedes Projekt wird automatisch zum Standort, auf den Sie buchen können.",
+      "Klickweg: Menü → „Projekte“ → „Projekte“ → „Erstellen“. Danach erscheint das Projekt automatisch als Standort vom Typ „Projekt“ – Material und Gebrauchsgüter buchen Sie direkt darauf.",
       "<div>Felder im Fenster „Projekt erstellen“:<ul class=\"sub-points\"><li><strong>Pflichtfelder (*):</strong> Name (z. B. „Neubau Musterstraße“) und Auftragsnummer</li><li><strong>Optional:</strong> Baustellenadresse, verantwortlicher Mitarbeiter, Lager/Gebäude, Vorgängerprojekt, Laufzeit und Farbe</li></ul></div>",
-      "<div><strong>Projektorte:</strong> Hat ein Auftrag mehrere Adressen, legen Sie unter der Projektliste beim angeklickten Projekt weitere Projektorte an – wahlweise als Warenstandort und/oder Fahrzeugstandort. Auch Projektorte sind beim Buchen als Standort wählbar.</div>",
-      "Die Projektliste lässt sich über den Filter oben rechts nach „Aktiv“ oder „Abgeschlossen“ anzeigen; Projekte können importiert und exportiert werden.",
+      "<div><strong>Projektorte:</strong> Hat ein Auftrag mehrere Adressen, legen Sie beim Projekt weitere Projektorte an – als Waren- und/oder Fahrzeugstandort. Auch sie sind beim Buchen wählbar.</div>",
+      "Die Projektliste filtern Sie oben rechts nach „Aktiv“ oder „Abgeschlossen“. Projekte lassen sich importieren und exportieren.",
       "## 3. Material per OrKan-App auf ein Projekt buchen",
-      "<div>So buchen Sie Material in der OrKan-App auf ein Projekt:<ul class=\"sub-points\"><li><strong>1. Bereich wählen:</strong> In der App auf „Lagerverwaltung“ und anschließend auf „Entnahme“ tippen.</li><li><strong>2. Artikel suchen:</strong> Auf „Artikelsuche“ tippen und den Artikel suchen oder sein Etikett scannen.</li><li><strong>3. Menge und Bemerkung:</strong> Die entnommene Menge auswählen und bei Bedarf eine Bemerkung eintragen.</li><li><strong>4. Projekt wählen:</strong> Im Auswahlfeld das laufende Projekt wählen, z. B. „Umbau Musterstraße“.</li><li><strong>5. Speichern:</strong> Die Menge wird im Lager abgebucht und auf das Projekt gebucht.</li></ul></div>",
-      "Ist die Menge laut Bestandsführung nicht (ausreichend) im Lager vorhanden, erscheint eine Warnung, dass die Menge den Bestand übersteigt. Mit „Ja“ wird die angegebene Menge trotzdem auf das Projekt gebucht – so bleibt die Entnahme in jedem Fall dokumentiert.",
-      "Für Materialbuchungen direkt auf der Baustelle wirken Projekte, Bestandsführung und die OrKan-App zusammen – über die Desktop-Oberfläche ist keine Materialbuchung im Feld möglich.",
+      ">> Material buchen Sie in der App über „Entnahme“ direkt auf das Projekt.",
+      "<div>So buchen Sie Material in der OrKan-App:<ul class=\"sub-points\"><li><strong>1. Bereich wählen:</strong> „Lagerverwaltung“ und dann „Entnahme“ tippen.</li><li><strong>2. Artikel suchen:</strong> „Artikelsuche“ tippen, Artikel suchen oder Etikett scannen.</li><li><strong>3. Menge und Bemerkung:</strong> Menge auswählen, bei Bedarf eine Bemerkung eintragen.</li><li><strong>4. Projekt wählen:</strong> das laufende Projekt auswählen, z. B. „Umbau Musterstraße“.</li><li><strong>5. Speichern:</strong> Die Menge wird im Lager ab- und auf das Projekt gebucht.</li></ul></div>",
+      "Reicht der Bestand laut Bestandsführung nicht, erscheint eine Warnung. Mit „Ja“ wird trotzdem gebucht – die Entnahme bleibt so dokumentiert.",
+      "Materialbuchungen auf der Baustelle laufen nur über die OrKan-App (zusammen mit Projekten und Bestandsführung), nicht über die Desktop-Oberfläche.",
       "## 4. Gebrauchsgüter per OrKan-App auf ein Projekt buchen",
-      "<div>Maschinen und andere Gebrauchsgüter buchen Sie in der App über einen eigenen Ablauf:<ul class=\"sub-points\"><li><strong>1. Bereich wählen:</strong> In der App „Gebrauchsgut“ öffnen und auf „Buchung“ tippen.</li><li><strong>2. Standorttyp wählen:</strong> Den Standorttyp auswählen, z. B. „Projekt“.</li><li><strong>3. Projekt wählen:</strong> Das Projekt aus der Liste auswählen – bei vielen Projekten schneller: den QR-Code des Projekts scannen.</li><li><strong>4. Standort im Projekt:</strong> Sind beim Projekt Projektorte angelegt, wählen Sie den passenden Ort aus; sonst entfällt dieser Schritt.</li><li><strong>5. Gebrauchsgut wählen:</strong> Gebrauchsgutart (z. B. „Maschine“) und anschließend das Gebrauchsgut (z. B. „Pressmaschine“) wählen und buchen.</li></ul></div>",
-      "Am Desktop buchen Sie Maschinen und Schlüssel mit dem Standorttyp „Projekt“ (oder „Projektort“) auf die Baustelle. Was gerade auf dem Projekt liegt, zeigt „Gebrauchsgut“ → „Standorte“ → Projekt markieren → „Materialliste“.",
+      ">> Maschinen buchen Sie in der App über „Gebrauchsgut“ → „Buchung“.",
+      "<div>So buchen Sie Gebrauchsgüter in der App:<ul class=\"sub-points\"><li><strong>1. Bereich wählen:</strong> „Gebrauchsgut“ öffnen und „Buchung“ tippen.</li><li><strong>2. Standorttyp wählen:</strong> z. B. „Projekt“.</li><li><strong>3. Projekt wählen:</strong> aus der Liste – oder schneller den QR-Code des Projekts scannen.</li><li><strong>4. Standort im Projekt:</strong> nur wenn Projektorte angelegt sind.</li><li><strong>5. Gebrauchsgut wählen:</strong> Gebrauchsgutart (z. B. „Maschine“) und Gebrauchsgut (z. B. „Pressmaschine“) wählen und buchen.</li></ul></div>",
+      "Am Desktop buchen Sie Maschinen und Schlüssel mit Standorttyp „Projekt“ (oder „Projektort“). Was auf dem Projekt liegt, zeigt „Gebrauchsgut“ → „Standorte“ → Projekt markieren → „Materialliste“.",
       "## 5. Projekt abschließen",
-      "Projekt anklicken → „Abschließen“. Vorher die Materialliste prüfen und alle Gebrauchsgüter zurückbuchen. Abgeschlossene Projekte finden Sie über den Filter „Abgeschlossen“.",
+      ">> Vor dem Abschluss alle Gebrauchsgüter zurückbuchen.",
+      "Projekt anklicken → „Abschließen“. Vorher Materialliste prüfen und alle Gebrauchsgüter zurückbuchen. Abgeschlossene Projekte finden Sie über den Filter „Abgeschlossen“.",
       "## 6. Ergänzung: Branchensoftware",
-      "<div><strong>Schon gewusst?</strong> Der OrKan-Artikelstamm kann über einen Matchcode (interne Artikelnummer) auch direkt in Ihre Branchensoftware importiert werden. Monteure können Materialentnahmen dann auch auf Baustellen buchen, die in der Branchensoftware angelegt sind.</div>"
+      ">> Der Artikelstamm lässt sich auch in Ihre Branchensoftware übernehmen.",
+      "<div><strong>Schon gewusst?</strong> Der OrKan-Artikelstamm lässt sich per Matchcode (interne Artikelnummer) in Ihre Branchensoftware importieren. Monteure buchen Entnahmen dann auch auf Baustellen, die dort angelegt sind.</div>"
     ],
     features:[
       {t:'Entnahme & Einlagerung per App',d:'Artikel scannen, Menge angeben, Projekt auswählen – Buchung auch bei Bestandsüberschreitung mit Warnhinweis möglich'},
@@ -2034,16 +2065,19 @@ const MODULES = [
     gist:["Laufender Bestand", "Buchungen & Korrekturen", "Bestand und Bestellvorschlag"],
     points:[
       "## 1. Was ist die Bestandsführung?",
-      "Mit der Bestandsführung zeigt „Lagerbestand“ den tatsächlichen, laufend fortgeschriebenen Bestand je Artikel.",
-      "Jede Warenbewegung verändert den Bestand automatisch: Wareneingänge erhöhen ihn, Entnahmen verringern ihn. So wissen Sie jederzeit, wie viel von einem Artikel wirklich im Lager liegt.",
+      ">> Die Bestandsführung zeigt jederzeit, wie viel wirklich im Lager liegt.",
+      "Mit Bestandsführung zeigt „Lagerbestand“ den laufend fortgeschriebenen Ist-Bestand je Artikel.",
+      "Jede Bewegung bucht automatisch: Wareneingänge erhöhen den Bestand, Entnahmen verringern ihn.",
       "## 2. Lagerbestand im Überblick",
-      "Die Übersicht „Lagerbestand“ zeigt je Artikel u. a. Artikelnummer, Bezeichnung, Lager MIN/MAX, Bestand und Lagereinheit – filterbar nach Lagerorttyp und jederzeit als Liste exportierbar.",
-      "Über „Buchungen“ sehen Sie für einen markierten Artikel die vollständige Buchungshistorie (Typ, Menge, Datum). Mit „Erstellen“ legen Sie dort bei Bedarf eine manuelle Korrekturbuchung an; auch die Historie lässt sich exportieren.",
-      "Die Übersicht „Lagerbestand“ zeigt je Artikel außerdem den geschätzten Warenwert. Voraussetzung dafür ist, dass die Einkaufspreise gepflegt und aktuell sind – nur dann stimmt der berechnete Warenwert.",
-      "Wird der Bestand nicht laufend gebucht, lässt sich der Warenwert näherungsweise schätzen: Mittelwert aus Lager MIN und Lager MAX × Einkaufspreis, aufsummiert über alle Artikel – trifft in der Praxis zu rund 90 % zu.",
+      ">> Im Lagerbestand sehen Sie Bestand, Buchungshistorie und Warenwert je Artikel.",
+      "Die Übersicht „Lagerbestand“ zeigt je Artikel u. a. Artikelnummer, Bezeichnung, Lager MIN/MAX, Bestand und Lagereinheit – filterbar nach Lagerorttyp und exportierbar.",
+      "Über „Buchungen“ sehen Sie die Buchungshistorie eines markierten Artikels (Typ, Menge, Datum). Mit „Erstellen“ legen Sie dort eine Korrekturbuchung an; auch die Historie ist exportierbar.",
+      "Der Lagerbestand zeigt außerdem den geschätzten Warenwert – korrekt nur mit gepflegten, aktuellen Einkaufspreisen.",
+      "Ohne laufende Buchung lässt sich der Warenwert schätzen: (Lager MIN + Lager MAX) ÷ 2 × Einkaufspreis, summiert über alle Artikel – in der Praxis zu rund 90 % zutreffend.",
       "## 3. Bestand im Zusammenspiel",
-      "<div>Der Kreislauf der Bestandsführung:<ul class=\"sub-points\"><li>Der Bestand sinkt unter Lager MIN → ein Bestellvorschlag entsteht (automatisch über „Bestellvorschläge ermitteln“ oder manuell).</li><li>Aus dem Vorschlag wird eine Bestellung beim Lieferanten erstellt und versendet.</li><li>Bei Anlieferung wird der Wareneingang gescannt und gebucht → der Lagerbestand wird aktualisiert.</li></ul></div>",
-      "In der OrKan-App buchen Mitarbeiter Bewegungen direkt am Regal – z. B. Einlagerung, Entnahme oder Umlagerung. Übersteigt eine Entnahme den verfügbaren Bestand, warnt die App, lässt die Buchung aber zu, damit die Entnahme dokumentiert bleibt."
+      ">> Bestand, Bestellvorschlag und Wareneingang bilden einen Kreislauf.",
+      "<div>Der Kreislauf:<ul class=\"sub-points\"><li>Bestand unter Lager MIN → Bestellvorschlag entsteht (automatisch über „Bestellvorschläge ermitteln“ oder manuell).</li><li>Aus dem Vorschlag wird die Bestellung erstellt und versendet.</li><li>Bei Anlieferung wird der Wareneingang gescannt und gebucht → der Bestand wird aktualisiert.</li></ul></div>",
+      "In der OrKan-App buchen Mitarbeiter Bewegungen direkt am Regal – Einlagerung, Entnahme oder Umlagerung. Übersteigt eine Entnahme den Bestand, warnt die App, bucht aber trotzdem, damit nichts undokumentiert bleibt."
     ],
     features:[{"t": "Laufender Bestand", "d": "Wareneingänge und Entnahmen schreiben den Bestand je Artikel automatisch fort"}, {"t": "Buchungshistorie & Korrektur", "d": "Alle Bewegungen je Artikel einsehen, bei Bedarf manuell korrigieren und exportieren"}, {"t": "Bestellvorschläge ermitteln", "d": "Artikel unter Lager MIN werden automatisch für die Nachbestellung vorgeschlagen"}],
     practice:"Ein Lagerleiter sieht in „Lagerbestand“, dass bei einem Kabelbinder nur noch 3 Pack statt der hinterlegten 5 (Lager MIN) vorhanden sind. Über „Bestellvorschläge ermitteln“ landet der Artikel automatisch im Bestellvorschlag – nach dem Wareneingang zeigt der Bestand wieder den korrekten Wert.",
@@ -2063,11 +2097,13 @@ const MODULES = [
     gist:["Inventur per Excel", "Inventur per App", "Warenwert ermitteln"],
     points:[
       "## 1. Zwei Wege zur Inventur",
-      "<div>Die OrKan Cloud bietet zwei Wege, eine Inventur durchzuführen:<ul class=\"sub-points\"><li><strong>Excel-Liste:</strong> Den Lagerbestand exportieren – z. B. gefiltert nach einem Lagerort wie „1.10“ –, Zählmenge und Unterschriftsfeld in Excel ergänzen und als klassische Inventurliste verwenden. Das funktioniert auch, wenn der Bestand nicht laufend gebucht wird.</li><li><strong>App-Funktion „Inventur“:</strong> Die Artikel werden nacheinander gescannt, die gezählte Menge wird direkt erfasst. So entsteht sofort ein digitaler Inventurwert, der sich anschließend als Ganzes exportieren lässt. Grundlage ist ein laufend gebuchter Bestand.</li></ul></div>",
+      ">> Inventur geht per Excel-Liste oder direkt per App.",
+      "<div>Zwei Wege:<ul class=\"sub-points\"><li><strong>Excel-Liste:</strong> Lagerbestand exportieren – z. B. gefiltert nach Lagerort „1.10“ –, Zählmenge und Unterschriftsfeld ergänzen und als Inventurliste nutzen. Geht auch ohne laufend gebuchten Bestand.</li><li><strong>App-Funktion „Inventur“:</strong> Artikel nacheinander scannen und die Menge direkt erfassen. So entsteht sofort ein digitaler Inventurwert, der sich exportieren lässt. Voraussetzung: laufend gebuchter Bestand.</li></ul></div>",
       "## 2. Warenwert ermitteln",
-      "Bei laufend gebuchtem Bestand ergibt sich der Warenwert aus dem tatsächlichen Bestand – ideal für die Inventurbewertung.",
-      "Wird der Bestand nicht laufend gebucht, lässt sich ein Näherungswert berechnen, sofern Einkaufspreise gepflegt sind: Mittelwert aus Lager MIN und Lager MAX × Einkaufspreis, aufsummiert über alle Artikel. In der Praxis trifft dieser Wert zu etwa 90 % zu.",
-      "Beispiel: Lager MIN 1, Lager MAX 2 → Mittelwert 1,5 Stück; bei einem Einkaufspreis von 0,70 € ergibt sich ein Warenwert von ca. 1,05 € für diesen Artikel."
+      ">> Der Warenwert ergibt sich aus dem Bestand – oder näherungsweise aus Lager MIN und MAX.",
+      "Mit laufend gebuchtem Bestand ergibt sich der Warenwert aus dem tatsächlichen Bestand – ideal für die Inventurbewertung.",
+      "Ohne laufende Buchung (und mit gepflegten Preisen) gilt als Näherung: (Lager MIN + Lager MAX) ÷ 2 × Einkaufspreis, summiert über alle Artikel – zu etwa 90 % zutreffend.",
+      "Beispiel: Lager MIN 1, Lager MAX 2 → Mittelwert 1,5 Stück × 0,70 € = ca. 1,05 € Warenwert für diesen Artikel."
     ],
     features:[{"t": "Inventur per Excel", "d": "Export je Lagerort, Zählmenge und Unterschrift manuell ergänzen"}, {"t": "Inventur per App", "d": "Artikel scannen, Menge erfassen, Inventurwert direkt exportieren"}, {"t": "Warenwert-Näherung", "d": "Mittelwert aus Lager MIN/MAX × Einkaufspreis, ca. 90 % Trefferquote"}],
     practice:"Zum Jahresende exportiert ein Betrieb den Lagerbestand je Lagerort als Excel-Liste. Zwei Mitarbeiter zählen Regal für Regal, tragen die Mengen ein und unterschreiben – die fertige Liste dient als Inventurnachweis.",
@@ -2087,11 +2123,13 @@ const MODULES = [
     gist:['Preise pflegen','DATANORM-Import','Preisabfrage im Shop'],
     points:[
       "## 1. Preise pflegen",
-      "Einkaufspreise hinterlegen Sie direkt in der Artikelkarte beim jeweiligen Lieferanten. Gepflegte Preise sind die Grundlage für den Warenwert und für die Kostenübersicht Ihrer Bestellungen.",
-      "Über den separaten Reiter „DATANORM Preis Import“ lassen sich Preise und Daten vieler Artikel eines Lieferanten in einem Schritt aktualisieren, statt jeden Artikel einzeln zu pflegen.",
+      ">> Gepflegte Einkaufspreise sind die Grundlage für Warenwert und Kostenübersicht.",
+      "Einkaufspreise hinterlegen Sie in der Artikelkarte beim jeweiligen Lieferanten.",
+      "Über den Reiter „DATANORM Preis Import“ aktualisieren Sie Preise und Daten vieler Artikel eines Lieferanten in einem Schritt.",
       "## 2. Preise abfragen",
-      "<div>Aktuelle Preise können Sie direkt über den Shop Ihres Händlers abfragen – der Ablauf nutzt die Shop-Anbindung Ihres Lieferanten:<ul class=\"sub-points\"><li><strong>2.1 Preisabfrage über die Lieferantenkarte starten:</strong> Die Preisabfrage mit den Artikeln anlegen, deren Preise Sie wissen möchten.</li><li><strong>2.2 Preisabfrage an den Shop senden:</strong> Die definierte Preisabfrage an den Shop des jeweiligen Händlers senden.</li><li><strong>2.3 Preisabfrage im Shop:</strong> Im Händler-Shop die Funktion bzw. den Button „Preisabfrage“ nutzen.</li><li><strong>2.4 Preise hinterlegen:</strong> Die erhaltenen Preise auf der Artikelkarte hinterlegen.</li></ul></div>",
-      "Wichtig: Voraussetzung ist ein per Shop-URL (IDS-Schnittstelle) angebundener Lieferant. Wie die Anbindung eingerichtet wird, lernen Sie in Modul 3."
+      ">> Aktuelle Preise fragen Sie in vier Schritten über den Shop Ihres Händlers ab.",
+      "<div>Die Abfrage nutzt die Shop-Anbindung Ihres Lieferanten:<ul class=\"sub-points\"><li><strong>2.1 Preisabfrage über die Lieferantenkarte starten:</strong> Abfrage mit den gewünschten Artikeln anlegen.</li><li><strong>2.2 Preisabfrage an den Shop senden:</strong> an den Shop des jeweiligen Händlers.</li><li><strong>2.3 Preisabfrage im Shop:</strong> Im Händler-Shop die Funktion bzw. den Button „Preisabfrage“ nutzen.</li><li><strong>2.4 Preise hinterlegen:</strong> die erhaltenen Preise auf der Artikelkarte eintragen.</li></ul></div>",
+      "Wichtig: Voraussetzung ist ein per Shop-URL (IDS-Schnittstelle) angebundener Lieferant – siehe Modul 3."
     ],
     features:[
       {t:'DATANORM Preis Import',d:'Preise vieler Artikel eines Lieferanten in einem Schritt aktualisieren'},
@@ -2116,11 +2154,13 @@ const MODULES = [
     gist:['Kommissions-Etiketten','Retouren-Etiketten','Vorlagendruck'],
     points:[
       "## 1. Wofür die Etiketten?",
-      "Mit Kommissions- und Retouren-Etiketten kennzeichnen Sie Ware, die für einen bestimmten Auftrag bereitgestellt wird (Kommission) oder an den Lieferanten zurückgeht (Retoure) – so ist auf einen Blick klar, wohin sie gehört.",
+      ">> Kommissions- und Retouren-Etiketten zeigen, wohin Ware gehört.",
+      "Kommission: Ware ist für einen bestimmten Auftrag bereitgestellt. Retoure: Ware geht an den Lieferanten zurück.",
       "## 2. Etiketten drucken",
-      "Klickweg: „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Vorlagendruck“. Dort wählen Sie die passende Vorlage für Kommission oder Retoure.",
-      "<div>Zwei Größen stehen zur Wahl:<ul class=\"sub-points\"><li><strong>„Kommission“ bzw. „Retoure“:</strong> 4 Etiketten pro Blatt.</li><li><strong>„Kommission klein“ bzw. „Retoure klein“:</strong> 8 Etiketten pro Blatt.</li></ul></div>",
-      "<div>Die passenden Kommissions- und Retouren-Etiketten erhalten Sie im <a href=\"https://orkan-system.de/shop/\" target=\"_blank\" rel=\"noopener\">OrKan System Shop</a>.</div>"
+      ">> Gedruckt wird über den Vorlagendruck – in zwei Größen.",
+      "Klickweg: „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Vorlagendruck“. Dort wählen Sie die Vorlage für Kommission oder Retoure.",
+      "<div>Zwei Größen:<ul class=\"sub-points\"><li><strong>„Kommission“ bzw. „Retoure“:</strong> 4 Etiketten pro Blatt.</li><li><strong>„Kommission klein“ bzw. „Retoure klein“:</strong> 8 Etiketten pro Blatt.</li></ul></div>",
+      "<div>Die passenden Etiketten erhalten Sie im <a href=\"https://orkan-system.de/shop/\" target=\"_blank\" rel=\"noopener\">OrKan System Shop</a>.</div>"
     ],
     features:[
       {t:'Vorlagendruck',d:'Etiketten für Kommission und Retoure direkt aus den Einstellungen drucken'},
@@ -2145,14 +2185,17 @@ const MODULES = [
     gist:['Scan-Bestelleingang','Kalender & Drag & Drop','Lager-, Kommissions- und externe Bestellungen'],
     points:[
       "## 1. Was ist die digitale Warenannahme?",
-      "Die digitale Warenannahme ist die Wareneingangsprüfung über „Lagerverwaltung“ → „Scan-Bestelleingang“. Hier laufen alle erwarteten Lieferungen zusammen – egal, ob es sich um Lagerware, Kommissionsware oder extern bestellte Ware handelt.",
-      "Im Hintergrund arbeitet der Kalender: Jede Bestellung erscheint dort an ihrem erwarteten Liefertag und wird im Scan-Bestelleingang nach Ampelfarbe angezeigt (Rot = überfällig, Gelb = heute fällig, Grün = zukünftig).",
+      ">> Im Scan-Bestelleingang laufen alle erwarteten Lieferungen zusammen.",
+      "Die digitale Warenannahme ist die Wareneingangsprüfung über „Lagerverwaltung“ → „Scan-Bestelleingang“ – für Lagerware, Kommissionsware und extern bestellte Ware.",
+      "Im Hintergrund arbeitet der Kalender: Jede Bestellung steht an ihrem erwarteten Liefertag und wird im Scan-Bestelleingang nach Ampelfarbe angezeigt (Rot = überfällig, Gelb = heute, Grün = zukünftig).",
       "## 2. Drei Arten von Bestellungen",
-      "<div>Im Scan-Bestelleingang laufen drei Bestellarten zusammen:<ul class=\"sub-points\"><li><strong>Lagerbestellung:</strong> Die normale Nachbestellung über den Bestellvorschlag – sie erscheint automatisch als „B“ im Kalender.</li><li><strong>Kommissionsbestellung:</strong> Ware, die für einen bestimmten Auftrag über die OrKan Cloud bestellt wird. Das kann auch ein Artikel sein, der im Lager vorhanden ist, aber bewusst als Kommission bestellt wird – z. B. eine größere Menge Schrauben für ein Projekt, die nicht aus dem Lagerbestand genommen werden soll. Im Kalender erscheint sie mit „K“.</li><li><strong>Externe Bestellung:</strong> Eine Bestellung, die über ein anderes System ausgelöst wurde und nichts mit dem Artikelstamm der OrKan Cloud zu tun hat. Hinterlegt wird lediglich das Bestell-PDF.</li></ul></div>",
-      "Kommissions- und externe Bestellungen ziehen Sie per Drag & Drop in den Kalender. So werden nicht mehr nur die Lagerbestellungen erfasst, sondern alle Lieferungen, die im Wareneingang ankommen.",
+      ">> Lager-, Kommissions- und externe Bestellungen erscheinen gemeinsam im Kalender.",
+      "<div>Die drei Bestellarten:<ul class=\"sub-points\"><li><strong>Lagerbestellung:</strong> die normale Nachbestellung über den Bestellvorschlag – erscheint automatisch als „B“ im Kalender.</li><li><strong>Kommissionsbestellung:</strong> Ware für einen bestimmten Auftrag, bestellt über die OrKan Cloud – auch Lagerartikel, die bewusst als Kommission bestellt werden (z. B. eine größere Menge Schrauben für ein Projekt). Im Kalender mit „K“.</li><li><strong>Externe Bestellung:</strong> über ein anderes System ausgelöst, ohne Bezug zum OrKan-Artikelstamm. Hinterlegt wird nur das Bestell-PDF.</li></ul></div>",
+      "Kommissions- und externe Bestellungen ziehen Sie per Drag & Drop in den Kalender. So sind alle Lieferungen erfasst, nicht nur Lagerbestellungen.",
       "## 3. Lieferung annehmen",
-      "Im Scan-Bestelleingang wählen Sie den Lieferanten und sehen dessen offene Bestellungen nach Ampelfarbe. Positionen lassen sich einzeln oder als komplette Liste bestätigen – Mengenabweichungen werden dabei sichtbar.",
-      "<div><strong>Tipp – Touch-Monitor im Wareneingang:</strong> Der Scan-Bestelleingang kann auf einem Touch-Monitor direkt im Wareneingang angezeigt werden. So bestätigen Ihre Mitarbeiter Lieferungen bequem per Fingertipp und Scan, ohne an einen Büro-PC zu gehen. Voraussetzung ist ein angebundener Touch-Monitor.</div>"
+      ">> Lieferungen bestätigen Sie je Lieferant – am besten per Touch-Monitor direkt im Wareneingang.",
+      "Im Scan-Bestelleingang wählen Sie den Lieferanten und sehen seine offenen Bestellungen nach Ampelfarbe. Positionen bestätigen Sie einzeln oder komplett; Mengenabweichungen werden sichtbar.",
+      "<div><strong>Tipp – Touch-Monitor im Wareneingang:</strong> Ist ein Touch-Monitor im Wareneingang angebunden, bestätigen Mitarbeiter Lieferungen dort per Fingertipp und Scan – ohne Gang zum Büro-PC.</div>"
     ],
     features:[
       {t:'Alle Lieferungen an einem Ort',d:'Lager-, Kommissions- und externe Bestellungen im Scan-Bestelleingang'},
@@ -2669,7 +2712,7 @@ Object.assign(DASHBOARD_WIDGETS, {
     const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
     if(!next) return `<div class="w-next done"><div><strong>Alle Module abgeschlossen!</strong><p>Ihr Zertifikat inklusive Rabattcode ist freigeschaltet.</p></div><button class="btn btn-primary" onclick="showView('cert')">Zum Zertifikat</button></div>`;
     const p=state.moduleProgress[next.id];
-    return `<div class="w-next"><span class="w-next-num">${String(next.id).padStart(2,'0')}</span><div class="w-next-body"><strong>${next.title}</strong><p>${next.time} · ${next.points.filter(x=>!x.startsWith("## ")).length} Lerninhalte · Praxisaufgabe · Wissenscheck</p></div><button class="btn btn-primary" onclick="openModule(${next.id})">${p.started?'Fortsetzen':'Starten'} →</button></div>`;
+    return `<div class="w-next"><span class="w-next-num">${String(next.id).padStart(2,'0')}</span><div class="w-next-body"><strong>${next.title}</strong><p>${next.time} · ${next.points.filter(x=>!x.startsWith("## ")&&!x.startsWith(">> ")).length} Lerninhalte · Praxisaufgabe · Wissenscheck</p></div><button class="btn btn-primary" onclick="openModule(${next.id})">${p.started?'Fortsetzen':'Starten'} →</button></div>`;
   } },
   quizchart: { title:'Quiz-Ergebnisse je Modul', render: () => {
     const rows = MODULES.map(m=>{ const s=state.moduleProgress[m.id].quizScore; return `<div class="w-bar-row"><span class="w-bar-lbl" title="${m.title}">${String(m.id).padStart(2,'0')} ${m.title}</span><div class="w-bar"><i style="width:${s??0}%" class="${s===null?'':s>=80?'ok':'warn'}"></i></div><span class="w-bar-val">${s===null?'–':s+'%'}</span></div>`; }).join('');
@@ -2962,8 +3005,8 @@ const plainQ=t=>String(t||'').replace(/„([^“"<>\n]{1,60})[“"]/g,'$1');
 function keyPointSections(m){
   // Abschnitte ("## …") als Überschrift, jeder Punkt in einem eigenen Kasten
   const secs=[]; let cur=null;
-  m.points.forEach(pt=>{ if(pt.startsWith('## ')){ cur={h:pt.slice(3),p:[]}; secs.push(cur); } else { if(!cur){ cur={h:'',p:[]}; secs.push(cur); } cur.p.push(pt); } });
-  return secs.map(sec=>`<div class="kp-group">${sec.h?`<h3 class="kp-group-h">${sec.h}</h3>`:''}<ul class="key-points kp-cards">${sec.p.map(pt=>pt.startsWith('<div')?`<li>${uiBtns(pt)}</li>`:`<li><div>${uiBtns(pt)}</div></li>`).join('')}</ul></div>`).join('');
+  m.points.forEach(pt=>{ if(pt.startsWith('## ')){ cur={h:pt.slice(3),lead:'',p:[]}; secs.push(cur); } else { if(!cur){ cur={h:'',lead:'',p:[]}; secs.push(cur); } if(pt.startsWith('>> ')) cur.lead=pt.slice(3); else cur.p.push(pt); } });
+  return secs.map(sec=>`<div class="kp-group">${sec.h?`<h3 class="kp-group-h">${sec.h}</h3>`:''}${sec.lead?`<p class="kp-lead">${uiBtns(sec.lead)}</p>`:''}<ul class="key-points kp-cards">${sec.p.map(pt=>pt.startsWith('<div')?`<li>${uiBtns(pt)}</li>`:`<li><div>${uiBtns(pt)}</div></li>`).join('')}</ul></div>`).join('');
 }
 function renderTab(){
   const m = MODULES.find(x=>x.id===state.currentModule);
