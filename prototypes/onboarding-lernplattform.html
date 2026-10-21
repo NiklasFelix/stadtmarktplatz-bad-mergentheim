@@ -1421,6 +1421,10 @@ html:not(.theme-light) .kp-tag{color:#C9D1D6}
 .nav-sub-toggle small{font-size:10.5px;font-weight:700;color:var(--gray);letter-spacing:0}
 .nav-sub-toggle svg{transition:transform .2s;flex-shrink:0}
 .nav-sub-toggle.open svg{transform:rotate(90deg)}
+
+.col-filter-ic{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:22px;height:18px;vertical-align:middle;border:1px solid var(--border);border-radius:4px;background:var(--white);margin:0 2px}
+.col-filter-ic i{display:block;height:2px;border-radius:1px;background:#8EA752}
+.col-filter-ic i:nth-child(1){width:12px}.col-filter-ic i:nth-child(2){width:8px}.col-filter-ic i:nth-child(3){width:4px}
 </style>
 </head>
 <body>
@@ -1761,7 +1765,7 @@ const MODULES = [
     gist:['Artikel anlegen','Lager MIN/MAX','Lagerorte'],
     points:[
       "## 1. Die Artikelübersicht",
-      "[Artikelliste anpassen] <div>Die Artikelliste unter „Lagerverwaltung“ → „Artikel“ passen Sie so an:<ul class=\"sub-points\"><li><strong>Spalten:</strong> Über das Doppelpfeil-Symbol ein- oder ausblenden.</li><li><strong>Suchfeld:</strong> Volltextsuche – angezeigt wird jeder Artikel, der das Wort enthält.</li><li><strong>Anzahl:</strong> Rechts unten stellen Sie die Artikel pro Seite ein; daneben steht die Gesamtanzahl.</li></ul></div>",
+      "[Artikelliste anpassen] <div>Die Artikelliste unter „Lagerverwaltung“ → „Artikel“ passen Sie so an:<ul class=\"sub-points\"><li><strong>Spalten:</strong> Über das Doppelpfeil-Symbol ein- oder ausblenden.</li><li><strong>Suchfeld:</strong> Volltextsuche – angezeigt wird jeder Artikel, der das Wort enthält.</li><li><strong>Spaltensuche:</strong> Über das Filter-Symbol <span class=\"col-filter-ic\" title=\"Spaltenfilter\"><i></i><i></i><i></i></span> in der Spaltenüberschrift suchen Sie gezielt in einer ausgewählten Spalte – angezeigt werden dann nur Treffer in dieser Spalte.</li><li><strong>Anzahl:</strong> Rechts unten stellen Sie die Artikel pro Seite ein; daneben steht die Gesamtanzahl.</li></ul></div>",
       "[Suchfeld & Etikettendruck] <div><strong>Wichtig:</strong> Die Gesamtanzahl bezieht sich auf das aktuelle Suchergebnis. Steht z. B. „Befestigung“ im Suchfeld, werden nur diese Artikel gezählt und gedruckt. Prüfen Sie vor dem Etikettendruck deshalb das Suchfeld.</div>",
       "## 2. Artikel anlegen",
       "[Vier Wege der Artikelanlage] Die vier Wege: Neuanlage über „Erstellen“, Serienanlage per „Eingabe behalten“, einen bestehenden Artikel über „Kopieren“ oder per Excel über „Import“ (siehe Modul 3).",
