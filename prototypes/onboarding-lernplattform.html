@@ -1436,12 +1436,24 @@ html:not(.theme-light) .fs-skip{color:#A6BF68}
 .video-placeholder.has-poster .play-circle{width:48px;height:48px;box-shadow:0 0 0 8px rgba(154,183,80,.22);flex:0 0 auto}
 .video-placeholder.has-poster .play-circle svg{width:20px;height:20px}
 .video-placeholder.has-poster>span{align-self:flex-end;margin-bottom:10px}
-.video-tools{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0 18px}
-.vt-btn{border:1px solid var(--line);background:var(--white);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums}
-.vt-btn:hover{border-color:#9AB750}
-.vt-btn.active{background:#9AB750;border-color:#9AB750;color:#000}
-.vt-sep{width:1px;height:22px;background:var(--line);margin:0 6px}
-.vt-label{font-size:13px;opacity:.75;margin-right:2px}
+.ovp{position:absolute;inset:0;border-radius:14px;overflow:hidden;background:#1F2428;outline:none}
+.ovp video{width:100%;height:100%;object-fit:contain;display:block;background:#1F2428;cursor:pointer}
+.ovp:fullscreen{border-radius:0}.ovp:fullscreen video{object-fit:contain}
+.ovp-bar{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 10px;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;transition:opacity .25s}
+.ovp.playing:not(:hover):not(:focus-within) .ovp-bar{opacity:0}
+.ovp-row{display:flex;align-items:center;gap:4px}
+.ovp-grow{flex:1}
+.ovp-b{display:inline-flex;align-items:center;gap:2px;background:transparent;border:0;color:#fff;padding:6px 8px;border-radius:8px;cursor:pointer;font:inherit;font-size:12px}
+.ovp-b:hover,.ovp-b:focus-visible{background:rgba(255,255,255,.16)}
+.ovp-b svg{width:20px;height:20px}
+.ovp-b b{font-size:11px;font-weight:700}
+.ovp-time{font-size:13px;font-variant-numeric:tabular-nums;margin-left:6px;color:#fff}
+.ovp-rate{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:8px;padding:5px 6px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.ovp-rate option{color:#1F2428;background:#fff}
+.ovp.muted .ovp-wave{display:none}
+.ovp-seek{-webkit-appearance:none;appearance:none;width:100%;height:4px;margin:0 0 8px;border-radius:4px;background:linear-gradient(to right,#9AB750 var(--pct,0%),rgba(255,255,255,.3) var(--pct,0%));cursor:pointer}
+.ovp-seek::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#9AB750;border:2px solid #fff}
+.ovp-seek::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:#9AB750;border:2px solid #fff}
 .video-placeholder.has-poster>span{background:rgba(31,36,40,.72);color:#fff;padding:6px 12px;border-radius:999px;font-size:13px}
 .video-placeholder.has-poster>span .ui-box{background:transparent;color:#fff;box-shadow:none;padding:0;font-weight:700}
 </style>
@@ -2951,7 +2963,22 @@ function videoBlockHtml(m){
   const v = state.moduleVideos[m.id];
   let inner;
   if(v && v.type==='uploaded'){
-    inner = `<video src="${v.url}" poster="${modulePoster(m)}" preload="metadata" controls style="width:100%;height:100%;border-radius:14px;object-fit:cover;background:#1F2428"></video>`;
+    inner = `<div class="ovp" tabindex="0" onkeydown="ovpKey(event,this)">
+      <video src="${v.url}" poster="${modulePoster(m)}" preload="metadata" playsinline onclick="ovpToggle(this)" ontimeupdate="ovpTick(this)" onloadedmetadata="ovpTick(this)" onplay="ovpState(this)" onpause="ovpState(this)" onended="ovpState(this)"></video>
+      <div class="ovp-bar">
+        <input type="range" class="ovp-seek" min="0" max="1000" value="0" aria-label="Position" oninput="ovpSeek(this)">
+        <div class="ovp-row">
+          <button type="button" class="ovp-b ovp-play" onclick="ovpToggle(this)" title="Abspielen / Pause (Leertaste)" aria-label="Abspielen"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+          <button type="button" class="ovp-b" onclick="ovpSkip(this,-5)" title="5 Sekunden zurück (←)" aria-label="5 Sekunden zurück"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><b>5</b></button>
+          <button type="button" class="ovp-b" onclick="ovpSkip(this,5)" title="5 Sekunden vor (→)" aria-label="5 Sekunden vor"><b>5</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></button>
+          <span class="ovp-time">0:00 / 0:00</span>
+          <span class="ovp-grow"></span>
+          <select class="ovp-rate" onchange="ovpRate(this)" title="Geschwindigkeit" aria-label="Geschwindigkeit">${[0.5,0.75,1,1.25,1.5,2].map(r=>`<option value="${r}"${r===1?' selected':''}>${String(r).replace('.',',')}×</option>`).join('')}</select>
+          <button type="button" class="ovp-b ovp-mute" onclick="ovpMute(this)" title="Ton an/aus" aria-label="Ton an/aus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path class="ovp-wave" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>
+          <button type="button" class="ovp-b" onclick="ovpFull(this)" title="Vollbild" aria-label="Vollbild"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+        </div>
+      </div>
+    </div>`;
   } else if(v && v.type==='generated'){
     inner = `<div class="play-circle" onclick="this.parentElement.querySelector('span').textContent='Wiedergabe simuliert — KI-Video-Rendering abgeschlossen'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span>KI-generiertes Video bereit: „${v.name}"</span>`;
   } else {
@@ -2960,25 +2987,27 @@ function videoBlockHtml(m){
   return `<div class="video-placeholder ${v&&v.type==='uploaded'?'':'has-poster'}" style="position:relative;${v&&v.type==='uploaded'?'':`--poster:url('${modulePoster(m)}')`}">
     <button class="video-manage-btn" onclick="openVideoManager(${m.id})">Video verwalten</button>
     ${inner}
-  </div>${v&&v.type==='uploaded'?`<div class="video-tools" role="group" aria-label="Videosteuerung">
-    <button type="button" class="vt-btn" onclick="vidSkip(this,-5)" title="5 Sekunden zurück">↺ 5 Sek.</button>
-    <button type="button" class="vt-btn" onclick="vidSkip(this,5)" title="5 Sekunden vor">5 Sek. ↻</button>
-    <span class="vt-sep"></span>
-    <span class="vt-label">Geschwindigkeit</span>
-    ${[0.5,0.75,1,1.25,1.5,2].map(r=>`<button type="button" class="vt-btn vt-rate${r===1?' active':''}" onclick="vidRate(this,${r})">${String(r).replace('.',',')}×</button>`).join('')}
-  </div>`:''}`;
+  </div>`;
 }
-function vidOf(btn){ return btn.closest('.video-tools').previousElementSibling.querySelector('video'); }
-function vidSkip(btn,sec){
-  const v=vidOf(btn); if(!v) return;
-  const max=isFinite(v.duration)?v.duration:Infinity;
-  v.currentTime=Math.min(max,Math.max(0,v.currentTime+sec));
-}
-function vidRate(btn,r){
-  const v=vidOf(btn); if(!v) return;
-  v.playbackRate=r;
-  btn.parentElement.querySelectorAll('.vt-rate').forEach(b=>b.classList.toggle('active',b===btn));
-}
+function ovpOf(el){ const w=el.closest('.ovp'); return [w,w.querySelector('video')]; }
+function ovpFmt(t){ t=Math.max(0,Math.floor(t||0)); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); }
+function ovpToggle(el){ const [,v]=ovpOf(el); if(v.paused||v.ended){ const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } else v.pause(); }
+function ovpState(v){ const w=v.closest('.ovp'); w.classList.toggle('playing',!v.paused&&!v.ended);
+  w.querySelector('.ovp-play').innerHTML = (!v.paused&&!v.ended) ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>' : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'; }
+function ovpTick(v){ const w=v.closest('.ovp'); const d=isFinite(v.duration)?v.duration:0;
+  w.querySelector('.ovp-time').textContent=ovpFmt(v.currentTime)+' / '+ovpFmt(d);
+  const sk=w.querySelector('.ovp-seek'); sk.value=d?Math.round(v.currentTime/d*1000):0; sk.style.setProperty('--pct',(sk.value/10)+'%'); }
+function ovpSeek(sk){ const [,v]=ovpOf(sk); if(isFinite(v.duration)) v.currentTime=sk.value/1000*v.duration; sk.style.setProperty('--pct',(sk.value/10)+'%'); }
+function ovpSkip(el,sec){ const [,v]=ovpOf(el); const max=isFinite(v.duration)?v.duration:Infinity; v.currentTime=Math.min(max,Math.max(0,v.currentTime+sec)); ovpTick(v); }
+function ovpRate(sel){ const [,v]=ovpOf(sel); v.playbackRate=parseFloat(sel.value); }
+function ovpMute(el){ const [w,v]=ovpOf(el); v.muted=!v.muted; w.classList.toggle('muted',v.muted); }
+function ovpFull(el){ const [w]=ovpOf(el);
+  try{ if(document.fullscreenElement) document.exitFullscreen(); else if(w.requestFullscreen) w.requestFullscreen().catch(()=>{}); else if(w.webkitRequestFullscreen) w.webkitRequestFullscreen(); }catch(e){} }
+function ovpKey(e,w){ const v=w.querySelector('video'); if(e.target.tagName==='SELECT'||e.target.tagName==='INPUT') return;
+  if(e.key==='ArrowLeft'){ ovpSkip(w,-5); e.preventDefault(); }
+  else if(e.key==='ArrowRight'){ ovpSkip(w,5); e.preventDefault(); }
+  else if(e.key===' '||e.key==='k'){ ovpToggle(w); e.preventDefault(); }
+  else if(e.key==='f'){ ovpFull(w); } }
 function openVideoManager(mid){
   state.videoManagerModuleId = mid;
   document.getElementById('vmModuleTitle').textContent = MODULES.find(m=>m.id===mid).title;
