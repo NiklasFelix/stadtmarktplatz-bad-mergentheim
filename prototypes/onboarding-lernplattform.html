@@ -1424,6 +1424,7 @@ html:not(.theme-light) .fs-skip{color:#A6BF68}
 .col-filter-ic i{display:block;height:2px;border-radius:1px;background:#8EA752}
 .col-filter-ic i:nth-child(1){width:12px}.col-filter-ic i:nth-child(2){width:8px}.col-filter-ic i:nth-child(3){width:4px}
 .col-arrows-ic{display:inline-flex;align-items:center;justify-content:center;width:22px;height:18px;vertical-align:middle;border:1px solid var(--border);border-radius:4px;background:var(--white);color:#4E5860;margin:0 2px}
+.plus-ic{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;vertical-align:middle;border-radius:5px;background:#fff;color:#1F2428;border:1px solid #C9CEC4;margin:0 2px}
 .oc-ic{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;vertical-align:middle;border-radius:5px;background:#7DA544;color:#fff;margin:0 2px}
 
 .video-placeholder.has-poster,html:not(.theme-light) .video-placeholder.has-poster{border:0;background:var(--poster) center/cover no-repeat,#1F2428!important}
@@ -1732,7 +1733,7 @@ const MODULES = [
     intro:{"title": "Was ist die OrKan Cloud?", "points": ["Ein lieferantenunabhängiges Software-Tool für Lagerführung und Bestellwesen – bereits bei über 100 Betrieben im Einsatz.", "Funktioniert nach dem Kanban-Prinzip: Nachbestellt wird, was am Lagerplatz tatsächlich verbraucht wurde – einfach per Scan.", "Ihr Nutzen: gesicherter Nachschub, keine Doppelbestellungen oder Suchzeiten und voller Überblick über Material und Maschinen.", "Webbasiert: Es muss kein Programm und keine App installiert werden – die OrKan Cloud erreichen Sie im Browser unter <a href=\"https://cloud.orkan-system.de\" target=\"_blank\" rel=\"noopener\" style=\"color:#8EA752;font-weight:700\">cloud.orkan-system.de</a>. Tipp: Legen Sie die Seite in Ihrer Favoritenleiste ab, um direkt und schnell darauf zuzugreifen."]},
     gist:['Startseite & Kalender','Ampelsystem','Lagerverwaltung im Überblick'],
     points:[
-      "[Startseite] Die Startseite ist frei anpassbar: Kacheln wie Artikel, Lieferant, Bestellvorschläge erstellen oder Meine Einstellungen verschieben, umbenennen, einfärben oder entfernen Sie im Bearbeitungsmodus (Stift-Symbol).",
+      "[Startseite] Die Startseite ist frei anpassbar: Kacheln wie Artikel, Lieferant, Bestellvorschläge erstellen oder Meine Einstellungen verschieben, umbenennen, einfärben oder entfernen Sie im Bearbeitungsmodus (Stift-Symbol). Weitere Kacheln fügen Sie mit einem Klick auf das Kreuz <span class=\"plus-ic\" title=\"Kachel hinzufügen\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg></span> hinzu.",
       "[Dashboard auf der Startseite] <div>Das Dashboard auf der Startseite zeigt die wichtigsten Zahlen auf einen Blick:<ul class=\"sub-points\"><li><strong>Stammdaten:</strong> Anzahl der Artikel, Lieferanten und offenen Projekte.</li><li><strong>Gebrauchsgüter:</strong> Anzahl der Maschinen, Anlagen, Bauteile, Schlüssel und Flaschen.</li><li><strong>Bestellungen:</strong> gesamt (grün) und offen (rot).</li><li><strong>Service/Wartung:</strong> gesamt (grün) und offen (rot).</li></ul><strong>Tipp:</strong> Halten Sie die roten Zahlen der offenen Bestellungen und Service-/Wartungstermine möglichst niedrig. Viele offene Einträge bedeuten unbestätigte Wareneingänge oder anstehende Prüfungen.</div>",
       "[Hauptmenü & Feedback] Die drei Striche <span class=\"oc-ic\" title=\"Hauptmenü\"><svg viewBox=\"0 0 24 24\" width=\"14\" height=\"14\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M4 7h16M4 12h16M4 17h16\"/></svg></span> oben links führen jederzeit zurück zum Home-Bereich und zur Hauptnavigation. Über das Smiley-Symbol <span class=\"oc-ic\" title=\"Feedback\"><svg viewBox=\"0 0 24 24\" width=\"15\" height=\"15\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M8.5 14.5c.9 1.3 2.1 2 3.5 2s2.6-.7 3.5-2\"/><circle cx=\"9\" cy=\"9.5\" r=\".6\" fill=\"currentColor\"/><circle cx=\"15\" cy=\"9.5\" r=\".6\" fill=\"currentColor\"/></svg></span> oben rechts kontaktieren Sie OrKan System, reichen Vorschläge ein oder melden Probleme.",
       "[Kalender & Ampelsystem] Der Kalender zeigt Termine im vierstufigen Ampelsystem: Grau (bestätigt/erledigt), Grün (künftig fällig), Gelb (heute fällig), Rot (überfällig). Buchstaben wie „B“ (Bestellung) oder „S“ (Service/Wartung) zeigen die Art des Termins.",
@@ -2908,8 +2909,8 @@ const MODULE_ICONS={
  12:'<path d="M20 12 12 20 4 12V4h8z"/><circle cx="8" cy="8" r="1.5"/>',
  13:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10M7 5l9 4"/>',
  14:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M8 14l2 2 5-5"/>'};
-function modulePoster(m,wide){
-  const H=wide?675:360, dy=wide?157:0;
+function modulePoster(m,ratio){
+  const H=ratio?Math.round(1200/ratio):360, dy=Math.round((H-360)/2);
   const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
   const words=m.title.split(' '); let l1='',l2='';
   words.forEach(w=>{ if((l1+' '+w).trim().length<=26&&!l2) l1=(l1+' '+w).trim(); else l2=(l2+' '+w).trim(); });
@@ -2930,14 +2931,14 @@ ${l2?`<text x="80" y="222" font-family="Arial,Helvetica,sans-serif" font-size="5
 }
 // Lernvideos je Modul: Modul-ID → Videodatei (liegt neben der Seite im Ordner videos/)
 const MODULE_VIDEOS = {
-  1:'videos/modul-01'
+  1:{src:'videos/modul-01', ratio:1920/944}
 };
 function videoBlockHtml(m){
-  const src = MODULE_VIDEOS[m.id];
+  const vid = MODULE_VIDEOS[m.id], src = vid&&vid.src;
   let inner;
   if(src){
     inner = `<div class="ovp" tabindex="0" onkeydown="ovpKey(event,this)">
-      <video poster="${modulePoster(m,true)}" preload="metadata" playsinline onclick="ovpToggle(this)" ontimeupdate="ovpTick(this)" onloadedmetadata="ovpTick(this)" onplay="ovpState(this)" onpause="ovpState(this)" onended="ovpState(this)"><source src="${src}.mp4" type="video/mp4"><source src="${src}.webm" type="video/webm"></video>
+      <video poster="${modulePoster(m,vid.ratio)}" preload="metadata" playsinline onclick="ovpToggle(this)" ontimeupdate="ovpTick(this)" onloadedmetadata="ovpTick(this)" onplay="ovpState(this)" onpause="ovpState(this)" onended="ovpState(this)"><source src="${src}.mp4" type="video/mp4"><source src="${src}.webm" type="video/webm"></video>
       <div class="ovp-bar">
         <input type="range" class="ovp-seek" min="0" max="1000" value="0" aria-label="Position" oninput="ovpSeek(this)">
         <div class="ovp-row">
@@ -2955,7 +2956,7 @@ function videoBlockHtml(m){
   } else {
     inner = `<div class="play-circle" onclick="this.parentElement.querySelector('span').textContent='Wiedergabe simuliert — Video in Produktion'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span>Prozessnahes Arbeitsvideo: <span class="ui-box">${m.title}</span> wird geladen</span>`;
   }
-  return `<div class="video-placeholder ${src?'has-video':'has-poster'}" style="position:relative;${src?'':`--poster:url('${modulePoster(m)}')`}">
+  return `<div class="video-placeholder ${src?'has-video':'has-poster'}" style="position:relative;${src?`aspect-ratio:${vid.ratio}`:`--poster:url('${modulePoster(m)}')`}">
     ${inner}
   </div>`;
 }
