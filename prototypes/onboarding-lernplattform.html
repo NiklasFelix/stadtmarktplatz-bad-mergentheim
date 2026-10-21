@@ -2957,6 +2957,8 @@ function uiBtns(html){
   }
   return out+html.slice(last);
 }
+// Anführungszeichen entfernen, ohne Buttons (für „Wichtige Funktionen“ und „In der Praxis“)
+const plainQ=t=>String(t||'').replace(/„([^“"<>\n]{1,60})[“"]/g,'$1');
 function keyPointSections(m){
   // Abschnitte ("## …") als Überschrift, jeder Punkt in einem eigenen Kasten
   const secs=[]; let cur=null;
@@ -2973,9 +2975,9 @@ function renderTab(){
       ${m.intro?introBlockHtml(m.intro):''}
       ${keyPointSections(m)}
       <div class="section-heading" style="margin-top:0">Wichtige Funktionen</div>
-      <div class="feature-cards">${m.features.map(f=>`<div class="feature-card"><div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></div><h5>${uiBtns(f.t)}</h5><p>${uiBtns(f.d)}</p></div>`).join('')}</div>
+      <div class="feature-cards">${m.features.map(f=>`<div class="feature-card"><div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></div><h5>${plainQ(f.t)}</h5><p>${plainQ(f.d)}</p></div>`).join('')}</div>
       ${m.id===3 ? templateDownloadCallout() : ''}
-      <div class="practice-callout"><strong>In der Praxis</strong><p>${uiBtns(m.practice)}</p></div>
+      <div class="practice-callout"><strong>In der Praxis</strong><p>${plainQ(m.practice)}</p></div>
       <div class="btn-row" style="margin-top:0">
         <button class="btn btn-outline" onclick="openCloudLink(${m.id})">Direkt in der OrKan Cloud üben</button>
       </div>
