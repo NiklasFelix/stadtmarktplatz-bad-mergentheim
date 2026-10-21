@@ -2716,11 +2716,6 @@ Object.assign(DASHBOARD_WIDGETS, {
     if(!r.length) return `<p class="w-note" style="margin:0">Hier erscheinen die zuletzt geöffneten Module und Artikel – für den schnellen Wiedereinstieg.</p>`;
     return `<div class="w-recent">${r.map(it=>{ if(it.type==='module'){ const m=MODULES.find(x=>x.id===it.id); return m?`<button class="w-recent-item" onclick="openModule(${m.id})"><span class="w-tag">Modul ${String(m.id).padStart(2,'0')}</span><strong>${m.title}</strong><span class="w-arrow">→</span></button>`:''; } const a=KB_ARTICLES[it.id]; return a?`<button class="w-recent-item" onclick="showView('kb');openArticle(${it.id})"><span class="w-tag">Wissensdatenbank</span><strong>${a.title||a.t}</strong><span class="w-arrow">→</span></button>`:''; }).join('')}</div>`;
   } },
-  feedback: { title:'Feedback & Bewertung', render: () => {
-    const rs=Object.entries(state.ratings||{}).filter(([,v])=>v.stars>0);
-    const avg = rs.length? rs.reduce((s,[,v])=>s+v.stars,0)/rs.length : 0;
-    return `<div class="w-fb"><div class="w-fb-score"><strong>${rs.length?avg.toFixed(1).replace('.',','):'–'}</strong>${starsHtml(Math.round(avg),18)}<span>${rs.length} von ${MODULES.length} Modulen bewertet</span></div><div class="w-fb-list">${MODULES.map(m=>{ const v=(state.ratings||{})[m.id]; const done=state.moduleProgress[m.id].completed; return `<div class="w-fb-row"><span>${String(m.id).padStart(2,'0')} ${m.title}</span>${v&&v.stars?starsHtml(v.stars,14):done?`<a onclick="openModule(${m.id});switchTabTo('summary')">Jetzt bewerten</a>`:'<em>nach Abschluss</em>'}</div>`; }).join('')}</div></div>`;
-  } },
 });
 function switchTabTo(tab){ state.currentTab=tab; document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['content','task','quiz','summary'][i]===tab)); renderTab(); }
 const DEFAULT_WIDGET_ORDER = ['nextstep','stats','favorites','activity','recent','phases'];
@@ -3031,7 +3026,6 @@ function renderTab(){
         <div class="summary-block"><h5>Wichtigste Funktionen</h5><ul>${m.summary.funk.map(x=>`<li>${x}</li>`).join('')}</ul></div>
         <div class="summary-block"><h5>Handlungsempfehlungen</h5><ul>${m.summary.hand.map(x=>`<li><span>${uiBtns(x)}</span></li>`).join('')}</ul></div>
         <div class="summary-block"><h5>Nächste Lernschritte</h5><ul><li>${nextModuleLink(m.id)}</li></ul></div>
-        ${ratingBlock(m)}
       `;
     }
   }
@@ -3121,7 +3115,6 @@ function renderQuizResult(m){
   return `<div class="quiz-result"><div class="qr-score">${correct}/${m.quiz.length} richtig (${pct}%)</div>
     <p>${passed?'Modul erfolgreich abgeschlossen.':'Mindestens 4 von 5 Antworten müssen korrekt sein. Bitte wiederholen Sie den Wissenscheck.'}</p>
     ${passed?`<button class="btn btn-primary" onclick="switchTab('summary');document.querySelectorAll('.tab-btn')[3].classList.add('active');document.querySelectorAll('.tab-btn')[0].classList.remove('active')">Zur Zusammenfassung</button>`:`<button class="btn btn-outline" onclick="retryQuiz(${m.id})">Erneut versuchen</button>`}
-    ${passed?ratingBlock(m):''}
   </div>`;
 }
 function retryQuiz(mid){ delete state.quizAnswers[mid]; if(state.quizTries) delete state.quizTries[mid]; renderQuiz(MODULES.find(x=>x.id===mid)); }
