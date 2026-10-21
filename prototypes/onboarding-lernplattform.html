@@ -1422,6 +1422,8 @@ html:not(.theme-light) .kp-tag{color:#C9D1D6}
 .nav-sub-toggle svg{transition:transform .2s;flex-shrink:0}
 .nav-sub-toggle.open svg{transform:rotate(90deg)}
 
+.fs-skip{font-weight:700;color:var(--green-dark);white-space:nowrap;text-decoration:underline;text-underline-offset:3px}
+html:not(.theme-light) .fs-skip{color:#A6BF68}
 .col-filter-ic{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:22px;height:18px;vertical-align:middle;border:1px solid var(--border);border-radius:4px;background:var(--white);margin:0 2px}
 .col-filter-ic i{display:block;height:2px;border-radius:1px;background:#8EA752}
 .col-filter-ic i:nth-child(1){width:12px}.col-filter-ic i:nth-child(2){width:8px}.col-filter-ic i:nth-child(3){width:4px}
@@ -3620,7 +3622,7 @@ function renderFives(){
   const v=document.getElementById('view-fives'); if(!v) return;
   v.innerHTML=`
     <h1 class="page-title">5S-Übung &amp; Kostenrechner</h1>
-    <p class="page-sub">Erleben Sie in wenigen Minuten, wie viel Zeit Ordnung spart – und rechnen Sie aus, was Suchzeiten Ihren Betrieb kosten.</p>
+    <p class="page-sub">Erleben Sie in wenigen Minuten, wie viel Zeit Ordnung spart – und rechnen Sie aus, was Suchzeiten Ihren Betrieb kosten. <a href="#" class="fs-skip" onclick="fsSkipToCalc();return false">Direkt zum Kostenrechner →</a></p>
     <div class="fs-grid">
       <div class="bp-card">
         <div class="fs-steps" id="fsSteps"></div>
@@ -3659,6 +3661,7 @@ function renderFives(){
 }
 function fsPlayed(){ if(FS.played) return true; try{ return localStorage.getItem('orkan5sDone')==='1'; }catch(e){ return false; } }
 function fsUnlockCalc(){ FS.played=true; try{ localStorage.setItem('orkan5sDone','1'); }catch(e){} const c=document.getElementById('fsCalcCard'), l=document.getElementById('fsCalcLock'); if(c) c.hidden=false; if(l) l.hidden=true; }
+function fsSkipToCalc(){ fsUnlockCalc(); const c=document.getElementById('fsCalcCard'); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); }
 function fsGain(){ const r=FS.results; if(r.length<4||!r[0]) return 0; return Math.max(0,Math.min(95,Math.round((1-r[0]/r[3])*100))); }
 function fsRound(r,showIntro){
   clearInterval(FS.timer); FS.running=false; FS.round=r; FS.next=1; FS.left=FS_TIME; FS.items=fsLayout(r);
