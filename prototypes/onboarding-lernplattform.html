@@ -1413,6 +1413,13 @@ html:not(.theme-light) .ui-box{background:rgba(166,191,104,.12);border-color:rgb
 @media(max-width:640px){.key-points.kp-cards>li{padding:14px 14px}}
 
 .kp-lead{font-weight:700;font-size:16px;line-height:1.5;color:var(--ink);margin:-4px 0 12px;padding-left:12px;border-left:3px solid #8EA752}
+
+.nav-sub-toggle{display:flex;align-items:center;gap:6px;width:100%;border:0;background:none;cursor:pointer;text-align:left;font-family:inherit;padding:9px 10px;border-radius:8px}
+.nav-sub-toggle:hover{background:rgba(142,167,82,.10)}
+.nav-sub-toggle span{flex:1}
+.nav-sub-toggle small{font-size:10.5px;font-weight:700;color:var(--gray);letter-spacing:0}
+.nav-sub-toggle svg{transition:transform .2s;flex-shrink:0}
+.nav-sub-toggle.open svg{transform:rotate(90deg)}
 </style>
 </head>
 <body>
@@ -2548,13 +2555,18 @@ function toggleSub(e){
   e.stopPropagation();
   document.getElementById('moduleSubNav').classList.toggle('open');
 }
+const NAV_GROUPS_OPEN=new Set();
+function toggleNavGroup(i,ev){ if(ev) ev.stopPropagation(); NAV_GROUPS_OPEN.has(i)?NAV_GROUPS_OPEN.delete(i):NAV_GROUPS_OPEN.add(i); buildModuleSubNav(); }
 function buildModuleSubNav(){
   const el = document.getElementById('moduleSubNav');
-  el.innerHTML = MODULES.map(m=>{
-    const p = state.moduleProgress[m.id];
-    const cls = p.completed?'done':(p.started?'active':'');
-    const grp=moduleGroupStart(m.id);
-    return `${grp?`<div class="nav-sub-group">${grp.title}</div>`:''}<div class="nav-sub-item ${state.currentView==='modules'&&state.currentModule===m.id?'current':''}" onclick="openModule(${m.id});event.stopPropagation()"><span class="status-dot ${cls}"></span>${m.title}</div>`;
+  // Bereiche sind zugeklappt; der Bereich des geöffneten Moduls klappt automatisch auf
+  const curGi=MODULE_GROUPS.findIndex(g=>state.currentView==='modules'&&g.ids.includes(state.currentModule));
+  if(curGi>=0) NAV_GROUPS_OPEN.add(curGi);
+  el.innerHTML = MODULE_GROUPS.map((g,gi)=>{
+    const open=NAV_GROUPS_OPEN.has(gi), done=g.ids.filter(id=>state.moduleProgress[id]?.completed).length;
+    const items=g.ids.map(id=>{ const m=MODULES.find(x=>x.id===id); const p=state.moduleProgress[id]; const cls=p.completed?'done':(p.started?'active':'');
+      return `<div class="nav-sub-item ${state.currentView==='modules'&&state.currentModule===id?'current':''}" onclick="openModule(${id});event.stopPropagation()"><span class="status-dot ${cls}"></span>${m.title}</div>`; }).join('');
+    return `<button type="button" class="nav-sub-group nav-sub-toggle ${open?'open':''}" aria-expanded="${open}" onclick="toggleNavGroup(${gi},event)"><span>${g.title}</span><small>${done}/${g.ids.length}</small><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 6 6 6-6 6"/></svg></button>${open?`<div class="nav-sub-items">${items}</div>`:''}`;
   }).join('');
 }
 
