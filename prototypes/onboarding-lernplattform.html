@@ -1430,6 +1430,20 @@ html:not(.theme-light) .fs-skip{color:#A6BF68}
 .col-filter-ic i:nth-child(1){width:12px}.col-filter-ic i:nth-child(2){width:8px}.col-filter-ic i:nth-child(3){width:4px}
 .col-arrows-ic{display:inline-flex;align-items:center;justify-content:center;width:22px;height:18px;vertical-align:middle;border:1px solid var(--border);border-radius:4px;background:var(--white);color:#4E5860;margin:0 2px}
 .oc-ic{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;vertical-align:middle;border-radius:5px;background:#7DA544;color:#fff;margin:0 2px}
+
+.video-placeholder.has-poster,html:not(.theme-light) .video-placeholder.has-poster{border:0;background:var(--poster) center/cover no-repeat,#1F2428!important}
+.video-placeholder.has-poster{flex-direction:row;align-items:flex-end;justify-content:flex-start;gap:12px;padding:0 0 22px 46px;align-items:flex-end}
+.video-placeholder.has-poster .play-circle{width:48px;height:48px;box-shadow:0 0 0 8px rgba(154,183,80,.22);flex:0 0 auto}
+.video-placeholder.has-poster .play-circle svg{width:20px;height:20px}
+.video-placeholder.has-poster>span{align-self:flex-end;margin-bottom:10px}
+.video-tools{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0 18px}
+.vt-btn{border:1px solid var(--line);background:var(--white);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums}
+.vt-btn:hover{border-color:#9AB750}
+.vt-btn.active{background:#9AB750;border-color:#9AB750;color:#000}
+.vt-sep{width:1px;height:22px;background:var(--line);margin:0 6px}
+.vt-label{font-size:13px;opacity:.75;margin-right:2px}
+.video-placeholder.has-poster>span{background:rgba(31,36,40,.72);color:#fff;padding:6px 12px;border-radius:999px;font-size:13px}
+.video-placeholder.has-poster>span .ui-box{background:transparent;color:#fff;box-shadow:none;padding:0;font-weight:700}
 </style>
 </head>
 <body>
@@ -2900,20 +2914,70 @@ function switchTab(tab){ state.currentTab = tab; document.querySelectorAll('.tab
 function introBlockHtml(it){
   return `<section class="mod-intro"><h3>${it.title}</h3><ul>${it.points.map(x=>`<li>${x}</li>`).join('')}</ul></section>`;
 }
+// Titelbild (Poster) je Modul, wird vor dem Start des Videos angezeigt
+const MODULE_ICONS={
+ 1:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+ 2:'<path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',
+ 3:'<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v3h16v-3"/>',
+ 4:'<rect x="3" y="5" width="9" height="14" rx="1.5"/><rect x="12" y="5" width="9" height="14" rx="1.5"/><path d="M6 9h3M15 9h3M6 12h3"/>',
+ 5:'<path d="M3 4h2l2.5 11h11L21 7H7"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>',
+ 6:'<path d="M3 13h5l2 3h4l2-3h5"/><path d="M5 13 7 5h10l2 8v6H5z"/>',
+ 7:'<path d="M4 15h10l3-6h3v6"/><path d="M8 15v4M14 9V6H9v3"/><circle cx="18" cy="18" r="2"/>',
+ 8:'<circle cx="8" cy="8" r="4"/><path d="M11 11l9 9M16 16l2-2M18 18l2-2"/>',
+ 9:'<path d="M3 20h18M5 20V10l7-5 7 5v10"/><path d="M10 20v-6h4v6"/>',
+ 10:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+ 11:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3v3h6V3M9 11l2 2 4-4M9 17h6"/>',
+ 12:'<path d="M20 12 12 20 4 12V4h8z"/><circle cx="8" cy="8" r="1.5"/>',
+ 13:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10M7 5l9 4"/>',
+ 14:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M8 14l2 2 5-5"/>'};
+function modulePoster(m){
+  const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const words=m.title.split(' '); let l1='',l2='';
+  words.forEach(w=>{ if((l1+' '+w).trim().length<=26&&!l2) l1=(l1+' '+w).trim(); else l2=(l2+' '+w).trim(); });
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" preserveAspectRatio="xMidYMid slice">
+<defs><radialGradient id="g" cx="80%" cy="10%" r="75%"><stop offset="0" stop-color="#9AB750" stop-opacity=".5"/><stop offset=".55" stop-color="#9AB750" stop-opacity=".07"/><stop offset="1" stop-color="#9AB750" stop-opacity="0"/></radialGradient>
+<pattern id="p" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#ffffff" stroke-opacity=".05"/></pattern></defs>
+<rect width="1200" height="360" fill="#1F2428"/><rect width="1200" height="360" fill="url(#p)"/><rect width="1200" height="360" fill="url(#g)"/>
+<g transform="translate(880 55) scale(10.5)" fill="none" stroke="#9AB750" stroke-opacity=".9" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${MODULE_ICONS[m.id]||''}</g>
+<text x="80" y="${l2?84:110}" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="700" letter-spacing="5" fill="#9AB750">MODUL ${String(m.id).padStart(2,'0')}</text>
+<rect x="80" y="${l2?100:126}" width="44" height="5" rx="2.5" fill="#9AB750"/>
+<text x="80" y="${l2?162:188}" font-family="Arial,Helvetica,sans-serif" font-size="50" font-weight="700" fill="#ffffff">${esc(l1)}</text>
+${l2?`<text x="80" y="222" font-family="Arial,Helvetica,sans-serif" font-size="50" font-weight="700" fill="#ffffff">${esc(l2)}</text>`:''}
+<text x="80" y="${l2?264:234}" font-family="Arial,Helvetica,sans-serif" font-size="21" fill="#C9D1D6">OrKan Cloud · Lernvideo · ${esc(m.time)}</text>
+</svg>`;
+  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+}
 function videoBlockHtml(m){
   const v = state.moduleVideos[m.id];
   let inner;
   if(v && v.type==='uploaded'){
-    inner = `<video src="${v.url}" controls style="width:100%;height:100%;border-radius:14px;object-fit:cover"></video>`;
+    inner = `<video src="${v.url}" poster="${modulePoster(m)}" preload="metadata" controls style="width:100%;height:100%;border-radius:14px;object-fit:cover;background:#1F2428"></video>`;
   } else if(v && v.type==='generated'){
     inner = `<div class="play-circle" onclick="this.parentElement.querySelector('span').textContent='Wiedergabe simuliert — KI-Video-Rendering abgeschlossen'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span>KI-generiertes Video bereit: „${v.name}"</span>`;
   } else {
     inner = `<div class="play-circle" onclick="this.parentElement.querySelector('span').textContent='Wiedergabe simuliert — Video in Produktion'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span>Prozessnahes Arbeitsvideo: <span class="ui-box">${m.title}</span> wird geladen</span>`;
   }
-  return `<div class="video-placeholder" style="position:relative">
+  return `<div class="video-placeholder ${v&&v.type==='uploaded'?'':'has-poster'}" style="position:relative;${v&&v.type==='uploaded'?'':`--poster:url('${modulePoster(m)}')`}">
     <button class="video-manage-btn" onclick="openVideoManager(${m.id})">Video verwalten</button>
     ${inner}
-  </div>`;
+  </div>${v&&v.type==='uploaded'?`<div class="video-tools" role="group" aria-label="Videosteuerung">
+    <button type="button" class="vt-btn" onclick="vidSkip(this,-5)" title="5 Sekunden zurück">↺ 5 Sek.</button>
+    <button type="button" class="vt-btn" onclick="vidSkip(this,5)" title="5 Sekunden vor">5 Sek. ↻</button>
+    <span class="vt-sep"></span>
+    <span class="vt-label">Geschwindigkeit</span>
+    ${[0.5,0.75,1,1.25,1.5,2].map(r=>`<button type="button" class="vt-btn vt-rate${r===1?' active':''}" onclick="vidRate(this,${r})">${String(r).replace('.',',')}×</button>`).join('')}
+  </div>`:''}`;
+}
+function vidOf(btn){ return btn.closest('.video-tools').previousElementSibling.querySelector('video'); }
+function vidSkip(btn,sec){
+  const v=vidOf(btn); if(!v) return;
+  const max=isFinite(v.duration)?v.duration:Infinity;
+  v.currentTime=Math.min(max,Math.max(0,v.currentTime+sec));
+}
+function vidRate(btn,r){
+  const v=vidOf(btn); if(!v) return;
+  v.playbackRate=r;
+  btn.parentElement.querySelectorAll('.vt-rate').forEach(b=>b.classList.toggle('active',b===btn));
 }
 function openVideoManager(mid){
   state.videoManagerModuleId = mid;
