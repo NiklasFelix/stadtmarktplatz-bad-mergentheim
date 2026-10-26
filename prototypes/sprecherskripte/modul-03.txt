@@ -20,7 +20,7 @@ Im Feld Standardbestellverfahren legen Sie fest, wie Ihre Bestellungen an diesen
 
 Zum Schluss hinterlegen Sie die Liefertage und den Offset in Tagen. Die Liefertage geben an, wann der Lieferant liefert, zum Beispiel Montag bis Freitag oder nur donnerstags. Der Offset beschreibt die Tage zwischen Bestellung und Wareneingang. Offset null bedeutet: Lieferung am nächsten Liefertag. Offset eins bedeutet: ein Tag liegt dazwischen.
 
-Ein Beispiel: Ihr Lieferant liefert nur donnerstags, der Offset ist eins. Bestellen Sie am Mittwoch, kommt die Ware am Donnerstag der folgenden Woche. Diesen Wert können Sie bei jeder Bestellung anpassen.
+Ein Beispiel: Ihr Lieferant liefert nur donnerstags, und der Offset ist eins. Zwischen Bestellung und Lieferung muss also mindestens ein Tag liegen. Bestellen Sie am Mittwoch, wäre der nächste Donnerstag schon am Tag danach. Das ist zu knapp. Die Ware kommt deshalb erst am Donnerstag eine Woche später. Den Offset können Sie bei jeder Bestellung anpassen.
 
 Beachten Sie: Der Offset bildet nur die Lieferzeit ab, keinen Bestellrhythmus. Wenn Sie nur an bestimmten Tagen bestellen möchten, regeln Sie das am besten mit einer einfachen Liste, wer wann bei welchem Lieferanten bestellt.
 
