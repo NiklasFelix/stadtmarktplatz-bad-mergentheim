@@ -1409,6 +1409,19 @@ html:not(.theme-light) .ui-box{background:#C3D594;color:#15191C}
 /* Dunkle Ansicht: Lerninhalte in Weiß */
 html:not(.theme-light) .key-points li,html:not(.theme-light) .key-points li strong,html:not(.theme-light) .practice-callout p,html:not(.theme-light) .insight-callout p,html:not(.theme-light) .kp-tag,html:not(.theme-light) .template-callout-text p,html:not(.theme-light) .template-callout-text strong{color:#fff}
 html:not(.theme-light) .template-callout-btn{color:#15191C}
+/* Dunkle Ansicht: Begrüßungsbereich und Roadmap-Seitenleiste in Anthrazit */
+html:not(.theme-light) .hero,html:not(.theme-light) .roadmap-side{background:radial-gradient(ellipse 60% 90% at 88% 0%,rgba(154,183,80,.26),rgba(154,183,80,0) 60%),linear-gradient(135deg,#1F2428,#1A1E21);border-color:#2B3237}
+html:not(.theme-light) .hero::after,html:not(.theme-light) .roadmap-side::after{background:radial-gradient(circle,rgba(154,183,80,.3),rgba(154,183,80,0) 62%)}
+html:not(.theme-light) .hero .ring-track,html:not(.theme-light) .roadmap-side .ring-track{stroke:rgba(255,255,255,.1)}
+html:not(.theme-light) .hero .ring-unit,html:not(.theme-light) .roadmap-side .ring-unit,html:not(.theme-light) .hero-eyebrow{color:#9AB750}
+html:not(.theme-light) .hero .status-overview-btn{background:#9AB750;color:#15191C}
+html:not(.theme-light) .hero .status-overview-btn:hover{background:#B3CC6E;color:#15191C}
+/* Dunkle Ansicht: hellgrüne Buttons mit dunkler Schrift */
+html:not(.theme-light) .btn-primary,html:not(.theme-light) .coach-btn,html:not(.theme-light) .status-overview-btn{color:#15191C}
+html:not(.theme-light) .btn-primary:hover,html:not(.theme-light) .mc-btn:hover,html:not(.theme-light) .coach-btn:hover,html:not(.theme-light) .status-overview-btn:hover,html:not(.theme-light) .template-callout-btn:hover{color:#15191C}
+/* Dunkle Ansicht: Zertifikat bleibt ein helles „Papier“ mit dunkler Schrift */
+html:not(.theme-light) .certificate{--ink:#1B2024;--gray:#48525A;--line:#E1E4DC;--dark-bg:#1F2428;color:#1B2024}
+html:not(.theme-light) .cert-discount strong{color:#fff}
 
 .kp-tag{display:block;font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--graphite);margin-bottom:6px}
 html:not(.theme-light) .kp-tag{color:#C9D1D6}
