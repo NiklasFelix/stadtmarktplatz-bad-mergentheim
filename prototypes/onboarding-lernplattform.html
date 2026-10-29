@@ -1593,6 +1593,77 @@ html.theme-light #onboarding,#onboarding{background:radial-gradient(900px 520px 
 .cert-title{font-family:var(--font-mono);letter-spacing:.18em}
 .cert-name{font-family:var(--font-display);color:var(--brand-green-ink)}
 .certificate{border-color:var(--brand-green)}
+/* --- Stufe 2: weitere Broschüren-Motive --- */
+/* Mono-Label mit Linie und Mittelstrich über Seitentiteln */
+h1.page-title[data-eyebrow]::before{content:attr(data-eyebrow);display:block;width:max-content;min-width:200px;padding:0 18px 7px;margin:0 0 18px;text-align:center;font-family:var(--font-mono);font-size:13.5px;font-weight:500;letter-spacing:.01em;line-height:1.3;color:var(--green-dark);
+  background:linear-gradient(var(--ink),var(--ink)) center bottom/1.5px 9px no-repeat;border-bottom:1.5px solid var(--ink);opacity:.9}
+.hero h1.page-title[data-eyebrow]::before{color:var(--brand-green);background-image:linear-gradient(rgba(255,255,255,.8),rgba(255,255,255,.8));border-color:rgba(255,255,255,.8)}
+html:not(.theme-light) h1.page-title[data-eyebrow]::before{color:var(--brand-green)}
+.view>.page-title::after,.view>h1.page-title::after{display:none!important}
+.roadmap-group-head{display:block;width:max-content;min-width:220px;padding:0 18px 7px;margin:8px 0 18px;text-align:center;text-transform:none!important;font-size:13.5px!important;font-weight:500!important;letter-spacing:.01em!important;
+  background:linear-gradient(var(--ink),var(--ink)) center bottom/1.5px 9px no-repeat;border-bottom:1.5px solid var(--ink)}
+
+/* Funkelsterne in dunklen Flächen */
+.hero,.roadmap-side,.module-detail-header{--stars:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%200L13%2011L24%2012L13%2013L12%2024L11%2013L0%2012L11%2011Z%22%20fill%3D%22%23A8CC68%22/%3E%3C/svg%3E") 8% 18%/16px no-repeat,url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%200L13%2011L24%2012L13%2013L12%2024L11%2013L0%2012L11%2011Z%22%20fill%3D%22%23A8CC68%22/%3E%3C/svg%3E") 58% 86%/11px no-repeat,url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%200L13%2011L24%2012L13%2013L12%2024L11%2013L0%2012L11%2011Z%22%20fill%3D%22%23A8CC68%22/%3E%3C/svg%3E") 46% 12%/9px no-repeat}
+.hero{background:var(--stars),radial-gradient(ellipse 55% 85% at 92% 40%,rgba(168,204,104,.30),rgba(168,204,104,0) 62%),var(--dots-fade),var(--dots) 0 0/15px 15px,linear-gradient(120deg,#2E3337 0%,#3F464A 100%)!important}
+
+/* Fortschrittsring als Strichring (Zeit) */
+.ring-ticks .ring-fill{stroke:var(--brand-green)}
+.ring-ticks .ring-track{stroke:rgba(95,122,51,.22)}
+.hero .ring-ticks .ring-track,.roadmap-side .ring-ticks .ring-track{stroke:rgba(255,255,255,.16)!important}
+
+/* Lernpfad: gepunktete Bahn, leuchtende Planeten-Punkte mit Mono-Nummern */
+.roadmap-line::before{background:radial-gradient(circle,rgba(95,122,51,.55) 1.3px,transparent 1.8px) center top/3px 9px repeat-y!important;width:3px!important}
+html:not(.theme-light) .roadmap-line::before{background:radial-gradient(circle,rgba(168,204,104,.5) 1.3px,transparent 1.8px) center top/3px 9px repeat-y!important}
+.roadmap-line::after{background:var(--brand-green)!important;box-shadow:0 0 12px rgba(168,204,104,.7)!important}
+.milestone-dot{font-family:var(--font-mono)!important;font-weight:600!important;font-size:14px!important;color:var(--green-dark)!important;background:var(--white)!important;border:2px dashed rgba(168,204,104,.85)!important}
+.milestone.active .milestone-dot{background:radial-gradient(circle,#BCD98A 0%,#A8CC68 58%,rgba(168,204,104,.55) 64%,rgba(168,204,104,0) 74%)!important;border:0!important;color:#22272A!important;transform:scale(1.25);box-shadow:none!important}
+.milestone.done .milestone-dot{background:radial-gradient(circle,#A8CC68 0%,#A8CC68 60%,rgba(168,204,104,.4) 66%,rgba(168,204,104,0) 74%)!important;border:0!important;color:#22272A!important;transform:scale(1.2);box-shadow:none!important}
+.milestone-card{position:relative;border:0!important;border-radius:16px 14px 14px 3px!important}
+.milestone-card::before{content:'';position:absolute;left:0;top:0;width:90px;height:22px;border-top:1.5px solid var(--brand-green);border-left:1.5px solid var(--brand-green);border-radius:16px 0 0 0;pointer-events:none}
+.milestone-card::after{content:'';position:absolute;left:0;top:21px;bottom:0;width:1.5px;background:var(--brand-green);pointer-events:none}
+.milestone-card h4{font-size:18px}
+.milestone-meta{font-family:var(--font-mono);font-size:12.5px}
+.milestone-gist li{border-radius:999px}
+
+/* Modulgruppen: Strichring-Symbol vor der Überschrift, Mono-Untertitel */
+.module-group-head h2{padding-left:40px!important;font-size:24px!important}
+.module-group-head h2::before{width:28px!important;height:28px!important;top:50%!important;bottom:auto!important;transform:translateY(-50%);border-radius:0!important;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Ccircle%20cx%3D%2224%22%20cy%3D%2224%22%20r%3D%2219%22%20fill%3D%22none%22%20stroke%3D%22%23A8CC68%22%20stroke-width%3D%226%22%20stroke-dasharray%3D%221.1%202.2%22/%3E%3C/svg%3E") center/contain no-repeat!important}
+.module-group-head span{font-family:var(--font-mono);font-size:12.5px!important}
+
+/* Modulkarten: Ecklinie „Auf den Punkt.“ + Punktraster beim Überfahren */
+.module-card{position:relative;overflow:hidden;border:0!important;border-radius:16px 14px 14px 3px!important}
+.module-card::before{content:'';position:absolute;left:0;top:0;width:110px;height:26px;border-top:1.5px solid var(--brand-green);border-left:1.5px solid var(--brand-green);border-radius:16px 0 0 0;pointer-events:none}
+.module-card::after{content:'';position:absolute;right:-30px;top:-30px;width:190px;height:190px;pointer-events:none;opacity:0;transition:opacity .35s;
+  background:radial-gradient(circle,rgba(168,204,104,.75) 1.1px,transparent 1.6px) 0 0/11px 11px;-webkit-mask-image:radial-gradient(circle at 70% 30%,#000,transparent 68%);mask-image:radial-gradient(circle at 70% 30%,#000,transparent 68%)}
+.module-card:hover::after{opacity:1}
+.module-card>*{position:relative;z-index:1}
+
+/* Modulkopf: dunkle Broschürenseite mit Pfeilspitze */
+.module-detail-header{position:relative;overflow:visible;border:0!important;color:#fff;padding:30px 34px!important;border-radius:4px 18px 18px 18px!important;
+  background:var(--stars),radial-gradient(ellipse 45% 120% at 96% 50%,rgba(168,204,104,.32),rgba(168,204,104,0) 62%),var(--dots-fade),var(--dots) 0 0/15px 15px,linear-gradient(120deg,#2E3337 0%,#3F464A 100%)!important}
+.module-detail-header::after{content:'';position:absolute;left:44px;bottom:-17px;width:40px;height:18px;background:#30363A;clip-path:polygon(0 0,100% 0,50% 100%)}
+.md-title-row{align-items:center!important;gap:22px!important;flex-wrap:nowrap!important}
+.md-num{font-family:var(--font-mono);font-weight:600;font-size:64px;line-height:.9;color:var(--brand-green);letter-spacing:-.04em}
+.md-title-col{display:flex;flex-direction:column;gap:6px;min-width:0}
+.md-title-row h2{color:#fff!important;font-size:30px!important}
+.module-detail-header .phase-badge{background:none!important;padding:0!important;font-family:var(--font-mono);font-weight:500;font-size:13px;color:var(--brand-green)!important;text-transform:none;letter-spacing:.01em;width:max-content}
+.module-detail-header .md-meta{color:rgba(255,255,255,.7);font-family:var(--font-mono);font-size:13px;margin-top:10px;padding-left:2px}
+.tab-bar{margin-top:26px}
+
+/* Kennzahlen mit Broschüren-Symbolen Raum / Zeit / Erfolg */
+.stat-card{position:relative;overflow:hidden}
+.stat-card .stat-label{font-family:var(--font-mono);text-transform:none!important;letter-spacing:.01em!important;font-weight:500!important;color:var(--green-dark)!important}
+.stat-card .stat-val{font-family:var(--font-mono)!important;font-weight:600!important;color:var(--ink)}
+.stat-card::after{content:'';position:absolute;right:18px;top:50%;width:64px;height:64px;transform:translateY(-50%);opacity:.9;background:center/contain no-repeat}
+.stat-raum::after{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cpath%20d%3D%22M4%204C18%2018%2019%2020.5%2024%2020.5S30%2018%2044%204M4%2044C18%2030%2019%2027.5%2024%2027.5S30%2030%2044%2044%22%20fill%3D%22none%22%20stroke%3D%22%23A8CC68%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22/%3E%3C/svg%3E")}.stat-zeit::after{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Ccircle%20cx%3D%2224%22%20cy%3D%2224%22%20r%3D%2219%22%20fill%3D%22none%22%20stroke%3D%22%23A8CC68%22%20stroke-width%3D%226%22%20stroke-dasharray%3D%221.1%202.2%22/%3E%3C/svg%3E")}.stat-check::after{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cpath%20d%3D%22M6%2025L18%2038L42%209%22%20fill%3D%22none%22%20stroke%3D%22%23A8CC68%22%20stroke-width%3D%225.5%22%20stroke-linejoin%3D%22miter%22/%3E%3C/svg%3E")}
+
+/* Zusammenfassung wie „Auf den Punkt.“ */
+.summary-block{position:relative;background:var(--white);border-radius:16px 14px 14px 3px;padding:18px 22px 16px 26px}
+.summary-block::before{content:'';position:absolute;left:0;top:0;width:96px;height:22px;border-top:1.5px solid var(--brand-green);border-left:1.5px solid var(--brand-green);border-radius:16px 0 0 0}
+.summary-block::after{content:'';position:absolute;left:0;top:21px;bottom:0;width:1.5px;background:var(--brand-green)}
+.md-title-row h2{overflow-wrap:anywhere;hyphens:auto}
+@media(max-width:640px){.module-detail-header{padding:24px 20px!important}.md-title-row{gap:14px!important}.md-num{font-size:40px}.md-title-row h2{font-size:20px!important}.ovp-time{display:none}.stat-card::after{width:44px;height:44px}}
 @media(max-width:640px){.hero .page-title{font-size:30px}.onb-side h1{font-size:32px}h1.page-title{font-size:28px}.kp-num{font-size:30px}.kp-group-h{font-size:19px}}
 /* ===== /Markendesign 2026 ===== */
 </style>
@@ -2694,10 +2765,15 @@ function progressRing(pct, size, stroke, caption){
   const c = +(2 * Math.PI * r).toFixed(2);
   const target = +(c - c * pct / 100).toFixed(2);
   const mid = size / 2;
-  return `<div class="ring" style="width:${size}px;height:${size}px">
+  const mk = 'rk'+(progressRing.n=(progressRing.n||0)+1);
+  const tick = +(c/96).toFixed(3);
+  return `<div class="ring ring-ticks" style="width:${size}px;height:${size}px">
     <svg viewBox="0 0 ${size} ${size}" width="100%" height="100%" aria-hidden="true">
+      <defs><mask id="${mk}"><circle cx="${mid}" cy="${mid}" r="${r}" fill="none" stroke="#fff" stroke-width="${stroke+2}" stroke-dasharray="${(tick*0.38).toFixed(3)} ${(tick*0.62).toFixed(3)}"/></mask></defs>
+      <g mask="url(#${mk})">
       <circle class="ring-track" cx="${mid}" cy="${mid}" r="${r}" stroke-width="${stroke}"/>
       <circle class="ring-fill" cx="${mid}" cy="${mid}" r="${r}" stroke-width="${stroke}" style="stroke-dasharray:${c};stroke-dashoffset:${target};--c:${c}"/>
+      </g>
     </svg>
     <div class="ring-label"><span class="ring-value"><span class="ring-num" data-count="${pct}">${pct}</span><span class="ring-unit">%</span></span>${caption?`<span class="ring-caption">${caption}</span>`:''}</div>
   </div>`;
@@ -2733,7 +2809,7 @@ function renderDashboard(){
     <section class="hero hero-first">
       <div class="hero-main">
         
-        <h1 class="page-title">Guten Tag, ${state.name}.</h1>
+        <h1 class="page-title" data-eyebrow="Ihr Überblick">Guten Tag, ${state.name}.</h1>
         <p class="page-sub">Hier ist Ihr Onboarding-Überblick.</p>
         <div class="status-overview-text">
           <strong>Willkommen auf der OrKan-Cloud-Trainingsplattform</strong>
@@ -2747,7 +2823,7 @@ function renderDashboard(){
     <section class="hero">
       <div class="hero-main">
         
-        <h1 class="page-title">Guten Tag, ${state.name}.</h1>
+        <h1 class="page-title" data-eyebrow="Ihr Überblick">Guten Tag, ${state.name}.</h1>
         <p class="page-sub">Hier ist Ihr Onboarding-Überblick.</p>
         <div class="status-overview-grid">
           <div><span class="status-label">Aktueller Bereich</span><span class="status-value">${phaseNames[phase]}${phase===3?' (Zertifikat erreicht)':''}</span></div>
@@ -2771,9 +2847,9 @@ function renderDashboard(){
 const DASHBOARD_WIDGETS = {
   stats: { title:'Kennzahlen', render: () => `
     <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">Abgeschlossene Module</div><div class="stat-val"><span data-count="${completedCount()}">${completedCount()}</span><small>/${MODULES.length}</small></div><div class="stat-sub">${progressPct()}% des Onboardings</div></div>
-      <div class="stat-card"><div class="stat-label">Lernzeit gesamt</div><div class="stat-val"><span data-count="${state.totalTime}">${state.totalTime}</span></div><div class="stat-sub">Minuten investiert</div></div>
-      <div class="stat-card"><div class="stat-label">Quiz-Durchschnitt</div><div class="stat-val">${(()=>{ const scores = Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore); if(!scores.length) return '–'; return Math.round(scores.reduce((a,b)=>a+b,0)/scores.length)+'%'; })()}</div><div class="stat-sub">über alle Module</div></div>
+      <div class="stat-card stat-raum"><div class="stat-label">Abgeschlossene Module</div><div class="stat-val"><span data-count="${completedCount()}">${completedCount()}</span><small>/${MODULES.length}</small></div><div class="stat-sub">${progressPct()}% des Onboardings</div></div>
+      <div class="stat-card stat-zeit"><div class="stat-label">Lernzeit gesamt</div><div class="stat-val"><span data-count="${state.totalTime}">${state.totalTime}</span></div><div class="stat-sub">Minuten investiert</div></div>
+      <div class="stat-card stat-check"><div class="stat-label">Quiz-Durchschnitt</div><div class="stat-val">${(()=>{ const scores = Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore); if(!scores.length) return '–'; return Math.round(scores.reduce((a,b)=>a+b,0)/scores.length)+'%'; })()}</div><div class="stat-sub">über alle Module</div></div>
     </div>` },
   phases: { title:'Onboarding-Phasen', render: () => { const g1=MODULE_GROUPS[0].ids, g2=MODULE_GROUPS[1].ids; const done1=g1.filter(i=>state.moduleProgress[i]?.completed).length, done2=g2.filter(i=>state.moduleProgress[i]?.completed).length; const cert=certUnlocked(); return `
     <div class="phases-row">
@@ -2953,14 +3029,14 @@ function renderRoadmap(){
     const cls = p.completed?'done':(p.started?'active':'');
     const grp=moduleGroupStart(m.id);
     return `${grp?`<div class="roadmap-group-head">${grp.title}</div>`:''}<div class="milestone ${cls}">
-      <div class="milestone-dot">${p.completed?'✓':m.id}</div>
+      <div class="milestone-dot">${p.completed?'✓':String(m.id).padStart(2,'0')}</div>
       <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${m.time} · ${groupOf(m.id).title}</div><ul class="milestone-gist">${(m.gist||[]).map(g=>`<li>${g}</li>`).join('')}</ul></div>
       ${i<MODULES.length-1?`<div><span class="ai-hint">Hinweis: ${nextStepHint(m.id)}</span></div>`:''}
-    </div>`+(m.id===MODULE_GROUPS[0].ids[MODULE_GROUPS[0].ids.length-1]?`<div class="milestone ${certUnlocked()?'done':''}"><div class="milestone-dot">${certUnlocked()?'✓':'★'}</div><div class="milestone-card"><h4>Abschlusszertifikat</h4><div class="milestone-meta">Nach Abschluss der Grundlagen (Module 1–6)</div><p>Erhalten Sie Ihr offizielles Onboarding-Zertifikat inklusive Rabattcode.</p></div></div>`:'');
+    </div>`+(m.id===MODULE_GROUPS[0].ids[MODULE_GROUPS[0].ids.length-1]?`<div class="milestone ${certUnlocked()?'done':''}"><div class="milestone-dot">${certUnlocked()?'✓':'✦'}</div><div class="milestone-card"><h4>Abschlusszertifikat</h4><div class="milestone-meta">Nach Abschluss der Grundlagen (Module 1–6)</div><p>Erhalten Sie Ihr offizielles Onboarding-Zertifikat inklusive Rabattcode.</p></div></div>`:'');
   }).join('');
 
   document.getElementById('view-roadmap').innerHTML = `
-    <h1 class="page-title">Mein Lernpfad</h1>
+    <h1 class="page-title" data-eyebrow="Ihre Roadmap">Mein Lernpfad</h1>
     <p class="page-sub">Ihre persönliche Onboarding-Roadmap für die OrKan Cloud.</p>
     <div class="roadmap-wrap">
       <div class="roadmap-line" style="--fill:${Math.min(100, completedCount()/MODULES.length*100)}%">
@@ -2983,7 +3059,7 @@ function nextStepHint(id){
 /* ============ MODULES LIST + DETAIL ============ */
 function renderModulesList(){
   document.getElementById('view-modules').innerHTML = `
-    <h1 class="page-title">Lernmodule</h1>
+    <h1 class="page-title" data-eyebrow="Lernen mit System">Lernmodule</h1>
     <p class="page-sub">${MODULES.length} praxisorientierte Module führen Sie durch die OrKan Cloud.</p>
     ${MODULE_GROUPS.map(g=>`<div class="module-group-head"><h2>${g.title}</h2><span>${g.sub} · Module ${g.ids[0]}–${g.ids[g.ids.length-1]}</span></div><div class="modules-grid">${MODULES.filter(m=>g.ids.includes(m.id)).map(m=>moduleCardHtml(m)).join('')}</div>`).join('')}
   `;
@@ -3018,7 +3094,7 @@ function renderModuleDetail(){
   document.getElementById('view-modules').innerHTML = `
     <div class="md-back" onclick="renderModulesList()">&larr; Zurück zu allen Modulen</div>
     <div class="module-detail-header">
-      <div class="md-title-row"><h2>${m.title}</h2><span class="phase-badge">${groupOf(m.id).title}</span></div>
+      <div class="md-title-row"><span class="md-num">${String(m.id).padStart(2,'0')}</span><div class="md-title-col"><span class="phase-badge">${groupOf(m.id).title}</span><h2>${m.title}</h2></div></div>
       <div class="md-meta"><span>${m.time}</span><span class="diff-dots">${diffDots}</span><span>${p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen')}</span></div>
     </div>
     <div class="tab-bar">
@@ -3304,7 +3380,7 @@ function groupByModule(list, card){
 }
 function renderKB(){
   document.getElementById('view-kb').innerHTML = `
-    <h1 class="page-title">Wissensdatenbank</h1>
+    <h1 class="page-title" data-eyebrow="Gut zu wissen">Wissensdatenbank</h1>
     <p class="page-sub">Nachschlagen nach Themen geordnet – mit Suchfunktion.</p>
     <input type="text" class="kb-search" placeholder="Suchen Sie nach Themen, Funktionen oder Prozessen..." oninput="kbSearchInput(this.value)" value="${(state.kbSearch||'').replace(/"/g,'&quot;')}">
     <div class="chip-row" id="kbChips">${['Alle',...KB_TOPICS.map(t=>t.t)].map(c=>`<div class="chip ${state.kbFilter===c?'active':''}" onclick="kbFilterClick('${c}')">${c}</div>`).join('')}</div>
@@ -3357,7 +3433,7 @@ function renderBest(){
       <h4>${b.title}</h4><p>${uiBtns(b.desc)}</p>
       <button class="btn btn-primary" style="width:100%" onclick="event.stopPropagation();openBP(${i})">Anleitung starten</button></div>`; };
   document.getElementById('view-best').innerHTML = `
-    <h1 class="page-title">Praxiserprobte Anleitungen für häufige Aufgaben</h1>
+    <h1 class="page-title" data-eyebrow="Aus der Praxis für die Praxis">Praxiserprobte Anleitungen für häufige Aufgaben</h1>
     <p class="page-sub">Schritt-für-Schritt-Anleitungen, nach Themen geordnet.</p>
     <div class="chip-row">${['Alle',...KB_TOPICS.map(t=>t.t)].map(c=>`<div class="chip ${(state.bpFilter||'Alle')===c?'active':''}" onclick="state.bpFilter='${c}';renderBest()">${c}</div>`).join('')}</div>
     ${groupByModule(BEST_PRACTICES.filter(b=>{const t=KB_TOPICS.find(x=>x.t===state.bpFilter);return !t||t.m.includes(b.mod);}), card).replace(/class="kb-grid"/g,'class="bp-grid"')}
@@ -3383,7 +3459,7 @@ function renderCert(){
   const unlocked = certUnlocked();
   if(!unlocked){
     document.getElementById('view-cert').innerHTML = `
-      <h1 class="page-title">Zertifikate</h1>
+      <h1 class="page-title" data-eyebrow="Ihr Abschluss">Zertifikate</h1>
       <p class="page-sub">So sieht Ihr Zertifikat aus, sobald Sie die Grundlagen des Onboardings (Module 1–6) abgeschlossen haben.</p>
       <div class="cert-gate"><h3>Noch nicht verfügbar</h3><p>Schließen Sie die ${certTotal()} Grundlagen-Module ab, um Ihr Zertifikat freizuschalten — inklusive Rabattcode* für den OrKan Shop.</p><p class="cert-discount-note">* Pro Unternehmen gibt es nur einen Rabattcode – er ist einmalig einlösbar, auch wenn mehrere Mitarbeiter das Zertifikat erwerben.</p>
       <div class="gate-track"><div class="gate-fill" style="width:${Math.round(certDoneCount()/certTotal()*100)}%"></div></div>
@@ -3408,7 +3484,7 @@ function renderCert(){
     `;
   } else {
     document.getElementById('view-cert').innerHTML = `
-      <h1 class="page-title">Zertifikate</h1>
+      <h1 class="page-title" data-eyebrow="Ihr Abschluss">Zertifikate</h1>
       <p class="page-sub">Herzlichen Glückwunsch zum Abschluss des Onboardings.</p>
       <div class="certificate" id="certPrint"><div class="cert-logo"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjMwMSA1NSAxMTIgNDgiIHdpZHRoPSIxMTIiIGhlaWdodD0iNDgiPjxwYXRoIGZpbGw9IiNBOENDNjgiIGQ9Ik0gMzM5LjQ1MzEyNSAxMDEuNDcyNjU2IEMgMzQwLjA3ODEyNSAxMDEuNDcyNjU2IDM0MC42NDA2MjUgMTAxLjM3NSAzNDEuMTQ4NDM4IDEwMS4xODc1IEMgMzQxLjY1NjI1IDEwMC45OTYwOTQgMzQyLjA2NjQwNiAxMDAuNzIyNjU2IDM0Mi4zODI4MTIgMTAwLjM3MTA5NCBDIDM0Mi42OTkyMTkgMTAwLjAxNTYyNSAzNDIuODgyODEyIDk5LjU5Mzc1IDM0Mi45Mjk2ODggOTkuMTAxNTYyIEMgMzQzLjAxMTcxOSA5OC4zOTQ1MzEgMzQyLjg1OTM3NSA5Ny44MTI1IDM0Mi40Njg3NSA5Ny4zNTU0NjkgQyAzNDIuMDc4MTI1IDk2LjkwMjM0NCAzNDEuNDIxODc1IDk2LjQ5MjE4OCAzNDAuNSA5Ni4xMjg5MDYgQyAzMzkuNzkyOTY5IDk1Ljg0NzY1NiAzMzkuMjkyOTY5IDk1LjU3MDMxMiAzMzkgOTUuMjg1MTU2IEMgMzM4LjcwNzAzMSA5NSAzMzguNTgyMDMxIDk0LjYzNjcxOSAzMzguNjI4OTA2IDk0LjE4NzUgQyAzMzguNjYwMTU2IDkzLjkyOTY4OCAzMzguNzYxNzE5IDkzLjY5NTMxMiAzMzguOTM3NSA5My40OTIxODggQyAzMzkuMTEzMjgxIDkzLjI4NTE1NiAzMzkuMzU1NDY5IDkzLjEyNSAzMzkuNjY0MDYyIDkzLjAxMTcxOSBDIDMzOS45Njg3NSA5Mi44OTQ1MzEgMzQwLjMzMjAzMSA5Mi44MzU5MzggMzQwLjc1IDkyLjgzNTkzOCBDIDM0MS4zMDg1OTQgOTIuODM1OTM4IDM0MS43OTI5NjkgOTIuOTQ1MzEyIDM0Mi4xOTUzMTIgOTMuMTY0MDYyIEMgMzQyLjYwMTU2MiA5My4zODI4MTIgMzQyLjkxMDE1NiA5My42NTYyNSAzNDMuMTIxMDk0IDkzLjk4MDQ2OSBMIDM0My44NDc2NTYgOTMuMjgxMjUgQyAzNDMuNTYyNSA5Mi44NzUgMzQzLjE2MDE1NiA5Mi41NTA3ODEgMzQyLjY0ODQzOCA5Mi4zMTI1IEMgMzQyLjEzNjcxOSA5Mi4wNzQyMTkgMzQxLjUxOTUzMSA5MS45NTcwMzEgMzQwLjc5Mjk2OSA5MS45NTcwMzEgQyAzNDAuMTc5Njg4IDkxLjk1NzAzMSAzMzkuNjM2NzE5IDkyLjA1MDc4MSAzMzkuMTYwMTU2IDkyLjIzNDM3NSBDIDMzOC42ODc1IDkyLjQyMTg3NSAzMzguMzEyNSA5Mi42NzU3ODEgMzM4LjA0Mjk2OSA5My4wMDM5MDYgQyAzMzcuNzczNDM4IDkzLjMyODEyNSAzMzcuNjEzMjgxIDkzLjcwNzAzMSAzMzcuNTU0Njg4IDk0LjEzMjgxMiBDIDMzNy41IDk0LjU5NzY1NiAzMzcuNTUwNzgxIDk1LjAwMzkwNiAzMzcuNzEwOTM4IDk1LjM0NzY1NiBDIDMzNy44NjcxODggOTUuNjkxNDA2IDMzOC4xMTcxODggOTUuOTg4MjgxIDMzOC40NjA5MzggOTYuMjM4MjgxIEMgMzM4LjgwODU5NCA5Ni40OTIxODggMzM5LjI2OTUzMSA5Ni43MzQzNzUgMzM5Ljg0Mzc1IDk2Ljk2NDg0NCBDIDM0MC4zNjMyODEgOTcuMTcxODc1IDM0MC43NzM0MzggOTcuMzY3MTg4IDM0MS4wNjY0MDYgOTcuNTUwNzgxIEMgMzQxLjM1OTM3NSA5Ny43MzgyODEgMzQxLjU3MDMxMiA5Ny45NDkyMTkgMzQxLjY5OTIxOSA5OC4xODc1IEMgMzQxLjgzMjAzMSA5OC40MjE4NzUgMzQxLjg4MjgxMiA5OC43MTA5MzggMzQxLjg1MTU2MiA5OS4wNDY4NzUgQyAzNDEuODE2NDA2IDk5LjUwNzgxMiAzNDEuNTg5ODQ0IDk5Ljg3ODkwNiAzNDEuMTc1NzgxIDEwMC4xNTIzNDQgQyAzNDAuNzYxNzE5IDEwMC40Mjk2ODggMzQwLjI0MjE4OCAxMDAuNTY2NDA2IDMzOS42MjEwOTQgMTAwLjU2NjQwNiBDIDMzOS4wNDI5NjkgMTAwLjU2NjQwNiAzMzguNTE5NTMxIDEwMC40NDE0MDYgMzM4LjA1MDc4MSAxMDAuMTg3NSBDIDMzNy41ODIwMzEgOTkuOTM3NSAzMzcuMjA3MDMxIDk5LjYwOTM3NSAzMzYuOTI5Njg4IDk5LjE5OTIxOSBMIDMzNi4yMTg3NSA5OS45NTMxMjUgQyAzMzYuNTIzNDM4IDEwMC4zOTA2MjUgMzM2Ljk2MDkzOCAxMDAuNzUzOTA2IDMzNy41MjczNDQgMTAxLjAzOTA2MiBDIDMzOC4wOTM3NSAxMDEuMzI4MTI1IDMzOC43MzgyODEgMTAxLjQ3MjY1NiAzMzkuNDUzMTI1IDEwMS40NzI2NTYgTSAzNTAuODEyNSAxMDEuMzA0Njg4IEwgMzUyLjE5NTMxMiAxMDEuMzA0Njg4IEwgMzUyLjkyMTg3NSA5Ny42NDg0MzggTCAzNTcuMTkxNDA2IDkyLjEwOTM3NSBMIDM1NS41NDI5NjkgOTIuMTA5Mzc1IEwgMzUzLjU3ODEyNSA5NC44MTY0MDYgTCAzNTIuMzkwNjI1IDk2Ljc5Njg3NSBMIDM1Mi4zNDc2NTYgOTYuNzk2ODc1IEwgMzUxLjg3NSA5NC44MTY0MDYgTCAzNTAuOTE0MDYyIDkyLjEwOTM3NSBMIDM0OS40MDYyNSA5Mi4xMDkzNzUgTCAzNTEuNTExNzE5IDk3LjY2NDA2MiBaIE0gMzY0LjA0Njg3NSAxMDEuNDU3MDMxIEMgMzY0LjY5NTMxMiAxMDEuNDU3MDMxIDM2NS4yODUxNTYgMTAxLjM3MTA5NCAzNjUuODA4NTk0IDEwMS4xOTkyMTkgQyAzNjYuMzM1OTM4IDEwMS4wMjczNDQgMzY2Ljc2NTYyNSAxMDAuNzczNDM4IDM2Ny4xMDE1NjIgMTAwLjQzMzU5NCBDIDM2Ny40MzM1OTQgMTAwLjA5Mzc1IDM2Ny42NDg0MzggOTkuNjkxNDA2IDM2Ny43NDIxODggOTkuMjI2NTYyIEMgMzY3Ljg5MDYyNSA5OC40NDUzMTIgMzY3Ljc3NzM0NCA5Ny43OTY4NzUgMzY3LjQwNjI1IDk3LjI4MTI1IEMgMzY3LjAzNTE1NiA5Ni43NjE3MTkgMzY2LjM0Mzc1IDk2LjMwODU5NCAzNjUuMzI4MTI1IDk1LjkxNzk2OSBDIDM2NC42MTMyODEgOTUuNjQ4NDM4IDM2NC4xMjUgOTUuMzc4OTA2IDM2My44NzEwOTQgOTUuMTA5Mzc1IEMgMzYzLjYxMzI4MSA5NC44Mzk4NDQgMzYzLjUzNTE1NiA5NC41MDM5MDYgMzYzLjYyNSA5NC4xMDU0NjkgQyAzNjMuNjY0MDYyIDkzLjkxNzk2OSAzNjMuNzU3ODEyIDkzLjc1NzgxMiAzNjMuOTA2MjUgOTMuNjI1IEMgMzY0LjA1NDY4OCA5My40ODgyODEgMzY0LjI0NjA5NCA5My4zODY3MTkgMzY0LjQ4NDM3NSA5My4zMDg1OTQgQyAzNjQuNzIyNjU2IDkzLjIzNDM3NSAzNjQuOTk2MDk0IDkzLjE5OTIxOSAzNjUuMzE2NDA2IDkzLjE5OTIxOSBDIDM2NS44MzU5MzggOTMuMTk5MjE5IDM2Ni4yODUxNTYgOTMuMzA4NTk0IDM2Ni42Njc5NjkgOTMuNTM1MTU2IEMgMzY3LjA1MDc4MSA5My43NTc4MTIgMzY3LjM0NzY1NiA5NC4wNTA3ODEgMzY3LjU2MjUgOTQuNDE0MDYyIEwgMzY4LjcwNzAzMSA5My4zNzg5MDYgQyAzNjguMzcxMDk0IDkyLjkwNjI1IDM2Ny45Mjk2ODggOTIuNTM5MDYyIDM2Ny4zNzg5MDYgOTIuMjg1MTU2IEMgMzY2LjgzMjAzMSA5Mi4wMjczNDQgMzY2LjE1NjI1IDkxLjg5ODQzOCAzNjUuMzU1NDY5IDkxLjg5ODQzOCBDIDM2NC43NDIxODggOTEuODk4NDM4IDM2NC4xOTUzMTIgOTEuOTg4MjgxIDM2My43MTg3NSA5Mi4xNjc5NjkgQyAzNjMuMjM4MjgxIDkyLjM0Mzc1IDM2Mi44NDc2NTYgOTIuNTg1OTM4IDM2Mi41NTA3ODEgOTIuODk4NDM4IEMgMzYyLjI1MzkwNiA5My4yMTA5MzggMzYyLjA1ODU5NCA5My41NzQyMTkgMzYxLjk2NDg0NCA5My45OTYwOTQgQyAzNjEuODYzMjgxIDk0LjQ3NjU2MiAzNjEuODc4OTA2IDk0LjkxNzk2OSAzNjIuMDE1NjI1IDk1LjMyMDMxMiBDIDM2Mi4xNDg0MzggOTUuNzE4NzUgMzYyLjQwNjI1IDk2LjA3NDIxOSAzNjIuNzgxMjUgOTYuMzc4OTA2IEMgMzYzLjE2MDE1NiA5Ni42ODc1IDM2My42NTYyNSA5Ni45NTcwMzEgMzY0LjI2OTUzMSA5Ny4xODc1IEMgMzY0Ljc5Njg3NSA5Ny4zODY3MTkgMzY1LjIwMzEyNSA5Ny41NzQyMTkgMzY1LjQ4ODI4MSA5Ny43NTM5MDYgQyAzNjUuNzczNDM4IDk3LjkzMzU5NCAzNjUuOTU3MDMxIDk4LjEyODkwNiAzNjYuMDM5MDYyIDk4LjMzMjAzMSBDIDM2Ni4xMjUgOTguNTM5MDYyIDM2Ni4xNDQ1MzEgOTguNzY1NjI1IDM2Ni4wOTc2NTYgOTkuMDE1NjI1IEMgMzY2LjAzMTI1IDk5LjM5MDYyNSAzNjUuODM5ODQ0IDk5LjY3MTg3NSAzNjUuNTE1NjI1IDk5Ljg2MzI4MSBDIDM2NS4xOTUzMTIgMTAwLjA1MDc4MSAzNjQuODA0Njg4IDEwMC4xNDg0MzggMzY0LjMzNTkzOCAxMDAuMTQ4NDM4IEMgMzYzLjc0MjE4OCAxMDAuMTQ4NDM4IDM2My4yMjI2NTYgMTAwLjAxNTYyNSAzNjIuNzczNDM4IDk5Ljc1IEMgMzYyLjMyODEyNSA5OS40ODQzNzUgMzYxLjk2MDkzOCA5OS4xMTcxODggMzYxLjY3MTg3NSA5OC42NTYyNSBMIDM2MC41ODU5MzggOTkuNzU3ODEyIEMgMzYwLjkwMjM0NCAxMDAuMjUgMzYxLjM2MzI4MSAxMDAuNjU2MjUgMzYxLjk3MjY1NiAxMDAuOTc2NTYyIEMgMzYyLjU4MjAzMSAxMDEuMjk2ODc1IDM2My4yNzM0MzggMTAxLjQ1NzAzMSAzNjQuMDQ2ODc1IDEwMS40NTcwMzEgTSAzNzUuMjEwOTM4IDEwMS4zMDQ2ODggTCAzNzcuMTQ4NDM4IDEwMS4zMDQ2ODggTCAzNzguNjQwNjI1IDkzLjY2MDE1NiBMIDM4MS4wODU5MzggOTMuNjYwMTU2IEwgMzgxLjQwNjI1IDkyLjA2NjQwNiBMIDM3NC41MTE3MTkgOTIuMDY2NDA2IEwgMzc0LjIwNzAzMSA5My42NjAxNTYgTCAzNzYuNjc1NzgxIDkzLjY2MDE1NiBaIE0gMzg1LjY0NDUzMSAxMDEuMzA0Njg4IEwgMzkyLjM1NTQ2OSAxMDEuMzA0Njg4IEwgMzkyLjcxODc1IDk5LjQ2NDg0NCBMIDM4OC4yNTM5MDYgOTkuNDY0ODQ0IEwgMzg4LjY1NjI1IDk3LjM4NjcxOSBMIDM5MS42ODM1OTQgOTcuMzg2NzE5IEwgMzkyLjAxOTUzMSA5NS43MTA5MzggTCAzODguOTgwNDY5IDk1LjcxMDkzOCBMIDM4OS4zNTU0NjkgOTMuNzk2ODc1IEwgMzkzLjY0MDYyNSA5My43OTY4NzUgTCAzOTMuOTcyNjU2IDkyLjA1NDY4OCBMIDM4Ny40NDUzMTIgOTIuMDU0Njg4IFogTSAzOTguNTc0MjE5IDEwMS4zMDQ2ODggTCA0MDEuMTgzNTk0IDEwMS4zMDQ2ODggTCA0MDEuODk0NTMxIDk3LjY3NTc4MSBMIDQwMi40MTQwNjIgOTMuNTg5ODQ0IEwgNDAyLjU5Mzc1IDkzLjU4OTg0NCBMIDQwMi44MzIwMzEgOTYuNjQ0NTMxIEwgNDAzLjQwMjM0NCAxMDEuMzA0Njg4IEwgNDA1LjU3ODEyNSAxMDEuMzA0Njg4IEwgNDA3Ljk4MDQ2OSA5Ni42NDQ1MzEgTCA0MDkuMzQ3NjU2IDkzLjU4OTg0NCBMIDQwOS41NDI5NjkgOTMuNTg5ODQ0IEwgNDA4LjUzOTA2MiA5Ny42NzU3ODEgTCA0MDcuODEyNSAxMDEuMzA0Njg4IEwgNDEwLjQyMTg3NSAxMDEuMzA0Njg4IEwgNDEyLjIyMjY1NiA5Mi4wMjczNDQgTCA0MDguMDQ2ODc1IDkyLjAyNzM0NCBMIDQwNS44OTg0MzggOTYuNjI4OTA2IEwgNDA1LjA4OTg0NCA5OC45NDkyMTkgTCA0MDQuOTgwNDY5IDk4Ljk0OTIxOSBMIDQwNS4wNDY4NzUgOTYuNjI4OTA2IEwgNDA0LjYyODkwNiA5Mi4wMjczNDQgTCA0MDAuMzc1IDkyLjAyNzM0NCBaIE0gMzk4LjU3NDIxOSAxMDEuMzA0Njg4ICIvPjxwYXRoIGZpbGw9IiMzRjQ2NEEiIGQ9Ik0gMzE0LjkyMTg3NSA1Ni40NDE0MDYgQyAzMTguMDQ2ODc1IDU2LjQ0MTQwNiAzMjAuNDE3OTY5IDU3LjQzNzUgMzIyLjAyNzM0NCA1OS40MjE4NzUgQyAzMjMuNjY3OTY5IDYxLjQwNjI1IDMyNC4yNSA2NC4wMzUxNTYgMzIzLjc3NzM0NCA2Ny4zMDg1OTQgTCAzMjIuNzczNDM4IDc0LjUzMTI1IEMgMzIyLjMwMDc4MSA3Ny44MzIwMzEgMzIxLjA2MjUgODAuNDI1NzgxIDMxOS4wNTA3ODEgODIuMzA4NTk0IEMgMzE3LjA0Mjk2OSA4NC4xNzE4NzUgMzE0LjUzNTE1NiA4NS4xMDE1NjIgMzExLjUzNTE1NiA4NS4xMDE1NjIgQyAzMDguNDEwMTU2IDg1LjEwMTU2MiAzMDYuMDI3MzQ0IDg0LjEyMTA5NCAzMDQuMzg2NzE5IDgyLjE2MDE1NiBDIDMwMi43NzM0MzggODAuMTQ4NDM4IDMwMi4yMDMxMjUgNzcuNTA3ODEyIDMwMi42NzU3ODEgNzQuMjM0Mzc1IEwgMzAzLjY3OTY4OCA2Ny4wMTE3MTkgQyAzMDQuMTUyMzQ0IDYzLjczODI4MSAzMDUuMzk0NTMxIDYxLjE1NjI1IDMwNy40MDIzNDQgNTkuMjY5NTMxIEMgMzA5LjM4NjcxOSA1Ny4zODY3MTkgMzExLjg5NDUzMSA1Ni40NDE0MDYgMzE0LjkyMTg3NSA1Ni40NDE0MDYgTSAzMTQuNTQ2ODc1IDYxLjgwMDc4MSBDIDMxMy4yNTc4MTIgNjEuODAwNzgxIDMxMi4xODc1IDYyLjIzMDQ2OSAzMTEuMzI4MTI1IDYzLjA4NTkzOCBDIDMxMC40NzI2NTYgNjMuOTQxNDA2IDMwOS45NDUzMTIgNjUuMTEzMjgxIDMwOS43NDYwOTQgNjYuNjA1NDY5IEwgMzA4LjU1ODU5NCA3NC45Mzc1IEMgMzA4LjM1OTM3NSA3Ni4zNzg5MDYgMzA4LjU2MjUgNzcuNTM5MDYyIDMwOS4xNzE4NzUgNzguNDIxODc1IEMgMzA5Ljc3NzM0NCA3OS4zMDA3ODEgMzEwLjY5MTQwNiA3OS43NDIxODggMzExLjkwNjI1IDc5Ljc0MjE4OCBDIDMxMy4xOTUzMTIgNzkuNzQyMTg4IDMxNC4yNjk1MzEgNzkuMzEyNSAzMTUuMTI1IDc4LjQ1NzAzMSBDIDMxNS45ODA0NjkgNzcuNjAxNTYyIDMxNi41MDc4MTIgNzYuNDI5Njg4IDMxNi43MDcwMzEgNzQuOTM3NSBMIDMxNy44NTkzNzUgNjYuNjA1NDY5IEMgMzE4LjA1ODU5NCA2NS4xNjQwNjIgMzE3Ljg1OTM3NSA2NC4wMDM5MDYgMzE3LjI2NTYyNSA2My4xMjUgQyAzMTYuNjcxODc1IDYyLjI0MjE4OCAzMTUuNzY1NjI1IDYxLjgwMDc4MSAzMTQuNTQ2ODc1IDYxLjgwMDc4MSAiLz48cGF0aCBmaWxsPSIjM0Y0NjRBIiBkPSJNIDMzNy42ODM1OTQgNjUuMzAwNzgxIEwgMzM2Ljk3NjU2MiA3MC42MjEwOTQgQyAzMzUuNDM3NSA3MC42NzE4NzUgMzM0IDcxLjE3OTY4OCAzMzIuNjYwMTU2IDcyLjE0ODQzOCBMIDMzMC43MjY1NjIgODQuNjkxNDA2IEwgMzI1LjIxODc1IDg0LjY5MTQwNiBMIDMyNy45MzM1OTQgNjUuNDQ5MjE5IEwgMzMzLjEwOTM3NSA2NS40NDkyMTkgTCAzMzIuODA4NTk0IDY3LjIzNDM3NSBDIDMzMy45NzY1NjIgNjUuOTcyNjU2IDMzNS42MDE1NjIgNjUuMzI0MjE5IDMzNy42ODM1OTQgNjUuMzAwNzgxICIvPjxwYXRoIGZpbGw9IiMzRjQ2NEEiIGQ9Ik0gMzYxLjQ5MjE4OCA1Ni44NTE1NjIgTCAzNTMuMDgyMDMxIDcxLjA3MDMxMiBMIDM1Ny41ODIwMzEgODQuNjkxNDA2IEwgMzUxLjU1NDY4OCA4NC42OTE0MDYgTCAzNDcuODMyMDMxIDczLjg1OTM3NSBMIDM0Ni4xNTYyNSA3My44NTkzNzUgTCAzNDQuNjMyODEyIDg0LjY5MTQwNiBMIDMzOC43NSA4NC42OTE0MDYgTCAzNDIuNjk1MzEyIDU2Ljg1MTU2MiBMIDM0OC41MzkwNjIgNTYuODUxNTYyIEwgMzQ2LjkwMjM0NCA2OC41MzkwNjIgTCAzNDguMTY3OTY5IDY4LjUzOTA2MiBMIDM1NS4wODk4NDQgNTYuODUxNTYyIFogTSAzNjEuNDkyMTg4IDU2Ljg1MTU2MiAiLz48cGF0aCBmaWxsPSIjM0Y0NjRBIiBkPSJNIDM2OC43MzA0NjkgNjUuMDc4MTI1IEMgMzcwLjU2NjQwNiA2NS4wNzgxMjUgMzcxLjgyODEyNSA2NS43MjI2NTYgMzcyLjUyMzQzOCA2Ny4wMTE3MTkgTCAzNzIuNzg1MTU2IDY1LjQ0OTIxOSBMIDM3OC4xMDkzNzUgNjUuNDQ5MjE5IEwgMzc1LjM5MDYyNSA4NC42OTE0MDYgTCAzNzAuMjUzOTA2IDg0LjY5MTQwNiBMIDM3MC40NDE0MDYgODMuMzg2NzE5IEMgMzY5LjUyMzQzOCA4NC41MzEyNSAzNjguMjE4NzUgODUuMTAxNTYyIDM2Ni41MzUxNTYgODUuMTAxNTYyIEMgMzY0LjU5NzY1NiA4NS4xMDE1NjIgMzYzLjA1ODU5NCA4NC4zOTQ1MzEgMzYxLjkxNzk2OSA4Mi45NzY1NjIgQyAzNjAuODAwNzgxIDgxLjUxNTYyNSAzNjAuNDA2MjUgNzkuNjY3OTY5IDM2MC43MjY1NjIgNzcuNDMzNTk0IEwgMzYxLjQzMzU5NCA3Mi40MTAxNTYgQyAzNjEuNzMwNDY5IDcwLjEyNSAzNjIuNTYyNSA2OC4zMzk4NDQgMzYzLjkyOTY4OCA2Ny4wNTA3ODEgQyAzNjUuMzE2NDA2IDY1LjczNDM3NSAzNjYuOTE3OTY5IDY1LjA3ODEyNSAzNjguNzMwNDY5IDY1LjA3ODEyNSBNIDM2OS42NjAxNTYgNjkuODA0Njg4IEMgMzY4LjkxNDA2MiA2OS44MDQ2ODggMzY4LjMwMDc4MSA3MC4wNTg1OTQgMzY3LjgxNjQwNiA3MC41NjY0MDYgQyAzNjcuMzMyMDMxIDcxLjA3NDIxOSAzNjcuMDQyOTY5IDcxLjczODI4MSAzNjYuOTQxNDA2IDcyLjU1ODU5NCBMIDM2Ni4xOTkyMTkgNzcuNzMwNDY5IEMgMzY2LjA5NzY1NiA3OC41MjczNDQgMzY2LjI0MjE4OCA3OS4xNTYyNSAzNjYuNjI1IDc5LjYyODkwNiBDIDM2Ny4wMTE3MTkgODAuMTAxNTYyIDM2Ny41NTA3ODEgODAuMzM1OTM4IDM2OC4yNDYwOTQgODAuMzM1OTM4IEMgMzY5LjAzOTA2MiA4MC4zMzU5MzggMzY5LjgyMDMxMiA4MCAzNzAuNTg5ODQ0IDc5LjMzMjAzMSBMIDM3MS43ODEyNSA3MC45MjE4NzUgQyAzNzEuMjEwOTM4IDcwLjE3NTc4MSAzNzAuNTAzOTA2IDY5LjgwNDY4OCAzNjkuNjYwMTU2IDY5LjgwNDY4OCAiLz48cGF0aCBmaWxsPSIjM0Y0NjRBIiBkPSJNIDM5MS4zODI4MTIgNjUuMDc4MTI1IEMgMzkzLjI5Mjk2OSA2NS4wNzgxMjUgMzk0Ljc0MjE4OCA2NS43MTA5MzggMzk1LjczNDM3NSA2Ni45NzY1NjIgQyAzOTYuNzI2NTYyIDY4LjI0MjE4OCAzOTcuMDc0MjE5IDY5Ljk0MTQwNiAzOTYuNzc3MzQ0IDcyLjA3NDIxOSBMIDM5NC45OTIxODggODQuNjkxNDA2IEwgMzg5LjQ0NTMxMiA4NC42OTE0MDYgTCAzOTEuMTIxMDk0IDcyLjc0MjE4OCBDIDM5MS4yNDYwOTQgNzIuMDIzNDM4IDM5MS4xNjQwNjIgNzEuNDUzMTI1IDM5MC44Nzg5MDYgNzEuMDMxMjUgQyAzOTAuNTkzNzUgNzAuNjA5Mzc1IDM5MC4xNzU3ODEgNzAuMzk4NDM4IDM4OS42MzI4MTIgNzAuMzk4NDM4IEMgMzg5LjAzNTE1NiA3MC4zOTg0MzggMzg4LjU2NjQwNiA3MC41MzUxNTYgMzg4LjIxODc1IDcwLjgwODU5NCBDIDM4Ny45Njg3NSA3MC45MzM1OTQgMzg3LjY2MDE1NiA3MS4xNzk2ODggMzg3LjI4OTA2MiA3MS41NTQ2ODggTCAzODUuMjc3MzQ0IDg0LjY5MTQwNiBMIDM3OS43Njk1MzEgODQuNjkxNDA2IEwgMzgyLjQ4NDM3NSA2NS40NDkyMTkgTCAzODcuNjIxMDk0IDY1LjQ0OTIxOSBMIDM4Ny40Mzc1IDY2LjcxNDg0NCBDIDM4OC40MDIzNDQgNjUuNjI1IDM4OS43MTg3NSA2NS4wNzgxMjUgMzkxLjM4MjgxMiA2NS4wNzgxMjUgIi8+PC9zdmc+" alt="OrKan System" style="height:64px;width:auto"></div>
         <div class="cert-title">Zertifikat der Absolvierung</div>
@@ -3789,7 +3865,7 @@ function fsLayout(r){
 function renderFives(){
   const v=document.getElementById('view-fives'); if(!v) return;
   v.innerHTML=`
-    <h1 class="page-title">5S-Übung &amp; Kostenrechner</h1>
+    <h1 class="page-title" data-eyebrow="Mehr Raum, Zeit und Geld">5S-Übung &amp; Kostenrechner</h1>
     <p class="page-sub">Erleben Sie in wenigen Minuten, wie viel Zeit Ordnung spart – und rechnen Sie aus, was Suchzeiten Ihren Betrieb kosten. <a href="#" class="fs-skip" onclick="fsSkipToCalc();return false">Direkt zum Kostenrechner →</a></p>
     <div class="fs-grid">
       <div class="bp-card">
