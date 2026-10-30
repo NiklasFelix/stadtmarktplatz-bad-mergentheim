@@ -1,0 +1,27 @@
+Willkommen zu Modul 3: Artikelimport und Lieferantenanbindung. In diesem Video zeigen wir Ihnen, wie Sie viele Artikel auf einmal per Excel importieren und wie Sie Ihre Lieferanten in der OrKan Cloud anlegen.
+
+Beginnen wir mit dem Import. Dafür benötigen Sie die Excel-Importvorlage. Die OrKan Cloud erkennt Ihre Daten anhand der vorgegebenen Spaltenüberschriften. Die Vorlage finden Sie direkt hier im Modul zum Download. Grüne Spalten sind sehr wichtig, gelbe relativ wichtig und graue weniger wichtig.
+
+Gut zu wissen: Exportieren Sie Ihre Artikelliste aus der OrKan Cloud, hat diese Datei genau denselben Aufbau. Sie können sie also bearbeiten und direkt wieder importieren.
+
+Möchten Sie auch Artikelbilder importieren, packen Sie diese in eine ZIP-Datei mit maximal 40 Megabyte. Wichtig: Der Bildname in der Excel-Spalte muss exakt dem Dateinamen in der ZIP-Datei entsprechen.
+
+Den Import starten Sie unter Lagerverwaltung, Artikel und Import. Dort wählen Sie einen von drei Modi. Nur importieren legt ausschließlich neue Artikel an und ändert nie bestehende. Nur aktualisieren ändert ausschließlich bestehende Artikel und legt nie neue an. Importieren und aktualisieren kombiniert beides.
+
+Damit die OrKan Cloud bestehende Artikel erkennt, gleicht sie die Daten ab. Das geht über die Lieferanten-Artikelnummer, die EAN oder die interne Artikelnummer. Ein wichtiger Hinweis: Wechselt bei einem Artikel der Lieferant, gleichen Sie unbedingt über die interne Artikelnummer ab. Sonst entsteht der Artikel doppelt und Bestandsdaten gehen verloren.
+
+Unser Tipp: Testen Sie den Import zuerst mit wenigen Artikeln. So sehen Sie schnell, ob alles richtig zugeordnet wird.
+
+Kommen wir zu den Lieferanten. Einen neuen Lieferanten legen Sie unter Lagerverwaltung, Lieferant und Erstellen an. Auch hier gilt: Füllen Sie alle Pflichtfelder mit Sternchen aus.
+
+Ein besonders wichtiges Feld ist die Shop-URL. Achtung: Das ist nicht die normale Webadresse des Onlineshops, sondern die Adresse der IDS-Schnittstelle. Nur damit kann die OrKan Cloud Ihre Bestellungen automatisch an den Händler übermitteln. Die Shop-URL finden Sie über das Lupen-Symbol. Oft ist Ihr Händler dort bereits hinterlegt. Falls nicht, fragen Sie Ihren Händler oder schauen Sie in Ihrer Branchensoftware nach.
+
+Im Feld Standardbestellverfahren legen Sie fest, wie Ihre Bestellungen an diesen Lieferanten gehen: online über die IDS-Schnittstelle direkt in den Webshop, als PDF-Datei oder per E-Mail.
+
+Zum Schluss hinterlegen Sie die Liefertage und den Offset in Tagen. Die Liefertage geben an, wann der Lieferant liefert, zum Beispiel Montag bis Freitag oder nur donnerstags. Der Offset beschreibt die Tage zwischen Bestellung und Wareneingang. Offset null bedeutet: Lieferung am nächsten Liefertag. Offset eins bedeutet: ein Tag liegt dazwischen.
+
+Ein Beispiel: Ihr Lieferant liefert nur donnerstags, und der Offset ist eins. Zwischen Bestellung und Lieferung muss also mindestens ein Tag liegen. Bestellen Sie am Mittwoch, wäre der nächste Donnerstag schon am Tag danach. Das ist zu knapp. Die Ware kommt deshalb erst am Donnerstag eine Woche später. Den Offset können Sie bei jeder Bestellung anpassen.
+
+Beachten Sie: Der Offset bildet nur die Lieferzeit ab, keinen Bestellrhythmus. Wenn Sie nur an bestimmten Tagen bestellen möchten, regeln Sie das am besten mit einer einfachen Liste, wer wann bei welchem Lieferanten bestellt.
+
+Damit sind Ihre Artikel importiert und Ihre Lieferanten angebunden. Im nächsten Modul geht es um das Zwei-Etiketten-System.
