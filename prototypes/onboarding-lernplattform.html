@@ -3483,7 +3483,7 @@ function renderCert(){
         <div class="cert-name">${state.name}</div>
         <div class="cert-company">${state.company}</div>
         <div class="cert-body">hat die ${certTotal()} Grundlagen-Module der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen und die zugehörigen Wissenschecks bestanden.</div>
-        <div style="font-size:13.5px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')} &middot; Gültig für 6 Monate</div>
+        <div style="font-size:13.5px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')}</div>
       </div>
       </div>
       <p class="cert-preview-note">Ihr echtes Zertifikat mit Druck- und Download-Funktion sowie Rabattcode erhalten Sie automatisch nach Abschluss der Grundlagen-Module.</p>
@@ -3498,18 +3498,9 @@ function renderCert(){
         <div class="cert-name">${state.name}</div>
         <div class="cert-company">${state.company}</div>
         <div class="cert-body">hat die ${certTotal()} Grundlagen-Module der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen und die zugehörigen Wissenschecks bestanden.</div>
-        <div style="font-size:13.5px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')} &middot; Gültig für 6 Monate</div>
+        <div style="font-size:13.5px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')}</div>
       </div>
       <div class="cert-actions"><button class="btn btn-primary" id="certPdfBtn" onclick="downloadCertPdf()">Zertifikat als PDF speichern</button>${window.self===window.top?'<button class="btn btn-outline" onclick="window.print()">Drucken</button>':''}</div>
-      <div class="cert-discount">
-        <div class="cert-discount-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41 11 3.83A2 2 0 0 0 9.59 3.24L3.24 9.59A2 2 0 0 0 3.83 11l9.58 9.59a2 2 0 0 0 2.83 0l6.35-6.35a2 2 0 0 0 0-2.83Z"/><circle cx="8.5" cy="8.5" r="1.5"/></svg></div>
-        <div>
-          <strong>Ihre Belohnung fürs Lernen</strong>
-          <p>Ihr Abschlusszertifikat schaltet einen Rabattcode* für den OrKan Shop frei.</p>
-          <div class="cert-discount-code" id="certDiscountCode">${getDiscountCode()}</div>
-          <p class="cert-discount-note">* Pro Unternehmen gibt es nur einen Rabattcode – er ist einmalig einlösbar, auch wenn mehrere Mitarbeiter das Zertifikat erwerben.</p>
-        </div>
-      </div>
     `;
   }
 }
