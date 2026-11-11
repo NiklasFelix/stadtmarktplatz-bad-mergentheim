@@ -1,0 +1,29 @@
+Willkommen zu Modul 7: die Maschinenverwaltung. In diesem Video zeigen wir Ihnen, wie Sie Maschinen in der OrKan Cloud anlegen, an Mitarbeiter ausgeben und Wartungstermine im Blick behalten.
+
+Maschinen gehören zum Bereich Gebrauchsgut. Dort verwalten Sie alles, was nicht verbraucht, sondern ausgegeben und wieder zurückgebracht wird. Also Maschinen, Schlüssel, Anlagen, Bauteile und Flaschen.
+
+Jedes Gebrauchsgut hat zwei Standorte. Der Heimatstandort ist sein fester Platz, zum Beispiel das Werkzeuglager. Der aktuelle Standort zeigt, wo es gerade ist, etwa beim Monteur, im Fahrzeug oder auf der Baustelle. Leiht sich ein Monteur den Bohrhammer aus, wird er auf ihn gebucht. Der Heimatstandort bleibt trotzdem das Werkzeuglager.
+
+Kommen wir zum Anlegen. Öffnen Sie im Hauptmenü Gebrauchsgut und dann Übersicht. Wählen Sie oben rechts zuerst die Gebrauchsgutart Maschine. Das ist wichtig, denn die Gebrauchsgutart bestimmt, welche Felder im Formular erscheinen. Klicken Sie dann auf Erstellen.
+
+Pflichtfelder sind die Nummer, die automatisch vorgeschlagen wird, der Name, zum Beispiel Bohrhammer, eine Beschreibung wie das Modell sowie der Heimatstandort. Optional ergänzen Sie Seriennummer, Wert, zuständigen Mitarbeiter, Anschaffungsdatum, einen Kommentar wie „mit zwei Akkus und Ladegerät“ und ein Foto. Was als Maschine gilt, entscheiden Sie übrigens selbst. Auch eine Leiter ist möglich.
+
+Haben Sie mehrere gleiche Geräte, zum Beispiel zwei Pressmaschinen, nutzen Sie „Eingaben beibehalten“. Dann bleiben die Werte für die nächste Maschine einfach stehen.
+
+Unser Tipp: Laden Sie den Kaufbeleg als Dokument hoch. Das erste Dokument erscheint auf dem Etikett. Alle weiteren werden nicht gedruckt, sind aber im Garantiefall Gold wert. Gerade bei vielen baugleichen Geräten klären Sie so über die Seriennummer zweifelsfrei, welche Maschine noch Garantie hat.
+
+Kommen wir zum Buchen. Für ein einzelnes Gerät markieren Sie es in der Übersicht und klicken auf Buchen. Wählen Sie dann den Standorttyp, also zum Beispiel Person, Projekt oder Fahrzeug, und den passenden Standort.
+
+Bekommt ein Monteur morgens mehrere Geräte, gehen Sie über Buchungen und Erstellen. Mit „fortlaufende Eingabe“ bleibt das Fenster offen, und Sie buchen ein Gerät nach dem anderen.
+
+Für die Rückgabe markieren Sie unter Buchungen die Buchung und klicken auf Rückgabe. Zieht eine Maschine dauerhaft um, zum Beispiel fest ins Fahrzeug, ändern Sie in der Übersicht ihren Heimatstandort.
+
+Beachten Sie die Rechte: Ein Administrator bucht jede Maschine auf jeden Standort. Ein Monteur bucht in der App nur auf sich selbst.
+
+Unter Service und Wartung behalten Sie Prüfungen im Blick. Klicken Sie auf Erstellen und wählen Sie Gerät, Art der Prüfung, Datum, ausführende Firma und das Intervall in Monaten. Bestätigen Sie eine Prüfung, legt die OrKan Cloud den Folgetermin automatisch an, zum Beispiel für die jährliche VDE-Prüfung.
+
+Unter Reservierungen merken Sie ein Gerät für einen Zeitraum vor. Und mehrere Teile, etwa Kernbohrgerät, Befestigungsset und Staubsauger, bündeln Sie zu einer Anlage. Ein Scan bucht dann alle Teile auf einmal.
+
+Und wo ist was? Wo eine Maschine gerade ist, sehen Sie in der Übersicht in der Spalte Aktueller Standort. Wer sie wann hatte, zeigen die Buchungen. Und was eine Person oder ein Projekt gerade hat, finden Sie unter Standorte in der Materialliste.
+
+Damit kennen Sie die Maschinenverwaltung. Legen Sie jetzt Ihre erste Maschine mit Kaufbeleg an und hinterlegen Sie gleich ein Wartungsintervall.
