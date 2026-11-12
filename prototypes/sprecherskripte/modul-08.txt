@@ -1,27 +1,27 @@
-Willkommen zu Modul 8: die Schlüsselverwaltung. In diesem Video zeigen wir Ihnen, wie Sie Kundenschlüssel sicher in der OrKan Cloud verwalten, Etiketten drucken und Schlüssel ausgeben und wieder zurücknehmen.
+[warmly] Willkommen zu Modul 8: die Schlüsselverwaltung. [short pause] In diesem Video zeigen wir Ihnen, wie Sie Kundenschlüssel sicher in der OrKan Cloud verwalten, Etiketten drucken und Schlüssel ausgeben und wieder zurücknehmen. [long pause]
 
-Beginnen wir mit dem Wichtigsten: dem Sicherheits-Etikett. Schlüssel-Etiketten sind gefaltete Anhänger. Außen stehen nur eine Nummer und ein QR-Code. Die Kundenadresse steht innen und ist erst zu sehen, wenn man das Etikett aufklappt.
+[calm] Beginnen wir mit dem Wichtigsten: dem Sicherheits-Etikett. [short pause] Schlüssel-Etiketten sind gefaltete Anhänger. Außen stehen nur eine Nummer und ein QR-Code. Die Kundenadresse steht innen und ist erst zu sehen, wenn man das Etikett aufklappt. [long pause]
 
-Warum ist das so wichtig? Viele Betriebe haben einen Schlüsselkasten und daneben einen Ordner, in dem steht, welcher Schlüssel zu welcher Adresse gehört. Bei einem Einbruch werden dann meist beide gestohlen. Die Täter haben so Schlüssel und Adressen in der Hand. Bei OrKan steckt die Adresse digital hinter der Nummer und bleibt geschützt.
+[serious] Warum ist das so wichtig? [short pause] Viele Betriebe haben einen Schlüsselkasten und daneben einen Ordner, in dem steht, welcher Schlüssel zu welcher Adresse gehört. Bei einem Einbruch werden dann meist beide gestohlen. Die Täter haben so Schlüssel und Adressen in der Hand. [short pause] [reassuring] Bei OrKan steckt die Adresse digital hinter der Nummer und bleibt geschützt. [long pause]
 
-Unser Tipp: Drucken Sie einen Hinweis auf Finderlohn auf das Etikett, zum Beispiel fünfzig Euro. Das erhöht die Chance, dass ein verlorener Schlüssel zurückkommt. Denn der Austausch einer hochwertigen Schließanlage ist deutlich teurer.
+[friendly] Unser Tipp: Drucken Sie einen Hinweis auf Finderlohn auf das Etikett, zum Beispiel fünfzig Euro. Das erhöht die Chance, dass ein verlorener Schlüssel zurückkommt. Denn der Austausch einer hochwertigen Schließanlage ist deutlich teurer. [long pause]
 
-Kommen wir zum Anlegen. Öffnen Sie Gebrauchsgut und dann Übersicht. Wählen Sie oben rechts die Gebrauchsgutart Schlüssel und klicken Sie auf Erstellen.
+[calm] Kommen wir zum Anlegen. [short pause] Öffnen Sie Gebrauchsgut und dann Übersicht. Wählen Sie oben rechts die Gebrauchsgutart Schlüssel und klicken Sie auf Erstellen. [long pause]
 
-Pflichtfelder sind die Nummer, die automatisch vorgeschlagen wird, der Name und die Beschreibung. Im Namen steht, was der Schlüssel öffnet, zum Beispiel Heizraum. In der Beschreibung steht der genaue Ort, zum Beispiel unten rechts, zweite Tür. Dazu kommt der Standort, also wo der Schlüssel normalerweise hängt, etwa im Schlüsselkasten im Hauptlager. Nur bei Schlüsseln gibt es außerdem Felder für die Kundenadresse und die Anzahl der Schlüssel. Bei mehreren ähnlichen Schlüsseln hilft „Eingaben beibehalten“.
+Pflichtfelder sind die Nummer, die automatisch vorgeschlagen wird, der Name und die Beschreibung. [short pause] Im Namen steht, was der Schlüssel öffnet, zum Beispiel Heizraum. In der Beschreibung steht der genaue Ort, zum Beispiel unten rechts, zweite Tür. [short pause] Dazu kommt der Standort, also wo der Schlüssel normalerweise hängt, etwa im Schlüsselkasten im Hauptlager. [short pause] Nur bei Schlüsseln gibt es außerdem Felder für die Kundenadresse und die Anzahl der Schlüssel. Bei mehreren ähnlichen Schlüsseln hilft „Eingaben beibehalten“. [long pause]
 
-Jetzt drucken Sie die Etiketten. Markieren Sie in der Übersicht links die gewünschten Schlüssel. Klicken Sie auf Drucken. Im Fenster Gebrauchsgutbeschriftung wählen Sie das Template Schlüssel und legen fest, welche Schlüssel gedruckt werden sollen, zum Beispiel nur die markierten. Nach einem Klick auf Drucken erhalten Sie eine PDF-Datei mit Ihren Schlüsseletiketten.
+[calm] Jetzt drucken Sie die Etiketten. [short pause] Markieren Sie in der Übersicht links die gewünschten Schlüssel. Klicken Sie auf Drucken. [short pause] Im Fenster Gebrauchsgutbeschriftung wählen Sie das Template Schlüssel und legen fest, welche Schlüssel gedruckt werden sollen, zum Beispiel nur die markierten. [short pause] Nach einem Klick auf Drucken erhalten Sie eine PDF-Datei mit Ihren Schlüsseletiketten. [long pause]
 
-Kommen wir zur Ausgabe. Gibt ein Mitarbeiter einen Schlüssel heraus oder bekommt ihn zurück, wird das gebucht, genau wie bei den Maschinen.
+Kommen wir zur Ausgabe. [short pause] Gibt ein Mitarbeiter einen Schlüssel heraus oder bekommt ihn zurück, wird das gebucht, genau wie bei den Maschinen. [long pause]
 
-Für einen einzelnen Schlüssel markieren Sie ihn in der Übersicht, klicken auf Buchen und wählen die Person, die ihn bekommt.
+Für einen einzelnen Schlüssel markieren Sie ihn in der Übersicht, klicken auf Buchen und wählen die Person, die ihn bekommt. [long pause]
 
-Mehrere Schlüssel auf einmal geben Sie über Buchungen und Erstellen aus. Im Fenster Buchung wählen Sie nacheinander den Standorttyp, zum Beispiel Person, dann den Standort, also die konkrete Person. Danach die Gebrauchsgutart Schlüssel und das Gebrauchsgut, also den gewünschten Schlüssel. Klicken Sie auf Speichern. Ist „fortlaufende Eingabe“ angehakt, bleibt das Fenster offen, und Sie buchen direkt den nächsten Schlüssel. Unten unter Letzte Buchungen sehen Sie, was bereits gebucht wurde.
+Mehrere Schlüssel auf einmal geben Sie über Buchungen und Erstellen aus. [short pause] Im Fenster Buchung wählen Sie nacheinander den Standorttyp, zum Beispiel Person, dann den Standort, also die konkrete Person. [short pause] Danach die Gebrauchsgutart Schlüssel und das Gebrauchsgut, also den gewünschten Schlüssel. Klicken Sie auf Speichern. [short pause] [friendly] Ist „fortlaufende Eingabe“ angehakt, bleibt das Fenster offen, und Sie buchen direkt den nächsten Schlüssel. Unten unter Letzte Buchungen sehen Sie, was bereits gebucht wurde. [long pause]
 
-Zurück kommt ein Schlüssel über Buchungen: Buchung markieren und Rückgabe klicken. Oder Sie buchen den Schlüssel einfach wieder auf den Schlüsselkasten.
+[calm] Zurück kommt ein Schlüssel über Buchungen: Buchung markieren und Rückgabe klicken. [short pause] Oder Sie buchen den Schlüssel einfach wieder auf den Schlüsselkasten. [long pause]
 
-Und so behalten Sie den Überblick: Wo ein Schlüssel gerade ist, sehen Sie in der Übersicht in der Spalte Aktueller Standort. Welche Schlüssel eine Person oder ein Projekt hat, sehen Sie unter Standorte. Markieren Sie die Person oder das Projekt und klicken Sie auf Materialliste. Diese Liste können Sie auch ausdrucken.
+Und so behalten Sie den Überblick: [short pause] Wo ein Schlüssel gerade ist, sehen Sie in der Übersicht in der Spalte Aktueller Standort. [short pause] Welche Schlüssel eine Person oder ein Projekt hat, sehen Sie unter Standorte. Markieren Sie die Person oder das Projekt und klicken Sie auf Materialliste. Diese Liste können Sie auch ausdrucken. [long pause]
 
-Ein letzter, wichtiger Hinweis: Bringen Sie niemals sichtbare Adressen am Schlüsselkasten oder an den Schlüsseln an. Das ist das zentrale Sicherheitsprinzip.
+[serious] Ein letzter, wichtiger Hinweis: [short pause] Bringen Sie niemals sichtbare Adressen am Schlüsselkasten oder an den Schlüsseln an. Das ist das zentrale Sicherheitsprinzip. [long pause]
 
 [warmly] Damit kennen Sie die Schlüsselverwaltung. [long pause] [encouraging] Legen Sie jetzt einen Testschlüssel an, drucken Sie sein Etikett und buchen Sie ihn auf eine Testperson. [long pause] … [friendly] Im nächsten Modul zeigen wir Ihnen die Projekte und Baustellen.
