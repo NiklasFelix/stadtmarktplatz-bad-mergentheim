@@ -1,6 +1,6 @@
 [warmly] Willkommen zu Modul 8: die Schlüsselverwaltung. [short pause] In diesem Video zeigen wir Ihnen, wie Sie Kundenschlüssel sicher in der OrKan Cloud verwalten, Etiketten drucken und Schlüssel ausgeben und wieder zurücknehmen. [long pause]
 
-[calm] Beginnen wir mit dem Wichtigsten: dem Sicherheits-Etikett. [short pause] Schlüssel-Etiketten sind gefaltete Anhänger. Außen stehen nur eine Nummer und ein QR-Code. Die Kundenadresse steht innen und ist erst zu sehen, wenn man das Etikett aufklappt. [long pause]
+[calm] Beginnen wir mit dem Wichtigsten: dem Sicherheits-Etikett. [short pause] Schlüssel-Etiketten sind gefaltete Anhänger. Außen stehen nur eine Nummer und ein QR-Code. Innen steht die Adresse Ihres Betriebs. Sie ist erst zu sehen, wenn man das Etikett aufklappt, und so kann ein Finder den Schlüssel an Sie zurückgeben. [short pause] Zu welchem Objekt der Schlüssel gehört, steht nicht auf dem Etikett. [long pause]
 
 [serious] Warum ist das so wichtig? [short pause] Viele Betriebe haben einen Schlüsselkasten und daneben einen Ordner, in dem steht, welcher Schlüssel zu welcher Adresse gehört. Bei einem Einbruch werden dann meist beide gestohlen. Die Täter haben so Schlüssel und Adressen in der Hand. [short pause] [reassuring] Bei OrKan steckt die Adresse digital hinter der Nummer und bleibt geschützt. [long pause]
 

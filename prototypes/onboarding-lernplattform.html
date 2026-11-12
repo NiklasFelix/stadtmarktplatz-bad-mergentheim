@@ -2190,7 +2190,7 @@ const MODULES = [
     gist:['Sicherheits-Etikett','Adresssuche','Buchung & Rückgabe'],
     points:[
       "## 1. Das Sicherheits-Etikett",
-      "[Gefaltetes Etikett] Schlüssel-Etiketten sind gefaltete Anhänger: außen nur Nummer und QR-Code, innen (nur beim Öffnen sichtbar) die Kundenadresse.",
+      "[Gefaltetes Etikett] Schlüssel-Etiketten sind gefaltete Anhänger: außen nur Nummer und QR-Code, innen (nur beim Öffnen sichtbar) die Adresse Ihres Betriebs – so kann ein Finder den Schlüssel an Sie zurückgeben. Zu welchem Objekt der Schlüssel gehört, steht nicht auf dem Etikett.",
       "[Sicherheitsprinzip] Beim klassischen Schlüsselkasten mit separatem Zuordnungsordner werden bei einem Einbruch meist beide gestohlen – die Adressen liegen offen. Bei OrKan steckt die Adresse digital hinter der Nummer und bleibt geschützt.",
       "[Finderlohn] Ein Finderlohn-Hinweis (Richtwert ca. 50 €) erhöht die Chance auf Rückgabe – wichtig, weil der Austausch hochwertiger Schließanlagen deutlich teurer ist.",
       "## 2. Schlüssel anlegen",
@@ -2203,14 +2203,14 @@ const MODULES = [
       "[Schlüssel im Überblick] <div><ul class=\"sub-points\"><li><strong>Wo ist ein Schlüssel gerade?</strong> In der „Übersicht“ in der Spalte „Aktueller Standort“.</li><li><strong>Welche Schlüssel hat eine Person oder ein Projekt?</strong> Unter „Standorte“ die Person bzw. das Projekt markieren und „Materialliste“ klicken – die Liste lässt sich auch drucken.</li></ul></div>"
     ],
     features:[
-      {t:'Gefaltetes Sicherheits-Etikett',d:'Nummer und QR-Code außen, Adresse nur innen sichtbar'},
+      {t:'Gefaltetes Sicherheits-Etikett',d:'Nummer und QR-Code außen, die Adresse Ihres Betriebs nur innen sichtbar'},
       {t:'Adresssuche als Standard',d:'Wichtig bei mehreren hundert Schlüsseln im Bestand'},
       {t:'Schlüsseletiketten drucken',d:'Schlüssel markieren, „Drucken“, Template „Schlüssel“ wählen – fertig ist die PDF'},
       {t:'Materialliste je Person',d:'Unter „Standorte“ auf einen Blick sehen, welche Schlüssel ein Mitarbeiter gerade hat – auch druckbar'}
     ],
     practice:'Bei einem Einbruch in eine Bankfiliale wird traditionell der komplette, unbeschriftete Schlüsselkasten samt separatem Zuordnungsordner entwendet – die Täter haben dann Zeit, anhand der Adressliste gezielt weitere Objekte aufzusuchen. Mit dem OrKan-Etikettenkonzept bleibt die Adresse digital geschützt, da sie nicht auf einem mitgeführten Zettel steht.',
     task:'Legen Sie einen Testschlüssel an und buchen Sie ihn auf eine Testperson.',
-    checklist:["„Gebrauchsgut“ → „Übersicht“ öffnen und die Gebrauchsgutart „Schlüssel“ wählen", "Über „Erstellen“ einen Testschlüssel mit allen Pflichtfeldern (*) und Adresse anlegen", "Sicherheitsprinzip des gefalteten Etiketts nachvollziehen (außen anonym, innen Adresse)", "Den Testschlüssel markieren, über „Drucken“ das Template „Schlüssel“ wählen und die PDF mit dem Etikett erzeugen", "Den Schlüssel auf eine Testperson buchen", "Über „Standorte“ → „Materialliste“ prüfen, dass die Person den Schlüssel hat", "Rückgabe über „Buchungen“ → „Rückgabe“ oder Buchen auf den Schlüsselkasten durchführen"],
+    checklist:["„Gebrauchsgut“ → „Übersicht“ öffnen und die Gebrauchsgutart „Schlüssel“ wählen", "Über „Erstellen“ einen Testschlüssel mit allen Pflichtfeldern (*) und Adresse anlegen", "Sicherheitsprinzip des gefalteten Etiketts nachvollziehen (außen anonym, innen die Adresse Ihres Betriebs)", "Den Testschlüssel markieren, über „Drucken“ das Template „Schlüssel“ wählen und die PDF mit dem Etikett erzeugen", "Den Schlüssel auf eine Testperson buchen", "Über „Standorte“ → „Materialliste“ prüfen, dass die Person den Schlüssel hat", "Rückgabe über „Buchungen“ → „Rückgabe“ oder Buchen auf den Schlüsselkasten durchführen"],
     tip:'Schlüsselkästen dürfen niemals mit sichtbaren Adressangaben versehen sein — weder am Schlüssel selbst noch in einem danebenliegenden Zuordnungs-Ordner. Das ist kein Detail, sondern ein zentrales Sicherheitsprinzip.',
     quiz:[
       {q:"Was ist auf der Außenseite eines OrKan-Schlüsselanhängers zu sehen?",o:["Nur eine Nummer und ein QR-Code", "Die vollständige Kundenadresse", "Der Name des zuständigen Monteurs", "Die Adresse und der QR-Code"],a:0,t:"Schlüssel-Etikett"},
@@ -2219,7 +2219,7 @@ const MODULES = [
       {q:"Wie wird die Rückgabe eines ausgeliehenen Schlüssels erfasst?",o:["Das Etikett wird abgetrennt", "Der Administrator löscht die Buchung", "Durch erneutes Buchen auf den Schlüsselkasten", "Die Buchung läuft nach 24 Stunden automatisch aus"],a:2,t:"Buchung & Rückgabe"},
       {q:"Ein Kollege fragt, welche Schlüssel ein bestimmter Monteur gerade hat. Wo sehen Sie das am schnellsten?",o:["Unter „Service/Wartung“", "Unter „Standorte“ → Person markieren → „Materialliste“", "Im Lieferantenstamm", "Im Druck-Dialog der Etiketten"],a:1,t:"Wer hat welchen Schlüssel"}
     ],
-    summary:{ kern:['Schlüssel-Etiketten trennen aus Sicherheitsgründen Nummer/QR-Code (außen) von der Adresse (innen) – anders als beim klassischen Kasten mit offenliegendem Zuordnungsordner.','Die Adresssuche ist bei größeren Schlüsselbeständen essenziell und muss in der Standardansicht verfügbar sein.','Buchung und Rückgabe folgen derselben Logik wie bei der Maschinenverwaltung, inklusive Finderlohn-Option auf dem Etikett.'],
+    summary:{ kern:['Schlüssel-Etiketten zeigen außen nur Nummer/QR-Code und innen die Adresse Ihres Betriebs – zu welchem Objekt der Schlüssel gehört, bleibt digital geschützt, anders als beim klassischen Kasten mit offenliegendem Zuordnungsordner.','Die Adresssuche ist bei größeren Schlüsselbeständen essenziell und muss in der Standardansicht verfügbar sein.','Buchung und Rückgabe folgen derselben Logik wie bei der Maschinenverwaltung, inklusive Finderlohn-Option auf dem Etikett.'],
       funk:['Gefaltetes Sicherheits-Etikett','Adresssuche als Standard'], hand:['Adressfilter bei der täglichen Schlüsselsuche konsequent nutzen','Nie Adressinformationen sichtbar am Schlüsselkasten anbringen'] }
   },
   { id:9, phase:3, title:'Projekte und Baustellen', time:'12 Min.', diff:2,
