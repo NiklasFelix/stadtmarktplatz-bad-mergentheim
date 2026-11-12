@@ -1,0 +1,23 @@
+Willkommen zu Modul 8: die Schlüsselverwaltung. In diesem Video zeigen wir Ihnen, wie Sie Kundenschlüssel sicher in der OrKan Cloud verwalten, ausgeben und wieder zurücknehmen.
+
+Beginnen wir mit dem Wichtigsten: dem Sicherheits-Etikett. Schlüssel-Etiketten sind gefaltete Anhänger. Außen stehen nur eine Nummer und ein QR-Code. Die Kundenadresse steht innen und ist erst zu sehen, wenn man das Etikett aufklappt.
+
+Warum ist das so wichtig? Viele Betriebe haben einen Schlüsselkasten und daneben einen Ordner, in dem steht, welcher Schlüssel zu welcher Adresse gehört. Bei einem Einbruch werden dann meist beide gestohlen. Die Täter haben so Schlüssel und Adressen in der Hand. Bei OrKan steckt die Adresse digital hinter der Nummer und bleibt geschützt.
+
+Unser Tipp: Drucken Sie einen Hinweis auf Finderlohn auf das Etikett, zum Beispiel fünfzig Euro. Das erhöht die Chance, dass ein verlorener Schlüssel zurückkommt. Denn der Austausch einer hochwertigen Schließanlage ist deutlich teurer.
+
+Kommen wir zum Anlegen. Schlüssel gehören, genau wie Maschinen, zum Bereich Gebrauchsgut. Öffnen Sie Gebrauchsgut und dann Übersicht. Wählen Sie oben rechts die Gebrauchsgutart Schlüssel und klicken Sie auf Erstellen.
+
+Pflichtfelder sind die Nummer, die automatisch vorgeschlagen wird, der Name und die Beschreibung. Im Namen steht, was der Schlüssel öffnet, zum Beispiel Heizraum. In der Beschreibung steht der genaue Ort, zum Beispiel unten rechts, zweite Tür. Dazu kommt der Standort, also wo der Schlüssel normalerweise hängt, etwa im Schlüsselkasten im Hauptlager.
+
+Nur bei Schlüsseln gibt es zusätzlich die Felder für die Kundenadresse, also Anschrift, Postleitzahl, Ort und Telefon, sowie die Anzahl der Schlüssel. Bei mehreren ähnlichen Schlüsseln hilft auch hier „Eingaben beibehalten“.
+
+Im Alltag suchen Sie einen Schlüssel fast nie nach seiner Nummer, sondern nach der Adresse. Geben Sie also zum Beispiel einfach den Straßennamen ins Suchfeld ein. Gerade bei mehreren hundert Schlüsseln finden Sie so schnell den richtigen.
+
+Die Ausgabe funktioniert wie bei den Maschinen über Buchungen. Markieren Sie den Schlüssel in der Übersicht und klicken Sie auf Buchen, oder gehen Sie über Buchungen und Erstellen. Zurück kommt der Schlüssel über Rückgabe oder indem Sie ihn wieder auf den Schlüsselkasten buchen.
+
+Und wer hat gerade welchen Schlüssel? In der Übersicht zeigt das Plus vor der Zeile den aktuellen Standort. Unter Standorte sehen Sie in der Materialliste alle Schlüssel, die eine Person oder ein Projekt gerade hat. Diese Liste können Sie auch ausdrucken.
+
+Ein letzter, wichtiger Hinweis: Bringen Sie niemals sichtbare Adressen am Schlüsselkasten oder an den Schlüsseln an. Das ist kein Detail, sondern das zentrale Sicherheitsprinzip.
+
+Damit kennen Sie die Schlüsselverwaltung. Legen Sie jetzt einen Testschlüssel an und buchen Sie ihn auf eine Testperson.
