@@ -1,0 +1,21 @@
+Willkommen zu Modul 2: Artikel- und Lagerplatzverwaltung. In diesem Video zeigen wir Ihnen, wie Sie Ihre Artikel in der OrKan Cloud übersichtlich verwalten, neue Artikel anlegen und Lagerplätze einrichten.
+
+Wir starten in der Artikelübersicht. Sie finden sie im Hauptmenü unter Lagerverwaltung und Artikel. Die Liste passen Sie ganz nach Ihrem Bedarf an. Über das Doppelpfeil-Symbol blenden Sie Spalten ein oder aus. Im Suchfeld oben suchen Sie im gesamten Text – angezeigt wird jeder Artikel, der Ihr Suchwort enthält. Möchten Sie gezielt in einer bestimmten Spalte suchen, klicken Sie auf das Filter-Symbol in der Spaltenüberschrift. Rechts unten legen Sie fest, wie viele Artikel pro Seite angezeigt werden. Daneben sehen Sie die Gesamtanzahl. Wichtig: Diese Zahl bezieht sich immer auf das aktuelle Suchergebnis. Steht zum Beispiel „Befestigung“ im Suchfeld, werden nur diese Artikel gezählt.
+
+Über Export speichern Sie die Artikelliste als Excel-Datei, wahlweise mit oder ohne Artikelbilder. So können Sie Ihre Daten prüfen, die Liste an Kollegen, den Einkauf oder an Händler für ein Angebot schicken oder Daten in Excel überarbeiten und per Import wieder einspielen. Filtern Sie vorher über das Suchfeld, wenn Sie nur bestimmte Artikel exportieren möchten.
+
+Kommen wir zum Anlegen neuer Artikel. Dafür gibt es vier Wege. Erstens: Erstellen – für einen komplett neuen Artikel. Zweitens: Kopieren – Sie nutzen einen bestehenden Artikel als Vorlage. Drittens: Eingabe behalten – ideal für mehrere ähnliche Artikel. Dabei übernimmt die OrKan Cloud alle Felder des vorherigen Artikels, außer der internen Artikelnummer und der Lieferanten-Artikelnummer. Und viertens: der Import per Excel, den wir Ihnen in Modul 3 genauer zeigen.
+
+Felder mit Sternchen sind Pflichtfelder, zum Beispiel Artikelgruppe, Bezeichnung, Lager und Lagerort, Lager MIN und MAX, Lagereinheit und Lieferant. Die interne Artikelnummer wird im Standard fortlaufend vergeben, also höchste Nummer plus eins. Die Systematik können Sie aber flexibel für Ihren Betrieb festlegen.
+
+Auch die Artikelkarte selbst passen Sie an. Über Vollständige Ansicht sehen Sie alle Felder auf einen Blick. Und über Einstellungen und Artikeldialog-Einstellungen bauen Sie sich Ihre eigene Artikelkarte – nur mit den Feldern, die für Sie wirklich relevant sind.
+
+Besonders wichtig sind Lager MIN und Lager MAX. Lager MIN ist Ihr Sicherheitsbestand, Lager MAX Ihr Höchstbestand. Daraus ergibt sich automatisch die Bestellmenge: MAX minus MIN. Ein Beispiel: Bei einem Schraubenpäckchen mit MIN 2 und MAX 6 werden beim Erreichen des Mindestbestands 4 Päckchen bestellt.
+
+Achten Sie auch auf die richtigen Einheiten. Tragen Sie zuerst die Lagereinheit ein. Lagern Sie zum Beispiel in Packs, tragen Sie bei Abweichender Bestelleinheit „Stück“ ein, bei Menge VPE die Anzahl pro Pack und bei Mengeneinheit VPE wieder „Stück“. Lagern Sie in Stück, bleiben diese drei Felder einfach leer.
+
+Bilder und Dokumente ziehen Sie per Drag and Drop in den Bereich Dokumente. Das erste Dokument erscheint automatisch auf dem Etikett. Alle weiteren, zum Beispiel Sicherheitsdatenblätter, bleiben reine Anhänge.
+
+Zum Schluss die Lagerplätze. Fehlt beim Anlegen ein Lager oder Lagerort, klicken Sie direkt in der Artikelkarte auf das Feld und wählen Hinzufügen. Alternativ legen Sie Lagerplätze über Einstellungen, Mandant und Lagerverwaltung an. Viele Lagerplätze auf einmal importieren Sie dort ganz einfach per Excel-Liste.
+
+Damit kennen Sie die wichtigsten Grundlagen der Artikel- und Lagerplatzverwaltung. Probieren Sie es direkt aus und legen Sie Ihren ersten Artikel an.

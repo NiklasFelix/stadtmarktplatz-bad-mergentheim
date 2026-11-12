@@ -1,0 +1,17 @@
+Willkommen zu Modul 6: der Wareneingang. In diesem Video zeigen wir Ihnen, wie Sie eine Lieferung in der OrKan Cloud bestätigen. Damit schließen Sie den Kreislauf vom weißen Etikett bis zur Ware im Regal.
+
+Kommt eine Lieferung an, prüfen Sie diese zuerst mit dem Zettel für die Wareneingangsprüfung. Den haben Sie bei der Bestellung erhalten. Stimmt alles, bestätigen Sie den Wareneingang in der OrKan Cloud. Dafür gibt es drei Wege.
+
+Der erste Weg führt über den Kalender. Klicken Sie auf den Tag der Lieferung. Es öffnet sich die erweiterte Ansicht mit den grünen B-Einträgen, also Ihren Bestellungen. Setzen Sie bei der passenden Bestellung den Haken. Damit ist der Wareneingang bestätigt.
+
+Der zweite Weg führt über Bestellungen. Öffnen Sie dazu Lagerverwaltung und Bestellungen. Stellen Sie den Filter rechts oben auf Offene Bestellungen. Klicken Sie die gewünschte Bestellung an, dann auf Wareneingang, und bestätigen Sie dort. Möchten Sie später eine erledigte Bestellung wiederfinden, stellen Sie den Filter einfach auf Abgeschlossene Bestellungen.
+
+Der dritte Weg ist der Scan-Bestelleingang. Er zeigt Ihnen die offenen Bestellungen eines Lieferanten nach Ampelfarben. Rot bedeutet überfällig, Gelb bedeutet heute und Grün bedeutet, dass die Lieferung noch kommt. Hier bestätigen Sie die Positionen einzeln oder die ganze Bestellung auf einmal. Weicht eine gelieferte Menge von der Bestellung ab, sehen Sie das sofort. Den Scan-Bestelleingang zeigen wir Ihnen ausführlich im Modul Digitale Warenannahme.
+
+Unser Tipp: Stellen Sie eine Abweichung zwischen Bestellung und Lieferung fest, klären Sie diese zuerst mit dem Lieferanten. Bestätigen Sie den Wareneingang erst danach endgültig.
+
+Und nun der wichtigste Schritt beim Einlagern: Bringen Sie das weiße Etikett wieder am Regal an. Nur so funktioniert das Zwei-Etiketten-System bei der nächsten Bestellung. Hängt das weiße Etikett wieder an seinem Platz, beginnt der Kreislauf von vorn.
+
+Bestätigen Sie den Wareneingang am besten immer zeitnah. So bleiben Ihr Kalender und Ihre Bestellübersicht stets aktuell.
+
+Damit haben Sie die Grundlagen der OrKan Cloud abgeschlossen. Vom Anlegen der Artikel über die Etiketten und die Bestellung bis zum Wareneingang kennen Sie jetzt den gesamten Ablauf. Als Nächstes erwartet Sie Ihr Zertifikat.

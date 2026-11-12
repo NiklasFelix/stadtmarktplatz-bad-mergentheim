@@ -1,0 +1,25 @@
+Willkommen zu Modul 5: der Bestellvorschlag. In diesem Video zeigen wir Ihnen, wie aus den weißen Etiketten in der Bestellbox eine fertige Bestellung wird.
+
+Zur Erinnerung: Ist der Mindestbestand eines Artikels erreicht, legt ein Mitarbeiter das weiße Etikett in die Bestellbox. Diese Etiketten werden nun in der OrKan Cloud erfasst. Am besten zu einer festen Uhrzeit, zum Beispiel jeden Abend.
+
+Öffnen Sie dazu Lagerverwaltung, Bestellvorschlag und klicken Sie auf Erstellen. Noch schneller geht es über den Shortcut Bestellvorschläge auf Ihrer Startseite. Er führt Sie direkt ins Scan-Feld.
+
+Der Cursor steht automatisch im Scan-Feld. Scannen Sie jetzt einfach ein Etikett nach dem anderen. Sie müssen nichts bestätigen: Jeder OrKan-Scanner drückt nach dem Scan selbst die Enter-Taste.
+
+Sie möchten einen Artikel bestellen, für den Sie gerade kein Etikett haben? Kein Problem. Suchen Sie den Artikel im Suchfeld und übernehmen Sie ihn per Doppelklick in den Bestellvorschlag.
+
+Bevor Sie bestellen, prüfen Sie kurz die Mengen. Die OrKan Cloud schlägt automatisch die passende Menge vor, also Lager MAX minus Lager MIN. Möchten Sie eine Menge ändern, klicken Sie doppelt darauf und tragen den neuen Wert ein.
+
+Kommen wir zum Erstellen der Bestellungen. Oft stammen die Artikel von verschiedenen Lieferanten. Die OrKan Cloud teilt den Bestellvorschlag deshalb nach Lieferanten auf. Jede Teilbestellung senden Sie einzeln über Bestellungen erstellen und Senden.
+
+Danach sehen Sie eine Zusammenfassung. Ansprechpartner, Liefertermin und Lieferadresse sind bereits vorbereitet. Prüfen Sie die Angaben kurz und klicken Sie auf Bestellen.
+
+Was dann passiert, hängt vom Bestellverfahren ab, das beim Lieferanten hinterlegt ist. Beim Onlineshop über die IDS-Schnittstelle öffnet sich der Warenkorb im Shop des Händlers. Dort lösen Sie die Bestellung final aus. Beim Verfahren E-Mail geht die Bestellung direkt per E-Mail an den Lieferanten. Und beim Verfahren PDF wird die Bestellung als PDF-Datei erzeugt.
+
+Zusätzlich erhalten Sie den Zettel für die Wareneingangsprüfung und eine Bestellübersicht. Den Zettel brauchen Sie später, wenn die Ware ankommt.
+
+Und noch etwas: Nach der Bestellung erscheint im Kalender ein grünes B. Es steht genau an dem Tag, an dem die Ware erwartet wird. Die OrKan Cloud berechnet diesen Tag aus den Liefertagen und der Lieferzeit des Lieferanten. So haben Sie jederzeit im Blick, wann welche Lieferung kommt.
+
+Unser Tipp: Fehlt am Regal das weiße Etikett, ist der Artikel bereits bestellt. So vermeiden Sie Doppelbestellungen, auch wenn mehrere Kollegen im Lager arbeiten.
+
+Damit wissen Sie, wie Sie mit dem Bestellvorschlag schnell und sicher bestellen. Im nächsten Modul zeigen wir Ihnen, wie Sie den Wareneingang bestätigen.
