@@ -2750,7 +2750,7 @@ function buildModuleSubNav(){
     const open=NAV_GROUPS_OPEN.has(gi), done=g.ids.filter(id=>state.moduleProgress[id]?.completed).length;
     const items=g.ids.map(id=>{ const m=MODULES.find(x=>x.id===id); const p=state.moduleProgress[id]; const cls=p.completed?'done':(p.started?'active':'');
       return `<div class="nav-sub-item ${state.currentView==='modules'&&state.currentModule===id?'current':''}" onclick="openModule(${id});event.stopPropagation()"><span class="status-dot ${cls}"></span>${m.title}</div>`; }).join('');
-    return `<button type="button" class="nav-sub-group nav-sub-toggle ${open?'open':''}" aria-expanded="${open}" onclick="toggleNavGroup(${gi},event)"><span>${g.title}</span><small>${done}/${g.ids.length}</small><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 6 6 6-6 6"/></svg></button>${open?`<div class="nav-sub-items">${items}</div>`:''}`;
+    return `<button type="button" class="nav-sub-group nav-sub-toggle ${open?'open':''}" aria-expanded="${open}" onclick="toggleNavGroup(${gi},event)"><span>${g.title}</span><small title="${done} von ${g.ids.length} Modulen abgeschlossen" style="white-space:nowrap">${g.ids[0]}–${g.ids[g.ids.length-1]}</small><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 6 6 6-6 6"/></svg></button>${open?`<div class="nav-sub-items">${items}</div>`:''}`;
   }).join('');
 }
 
