@@ -1673,6 +1673,12 @@ html:not(.theme-light) .roadmap-line::before{background:radial-gradient(circle,r
 /* ===== /Markendesign 2026 ===== */
 .md-content{margin-top:26px}
 .md-done{display:inline-flex;align-items:center;padding:10px 16px;border-radius:10px;background:var(--green-light);color:var(--green-dark);font-weight:700}
+.watch-status{display:flex;align-items:center;gap:14px;margin:-12px 0 26px;font-size:14px;color:var(--gray)}
+.watch-status .ws-bar{flex:0 0 160px;height:6px;border-radius:6px;background:var(--gray-light);overflow:hidden}
+.watch-status .ws-bar i{display:block;height:100%;background:var(--brand-green,#A8CC68);border-radius:6px;transition:width .4s}
+.watch-status.done{color:var(--green-dark);font-weight:700}
+.md-hint{display:inline-block;padding:10px 0;color:var(--gray);font-size:14.5px}
+@media(max-width:640px){.watch-status{flex-direction:column;align-items:flex-start;gap:6px}.watch-status .ws-bar{flex-basis:auto;width:100%}}
 </style>
 </head>
 <body>
@@ -3014,7 +3020,7 @@ function moduleCardHtml(m, isPriority){
   const locked = isModuleLocked(m);
   const badge = locked?'locked':(p.completed?'done':(p.started?'progress':'open'));
   const badgeText = locked?'Gesperrt':(p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen'));
-  const pct = p.completed?100:(p.started?45:0);
+  const pct = p.completed?100:(MODULE_VIDEOS[m.id]?watchPct(m.id):(p.started?45:0));
   return `<div class="module-card ${locked?'module-card-locked':''}" onclick="openModule(${m.id})">
     <div class="mc-top"><span class="mc-num">${String(m.id).padStart(2,'0')}</span><span class="mc-badges"><span class="mc-badge ${badge}">${locked?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:inline;vertical-align:-1px;margin-right:3px"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':''}${badgeText}</span>${isPriority&&!locked?'<span class="mc-badge mc-badge-prio">Für Sie</span>':''}</span></div>
     <div class="mc-title">${m.title}</div>
@@ -3038,7 +3044,7 @@ function renderRoadmap(){
     const grp=moduleGroupStart(m.id);
     return `${grp?`<div class="roadmap-group-head">${grp.title}</div>`:''}<div class="milestone ${cls}">
       <div class="milestone-dot">${p.completed?'✓':String(m.id).padStart(2,'0')}</div>
-      <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${m.time} · ${groupOf(m.id).title}</div><ul class="milestone-gist">${(m.gist||[]).map(g=>`<li>${g}</li>`).join('')}</ul></div>
+      <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${m.time} · ${groupOf(m.id).title}${MODULE_VIDEOS[m.id]&&!p.completed&&watchPct(m.id)>0?` · Video ${watchPct(m.id)} % angesehen`:''}</div><ul class="milestone-gist">${(m.gist||[]).map(g=>`<li>${g}</li>`).join('')}</ul></div>
       ${i<MODULES.length-1?`<div><span class="ai-hint">Hinweis: ${nextStepHint(m.id)}</span></div>`:''}
     </div>`+(m.id===MODULE_GROUPS[0].ids[MODULE_GROUPS[0].ids.length-1]?`<div class="milestone ${certUnlocked()?'done':''}"><div class="milestone-dot">${certUnlocked()?'✓':'✦'}</div><div class="milestone-card"><h4>Abschlusszertifikat</h4><div class="milestone-meta">Nach Abschluss der Grundlagen (Module 1–6)</div><p>Erhalten Sie Ihr offizielles Onboarding-Zertifikat inklusive Rabattcode.</p></div></div>`:'');
   }).join('');
@@ -3166,7 +3172,7 @@ function videoBlockHtml(m){
   let inner;
   if(src){
     inner = `<div class="ovp" tabindex="0" onkeydown="ovpKey(event,this)">
-      <video poster="${modulePoster(m)}" preload="metadata" playsinline onclick="ovpToggle(this)" ontimeupdate="ovpTick(this)" onloadedmetadata="ovpTick(this)" onplay="ovpState(this)" onpause="ovpState(this)" onended="ovpState(this)"><source src="${src}.mp4" type="video/mp4"><source src="${src}.webm" type="video/webm"></video>
+      <video data-mid="${m.id}" poster="${modulePoster(m)}" preload="metadata" playsinline onclick="ovpToggle(this)" ontimeupdate="ovpTick(this)" onloadedmetadata="ovpTick(this)" onplay="ovpState(this)" onpause="ovpState(this);watchSave()" onended="ovpState(this);watchSave()"><source src="${src}.mp4" type="video/mp4"><source src="${src}.webm" type="video/webm"></video>
       <div class="ovp-bar">
         <input type="range" class="ovp-seek" min="0" max="1000" value="0" aria-label="Position" oninput="ovpSeek(this)">
         <div class="ovp-row">
@@ -3186,16 +3192,47 @@ function videoBlockHtml(m){
   }
   return `<div class="video-placeholder ${src?'has-video':'has-poster'}" style="position:relative;${src?`aspect-ratio:${vid.ratio}`:`--poster:url('${modulePoster(m)}')`}">
     ${inner}
-  </div>`;
+  </div>${src?watchStatusHtml(m.id):''}`;
 }
 function ovpOf(el){ const w=el.closest('.ovp'); return [w,w.querySelector('video')]; }
 function ovpFmt(t){ t=Math.max(0,Math.floor(t||0)); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); }
 function ovpToggle(el){ const [,v]=ovpOf(el); if(v.paused||v.ended){ const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } else v.pause(); }
 function ovpState(v){ const w=v.closest('.ovp'); w.classList.toggle('playing',!v.paused&&!v.ended);
   w.querySelector('.ovp-play').innerHTML = (!v.paused&&!v.ended) ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>' : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'; }
-function ovpTick(v){ const w=v.closest('.ovp'); const d=isFinite(v.duration)?v.duration:0;
+function ovpTick(v){ const w=v.closest('.ovp'); const d=isFinite(v.duration)?v.duration:0; watchTrack(v);
   w.querySelector('.ovp-time').textContent=ovpFmt(v.currentTime)+' / '+ovpFmt(d);
   const sk=w.querySelector('.ovp-seek'); sk.value=d?Math.round(v.currentTime/d*1000):0; sk.style.setProperty('--pct',(sk.value/10)+'%'); }
+/* ===== Video-Tracking: zählt nur tatsächlich abgespielte Sekunden (Vorspulen zählt nicht) ===== */
+const WATCH_DONE = 0.9;
+function watchPct(mid){ const w=state.moduleProgress[mid]?.watched; if(!w) return 0; return Math.round(w.split('').filter(c=>c==='1').length/w.length*100); }
+function watchTrack(v){
+  const mid=+v.dataset.mid, d=v.duration; if(!mid||!isFinite(d)||d<=0) return;
+  const p=state.moduleProgress[mid], n=Math.ceil(d);
+  if(!p.watched||p.watched.length!==n) p.watched='0'.repeat(n);
+  const cur=v.currentTime, last=v._wLast;
+  v._wLast=cur;
+  if(v.paused||last===undefined) return;
+  const delta=cur-last;
+  if(delta<=0||delta>1.5) return;           // Sprung/Vorspulen: nicht werten
+  const a=p.watched.split(''); for(let t=Math.floor(last);t<=Math.min(n-1,Math.floor(cur));t++) a[t]='1';
+  p.watched=a.join('');
+  if(!p.started){ p.started=true; }
+  const pct=watchPct(mid); watchUpdateUi(mid,pct);
+  if(!p.completed && pct>=WATCH_DONE*100){ completeModule(mid,true); }
+  if(!v._wSaved||Date.now()-v._wSaved>5000){ v._wSaved=Date.now(); saveState(); }
+}
+function watchSave(){ saveState(); }
+function watchStatusHtml(mid){
+  const p=state.moduleProgress[mid], pct=p.completed?Math.max(watchPct(mid),100):watchPct(mid);
+  return `<div class="watch-status ${p.completed?'done':''}" id="watchStatus"><div class="ws-bar"><i style="width:${pct}%"></i></div><span class="ws-txt">${watchText(mid,pct)}</span></div>`;
+}
+function watchText(mid,pct){ return state.moduleProgress[mid].completed ? '✓ Video angesehen – Modul abgeschlossen' : `Video zu ${pct} % angesehen · ab ${WATCH_DONE*100} % wird das Modul automatisch abgeschlossen`; }
+function watchUpdateUi(mid,pct){
+  const el=document.getElementById('watchStatus'); if(!el||state.currentModule!==mid) return;
+  el.querySelector('i').style.width=(state.moduleProgress[mid].completed?100:pct)+'%';
+  el.querySelector('.ws-txt').textContent=watchText(mid,pct);
+  el.classList.toggle('done',!!state.moduleProgress[mid].completed);
+}
 function ovpSeek(sk){ const [,v]=ovpOf(sk); if(isFinite(v.duration)) v.currentTime=sk.value/1000*v.duration; sk.style.setProperty('--pct',(sk.value/10)+'%'); }
 function ovpSkip(el,sec){ const [,v]=ovpOf(el); const max=isFinite(v.duration)?v.duration:Infinity; v.currentTime=Math.min(max,Math.max(0,v.currentTime+sec)); ovpTick(v); }
 function ovpRate(sel){ const [,v]=ovpOf(sel); v.playbackRate=parseFloat(sel.value); }
@@ -3252,7 +3289,7 @@ function renderTab(){
       ${m.id===3 ? templateDownloadCallout() : ''}
       <div class="practice-callout"><strong>In der Praxis</strong><p>${plainQ(m.practice)}</p></div>
       <div class="btn-row" style="margin-top:0">
-        ${p.completed?`<span class="md-done">✓ Modul abgeschlossen</span>`:`<button class="btn btn-primary" onclick="completeModule(${m.id})">Modul abschließen</button>`}
+        <span id="mdStatus">${p.completed?`<span class="md-done">✓ Modul abgeschlossen</span>`:(MODULE_VIDEOS[m.id]?`<span class="md-hint">Schauen Sie das Video an – ab ${WATCH_DONE*100} % wird das Modul automatisch abgeschlossen.</span>`:`<button class="btn btn-primary" onclick="completeModule(${m.id})">Modul abschließen</button>`)}</span>
         <button class="btn btn-outline" onclick="openCloudLink(${m.id})">Direkt in der OrKan Cloud üben</button>
       </div>
     `;
@@ -3372,14 +3409,18 @@ function renderQuizResult(m){
   </div>`;
 }
 // Ohne Wissenscheck: Modul wird über den Button am Ende des Inhalts abgeschlossen
-function completeModule(mid){
+function completeModule(mid, fromVideo){
   const m = MODULES.find(x=>x.id===mid), p = state.moduleProgress[mid];
   if(p.completed) return;
   p.started = true; p.completed = true; p.completedAt = Date.now(); markActivity();
   state.totalTime += parseInt(m.time);
   setTimeout(()=>window.celebrate&&celebrate(),200);
   buildModuleSubNav(); updateSidebarProgress(); saveState();
-  renderModuleDetail();
+  if(fromVideo){
+    watchUpdateUi(mid,watchPct(mid));
+    const st=document.querySelector('.md-meta > span:last-child'); if(st&&state.currentModule===mid) st.textContent='Abgeschlossen';
+    const ms=document.getElementById('mdStatus'); if(ms&&state.currentModule===mid) ms.innerHTML='<span class="md-done">✓ Modul abgeschlossen</span>';
+  } else renderModuleDetail();
   const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
   showToast(certUnlocked() && MODULE_GROUPS[0].ids.includes(mid) && MODULE_GROUPS[0].ids.every(id=>state.moduleProgress[id].completed) ? 'Alle Grundlagen-Module abgeschlossen – Ihr Zertifikat ist freigeschaltet.' : (next ? `Modul abgeschlossen. Weiter mit Modul ${next.id}: ${next.title}` : 'Alle Module abgeschlossen!'));
 }
@@ -3626,8 +3667,7 @@ const CLOUD_DEEPLINKS = {
 const ORKAN_CLOUD_BASE = 'https://cloud.orkan-system.de/';
 const APPOINTMENT_CONTACTS = [
   {name:'Michael Seiler', org:'OrKan System', email:'Michael.Seiler@orkan-system.de', mobile:'+49 151 54445511', phone:'+49 7940 9188-857'},
-  {name:'Andreas Lebert', org:'SPRÜGEL', email:'Andreas.Lebert@spruegel.com', mobile:'+49 160 91521040', phone:'+49 7940 9188-859'},
-  {name:'Niklas Pietsch', org:'SPRÜGEL', email:'Niklas.Pietsch@spruegel.com', phone:'+49 7940 9188-847'}
+  {name:'Niklas Pietsch', org:'OrKan System', email:'Niklas.Pietsch@orkan-system.de', mobile:'+49 170 7932020', phone:'+49 7940 9188-847'}
 ];
 let appointmentSelected = null;
 function bookAppointment(){
