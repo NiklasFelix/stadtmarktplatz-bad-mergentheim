@@ -1671,6 +1671,8 @@ html:not(.theme-light) .roadmap-line::before{background:radial-gradient(circle,r
 .milestone-card,.module-card{transition:transform .25s ease,box-shadow .25s ease}
 @media(max-width:640px){.hero .page-title{font-size:30px}.onb-side h1{font-size:32px}h1.page-title{font-size:28px}.kp-num{font-size:30px}.kp-group-h{font-size:19px}}
 /* ===== /Markendesign 2026 ===== */
+.md-content{margin-top:26px}
+.md-done{display:inline-flex;align-items:center;padding:10px 16px;border-radius:10px;background:var(--green-light);color:var(--green-dark);font-weight:700}
 </style>
 </head>
 <body>
@@ -1869,7 +1871,7 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
       </div>
       <span class="close-x" onclick="closeResetConfirm()">&times;</span>
     </div>
-    <p class="vm-hint">Möchten Sie wirklich Ihren gesamten Lernfortschritt zurücksetzen? Alle abgeschlossenen Module, Wissenschecks und Ihr Zertifikat gehen dabei verloren. Dieser Schritt kann nicht rückgängig gemacht werden.</p>
+    <p class="vm-hint">Möchten Sie wirklich Ihren gesamten Lernfortschritt zurücksetzen? Alle abgeschlossenen Module und Ihr Zertifikat gehen dabei verloren. Dieser Schritt kann nicht rückgängig gemacht werden.</p>
     <div class="appointment-form-actions">
       <button type="button" class="btn btn-outline" onclick="closeResetConfirm()">Abbrechen</button>
       <button type="button" class="btn btn-danger" onclick="confirmResetProgress()">Zurücksetzen</button>
@@ -2412,7 +2414,7 @@ const MODULES = [
 (function(){
   const ic = d => `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
   document.getElementById('onbRoadmapPreview').innerHTML = `
-    <div class="onb-perk">${ic('<rect x="3" y="4" width="18" height="14" rx="2"/><path d="m10 8 5 3-5 3z"/><path d="M8 21h8"/>')}<div><strong>Praxisnah lernen</strong><span>Video, Praxisaufgabe und Wissenscheck – direkt in der OrKan Cloud ausprobieren</span></div></div>
+    <div class="onb-perk">${ic('<rect x="3" y="4" width="18" height="14" rx="2"/><path d="m10 8 5 3-5 3z"/><path d="M8 21h8"/>')}<div><strong>Praxisnah lernen</strong><span>Video und Erklärungen – direkt in der OrKan Cloud ausprobieren</span></div></div>
     <div class="onb-perk">${ic('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>')}<div><strong>Jederzeit nachschlagen</strong><span>Wissensdatenbank und Best Practices mit Schritt-für-Schritt-Anleitungen</span></div></div>`;
 })();
 
@@ -2855,7 +2857,7 @@ const DASHBOARD_WIDGETS = {
     <div class="stats-row">
       <div class="stat-card stat-raum"><svg class="stat-ic" viewBox="104 196 286 272" aria-hidden="true"><defs><radialGradient id="sxfadeg" gradientUnits="userSpaceOnUse" cx="246.5" cy="332" r="160"><stop offset="0" stop-color="#fff"/><stop offset=".6" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient><mask id="sxfade" maskUnits="userSpaceOnUse" x="80" y="190" width="330" height="290"><rect x="80" y="190" width="330" height="290" fill="url(#sxfadeg)"/></mask></defs><g mask="url(#sxfade)" fill="none" stroke="#A8CC68" stroke-width="9"><g transform="translate(112 203)"><path d="M 0.000223282 -0.000230197 L 110.611484 -110.611491 C 121.700764 -121.700771 139.675876 -121.700771 150.761245 -110.611491 L 261.372506 -0.000230197" transform="matrix(0.998994, 0, 0, -0.998994, 3.972433, 3.886489)"/><path d="M 0.000223282 -0.000369336 L 110.611484 110.610892 C 121.700764 121.700171 139.675876 121.700171 150.761245 110.610892 L 261.372506 -0.000369336" transform="matrix(0.998994, 0, 0, -0.998994, 3.972433, 254.046506)"/></g></g></svg><div class="stat-label">Abgeschlossene Module</div><div class="stat-val"><span data-count="${completedCount()}">${completedCount()}</span><small>/${MODULES.length}</small></div><div class="stat-sub">${progressPct()}% des Onboardings</div></div>
       <div class="stat-card stat-zeit"><svg class="stat-ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19" fill="none" stroke="#A8CC68" stroke-width="6" stroke-dasharray="1.1 2.2"/></svg><div class="stat-label">Lernzeit gesamt</div><div class="stat-val"><span data-count="${state.totalTime}">${state.totalTime}</span></div><div class="stat-sub">Minuten investiert</div></div>
-      <div class="stat-card stat-check"><svg class="stat-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 25 L18 38 L42 9" fill="none" stroke="#A8CC68" stroke-width="5.5"/></svg><div class="stat-label">Quiz-Durchschnitt</div><div class="stat-val">${(()=>{ const scores = Object.values(state.moduleProgress).filter(p=>p.quizScore!==null).map(p=>p.quizScore); if(!scores.length) return '–'; return Math.round(scores.reduce((a,b)=>a+b,0)/scores.length)+'%'; })()}</div><div class="stat-sub">über alle Module</div></div>
+      <div class="stat-card stat-check"><svg class="stat-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 25 L18 38 L42 9" fill="none" stroke="#A8CC68" stroke-width="5.5"/></svg><div class="stat-label">Offene Module</div><div class="stat-val"><span data-count="${MODULES.length-completedCount()}">${MODULES.length-completedCount()}</span></div><div class="stat-sub">noch zu bearbeiten</div></div>
     </div>` },
   phases: { title:'Onboarding-Phasen', render: () => { const g1=MODULE_GROUPS[0].ids, g2=MODULE_GROUPS[1].ids; const done1=g1.filter(i=>state.moduleProgress[i]?.completed).length, done2=g2.filter(i=>state.moduleProgress[i]?.completed).length; const cert=certUnlocked(); return `
     <div class="phases-row">
@@ -2913,7 +2915,7 @@ Object.assign(DASHBOARD_WIDGETS, {
     const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
     if(!next) return `<div class="w-next done"><div><strong>Alle Module abgeschlossen!</strong><p>Ihr Zertifikat inklusive Rabattcode ist freigeschaltet.</p></div><button class="btn btn-primary" onclick="showView('cert')">Zum Zertifikat</button></div>`;
     const p=state.moduleProgress[next.id];
-    return `<div class="w-next"><span class="w-next-num">${String(next.id).padStart(2,'0')}</span><div class="w-next-body"><strong>${next.title}</strong><p>${next.time} · ${next.points.filter(x=>!x.startsWith("## ")).length} Lerninhalte · Praxisaufgabe · Wissenscheck</p></div><button class="btn btn-primary" onclick="openModule(${next.id})">${p.started?'Fortsetzen':'Starten'} →</button></div>`;
+    return `<div class="w-next"><span class="w-next-num">${String(next.id).padStart(2,'0')}</span><div class="w-next-body"><strong>${next.title}</strong><p>${next.time} · ${next.points.filter(x=>!x.startsWith("## ")).length} Lerninhalte</p></div><button class="btn btn-primary" onclick="openModule(${next.id})">${p.started?'Fortsetzen':'Starten'} →</button></div>`;
   } },
   quizchart: { title:'Quiz-Ergebnisse je Modul', render: () => {
     const rows = MODULES.map(m=>{ const s=state.moduleProgress[m.id].quizScore; return `<div class="w-bar-row"><span class="w-bar-lbl" title="${m.title}">${String(m.id).padStart(2,'0')} ${m.title}</span><div class="w-bar"><i style="width:${s??0}%" class="${s===null?'':s>=80?'ok':'warn'}"></i></div><span class="w-bar-val">${s===null?'–':s+'%'}</span></div>`; }).join('');
@@ -3103,13 +3105,7 @@ function renderModuleDetail(){
       <div class="md-title-row"><span class="md-num">${String(m.id).padStart(2,'0')}</span><div class="md-title-col"><span class="phase-badge">${groupOf(m.id).title}</span><h2>${m.title}</h2></div></div>
       <div class="md-meta"><span>${m.time}</span><span class="diff-dots">${diffDots}</span><span>${p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen')}</span></div>
     </div>
-    <div class="tab-bar">
-      <div class="tab-btn ${state.currentTab==='content'?'active':''}" onclick="switchTab('content')">Inhalt</div>
-      <div class="tab-btn ${state.currentTab==='task'?'active':''}" onclick="switchTab('task')">Praxisaufgabe</div>
-      <div class="tab-btn ${state.currentTab==='quiz'?'active':''}" onclick="switchTab('quiz')">Wissenscheck</div>
-      <div class="tab-btn ${state.currentTab==='summary'?'active':''}" onclick="switchTab('summary')">Zusammenfassung</div>
-    </div>
-    <div id="tabContentHost"></div>
+    <div id="tabContentHost" class="md-content"></div>
   `;
   renderTab();
 }
@@ -3242,6 +3238,7 @@ function keyPointSections(m){
   return secs.map(sec=>`<div class="kp-group">${sec.h?`<h3 class="kp-group-h">${kpHead(sec.h)}</h3>`:''}<ul class="key-points kp-cards">${sec.p.map(pt=>{ const mm=pt.match(/^\[([^\]]+)\]\s*/); const tag=mm?`<span class="kp-tag">${mm[1]}</span>`:''; const body=mm?pt.slice(mm[0].length):pt; return `<li><div>${tag}${body.startsWith('<div')?uiBtns(body):`<div>${uiBtns(body)}</div>`}</div></li>`; }).join('')}</ul></div>`).join('');
 }
 function renderTab(){
+  state.currentTab = 'content';
   const m = MODULES.find(x=>x.id===state.currentModule);
   const p = state.moduleProgress[m.id];
   const host = document.getElementById('tabContentHost');
@@ -3255,6 +3252,7 @@ function renderTab(){
       ${m.id===3 ? templateDownloadCallout() : ''}
       <div class="practice-callout"><strong>In der Praxis</strong><p>${plainQ(m.practice)}</p></div>
       <div class="btn-row" style="margin-top:0">
+        ${p.completed?`<span class="md-done">✓ Modul abgeschlossen</span>`:`<button class="btn btn-primary" onclick="completeModule(${m.id})">Modul abschließen</button>`}
         <button class="btn btn-outline" onclick="openCloudLink(${m.id})">Direkt in der OrKan Cloud üben</button>
       </div>
     `;
@@ -3373,6 +3371,18 @@ function renderQuizResult(m){
     ${passed?`<button class="btn btn-primary" onclick="switchTab('summary');document.querySelectorAll('.tab-btn')[3].classList.add('active');document.querySelectorAll('.tab-btn')[0].classList.remove('active')">Zur Zusammenfassung</button>`:`<button class="btn btn-outline" onclick="retryQuiz(${m.id})">Erneut versuchen</button>`}
   </div>`;
 }
+// Ohne Wissenscheck: Modul wird über den Button am Ende des Inhalts abgeschlossen
+function completeModule(mid){
+  const m = MODULES.find(x=>x.id===mid), p = state.moduleProgress[mid];
+  if(p.completed) return;
+  p.started = true; p.completed = true; p.completedAt = Date.now(); markActivity();
+  state.totalTime += parseInt(m.time);
+  setTimeout(()=>window.celebrate&&celebrate(),200);
+  buildModuleSubNav(); updateSidebarProgress(); saveState();
+  renderModuleDetail();
+  const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
+  showToast(certUnlocked() && MODULE_GROUPS[0].ids.includes(mid) && MODULE_GROUPS[0].ids.every(id=>state.moduleProgress[id].completed) ? 'Alle Grundlagen-Module abgeschlossen – Ihr Zertifikat ist freigeschaltet.' : (next ? `Modul abgeschlossen. Weiter mit Modul ${next.id}: ${next.title}` : 'Alle Module abgeschlossen!'));
+}
 function retryQuiz(mid){ delete state.quizAnswers[mid]; if(state.quizTries) delete state.quizTries[mid]; renderQuiz(MODULES.find(x=>x.id===mid)); }
 
 /* ============ KNOWLEDGE BASE ============ */
@@ -3484,7 +3494,7 @@ function renderCert(){
         <div class="cert-heading">OrKan Cloud Onboarding</div>
         <div class="cert-name">${state.name}</div>
         <div class="cert-company">${state.company}</div>
-        <div class="cert-body">hat die ${certTotal()} Grundlagen-Module der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen und die zugehörigen Wissenschecks bestanden.</div>
+        <div class="cert-body">hat die ${certTotal()} Grundlagen-Module der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen.</div>
         <div style="font-size:13.5px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')}</div>
       </div>
       </div>
@@ -3499,7 +3509,7 @@ function renderCert(){
         <div class="cert-heading">OrKan Cloud Onboarding</div>
         <div class="cert-name">${state.name}</div>
         <div class="cert-company">${state.company}</div>
-        <div class="cert-body">hat die ${certTotal()} Grundlagen-Module der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen und die zugehörigen Wissenschecks bestanden.</div>
+        <div class="cert-body">hat die ${certTotal()} Grundlagen-Module der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen.</div>
         <div style="font-size:13.5px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')}</div>
       </div>
       <div class="cert-actions"><button class="btn btn-primary" id="certPdfBtn" onclick="downloadCertPdf()">Zertifikat als PDF speichern</button>${window.self===window.top?'<button class="btn btn-outline" onclick="window.print()">Drucken</button>':''}</div>
@@ -4007,7 +4017,7 @@ const TOUR_STEPS=[
  {icon:'<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjkyIDIxNCAzMDIgMjQ0IiB3aWR0aD0iMzAyIiBoZWlnaHQ9IjI0NCI+PGcgZmlsbD0iI0E4Q0M2OCI+PHBhdGggdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTMuMzU1MjU3IDQzNi4xNzc3MTkpIiBkPSJNIDEzNS43ODEyNSAtMTE3LjQzNzUgTCAxNTkuMTU2MjUgLTExNy40Mzc1IEMgMTUzLjc1IC0xMTIuMjE4NzUgMTQ4LjEwOTM3NSAtMTA2LjU3ODEyNSAxNDIuMDMxMjUgLTEwMC41IEMgMTM2LjUzMTI1IC05NSAxMzEuNDUzMTI1IC04OS45MjE4NzUgMTI2Ljk4NDM3NSAtODUuMjY1NjI1IEwgMTAzLjYwOTM3NSAtODUuMjY1NjI1IEwgOTUuNTYyNSAtNzcuMjE4NzUgTCAxMTkuMTA5Mzc1IC03Ny4yMTg3NSBDIDg5LjU5Mzc1IC00Ni40Mzc1IDgwLjE0MDYyNSAtMzEuNzY1NjI1IDg0LjEwOTM3NSAtMTcuMjE4NzUgQyA4Ny4yOTY4NzUgLTQuOTM3NSAxMDAuNDUzMTI1IDEuNjg3NSAxMjUuOTg0Mzc1IDEuNjg3NSBDIDE3MS44MjgxMjUgMS42ODc1IDIyNi4wMTU2MjUgLTIxLjAzMTI1IDI2OS42MjUgLTU2LjE4NzUgTCAyNTUuNzgxMjUgLTU2LjE4NzUgQyAyMTcuNDY4NzUgLTI1Ljk2ODc1IDE3Mi4xNzE4NzUgLTguMTg3NSAxMzUuODU5Mzc1IC04LjE4NzUgQyAxMTUuMzU5Mzc1IC04LjE4NzUgMTAzLjY0MDYyNSAtMTMuNTQ2ODc1IDEwMC43MzQzNzUgLTI0LjE0MDYyNSBDIDk3LjU3ODEyNSAtMzUuNzE4NzUgMTA3LjE1NjI1IC00OS45Njg3NSAxMzIuOTUzMTI1IC03Ny4yMTg3NSBMIDIyNi4xMDkzNzUgLTc3LjIxODc1IEwgMjM0LjE1NjI1IC04NS4yNjU2MjUgTCAxNDAuODI4MTI1IC04NS4yNjU2MjUgQyAxNDUuMjk2ODc1IC04OS45MjE4NzUgMTUwLjM3NSAtOTUgMTU1Ljg3NSAtMTAwLjUgQyAxNjEuOTUzMTI1IC0xMDYuNTc4MTI1IDE2Ny41OTM3NSAtMTEyLjIxODc1IDE3MyAtMTE3LjQzNzUgTCAyNjYuMzI4MTI1IC0xMTcuNDM3NSBMIDI3NC4zNzUgLTEyNS40ODQzNzUgTCAxODEuNDA2MjUgLTEyNS40ODQzNzUgQyAyMDguOTY4NzUgLTE1MS42MDkzNzUgMjI3Ljc5Njg3NSAtMTY1LjU3ODEyNSAyNTMuNDY4NzUgLTE3Ni44NzUgQyAyNzcuNTQ2ODc1IC0xODcuNDUzMTI1IDI5OS45ODQzNzUgLTE5Mi44MTI1IDMyMC40ODQzNzUgLTE5Mi44MTI1IEMgMzU2Ljc5Njg3NSAtMTkyLjgxMjUgMzY2LjUzMTI1IC0xNzUuMDMxMjUgMzQ0LjQyMTg3NSAtMTQ0LjgyODEyNSBMIDM1OC4yNjU2MjUgLTE0NC44MjgxMjUgQyAzODQuOTUzMTI1IC0xNzkuOTY4NzUgMzc2LjIxODc1IC0yMDIuNzAzMTI1IDMzMC4zNzUgLTIwMi43MDMxMjUgQyAzMDQuODQzNzUgLTIwMi43MDMxMjUgMjc4LjQyMTg3NSAtMTk2LjA2MjUgMjUwLjY3MTg3NSAtMTgzLjc4MTI1IEMgMjE4LjI2NTYyNSAtMTY5LjUzMTI1IDE5OC40NTMxMjUgLTE1NS4xMjUgMTY3LjU2MjUgLTEyNS40ODQzNzUgTCAxNDMuODI4MTI1IC0xMjUuNDg0Mzc1IFogTSAxMzUuNzgxMjUgLTExNy40Mzc1ICIvPjwvZz48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNBOENDNjgiIHN0cm9rZS13aWR0aD0iMi4zODgiIGQ9Ik0gLTAuMDAxMjM2NjMgMC4wMDA3OTg5NDggTCAxMS4zMjI2NTQgLTUuODk5NjY3IE0gMi42NjU1MDggNS40NzExNDUgTCAxNC4yNzQ4NDIgMC4xNTMyOTYgTSA0Ljk0OTA1NSAxMC45NDE0OTEgTCAxNi45Mjk4NTYgNi41MTUxNjQgTSA2Ljk1MTA2OSAxNi42OTMzNzEgTCAxOS4xMzUyIDEyLjg3MzEyMiBNIDguNjE2ODA3IDIyLjU1NDczNSBMIDIwLjk3Njg5NiAxOS4zNDgzODUgTSA5Ljg5MTUyNyAyOC4zNDk2MjcgTCAyMi40NTg4NTUgMjYuMDczOSBNIDEwLjg0NTYxMSAzNC4zNzEzMDkgTCAyMy41MDY3ODQgMzIuNzE3MzAxIE0gMTEuNDM2MDQ5IDQwLjI4MzUwNiBMIDI0LjE4MzI0NiAzOS41Njc5NDIgTSAxMS42NjI4NCA0Ni4zNzk0ODEgTCAyNC40MzM0OTggNDYuMjgxNzI3IE0gMTEuNTM3NzE0IDUyLjQ3OTM2NyBMIDI0LjI5NjY0MSA1My4wMDMzMzIgTSAxMS4wNTY3NjEgNTguNDExMTE1IEwgMjMuNzQ1MzA2IDU5Ljg1MDA2MiBNIDEwLjIxMjE2MiA2NC40NTYyNTggTCAyMi44MTg1OTIgNjYuNTA1MTk0IE0gOS4wNDMwMTcgNzAuMjk0MTYxIEwgMjEuNDY1NjY5IDczLjIzODUyOSBNIDcuNDk0NTg0IDc2LjIwMjQ0OCBMIDE5Ljc2NDczOSA3OS43MzMzNDQgTSA1LjY0ODk3OCA4MS44NjA0ODMgTCAxNy42MzM2ODkgODYuMjYzMzQ5IE0gMy40MTYyNjMgODcuNTQ1ODkgTCAxNS4xNzgwOTQgOTIuNTE1NzMyIE0gMC45MjU0NzcgOTIuOTQ5NzYzIEwgMTIuMzAwMiA5OC43NTI0NzQgTSAtMS45NjAyMzggOTguMzMwMTc1IEwgOS4xMjUxMzEgMTA0LjY3MjQ5MiBNIC01LjA2NDkyNCAxMDMuNDA1NTkyIEwgNS41MzE2NzMgMTEwLjUzMzg1NiBNIC04LjU2MDYyOCAxMDguNDAyODA2IEwgMS42NzIzMjIgMTE2LjAzNTQ4NCBNIC0xMi4zNDE3NzUgMTEzLjE4NDk2IEwgLTIuNDk1OTMzIDEyMS4zMTQyMzEgTSAtMTYuMzAyNzkgMTE3LjYxNTE5OCBMIC03LjA3ODY2OCAxMjYuNDQ0MzkxIE0gLTIwLjYyMzU0MyAxMjEuOTA4NTc5IEwgLTExLjg0OTA5MiAxMzEuMTg3NDQ0IE0gLTI1LjA2NTUxMSAxMjUuODM4MzEzIEwgLTE3LjAxNDQ0NCAxMzUuNzUwNjI3IE0gLTI5Ljg2NzIxNiAxMjkuNTg4MTc5IEwgLTIyLjMyNDQ3MiAxMzkuODkxNTExIE0gLTM0Ljg3NjE2IDEzMy4wNDg2OTEgTCAtMjcuODYxMjkyIDE0My43MTk1ODEgTSAtMzkuOTM5ODQ3IDEzNi4xMjk5MTUgTCAtMzMuNzUzOTM4IDE0Ny4zMDEzMDggTSAtNDUuMzIwMjU5IDEzOC45ODA0MzkgTCAtMzkuNzA1MjM2IDE1MC40NDkwMDYgTSAtNTAuODUzMTY5IDE0MS41MTQyMzcgTCAtNDUuODI4NTgzIDE1My4yNTI2MDcgTSAtNTYuMzc0MzQ3IDE0My42NzI2NTggTCAtNTIuMjUzMDE0IDE1NS43NTUxMjQgTSAtNjIuMTc3MDU5IDE0NS41MzM5MDYgTCAtNTguNjYxODA0IDE1Ny44MDc5NzEgTSAtNjguMDczNjE1IDE0Ny4wNTEwNTcgTCAtNjUuMTgwMDggMTU5LjQ4OTM0OSBNIC03My44OTk3ODggMTQ4LjE5MjgzIEwgLTcxLjkzNjg3NiAxNjAuODA3MDgxIE0gLTc5Ljk0NDkzMSAxNDguOTk4MzI4IEwgLTc4LjYwMzczOCAxNjEuNjk0NjkzIE0gLTg1Ljg3Mjc2OSAxNDkuNDQ0MDg5IEwgLTg1LjQ2MjIgMTYyLjIwNjkyNyBNIC05MS45NzI2NTUgMTQ5LjUyNjIwMyBMIC05Mi4xODM4MDQgMTYyLjI5Mjk1MSBNIC05OC4wNjg2MyAxNDkuMjUyNDkgTCAtOTguODk3NTg5IDE2MS45OTU3NzcgTSAtMTAzLjk4NDczNyAxNDguNjMwNzcxIEwgLTEwNS43MzI1ODkgMTYxLjI4MDIxMyBNIC0xMTAuMDEwMzI5IDE0Ny42NDE0OTQgTCAtMTEyLjM2MDM0OSAxNjAuMTkzMTgyIE0gLTExNS44MjA4NjIgMTQ2LjMzMTU4MyBMIC0xMTkuMDU4NDkzIDE1OC42ODM4NTIgTSAtMTIxLjY4NjEzNiAxNDQuNjQyMzg0IEwgLTEyNS41MTAyOTUgMTU2LjgyMjYwNCBNIC0xMjcuMzAxMTU5IDE0Mi42NjM4MzEgTCAtMTMxLjk4OTQ2OSAxNTQuNTM5MDU3IE0gLTEzMi45MzE4MjMgMTQwLjI5NDI2IEwgLTEzOC4xNzkyODkgMTUxLjkzNDg3NSBNIC0xMzguMjczMTMzIDEzNy42NzQ0MzcgTCAtMTQ0LjM0NTY0OCAxNDguOTA4Mzk0IE0gLTE0My41ODMxNjIgMTM0LjY2MzU5NiBMIC0xNTAuMTg3NDYxIDE0NS41ODg2NDggTSAtMTQ4LjU4MDM3NiAxMzEuNDM3Njk1IEwgLTE1NS45NjI4MDIgMTQxLjg1NDQyMyBNIC0xNTMuNDkxNTY2IDEyNy44MjA3NzYgTCAtMTYxLjM3MDU4NSAxMzcuODY2MDM2IE0gLTE1OC4xNzk4NzYgMTIzLjkyNjIzNCBMIC0xNjYuNTQ3NjY4IDEzMy41NzI2NTUgTSAtMTYyLjUxMjM1OSAxMTkuODYzNTUzIEwgLTE3MS41NjgzNDMgMTI4Ljg2MDg4NSBNIC0xNjYuNzAwMTY1IDExNS40MzcyMjYgTCAtMTc2LjE5NDA4OSAxMjMuOTc3MDY2IE0gLTE3MC41MjQzMjQgMTEwLjkwMTQxMyBMIC0xODAuNjMyMTQ3IDExOC43MDIyMjkgTSAtMTc0LjE1Mjk3NCAxMDYuMDEzNjg1IEwgLTE4NC42NDAwODUgMTEzLjI5NDQ0NiBNIC0xNzcuNDkyMjcgMTAwLjkyMjYyNiBMIC0xODguMzM1MjA4IDEwNy42Njc2OTIgTSAtMTgwLjUzNDM5MyA5NS42NDc3ODkgTCAtMTkxLjcwMTg3NiAxMDEuODMzNjk5IE0gLTE4My4xNzc2NzYgOTAuMzQ1NTgxIEwgLTE5NC43ODMxIDk1LjY2MzQzIE0gLTE4NS41Nzg1MjkgODQuNzUwMTA5IEwgLTE5Ny40MzgxMTQgODkuNDc3NTIgTSAtMTg3LjY1MDkyNiA3OS4wMjU2IEwgLTE5OS43MzczMDIgODMuMTQ2OTMzIE0gLTE4OS4zMjQ0ODQgNzMuMzMyMzc0IEwgLTIwMS42ODQ1NzMgNzYuNTM4NzI0IE0gLTE5MC43MDA4NjkgNjcuMzk2NzE2IEwgLTIwMy4yMDU2MzUgNjkuOTg1MjU3IE0gLTE5MS42OTc5NjYgNjEuNTQzMTcyIEwgLTIwNC4zNTkxMzkgNjMuMTk3MTc5IE0gLTE5Mi4zNTg3ODcgNTUuNDgyMzg4IEwgLTIwNS4wODY0MzMgNTYuNTEwNzY2IE0gLTE5Mi42NjM3ODEgNDkuMzkwMzIyIEwgLTIwNS40MjY2MTkgNDkuNzk2OTgxIE0gLTE5Mi41OTczMDggNDMuNDQ2ODQ0IEwgLTIwNS4zNTIzMjUgNDIuOTIyODc5IE0gLTE5Mi4xNzg5MTggMzcuMzU0Nzc5IEwgLTIwNC44OTg3NDQgMzYuMjIwODI1IE0gLTE5MS40MTI1MjIgMzEuNDU0MzEyIEwgLTIwNC4wMTg5NTMgMjkuNDA1Mzc2IE0gLTE5MC4yODI0NzkgMjUuNDUyMTgxIEwgLTIwMi43NzE2MDQgMjIuODA0OTg3IE0gLTE4OC44MzE4MDEgMTkuNjgwNzUxIEwgLTIwMS4xMDE5NTYgMTYuMTQ1OTQ1IE0gLTE4Ny4wMDE4MzYgMTMuODU0NTc4IEwgLTE5OS4wODgyMTIgOS43MzcxNTUgTSAtMTg0Ljg5MDMzNyA4LjI4NjQ3NyBMIC0xOTYuNjUyMTY4IDMuMzE2NjM0IE0gLTE4Mi4zODc4MTkgMi43MTgzNzYgTCAtMTkzLjg5OTM5OSAtMi44MTA2MjMgTSAtMTc5LjY0Mjg3MSAtMi41NjAzNzEgTCAtMTkwLjcyNDMzIC04LjkwMjY4OCBNIC0xNzYuNTAyOTk0IC03Ljc5NjEwNiBMIC0xODcuMjY3NzI4IC0xNC42NjYyOTggTSAtMTczLjA2OTg1MyAtMTIuODM2MzMyIEwgLTE4My40ODY1ODEgLTIwLjIyMjY2OCBNIC0xNjkuNDI1NTYyIC0xNy41MzI0NjIgTCAtMTc5LjI3MTQwNCAtMjUuNjYxNzMzIE0gLTE2NS40MTc2MjUgLTIyLjEyNjkyOCBMIC0xNzQuODUyODk3IC0zMC43MjkzMyBNIC0xNjEuMjUzMjggLTI2LjM1Nzc0NiBMIC0xNzAuMDIzODIgLTM1LjYzNjYxIE0gLTE1Ni43MjkxOTggLTMwLjQzNjA2NyBMIC0xNjUuMDI2NjA2IC00MC4xNDExNDEgTSAtMTUxLjk3NDQxNSAtMzQuMjQ4NDk1IEwgLTE1OS43NzUyMyAtNDQuMzU2MzE5IE0gLTE0Ny4xMjk2OTggLTM3LjY2MjA4NSBMIC0xNTQuMTQ0NTY3IC00OC4zMjkwNjUgTSAtMTQxLjk2MDQzNiAtNDAuODc2MjU2IEwgLTE0OC40Mjc4NzkgLTUxLjg4NzMzMSBNIC0xMzYuNjE1MjE2IC00My43OTMyNTIgTCAtMTQyLjUxNTY4MiAtNTUuMTEzMjMzIE0gLTEzMS4yNTA0NDQgLTQ2LjMxMTQxIEwgLTEzNi4yNzUwMyAtNTguMDUzNjkgTSAtMTI1LjYwMDIzIC00OC41NzkzMTcgTCAtMTMwLjAyNjU1NyAtNjAuNTU2MjA4IE0gLTExOS44MjQ4ODkgLTUwLjUxNDg1NyBMIC0xMjMuNjQ1MTM4IC02Mi42OTg5ODggTSAtMTE0LjA5NjQ3MSAtNTIuMDUxNTU5IEwgLTExNi45OTAwMDYgLTY0LjQ4NTk0MiBNIC0xMDguMTI1NjIxIC01My4yODMyNjcgTCAtMTEwLjQwMTM0OCAtNjUuODQ2Njg1IE0gLTEwMi4yNTI1MjYgLTU0LjEzOTU5NyBMIC0xMDMuNTg5ODA5IC02Ni44Mzk4NzIgTSAtOTYuMTcyMTkxIC01NC42NTE4MzEgTCAtOTYuODkxNjY1IC02Ny40MDI5MzggTSAtOTAuMDc2MjE2IC01NC44MTIxNDggTCAtOTAuMTcwMDYgLTY3LjU3ODg5NiBNIC04NC4xMzI3MzcgLTU0LjYwMDk5OSBMIC04My4zMDM3NzggLTY3LjM0MDM3NSBNIC03OC4wNTI0MDIgLTU0LjAzNzkzMiBMIC03Ni42MTM0NTUgLTY2LjcyMjU2NiBNIC03Mi4xNzE0ODcgLTUzLjEzMDc3IEwgLTY5LjgyMTQ2NyAtNjUuNjgyNDU4IE0gLTY2LjIwMDYzNyAtNTEuODU2MDUgTCAtNjMuMjUyMzU5IC02NC4yNzg3MDIgTSAtNjAuNDYwNDg5IC01MC4yNjg1MTYgTCAtNTYuNjM2MzI5IC02Mi40NDg3MzYgTSAtNTQuNjc3MzI4IC00OC4zMDE2OTQgTCAtNTAuMjc4MzcyIC02MC4yODY0MDUgTSAtNDkuMTY3ODggLTQ2LjA1MzMzOCBMIC00My45MTY1MDQgLTU3LjY5Mzk1MyBNIC00My42NTg0MzIgLTQzLjQyMTc4NSBMIC0zNy44NTU3MiAtNTQuNzk2NTA4IE0gLTM4LjQ0NjE1NyAtNDAuNTQ3OCBMIC0zMS44NDE4NTggLTUxLjQ3Njc2MiBNIC0zMy4yOTI1MzYgLTM3LjI4NjcwOCBMIC0yNi4xNjQyNzIgLTQ3Ljg3OTM5NCBNIC0yOC4zMzQ0MjQgLTMzLjcyODQ0MSBMIC0yMC42OTc4MzYgLTQzLjk2NTMgTSAtMjMuNzI4MjI4IC0yOS45NzQ2NjUgTCAtMTUuMzY0MzQ2IC0zOS42MjEwODcgTSAtMTkuMjM1NDI4IC0yNS44NTcyNDIgTCAtMTAuNDAyMzI0IC0zNS4wODEzNjQgTSAtMTUuMTA2Mjc0IC0yMS41OTUxNDMgTCAtNS42MTIzNDkgLTMwLjEzMTA3MiBNIC0xMS4xMzc0MzggLTE2Ljk3MzMwNiBMIC0xLjIyOTAzNCAtMjUuMDI0MzczIE0gLTcuNDQ2MjI1IC0xMi4xMjg1ODkgTCAyLjg1NzEwNyAtMTkuNjcxMzMyIE0gLTQuMTQ2MDMxIC03LjIwNTY2OSBMIDYuNjk2OTA3IC0xMy45NDY4MjQgTSAtMS4wNTMwNzYgLTEuOTYyMTEzIEwgMTAuMTE4MzE3IC04LjE0NDExMyAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk4OTk0LCAwLCAwLCAtMC45OTg5OTQsIDMzNS44Njg0MjMsIDM4My43MTU2NDIpIi8+PC9zdmc+" alt="" style="height:32px;width:auto;display:block">',title:'Willkommen auf Ihrer Trainingsplattform!',text:'In einer kurzen Tour (ca. 1 Minute) zeigen wir Ihnen die wichtigsten Bereiche. Sie können die Tour jederzeit überspringen und später im Profil erneut starten.'},
  {sel:'.sidebar',title:'Das Hauptmenü',text:'Über dieses Menü erreichen Sie alle Bereiche der Plattform. Es ist immer sichtbar – Sie können also jederzeit wechseln.',pos:'right'},
  {sel:'.nav-item[data-view="roadmap"]',title:'Mein Lernpfad',text:'Hier sehen Sie alle 14 Module als Weg – zuerst die Grundlagen (Module 1–6) bis zum Zertifikat, danach das Expertenwissen (Module 7–14).',pos:'right'},
- {sel:'.nav-item[data-view="modules"]',title:'Lernmodule',text:'Jedes Modul hat vier Schritte: Inhalt (Video & Erklärung), Praxisaufgabe, Wissenscheck und Zusammenfassung. Ab 4 von 5 richtigen Antworten ist ein Modul abgeschlossen.',pos:'right'},
+ {sel:'.nav-item[data-view="modules"]',title:'Lernmodule',text:'Jedes Modul besteht aus einem Video und den wichtigsten Inhalten. Mit „Modul abschließen“ am Ende markieren Sie es als erledigt.',pos:'right'},
  {sel:'.nav-item[data-view="kb"]',title:'Wissensdatenbank',text:'Schnell etwas nachschlagen? Hier finden Sie Anleitungen zu allen Themen der OrKan Cloud – mit Suchfunktion.',pos:'right'},
  {sel:'.nav-item[data-view="best"]',title:'Best Practices',text:'Praxiserprobte Schritt-für-Schritt-Anleitungen für typische Aufgaben im Lageralltag.',pos:'right'},
  {sel:'.nav-item[data-view="cert"]',title:'Zertifikat & Rabattcode',text:'Sobald Sie die Grundlagen (Module 1–6) abgeschlossen haben, erhalten Sie hier Ihr persönliches Zertifikat inklusive Rabattcode für den OrKan Shop.',pos:'right'},
