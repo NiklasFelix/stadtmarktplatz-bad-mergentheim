@@ -1679,6 +1679,52 @@ html:not(.theme-light) .roadmap-line::before{background:radial-gradient(circle,r
 .watch-status.done{color:var(--green-dark);font-weight:700}
 .md-hint{display:inline-block;padding:10px 0;color:var(--gray);font-size:14.5px}
 @media(max-width:640px){.watch-status{flex-direction:column;align-items:flex-start;gap:6px}.watch-status .ws-bar{flex-basis:auto;width:100%}}
+/* ===== Dunkelmodus-Feinschliff: Lesbarkeit und sichtbare Flächen ===== */
+html:not(.theme-light) .sp-track{background:rgba(255,255,255,.12)!important}
+html:not(.theme-light) .sp-fill{background:#A8CC68!important}
+html:not(.theme-light) .btn-outline,html:not(.theme-light) .dash-customize-btn{background:transparent!important;border:1.5px solid rgba(255,255,255,.28)!important;color:#EEF1F2!important}
+html:not(.theme-light) .btn-outline:hover,html:not(.theme-light) .dash-customize-btn:hover{border-color:#A8CC68!important;background:rgba(168,204,104,.10)!important}
+html:not(.theme-light) .vm-modal,html:not(.theme-light) .help-menu{background:#30363A!important;color:#EEF1F2;border:1px solid #474F54;box-shadow:0 30px 60px -20px rgba(0,0,0,.7)}
+html:not(.theme-light) .vm-modal h3,html:not(.theme-light) .vm-modal h4,html:not(.theme-light) .vm-modal strong,html:not(.theme-light) .vm-modal label,html:not(.theme-light) .appointment-contact-name,html:not(.theme-light) .profile-menu-name,html:not(.theme-light) .dash-customize-label{color:#fff!important}
+html:not(.theme-light) .vm-modal p,html:not(.theme-light) .vm-hint,html:not(.theme-light) .appointment-contact-org,html:not(.theme-light) .appointment-contact-arrow,html:not(.theme-light) .close-x,html:not(.theme-light) .dash-customize-sub{color:#B9C1C5!important}
+html:not(.theme-light) .appointment-contact,html:not(.theme-light) .vm-modal input,html:not(.theme-light) .vm-modal textarea,html:not(.theme-light) .vm-modal select{background:#262A2D!important;border-color:#474F54!important;color:#EEF1F2!important}
+html:not(.theme-light) .appointment-contact:hover{border-color:#A8CC68!important}
+html:not(.theme-light) .appointment-contact-avatar{background:#A8CC68!important;color:#22272A!important}
+html:not(.theme-light) .milestone-gist li,html:not(.theme-light) .chip{background:rgba(168,204,104,.16)!important;color:#D4E6B5!important;border-color:transparent!important}
+html:not(.theme-light) .chip.active{background:#A8CC68!important;color:#22272A!important}
+html:not(.theme-light) .w-heat i{background:rgba(255,255,255,.10)}
+html:not(.theme-light) .w-heat i.lv1{background:rgba(168,204,104,.45)}html:not(.theme-light) .w-heat i.lv2{background:#A8CC68}html:not(.theme-light) .w-heat i.lv3{background:#C9E2A0}
+html:not(.theme-light) .watch-status .ws-bar,html:not(.theme-light) .mc-track{background:rgba(255,255,255,.12)!important}
+html:not(.theme-light) .watch-status{color:#B9C1C5}html:not(.theme-light) .watch-status.done{color:#BCD98A}
+html:not(.theme-light) .fc-icon{background:rgba(168,204,104,.16)!important}
+html:not(.theme-light) .fc-icon svg{color:#A8CC68!important}
+html:not(.theme-light) .feature-card{border:1px solid #41484C!important}
+html:not(.theme-light) .feature-card h5{color:#fff}html:not(.theme-light) .feature-card p{color:#B9C1C5}
+html:not(.theme-light) .mc-badge.open,html:not(.theme-light) .mc-badge.locked{background:rgba(255,255,255,.08)!important;color:#B9C1C5!important;border-color:#474F54!important}
+html:not(.theme-light) .mc-badge.done{background:rgba(168,204,104,.18)!important;color:#C9E2A0!important}
+html:not(.theme-light) .mc-badge.progress{background:rgba(232,170,60,.18)!important;color:#F2C46B!important}
+html:not(.theme-light) .md-done{background:rgba(168,204,104,.16)!important;color:#C9E2A0!important}
+html:not(.theme-light) .md-hint,html:not(.theme-light) .page-sub,html:not(.theme-light) .kb-lead{color:#B9C1C5!important}
+html:not(.theme-light) .plus-ic{background:#262A2D;color:#EEF1F2;border-color:#5A6267}
+html:not(.theme-light) .chk-ic{background:#262A2D;border-color:#AEB6BA}
+html:not(.theme-light) .gsearch{background:#30363A!important;border:1px solid #474F54}
+html:not(.theme-light) .gsearch input{color:#EEF1F2}
+html:not(.theme-light) .gsearch input::placeholder{color:#9AA3A8}
+html:not(.theme-light) .milestone-card p,html:not(.theme-light) .milestone-card h4{color:#EEF1F2!important}
+html:not(.theme-light) .milestone-meta{color:#B9C1C5!important}
+html:not(.theme-light) .mc-badge.open,html:not(.theme-light) .mc-badge.locked{color:#D6DCDF!important}
+html:not(.theme-light) .kb-card p,html:not(.theme-light) .bp-card p{color:#B9C1C5!important}
+html:not(.theme-light) .kb-card h4,html:not(.theme-light) .bp-card h4{color:#fff!important}
+/* Beide Modi: Video-Zeit, Links und kleine grüne Texte gut lesbar */
+.ovp-time{color:#fff!important;opacity:.92}
+html.theme-light .key-points a,html.theme-light .page-sub a{color:#4E6A1F!important}
+html.theme-light .key-points li .kp-key strong{color:#4E6A1F}
+html.theme-light .kb-path span{color:#4E6A1F!important}
+html.theme-light .fs-target b{color:#4E6A1F}
+html.theme-light .bp-diff.medium{color:#8A5A0B!important}
+html.theme-light{--green-dark:#536D2B}
+html.theme-light #tabContentHost a:not(.btn):not(.ui-btn){color:#4E6A1F!important}
+/* ===== /Dunkelmodus-Feinschliff ===== */
 </style>
 </head>
 <body>
