@@ -3473,11 +3473,6 @@ function openArticle(idx){
       <ul class="kb-points">${a.body.map(p=>`<li>${uiBtns(p)}</li>`).join('')}</ul>
       ${a.downloadable ? templateDownloadCallout() : ''}
       <div class="kb-actions"><button class="btn btn-outline" onclick="openModule(${a.mod})">Zum Lernmodul ${a.mod} →</button></div>
-      <div class="helpful-row">
-        <span style="font-size:14px;color:var(--gray);align-self:center">War dieser Artikel hilfreich?</span>
-        <button class="helpful-btn" onclick="this.textContent='Danke für Ihr Feedback'">Ja, hilfreich</button>
-        <button class="helpful-btn" onclick="this.textContent='Danke für Ihr Feedback'">Nein, verbesserungswürdig</button>
-      </div>
       ${rel.length?`<div class="section-heading" style="margin-top:8px">Weitere Artikel zu diesem Thema</div>
       <div class="kb-grid">${rel.slice(0,3).map(x=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(x)})"><h4>${x.title}</h4><p>${x.desc}</p><span class="kb-link">Lesen &rarr;</span></div>`).join('')}</div>`:''}
     </div>
