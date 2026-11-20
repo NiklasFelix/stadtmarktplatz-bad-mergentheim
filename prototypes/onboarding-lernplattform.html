@@ -3187,7 +3187,7 @@ const MODULE_VIDEOS = {
   1:{src:'videos/modul-01', ratio:1440/786},
   2:{src:'videos/modul-02', ratio:1920/1048},
   3:{src:'videos/modul-03', ratio:1920/950},
-  4:{src:'videos/modul-04', ratio:1920/916},
+  4:{src:'videos/modul-04', ratio:1440/688},
   5:{src:'videos/modul-05', ratio:1920/948},
   6:{src:'videos/modul-06', ratio:1920/948},
   7:{src:'videos/modul-07', ratio:1440/708},
@@ -3438,6 +3438,7 @@ function completeModule(mid, fromVideo){
     const ms=document.getElementById('mdStatus'); if(ms&&state.currentModule===mid) ms.innerHTML='<span class="md-done">✓ Modul abgeschlossen</span>';
   } else renderModuleDetail();
   const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
+  if(fromVideo) return; // nach einem Video keine Meldung
   showToast(certUnlocked() && certIds().includes(mid) && certDoneCount()>=certTotal() ? 'Alle Grundlagen-Module abgeschlossen – Ihr Zertifikat ist freigeschaltet.' : (next ? `Modul abgeschlossen. Weiter mit Modul ${next.id}: ${next.title}` : 'Alle Module abgeschlossen!'));
 }
 function retryQuiz(mid){ delete state.quizAnswers[mid]; if(state.quizTries) delete state.quizTries[mid]; renderQuiz(MODULES.find(x=>x.id===mid)); }
