@@ -81,7 +81,7 @@ h1,h2,h3,h4,h5{line-height:1.25;letter-spacing:-.2px}
 }
 
 /* ===== APP SHELL ===== */
-#app{display:none;height:100vh;flex-direction:column}
+#app{display:flex;height:100vh;flex-direction:column}
 .app-header{background:var(--dark-bg);height:60px;flex-shrink:0;display:flex;align-items:center;gap:18px;padding:0 24px;border-bottom:1px solid rgba(255,255,255,.06)}
 .hdr-logo{display:flex;align-items:center;gap:10px}
 .orkan-logo-badge{display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -1734,6 +1734,12 @@ html.theme-light #tabContentHost a:not(.btn):not(.ui-btn){color:#4E6A1F!importan
 .nv-note .btn{margin-left:auto;flex-shrink:0}
 html:not(.theme-light) .nv-ic{color:#A8CC68}
 @media(max-width:700px){.nv-note{flex-direction:column;align-items:flex-start}.nv-note .btn{margin-left:0}}
+.cert-personal{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;max-width:700px;margin:0 auto 22px;padding:18px 20px;border-radius:14px;background:var(--white);border:1px solid var(--line)}
+.cert-personal-head{grid-column:1/-1;display:flex;flex-direction:column;gap:2px}
+.cert-personal-head span{font-size:13.5px;color:var(--gray)}
+.cert-personal label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:600;color:var(--gray)}
+@media(max-width:640px){.cert-personal{grid-template-columns:1fr}}
+.hdr-avatar svg,.profile-menu-avatar svg{display:block;margin:auto}
 </style>
 </head>
 <body>
@@ -1746,31 +1752,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
 <div class="bg-mesh"></div>
 <div class="orb orb1"></div>
 <div class="orb orb2"></div>
-
-<!-- ONBOARDING -->
-<div id="onboarding">
-  <div class="onb-split">
-    <div class="onb-side">
-      <div class="onb-side-glow"></div>
-      <div class="onb-logo">
-        <div class="orkan-logo-badge"><img class="orkan-logo-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjMwMSA1NSAxMTIgNDgiIHdpZHRoPSIxMTIiIGhlaWdodD0iNDgiPjxwYXRoIGZpbGw9IiNBOENDNjgiIGQ9Ik0gMzM5LjQ1MzEyNSAxMDEuNDcyNjU2IEMgMzQwLjA3ODEyNSAxMDEuNDcyNjU2IDM0MC42NDA2MjUgMTAxLjM3NSAzNDEuMTQ4NDM4IDEwMS4xODc1IEMgMzQxLjY1NjI1IDEwMC45OTYwOTQgMzQyLjA2NjQwNiAxMDAuNzIyNjU2IDM0Mi4zODI4MTIgMTAwLjM3MTA5NCBDIDM0Mi42OTkyMTkgMTAwLjAxNTYyNSAzNDIuODgyODEyIDk5LjU5Mzc1IDM0Mi45Mjk2ODggOTkuMTAxNTYyIEMgMzQzLjAxMTcxOSA5OC4zOTQ1MzEgMzQyLjg1OTM3NSA5Ny44MTI1IDM0Mi40Njg3NSA5Ny4zNTU0NjkgQyAzNDIuMDc4MTI1IDk2LjkwMjM0NCAzNDEuNDIxODc1IDk2LjQ5MjE4OCAzNDAuNSA5Ni4xMjg5MDYgQyAzMzkuNzkyOTY5IDk1Ljg0NzY1NiAzMzkuMjkyOTY5IDk1LjU3MDMxMiAzMzkgOTUuMjg1MTU2IEMgMzM4LjcwNzAzMSA5NSAzMzguNTgyMDMxIDk0LjYzNjcxOSAzMzguNjI4OTA2IDk0LjE4NzUgQyAzMzguNjYwMTU2IDkzLjkyOTY4OCAzMzguNzYxNzE5IDkzLjY5NTMxMiAzMzguOTM3NSA5My40OTIxODggQyAzMzkuMTEzMjgxIDkzLjI4NTE1NiAzMzkuMzU1NDY5IDkzLjEyNSAzMzkuNjY0MDYyIDkzLjAxMTcxOSBDIDMzOS45Njg3NSA5Mi44OTQ1MzEgMzQwLjMzMjAzMSA5Mi44MzU5MzggMzQwLjc1IDkyLjgzNTkzOCBDIDM0MS4zMDg1OTQgOTIuODM1OTM4IDM0MS43OTI5NjkgOTIuOTQ1MzEyIDM0Mi4xOTUzMTIgOTMuMTY0MDYyIEMgMzQyLjYwMTU2MiA5My4zODI4MTIgMzQyLjkxMDE1NiA5My42NTYyNSAzNDMuMTIxMDk0IDkzLjk4MDQ2OSBMIDM0My44NDc2NTYgOTMuMjgxMjUgQyAzNDMuNTYyNSA5Mi44NzUgMzQzLjE2MDE1NiA5Mi41NTA3ODEgMzQyLjY0ODQzOCA5Mi4zMTI1IEMgMzQyLjEzNjcxOSA5Mi4wNzQyMTkgMzQxLjUxOTUzMSA5MS45NTcwMzEgMzQwLjc5Mjk2OSA5MS45NTcwMzEgQyAzNDAuMTc5Njg4IDkxLjk1NzAzMSAzMzkuNjM2NzE5IDkyLjA1MDc4MSAzMzkuMTYwMTU2IDkyLjIzNDM3NSBDIDMzOC42ODc1IDkyLjQyMTg3NSAzMzguMzEyNSA5Mi42NzU3ODEgMzM4LjA0Mjk2OSA5My4wMDM5MDYgQyAzMzcuNzczNDM4IDkzLjMyODEyNSAzMzcuNjEzMjgxIDkzLjcwNzAzMSAzMzcuNTU0Njg4IDk0LjEzMjgxMiBDIDMzNy41IDk0LjU5NzY1NiAzMzcuNTUwNzgxIDk1LjAwMzkwNiAzMzcuNzEwOTM4IDk1LjM0NzY1NiBDIDMzNy44NjcxODggOTUuNjkxNDA2IDMzOC4xMTcxODggOTUuOTg4MjgxIDMzOC40NjA5MzggOTYuMjM4MjgxIEMgMzM4LjgwODU5NCA5Ni40OTIxODggMzM5LjI2OTUzMSA5Ni43MzQzNzUgMzM5Ljg0Mzc1IDk2Ljk2NDg0NCBDIDM0MC4zNjMyODEgOTcuMTcxODc1IDM0MC43NzM0MzggOTcuMzY3MTg4IDM0MS4wNjY0MDYgOTcuNTUwNzgxIEMgMzQxLjM1OTM3NSA5Ny43MzgyODEgMzQxLjU3MDMxMiA5Ny45NDkyMTkgMzQxLjY5OTIxOSA5OC4xODc1IEMgMzQxLjgzMjAzMSA5OC40MjE4NzUgMzQxLjg4MjgxMiA5OC43MTA5MzggMzQxLjg1MTU2MiA5OS4wNDY4NzUgQyAzNDEuODE2NDA2IDk5LjUwNzgxMiAzNDEuNTg5ODQ0IDk5Ljg3ODkwNiAzNDEuMTc1NzgxIDEwMC4xNTIzNDQgQyAzNDAuNzYxNzE5IDEwMC40Mjk2ODggMzQwLjI0MjE4OCAxMDAuNTY2NDA2IDMzOS42MjEwOTQgMTAwLjU2NjQwNiBDIDMzOS4wNDI5NjkgMTAwLjU2NjQwNiAzMzguNTE5NTMxIDEwMC40NDE0MDYgMzM4LjA1MDc4MSAxMDAuMTg3NSBDIDMzNy41ODIwMzEgOTkuOTM3NSAzMzcuMjA3MDMxIDk5LjYwOTM3NSAzMzYuOTI5Njg4IDk5LjE5OTIxOSBMIDMzNi4yMTg3NSA5OS45NTMxMjUgQyAzMzYuNTIzNDM4IDEwMC4zOTA2MjUgMzM2Ljk2MDkzOCAxMDAuNzUzOTA2IDMzNy41MjczNDQgMTAxLjAzOTA2MiBDIDMzOC4wOTM3NSAxMDEuMzI4MTI1IDMzOC43MzgyODEgMTAxLjQ3MjY1NiAzMzkuNDUzMTI1IDEwMS40NzI2NTYgTSAzNTAuODEyNSAxMDEuMzA0Njg4IEwgMzUyLjE5NTMxMiAxMDEuMzA0Njg4IEwgMzUyLjkyMTg3NSA5Ny42NDg0MzggTCAzNTcuMTkxNDA2IDkyLjEwOTM3NSBMIDM1NS41NDI5NjkgOTIuMTA5Mzc1IEwgMzUzLjU3ODEyNSA5NC44MTY0MDYgTCAzNTIuMzkwNjI1IDk2Ljc5Njg3NSBMIDM1Mi4zNDc2NTYgOTYuNzk2ODc1IEwgMzUxLjg3NSA5NC44MTY0MDYgTCAzNTAuOTE0MDYyIDkyLjEwOTM3NSBMIDM0OS40MDYyNSA5Mi4xMDkzNzUgTCAzNTEuNTExNzE5IDk3LjY2NDA2MiBaIE0gMzY0LjA0Njg3NSAxMDEuNDU3MDMxIEMgMzY0LjY5NTMxMiAxMDEuNDU3MDMxIDM2NS4yODUxNTYgMTAxLjM3MTA5NCAzNjUuODA4NTk0IDEwMS4xOTkyMTkgQyAzNjYuMzM1OTM4IDEwMS4wMjczNDQgMzY2Ljc2NTYyNSAxMDAuNzczNDM4IDM2Ny4xMDE1NjIgMTAwLjQzMzU5NCBDIDM2Ny40MzM1OTQgMTAwLjA5Mzc1IDM2Ny42NDg0MzggOTkuNjkxNDA2IDM2Ny43NDIxODggOTkuMjI2NTYyIEMgMzY3Ljg5MDYyNSA5OC40NDUzMTIgMzY3Ljc3NzM0NCA5Ny43OTY4NzUgMzY3LjQwNjI1IDk3LjI4MTI1IEMgMzY3LjAzNTE1NiA5Ni43NjE3MTkgMzY2LjM0Mzc1IDk2LjMwODU5NCAzNjUuMzI4MTI1IDk1LjkxNzk2OSBDIDM2NC42MTMyODEgOTUuNjQ4NDM4IDM2NC4xMjUgOTUuMzc4OTA2IDM2My44NzEwOTQgOTUuMTA5Mzc1IEMgMzYzLjYxMzI4MSA5NC44Mzk4NDQgMzYzLjUzNTE1NiA5NC41MDM5MDYgMzYzLjYyNSA5NC4xMDU0NjkgQyAzNjMuNjY0MDYyIDkzLjkxNzk2OSAzNjMuNzU3ODEyIDkzLjc1NzgxMiAzNjMuOTA2MjUgOTMuNjI1IEMgMzY0LjA1NDY4OCA5My40ODgyODEgMzY0LjI0NjA5NCA5My4zODY3MTkgMzY0LjQ4NDM3NSA5My4zMDg1OTQgQyAzNjQuNzIyNjU2IDkzLjIzNDM3NSAzNjQuOTk2MDk0IDkzLjE5OTIxOSAzNjUuMzE2NDA2IDkzLjE5OTIxOSBDIDM2NS44MzU5MzggOTMuMTk5MjE5IDM2Ni4yODUxNTYgOTMuMzA4NTk0IDM2Ni42Njc5NjkgOTMuNTM1MTU2IEMgMzY3LjA1MDc4MSA5My43NTc4MTIgMzY3LjM0NzY1NiA5NC4wNTA3ODEgMzY3LjU2MjUgOTQuNDE0MDYyIEwgMzY4LjcwNzAzMSA5My4zNzg5MDYgQyAzNjguMzcxMDk0IDkyLjkwNjI1IDM2Ny45Mjk2ODggOTIuNTM5MDYyIDM2Ny4zNzg5MDYgOTIuMjg1MTU2IEMgMzY2LjgzMjAzMSA5Mi4wMjczNDQgMzY2LjE1NjI1IDkxLjg5ODQzOCAzNjUuMzU1NDY5IDkxLjg5ODQzOCBDIDM2NC43NDIxODggOTEuODk4NDM4IDM2NC4xOTUzMTIgOTEuOTg4MjgxIDM2My43MTg3NSA5Mi4xNjc5NjkgQyAzNjMuMjM4MjgxIDkyLjM0Mzc1IDM2Mi44NDc2NTYgOTIuNTg1OTM4IDM2Mi41NTA3ODEgOTIuODk4NDM4IEMgMzYyLjI1MzkwNiA5My4yMTA5MzggMzYyLjA1ODU5NCA5My41NzQyMTkgMzYxLjk2NDg0NCA5My45OTYwOTQgQyAzNjEuODYzMjgxIDk0LjQ3NjU2MiAzNjEuODc4OTA2IDk0LjkxNzk2OSAzNjIuMDE1NjI1IDk1LjMyMDMxMiBDIDM2Mi4xNDg0MzggOTUuNzE4NzUgMzYyLjQwNjI1IDk2LjA3NDIxOSAzNjIuNzgxMjUgOTYuMzc4OTA2IEMgMzYzLjE2MDE1NiA5Ni42ODc1IDM2My42NTYyNSA5Ni45NTcwMzEgMzY0LjI2OTUzMSA5Ny4xODc1IEMgMzY0Ljc5Njg3NSA5Ny4zODY3MTkgMzY1LjIwMzEyNSA5Ny41NzQyMTkgMzY1LjQ4ODI4MSA5Ny43NTM5MDYgQyAzNjUuNzczNDM4IDk3LjkzMzU5NCAzNjUuOTU3MDMxIDk4LjEyODkwNiAzNjYuMDM5MDYyIDk4LjMzMjAzMSBDIDM2Ni4xMjUgOTguNTM5MDYyIDM2Ni4xNDQ1MzEgOTguNzY1NjI1IDM2Ni4wOTc2NTYgOTkuMDE1NjI1IEMgMzY2LjAzMTI1IDk5LjM5MDYyNSAzNjUuODM5ODQ0IDk5LjY3MTg3NSAzNjUuNTE1NjI1IDk5Ljg2MzI4MSBDIDM2NS4xOTUzMTIgMTAwLjA1MDc4MSAzNjQuODA0Njg4IDEwMC4xNDg0MzggMzY0LjMzNTkzOCAxMDAuMTQ4NDM4IEMgMzYzLjc0MjE4OCAxMDAuMTQ4NDM4IDM2My4yMjI2NTYgMTAwLjAxNTYyNSAzNjIuNzczNDM4IDk5Ljc1IEMgMzYyLjMyODEyNSA5OS40ODQzNzUgMzYxLjk2MDkzOCA5OS4xMTcxODggMzYxLjY3MTg3NSA5OC42NTYyNSBMIDM2MC41ODU5MzggOTkuNzU3ODEyIEMgMzYwLjkwMjM0NCAxMDAuMjUgMzYxLjM2MzI4MSAxMDAuNjU2MjUgMzYxLjk3MjY1NiAxMDAuOTc2NTYyIEMgMzYyLjU4MjAzMSAxMDEuMjk2ODc1IDM2My4yNzM0MzggMTAxLjQ1NzAzMSAzNjQuMDQ2ODc1IDEwMS40NTcwMzEgTSAzNzUuMjEwOTM4IDEwMS4zMDQ2ODggTCAzNzcuMTQ4NDM4IDEwMS4zMDQ2ODggTCAzNzguNjQwNjI1IDkzLjY2MDE1NiBMIDM4MS4wODU5MzggOTMuNjYwMTU2IEwgMzgxLjQwNjI1IDkyLjA2NjQwNiBMIDM3NC41MTE3MTkgOTIuMDY2NDA2IEwgMzc0LjIwNzAzMSA5My42NjAxNTYgTCAzNzYuNjc1NzgxIDkzLjY2MDE1NiBaIE0gMzg1LjY0NDUzMSAxMDEuMzA0Njg4IEwgMzkyLjM1NTQ2OSAxMDEuMzA0Njg4IEwgMzkyLjcxODc1IDk5LjQ2NDg0NCBMIDM4OC4yNTM5MDYgOTkuNDY0ODQ0IEwgMzg4LjY1NjI1IDk3LjM4NjcxOSBMIDM5MS42ODM1OTQgOTcuMzg2NzE5IEwgMzkyLjAxOTUzMSA5NS43MTA5MzggTCAzODguOTgwNDY5IDk1LjcxMDkzOCBMIDM4OS4zNTU0NjkgOTMuNzk2ODc1IEwgMzkzLjY0MDYyNSA5My43OTY4NzUgTCAzOTMuOTcyNjU2IDkyLjA1NDY4OCBMIDM4Ny40NDUzMTIgOTIuMDU0Njg4IFogTSAzOTguNTc0MjE5IDEwMS4zMDQ2ODggTCA0MDEuMTgzNTk0IDEwMS4zMDQ2ODggTCA0MDEuODk0NTMxIDk3LjY3NTc4MSBMIDQwMi40MTQwNjIgOTMuNTg5ODQ0IEwgNDAyLjU5Mzc1IDkzLjU4OTg0NCBMIDQwMi44MzIwMzEgOTYuNjQ0NTMxIEwgNDAzLjQwMjM0NCAxMDEuMzA0Njg4IEwgNDA1LjU3ODEyNSAxMDEuMzA0Njg4IEwgNDA3Ljk4MDQ2OSA5Ni42NDQ1MzEgTCA0MDkuMzQ3NjU2IDkzLjU4OTg0NCBMIDQwOS41NDI5NjkgOTMuNTg5ODQ0IEwgNDA4LjUzOTA2MiA5Ny42NzU3ODEgTCA0MDcuODEyNSAxMDEuMzA0Njg4IEwgNDEwLjQyMTg3NSAxMDEuMzA0Njg4IEwgNDEyLjIyMjY1NiA5Mi4wMjczNDQgTCA0MDguMDQ2ODc1IDkyLjAyNzM0NCBMIDQwNS44OTg0MzggOTYuNjI4OTA2IEwgNDA1LjA4OTg0NCA5OC45NDkyMTkgTCA0MDQuOTgwNDY5IDk4Ljk0OTIxOSBMIDQwNS4wNDY4NzUgOTYuNjI4OTA2IEwgNDA0LjYyODkwNiA5Mi4wMjczNDQgTCA0MDAuMzc1IDkyLjAyNzM0NCBaIE0gMzk4LjU3NDIxOSAxMDEuMzA0Njg4ICIvPjxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0gMzE0LjkyMTg3NSA1Ni40NDE0MDYgQyAzMTguMDQ2ODc1IDU2LjQ0MTQwNiAzMjAuNDE3OTY5IDU3LjQzNzUgMzIyLjAyNzM0NCA1OS40MjE4NzUgQyAzMjMuNjY3OTY5IDYxLjQwNjI1IDMyNC4yNSA2NC4wMzUxNTYgMzIzLjc3NzM0NCA2Ny4zMDg1OTQgTCAzMjIuNzczNDM4IDc0LjUzMTI1IEMgMzIyLjMwMDc4MSA3Ny44MzIwMzEgMzIxLjA2MjUgODAuNDI1NzgxIDMxOS4wNTA3ODEgODIuMzA4NTk0IEMgMzE3LjA0Mjk2OSA4NC4xNzE4NzUgMzE0LjUzNTE1NiA4NS4xMDE1NjIgMzExLjUzNTE1NiA4NS4xMDE1NjIgQyAzMDguNDEwMTU2IDg1LjEwMTU2MiAzMDYuMDI3MzQ0IDg0LjEyMTA5NCAzMDQuMzg2NzE5IDgyLjE2MDE1NiBDIDMwMi43NzM0MzggODAuMTQ4NDM4IDMwMi4yMDMxMjUgNzcuNTA3ODEyIDMwMi42NzU3ODEgNzQuMjM0Mzc1IEwgMzAzLjY3OTY4OCA2Ny4wMTE3MTkgQyAzMDQuMTUyMzQ0IDYzLjczODI4MSAzMDUuMzk0NTMxIDYxLjE1NjI1IDMwNy40MDIzNDQgNTkuMjY5NTMxIEMgMzA5LjM4NjcxOSA1Ny4zODY3MTkgMzExLjg5NDUzMSA1Ni40NDE0MDYgMzE0LjkyMTg3NSA1Ni40NDE0MDYgTSAzMTQuNTQ2ODc1IDYxLjgwMDc4MSBDIDMxMy4yNTc4MTIgNjEuODAwNzgxIDMxMi4xODc1IDYyLjIzMDQ2OSAzMTEuMzI4MTI1IDYzLjA4NTkzOCBDIDMxMC40NzI2NTYgNjMuOTQxNDA2IDMwOS45NDUzMTIgNjUuMTEzMjgxIDMwOS43NDYwOTQgNjYuNjA1NDY5IEwgMzA4LjU1ODU5NCA3NC45Mzc1IEMgMzA4LjM1OTM3NSA3Ni4zNzg5MDYgMzA4LjU2MjUgNzcuNTM5MDYyIDMwOS4xNzE4NzUgNzguNDIxODc1IEMgMzA5Ljc3NzM0NCA3OS4zMDA3ODEgMzEwLjY5MTQwNiA3OS43NDIxODggMzExLjkwNjI1IDc5Ljc0MjE4OCBDIDMxMy4xOTUzMTIgNzkuNzQyMTg4IDMxNC4yNjk1MzEgNzkuMzEyNSAzMTUuMTI1IDc4LjQ1NzAzMSBDIDMxNS45ODA0NjkgNzcuNjAxNTYyIDMxNi41MDc4MTIgNzYuNDI5Njg4IDMxNi43MDcwMzEgNzQuOTM3NSBMIDMxNy44NTkzNzUgNjYuNjA1NDY5IEMgMzE4LjA1ODU5NCA2NS4xNjQwNjIgMzE3Ljg1OTM3NSA2NC4wMDM5MDYgMzE3LjI2NTYyNSA2My4xMjUgQyAzMTYuNjcxODc1IDYyLjI0MjE4OCAzMTUuNzY1NjI1IDYxLjgwMDc4MSAzMTQuNTQ2ODc1IDYxLjgwMDc4MSAiLz48cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNIDMzNy42ODM1OTQgNjUuMzAwNzgxIEwgMzM2Ljk3NjU2MiA3MC42MjEwOTQgQyAzMzUuNDM3NSA3MC42NzE4NzUgMzM0IDcxLjE3OTY4OCAzMzIuNjYwMTU2IDcyLjE0ODQzOCBMIDMzMC43MjY1NjIgODQuNjkxNDA2IEwgMzI1LjIxODc1IDg0LjY5MTQwNiBMIDMyNy45MzM1OTQgNjUuNDQ5MjE5IEwgMzMzLjEwOTM3NSA2NS40NDkyMTkgTCAzMzIuODA4NTk0IDY3LjIzNDM3NSBDIDMzMy45NzY1NjIgNjUuOTcyNjU2IDMzNS42MDE1NjIgNjUuMzI0MjE5IDMzNy42ODM1OTQgNjUuMzAwNzgxICIvPjxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0gMzYxLjQ5MjE4OCA1Ni44NTE1NjIgTCAzNTMuMDgyMDMxIDcxLjA3MDMxMiBMIDM1Ny41ODIwMzEgODQuNjkxNDA2IEwgMzUxLjU1NDY4OCA4NC42OTE0MDYgTCAzNDcuODMyMDMxIDczLjg1OTM3NSBMIDM0Ni4xNTYyNSA3My44NTkzNzUgTCAzNDQuNjMyODEyIDg0LjY5MTQwNiBMIDMzOC43NSA4NC42OTE0MDYgTCAzNDIuNjk1MzEyIDU2Ljg1MTU2MiBMIDM0OC41MzkwNjIgNTYuODUxNTYyIEwgMzQ2LjkwMjM0NCA2OC41MzkwNjIgTCAzNDguMTY3OTY5IDY4LjUzOTA2MiBMIDM1NS4wODk4NDQgNTYuODUxNTYyIFogTSAzNjEuNDkyMTg4IDU2Ljg1MTU2MiAiLz48cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNIDM2OC43MzA0NjkgNjUuMDc4MTI1IEMgMzcwLjU2NjQwNiA2NS4wNzgxMjUgMzcxLjgyODEyNSA2NS43MjI2NTYgMzcyLjUyMzQzOCA2Ny4wMTE3MTkgTCAzNzIuNzg1MTU2IDY1LjQ0OTIxOSBMIDM3OC4xMDkzNzUgNjUuNDQ5MjE5IEwgMzc1LjM5MDYyNSA4NC42OTE0MDYgTCAzNzAuMjUzOTA2IDg0LjY5MTQwNiBMIDM3MC40NDE0MDYgODMuMzg2NzE5IEMgMzY5LjUyMzQzOCA4NC41MzEyNSAzNjguMjE4NzUgODUuMTAxNTYyIDM2Ni41MzUxNTYgODUuMTAxNTYyIEMgMzY0LjU5NzY1NiA4NS4xMDE1NjIgMzYzLjA1ODU5NCA4NC4zOTQ1MzEgMzYxLjkxNzk2OSA4Mi45NzY1NjIgQyAzNjAuODAwNzgxIDgxLjUxNTYyNSAzNjAuNDA2MjUgNzkuNjY3OTY5IDM2MC43MjY1NjIgNzcuNDMzNTk0IEwgMzYxLjQzMzU5NCA3Mi40MTAxNTYgQyAzNjEuNzMwNDY5IDcwLjEyNSAzNjIuNTYyNSA2OC4zMzk4NDQgMzYzLjkyOTY4OCA2Ny4wNTA3ODEgQyAzNjUuMzE2NDA2IDY1LjczNDM3NSAzNjYuOTE3OTY5IDY1LjA3ODEyNSAzNjguNzMwNDY5IDY1LjA3ODEyNSBNIDM2OS42NjAxNTYgNjkuODA0Njg4IEMgMzY4LjkxNDA2MiA2OS44MDQ2ODggMzY4LjMwMDc4MSA3MC4wNTg1OTQgMzY3LjgxNjQwNiA3MC41NjY0MDYgQyAzNjcuMzMyMDMxIDcxLjA3NDIxOSAzNjcuMDQyOTY5IDcxLjczODI4MSAzNjYuOTQxNDA2IDcyLjU1ODU5NCBMIDM2Ni4xOTkyMTkgNzcuNzMwNDY5IEMgMzY2LjA5NzY1NiA3OC41MjczNDQgMzY2LjI0MjE4OCA3OS4xNTYyNSAzNjYuNjI1IDc5LjYyODkwNiBDIDM2Ny4wMTE3MTkgODAuMTAxNTYyIDM2Ny41NTA3ODEgODAuMzM1OTM4IDM2OC4yNDYwOTQgODAuMzM1OTM4IEMgMzY5LjAzOTA2MiA4MC4zMzU5MzggMzY5LjgyMDMxMiA4MCAzNzAuNTg5ODQ0IDc5LjMzMjAzMSBMIDM3MS43ODEyNSA3MC45MjE4NzUgQyAzNzEuMjEwOTM4IDcwLjE3NTc4MSAzNzAuNTAzOTA2IDY5LjgwNDY4OCAzNjkuNjYwMTU2IDY5LjgwNDY4OCAiLz48cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNIDM5MS4zODI4MTIgNjUuMDc4MTI1IEMgMzkzLjI5Mjk2OSA2NS4wNzgxMjUgMzk0Ljc0MjE4OCA2NS43MTA5MzggMzk1LjczNDM3NSA2Ni45NzY1NjIgQyAzOTYuNzI2NTYyIDY4LjI0MjE4OCAzOTcuMDc0MjE5IDY5Ljk0MTQwNiAzOTYuNzc3MzQ0IDcyLjA3NDIxOSBMIDM5NC45OTIxODggODQuNjkxNDA2IEwgMzg5LjQ0NTMxMiA4NC42OTE0MDYgTCAzOTEuMTIxMDk0IDcyLjc0MjE4OCBDIDM5MS4yNDYwOTQgNzIuMDIzNDM4IDM5MS4xNjQwNjIgNzEuNDUzMTI1IDM5MC44Nzg5MDYgNzEuMDMxMjUgQyAzOTAuNTkzNzUgNzAuNjA5Mzc1IDM5MC4xNzU3ODEgNzAuMzk4NDM4IDM4OS42MzI4MTIgNzAuMzk4NDM4IEMgMzg5LjAzNTE1NiA3MC4zOTg0MzggMzg4LjU2NjQwNiA3MC41MzUxNTYgMzg4LjIxODc1IDcwLjgwODU5NCBDIDM4Ny45Njg3NSA3MC45MzM1OTQgMzg3LjY2MDE1NiA3MS4xNzk2ODggMzg3LjI4OTA2MiA3MS41NTQ2ODggTCAzODUuMjc3MzQ0IDg0LjY5MTQwNiBMIDM3OS43Njk1MzEgODQuNjkxNDA2IEwgMzgyLjQ4NDM3NSA2NS40NDkyMTkgTCAzODcuNjIxMDk0IDY1LjQ0OTIxOSBMIDM4Ny40Mzc1IDY2LjcxNDg0NCBDIDM4OC40MDIzNDQgNjUuNjI1IDM4OS43MTg3NSA2NS4wNzgxMjUgMzkxLjM4MjgxMiA2NS4wNzgxMjUgIi8+PC9zdmc+" alt="OrKan System"></div>
-      </div>
-      <div class="onb-side-body">
-        <h1>Willkommen bei Ihrer<br>Onboarding-Plattform</h1>
-        <p class="sub">Strukturierte Einführung in die OrKan Cloud – Schritt für Schritt.</p>
-        <div class="onb-roadmap-preview" id="onbRoadmapPreview"></div>
-      </div>
-    </div>
-    <div class="onb-form-panel">
-      <h2>Ihre Daten</h2>
-      <div class="field-row">
-        <div><span class="field-label">Name</span><input type="text" id="onbName" placeholder="Vor- und Nachname"></div>
-        <div><span class="field-label">Unternehmen</span><input type="text" id="onbCompany" placeholder="Firmenname"></div>
-      </div>
-      <button class="onb-btn" id="startBtn" disabled onclick="startApp()">Lernpfad starten</button>
-    </div>
-  </div>
-</div>
 
 <!-- APP SHELL -->
 <div id="app">
@@ -1817,7 +1798,6 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
           <button class="btn btn-outline" style="width:100%" onclick="manualSaveProgress()">Fortschritt jetzt speichern</button>
           <p class="autosave-note">Ihr Lernfortschritt wird automatisch laufend gespeichert.</p>
           <div class="profile-menu-footer-row">
-            <button class="profile-logout" onclick="logoutProfile()">Abmelden</button>
             <button class="profile-reset" onclick="resetProgress()">Fortschritt zurücksetzen</button>
           </div>
         </div>
@@ -2472,12 +2452,6 @@ const MODULES = [
   }
 ];
 
-(function(){
-  const ic = d => `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
-  document.getElementById('onbRoadmapPreview').innerHTML = `
-    <div class="onb-perk">${ic('<rect x="3" y="4" width="18" height="14" rx="2"/><path d="m10 8 5 3-5 3z"/><path d="M8 21h8"/>')}<div><strong>Praxisnah lernen</strong><span>Video und Erklärungen – direkt in der OrKan Cloud ausprobieren</span></div></div>
-    <div class="onb-perk">${ic('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>')}<div><strong>Jederzeit nachschlagen</strong><span>Wissensdatenbank und Best Practices mit Schritt-für-Schritt-Anleitungen</span></div></div>`;
-})();
 
 const KB_ARTICLES = [
   {mod:1,title:"OrKan Cloud im Browser öffnen",desc:"Kein Programm, keine Installation – so kommen Sie schnell hinein.",path:"Browser öffnen → cloud.orkan-system.de",body:["Die OrKan Cloud ist webbasiert: Es muss weder ein Programm noch eine App installiert werden.", "Tipp: Legen Sie die Seite in Ihrer Favoritenleiste ab – so sind Sie mit einem Klick in der OrKan Cloud."]},
@@ -2663,22 +2637,28 @@ let state = {
 MODULES.forEach(m=>{ if(!state.moduleProgress[m.id]) state.moduleProgress[m.id]={started:false,completed:false,quizScore:null,checklist:[]}; });
 const __initialState = JSON.parse(JSON.stringify(state));
 /* ============ ONBOARDING ============ */
-function checkStart(){
-  const name = document.getElementById('onbName').value.trim();
-  document.getElementById('startBtn').disabled = !name;
-}
-document.addEventListener('input', e=>{ if(e.target.id==='onbName'||e.target.id==='onbCompany') checkStart(); });
 
+// Kein Anmeldefenster: Die Plattform startet direkt; Name und Unternehmen trägt man im Profil oder beim Zertifikat ein
 function startApp(){
-  state.name = document.getElementById('onbName').value.trim() || 'Nutzer';
-  state.company = document.getElementById('onbCompany').value.trim() || 'Ihr Unternehmen';
-  document.getElementById('onboarding').style.display='none';
-  document.getElementById('app').style.display='flex';
   initializeApp();
   saveState();
 }
+const AVATAR_ICON='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>';
+function escHtml(t){ return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function avatarHtml(){ return state.name ? escHtml(state.name.charAt(0).toUpperCase()) : AVATAR_ICON; }
+function displayName(){ return state.name ? escHtml(state.name) : 'Ihr Name'; }
+function displayCompany(){ return state.company ? escHtml(state.company) : 'Ihr Unternehmen'; }
+function refreshNameEverywhere(){
+  document.getElementById('hdrAvatar').innerHTML = avatarHtml();
+  document.getElementById('profileMenuAvatar').innerHTML = avatarHtml();
+  document.getElementById('profileMenuName').textContent = state.name || 'Name noch nicht eingetragen';
+  document.getElementById('profileMenuRole').textContent = state.company || 'Bitte unten Name und Unternehmen eintragen';
+  document.querySelectorAll('.cert-name').forEach(e=>e.innerHTML=displayName());
+  document.querySelectorAll('.cert-company').forEach(e=>e.innerHTML=displayCompany());
+  document.querySelectorAll('.w-cert-mini b').forEach(e=>e.innerHTML=displayName());
+  const h=document.querySelector('#view-dashboard h1.page-title'); if(h) h.textContent = state.name ? `Guten Tag, ${state.name}.` : 'Herzlich willkommen.';
+}
 function initializeApp(){
-  document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
   refreshProfileMenu();
   buildModuleSubNav();
   renderDashboard();
@@ -2721,7 +2701,7 @@ function loadState(){
     const saved = JSON.parse(raw);
     Object.assign(state, saved);
     MODULES.forEach(m=>{ if(!state.moduleProgress[m.id]) state.moduleProgress[m.id] = {started:false,completed:false,quizScore:null,checklist:[]}; });
-    return !!state.name;
+    return true;
   }catch(e){ return false; }
 }
 function manualSaveProgress(){
@@ -2733,11 +2713,8 @@ let __autosaveInterval = null;
 let __resetting = false;
 function __visibilitySave(){ if(document.hidden && !__resetting) saveState(); }
 function bootApp(){
-  if(loadState()){
-    document.getElementById('onboarding').style.display='none';
-    document.getElementById('app').style.display='flex';
-    initializeApp();
-  }
+  if(loadState()) initializeApp();
+  else { window.__firstVisit = true; startApp(); }
   window.addEventListener('beforeunload', saveState);
   window.addEventListener('pagehide', saveState);
   document.addEventListener('visibilitychange', __visibilitySave);
@@ -2763,11 +2740,7 @@ function confirmResetProgress(){
   state.dashboardPrefs = null;
   document.getElementById('resetConfirmModal').classList.remove('open');
   document.getElementById('profileMenu').classList.remove('open');
-  ['onbName','onbCompany','onbTeamCode'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  document.querySelectorAll('.role-card.selected,.team-mode-btn.selected').forEach(el=>el.classList.remove('selected'));
-  const sb=document.getElementById('startBtn'); if(sb){ sb.disabled=true; sb.textContent='Lernpfad starten'; }
-  document.getElementById('app').style.display='none';
-  document.getElementById('onboarding').style.display='flex';
+  initializeApp(); showView('dashboard');
   const ms=document.querySelector('.main-scroll'); if(ms) ms.scrollTop=0;
   __resetting = false;
   __autosaveInterval = setInterval(saveState, 3000);
@@ -2878,11 +2851,11 @@ function renderDashboard(){
     <section class="hero hero-first">
       <div class="hero-main">
         
-        <h1 class="page-title" data-eyebrow="Ihr Überblick">Guten Tag, ${state.name}.</h1>
+        <h1 class="page-title" data-eyebrow="Ihr Überblick">${state.name?`Guten Tag, ${escHtml(state.name)}.`:'Herzlich willkommen.'}</h1>
         <p class="page-sub">Hier ist Ihr Onboarding-Überblick.</p>
         <div class="status-overview-text">
           <strong>Willkommen auf der OrKan-Cloud-Trainingsplattform</strong>
-          <p>Sie durchlaufen ${MODULES.length} Module in zwei Bereichen (Grundlagen Onboarding → Expertenwissen) — insgesamt rund ${MODULES.reduce((s,m)=>s+parseInt(m.time),0)} Minuten. Bereits nach den Grundlagen (Module 1–6) erhalten Sie Ihr Zertifikat inkl. Rabattcode.</p>
+          <p>Sie durchlaufen ${MODULES.length} Module in zwei Bereichen (Grundlagen Onboarding → Expertenwissen) — insgesamt rund ${MODULES.reduce((s,m)=>s+parseInt(m.time),0)} Minuten. Bereits nach den Grundlagen (Module 1–6) erhalten Sie Ihr Zertifikat.</p>
         </div>
         <button class="status-overview-btn" onclick="openModule(${MODULES[0].id})">Jetzt starten</button>
       </div>
@@ -2892,7 +2865,7 @@ function renderDashboard(){
     <section class="hero">
       <div class="hero-main">
         
-        <h1 class="page-title" data-eyebrow="Ihr Überblick">Guten Tag, ${state.name}.</h1>
+        <h1 class="page-title" data-eyebrow="Ihr Überblick">${state.name?`Guten Tag, ${escHtml(state.name)}.`:'Herzlich willkommen.'}</h1>
         <p class="page-sub">Hier ist Ihr Onboarding-Überblick.</p>
         <div class="status-overview-grid">
           <div><span class="status-label">Aktueller Bereich</span><span class="status-value">${phaseNames[phase]}${phase===3?' (Zertifikat erreicht)':''}</span></div>
@@ -2923,7 +2896,7 @@ const DASHBOARD_WIDGETS = {
   phases: { title:'Onboarding-Phasen', render: () => { const g1=MODULE_GROUPS[0].ids, g2=MODULE_GROUPS[1].ids; const done1=g1.filter(i=>state.moduleProgress[i]?.completed).length, done2=g2.filter(i=>state.moduleProgress[i]?.completed).length; const cert=certUnlocked(); return `
     <div class="phases-row">
       <div class="phase-step active ${cert?'unlocked':''}"><div class="phase-num">1</div><div class="phase-title">Grundlagen Onboarding</div><div class="phase-desc">Module ${g1[0]}–${g1[g1.length-1]} · ${done1}/${g1.length} erledigt</div></div>
-      <div class="phase-step ${cert?'active unlocked':''}"><div class="phase-num">2</div><div class="phase-title">Zertifikat</div><div class="phase-desc">${cert?'Freigeschaltet – inkl. Rabattcode':'Nach Abschluss der Grundlagen'}</div></div>
+      <div class="phase-step ${cert?'active unlocked':''}"><div class="phase-num">2</div><div class="phase-title">Zertifikat</div><div class="phase-desc">${cert?'Freigeschaltet':'Nach Abschluss der Grundlagen'}</div></div>
       <div class="phase-step ${cert?'active':''} ${done2>=g2.length?'unlocked':''}"><div class="phase-num">3</div><div class="phase-title">Expertenwissen</div><div class="phase-desc">Module ${g2[0]}–${g2[g2.length-1]} · ${done2}/${g2.length} erledigt</div></div>
     </div>`; } },
 };
@@ -2974,7 +2947,7 @@ Object.assign(DASHBOARD_WIDGETS, {
   } },
   nextstep: { title:'Ihr nächster Schritt', render: () => {
     const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
-    if(!next) return `<div class="w-next done"><div><strong>Alle Module abgeschlossen!</strong><p>Ihr Zertifikat inklusive Rabattcode ist freigeschaltet.</p></div><button class="btn btn-primary" onclick="showView('cert')">Zum Zertifikat</button></div>`;
+    if(!next) return `<div class="w-next done"><div><strong>Alle Module abgeschlossen!</strong><p>Ihr Zertifikat ist freigeschaltet.</p></div><button class="btn btn-primary" onclick="showView('cert')">Zum Zertifikat</button></div>`;
     const p=state.moduleProgress[next.id];
     return `<div class="w-next"><span class="w-next-num">${String(next.id).padStart(2,'0')}</span><div class="w-next-body"><strong>${next.title}</strong><p>${next.time} · ${next.points.filter(x=>!x.startsWith("## ")).length} Lerninhalte</p></div><button class="btn btn-primary" onclick="openModule(${next.id})">${p.started?'Fortsetzen':'Starten'} →</button></div>`;
   } },
@@ -2991,7 +2964,7 @@ Object.assign(DASHBOARD_WIDGETS, {
   } },
   certcount: { title:'Auf dem Weg zum Zertifikat', render: () => {
     const left = MODULES.length-completedCount();
-    return `<div class="w-cert"><div class="w-cert-mini ${left?'locked':''}"><span>Zertifikat</span><b>${state.name}</b><i></i><i></i></div><div class="w-cert-body">${left?`<strong>Noch ${left} ${left===1?'Modul':'Module'}</strong><p>bis zu Ihrem persönlichen Zertifikat inklusive Rabattcode für den OrKan Shop.</p>`:`<strong>Geschafft!</strong><p>Ihr Zertifikat und Ihr Rabattcode sind freigeschaltet.</p>`}<div class="w-cert-track">${MODULES.map(m=>`<i class="${state.moduleProgress[m.id].completed?'on':''}"></i>`).join('')}</div><button class="btn btn-outline" onclick="showView('cert')">${left?'Vorschau ansehen':'Zum Zertifikat'}</button></div></div>`;
+    return `<div class="w-cert"><div class="w-cert-mini ${left?'locked':''}"><span>Zertifikat</span><b>${displayName()}</b><i></i><i></i></div><div class="w-cert-body">${left?`<strong>Noch ${left} ${left===1?'Modul':'Module'}</strong><p>bis zu Ihrem persönlichen Zertifikat.</p>`:`<strong>Geschafft!</strong><p>Ihr Zertifikat ist freigeschaltet.</p>`}<div class="w-cert-track">${MODULES.map(m=>`<i class="${state.moduleProgress[m.id].completed?'on':''}"></i>`).join('')}</div><button class="btn btn-outline" onclick="showView('cert')">${left?'Vorschau ansehen':'Zum Zertifikat'}</button></div></div>`;
   } },
   recent: { title:'Zuletzt angesehen', render: () => {
     const r=(state.recent||[]).slice(0,3);
@@ -3101,7 +3074,7 @@ function renderRoadmap(){
       <div class="milestone-dot">${p.completed?'✓':String(m.id).padStart(2,'0')}</div>
       <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${m.time} · ${groupOf(m.id).title}${MODULE_VIDEOS[m.id]&&!p.completed&&watchPct(m.id)>0?` · Video ${watchPct(m.id)} % angesehen`:''}</div><ul class="milestone-gist">${(m.gist||[]).map(g=>`<li>${g}</li>`).join('')}</ul></div>
       ${i<MODULES.length-1?`<div><span class="ai-hint">Hinweis: ${nextStepHint(m.id)}</span></div>`:''}
-    </div>`+(m.id===MODULE_GROUPS[0].ids[MODULE_GROUPS[0].ids.length-1]?`<div class="milestone ${certUnlocked()?'done':''}"><div class="milestone-dot">${certUnlocked()?'✓':'✦'}</div><div class="milestone-card"><h4>Abschlusszertifikat</h4><div class="milestone-meta">Nach Abschluss der Grundlagen (Module 1–6)</div><p>Erhalten Sie Ihr offizielles Onboarding-Zertifikat inklusive Rabattcode.</p></div></div>`:'');
+    </div>`+(m.id===MODULE_GROUPS[0].ids[MODULE_GROUPS[0].ids.length-1]?`<div class="milestone ${certUnlocked()?'done':''}"><div class="milestone-dot">${certUnlocked()?'✓':'✦'}</div><div class="milestone-card"><h4>Abschlusszertifikat</h4><div class="milestone-meta">Nach Abschluss der Grundlagen (Module 1–6)</div><p>Erhalten Sie Ihr offizielles Onboarding-Zertifikat.</p></div></div>`:'');
   }).join('');
 
   document.getElementById('view-roadmap').innerHTML = `
@@ -3573,7 +3546,7 @@ function renderCert(){
     document.getElementById('view-cert').innerHTML = `
       <h1 class="page-title" data-eyebrow="Ihr Abschluss">Zertifikate</h1>
       <p class="page-sub">So sieht Ihr Zertifikat aus, sobald Sie die Grundlagen des Onboardings (Module 1–6) abgeschlossen haben.</p>
-      <div class="cert-gate"><h3>Noch nicht verfügbar</h3><p>Schließen Sie die ${certTotal()} Grundlagen-Module ab, um Ihr Zertifikat freizuschalten — inklusive Rabattcode* für den OrKan Shop.</p><p class="cert-discount-note">* Pro Unternehmen gibt es nur einen Rabattcode – er ist einmalig einlösbar, auch wenn mehrere Mitarbeiter das Zertifikat erwerben.</p>
+      <div class="cert-gate"><h3>Noch nicht verfügbar</h3><p>Schließen Sie die ${certTotal()} Grundlagen-Module ab, um Ihr Zertifikat freizuschalten.</p>
       <div class="gate-track"><div class="gate-fill" style="width:${Math.round(certDoneCount()/certTotal()*100)}%"></div></div>
       <p style="margin-bottom:0">${done}/${certTotal()} Grundlagen-Module abgeschlossen</p></div>
       <div class="cert-preview-wrap cert-preview-locked">
@@ -3582,27 +3555,29 @@ function renderCert(){
           <div class="cert-preview-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
           <strong>Noch gesperrt</strong>
         </div>
+        <div class="cert-personal"><div class="cert-personal-head"><strong>Zertifikat personalisieren</strong><span>Ihr Name und Ihr Unternehmen erscheinen auf dem Zertifikat.</span></div><label><span>Name</span><input type="text" id="certNameInput" class="profile-input" placeholder="Vor- und Nachname" value="${escHtml(state.name)}" oninput="certPersonalInput()"></label><label><span>Unternehmen</span><input type="text" id="certCompanyInput" class="profile-input" placeholder="Firmenname" value="${escHtml(state.company)}" oninput="certPersonalInput()"></label></div>
         <div class="certificate" id="certPreview">
         <div class="cert-logo"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjMwMSA1NSAxMTIgNDgiIHdpZHRoPSIxMTIiIGhlaWdodD0iNDgiPjxwYXRoIGZpbGw9IiNBOENDNjgiIGQ9Ik0gMzM5LjQ1MzEyNSAxMDEuNDcyNjU2IEMgMzQwLjA3ODEyNSAxMDEuNDcyNjU2IDM0MC42NDA2MjUgMTAxLjM3NSAzNDEuMTQ4NDM4IDEwMS4xODc1IEMgMzQxLjY1NjI1IDEwMC45OTYwOTQgMzQyLjA2NjQwNiAxMDAuNzIyNjU2IDM0Mi4zODI4MTIgMTAwLjM3MTA5NCBDIDM0Mi42OTkyMTkgMTAwLjAxNTYyNSAzNDIuODgyODEyIDk5LjU5Mzc1IDM0Mi45Mjk2ODggOTkuMTAxNTYyIEMgMzQzLjAxMTcxOSA5OC4zOTQ1MzEgMzQyLjg1OTM3NSA5Ny44MTI1IDM0Mi40Njg3NSA5Ny4zNTU0NjkgQyAzNDIuMDc4MTI1IDk2LjkwMjM0NCAzNDEuNDIxODc1IDk2LjQ5MjE4OCAzNDAuNSA5Ni4xMjg5MDYgQyAzMzkuNzkyOTY5IDk1Ljg0NzY1NiAzMzkuMjkyOTY5IDk1LjU3MDMxMiAzMzkgOTUuMjg1MTU2IEMgMzM4LjcwNzAzMSA5NSAzMzguNTgyMDMxIDk0LjYzNjcxOSAzMzguNjI4OTA2IDk0LjE4NzUgQyAzMzguNjYwMTU2IDkzLjkyOTY4OCAzMzguNzYxNzE5IDkzLjY5NTMxMiAzMzguOTM3NSA5My40OTIxODggQyAzMzkuMTEzMjgxIDkzLjI4NTE1NiAzMzkuMzU1NDY5IDkzLjEyNSAzMzkuNjY0MDYyIDkzLjAxMTcxOSBDIDMzOS45Njg3NSA5Mi44OTQ1MzEgMzQwLjMzMjAzMSA5Mi44MzU5MzggMzQwLjc1IDkyLjgzNTkzOCBDIDM0MS4zMDg1OTQgOTIuODM1OTM4IDM0MS43OTI5NjkgOTIuOTQ1MzEyIDM0Mi4xOTUzMTIgOTMuMTY0MDYyIEMgMzQyLjYwMTU2MiA5My4zODI4MTIgMzQyLjkxMDE1NiA5My42NTYyNSAzNDMuMTIxMDk0IDkzLjk4MDQ2OSBMIDM0My44NDc2NTYgOTMuMjgxMjUgQyAzNDMuNTYyNSA5Mi44NzUgMzQzLjE2MDE1NiA5Mi41NTA3ODEgMzQyLjY0ODQzOCA5Mi4zMTI1IEMgMzQyLjEzNjcxOSA5Mi4wNzQyMTkgMzQxLjUxOTUzMSA5MS45NTcwMzEgMzQwLjc5Mjk2OSA5MS45NTcwMzEgQyAzNDAuMTc5Njg4IDkxLjk1NzAzMSAzMzkuNjM2NzE5IDkyLjA1MDc4MSAzMzkuMTYwMTU2IDkyLjIzNDM3NSBDIDMzOC42ODc1IDkyLjQyMTg3NSAzMzguMzEyNSA5Mi42NzU3ODEgMzM4LjA0Mjk2OSA5My4wMDM5MDYgQyAzMzcuNzczNDM4IDkzLjMyODEyNSAzMzcuNjEzMjgxIDkzLjcwNzAzMSAzMzcuNTU0Njg4IDk0LjEzMjgxMiBDIDMzNy41IDk0LjU5NzY1NiAzMzcuNTUwNzgxIDk1LjAwMzkwNiAzMzcuNzEwOTM4IDk1LjM0NzY1NiBDIDMzNy44NjcxODggOTUuNjkxNDA2IDMzOC4xMTcxODggOTUuOTg4MjgxIDMzOC40NjA5MzggOTYuMjM4MjgxIEMgMzM4LjgwODU5NCA5Ni40OTIxODggMzM5LjI2OTUzMSA5Ni43MzQzNzUgMzM5Ljg0Mzc1IDk2Ljk2NDg0NCBDIDM0MC4zNjMyODEgOTcuMTcxODc1IDM0MC43NzM0MzggOTcuMzY3MTg4IDM0MS4wNjY0MDYgOTcuNTUwNzgxIEMgMzQxLjM1OTM3NSA5Ny43MzgyODEgMzQxLjU3MDMxMiA5Ny45NDkyMTkgMzQxLjY5OTIxOSA5OC4xODc1IEMgMzQxLjgzMjAzMSA5OC40MjE4NzUgMzQxLjg4MjgxMiA5OC43MTA5MzggMzQxLjg1MTU2MiA5OS4wNDY4NzUgQyAzNDEuODE2NDA2IDk5LjUwNzgxMiAzNDEuNTg5ODQ0IDk5Ljg3ODkwNiAzNDEuMTc1NzgxIDEwMC4xNTIzNDQgQyAzNDAuNzYxNzE5IDEwMC40Mjk2ODggMzQwLjI0MjE4OCAxMDAuNTY2NDA2IDMzOS42MjEwOTQgMTAwLjU2NjQwNiBDIDMzOS4wNDI5NjkgMTAwLjU2NjQwNiAzMzguNTE5NTMxIDEwMC40NDE0MDYgMzM4LjA1MDc4MSAxMDAuMTg3NSBDIDMzNy41ODIwMzEgOTkuOTM3NSAzMzcuMjA3MDMxIDk5LjYwOTM3NSAzMzYuOTI5Njg4IDk5LjE5OTIxOSBMIDMzNi4yMTg3NSA5OS45NTMxMjUgQyAzMzYuNTIzNDM4IDEwMC4zOTA2MjUgMzM2Ljk2MDkzOCAxMDAuNzUzOTA2IDMzNy41MjczNDQgMTAxLjAzOTA2MiBDIDMzOC4wOTM3NSAxMDEuMzI4MTI1IDMzOC43MzgyODEgMTAxLjQ3MjY1NiAzMzkuNDUzMTI1IDEwMS40NzI2NTYgTSAzNTAuODEyNSAxMDEuMzA0Njg4IEwgMzUyLjE5NTMxMiAxMDEuMzA0Njg4IEwgMzUyLjkyMTg3NSA5Ny42NDg0MzggTCAzNTcuMTkxNDA2IDkyLjEwOTM3NSBMIDM1NS41NDI5NjkgOTIuMTA5Mzc1IEwgMzUzLjU3ODEyNSA5NC44MTY0MDYgTCAzNTIuMzkwNjI1IDk2Ljc5Njg3NSBMIDM1Mi4zNDc2NTYgOTYuNzk2ODc1IEwgMzUxLjg3NSA5NC44MTY0MDYgTCAzNTAuOTE0MDYyIDkyLjEwOTM3NSBMIDM0OS40MDYyNSA5Mi4xMDkzNzUgTCAzNTEuNTExNzE5IDk3LjY2NDA2MiBaIE0gMzY0LjA0Njg3NSAxMDEuNDU3MDMxIEMgMzY0LjY5NTMxMiAxMDEuNDU3MDMxIDM2NS4yODUxNTYgMTAxLjM3MTA5NCAzNjUuODA4NTk0IDEwMS4xOTkyMTkgQyAzNjYuMzM1OTM4IDEwMS4wMjczNDQgMzY2Ljc2NTYyNSAxMDAuNzczNDM4IDM2Ny4xMDE1NjIgMTAwLjQzMzU5NCBDIDM2Ny40MzM1OTQgMTAwLjA5Mzc1IDM2Ny42NDg0MzggOTkuNjkxNDA2IDM2Ny43NDIxODggOTkuMjI2NTYyIEMgMzY3Ljg5MDYyNSA5OC40NDUzMTIgMzY3Ljc3NzM0NCA5Ny43OTY4NzUgMzY3LjQwNjI1IDk3LjI4MTI1IEMgMzY3LjAzNTE1NiA5Ni43NjE3MTkgMzY2LjM0Mzc1IDk2LjMwODU5NCAzNjUuMzI4MTI1IDk1LjkxNzk2OSBDIDM2NC42MTMyODEgOTUuNjQ4NDM4IDM2NC4xMjUgOTUuMzc4OTA2IDM2My44NzEwOTQgOTUuMTA5Mzc1IEMgMzYzLjYxMzI4MSA5NC44Mzk4NDQgMzYzLjUzNTE1NiA5NC41MDM5MDYgMzYzLjYyNSA5NC4xMDU0NjkgQyAzNjMuNjY0MDYyIDkzLjkxNzk2OSAzNjMuNzU3ODEyIDkzLjc1NzgxMiAzNjMuOTA2MjUgOTMuNjI1IEMgMzY0LjA1NDY4OCA5My40ODgyODEgMzY0LjI0NjA5NCA5My4zODY3MTkgMzY0LjQ4NDM3NSA5My4zMDg1OTQgQyAzNjQuNzIyNjU2IDkzLjIzNDM3NSAzNjQuOTk2MDk0IDkzLjE5OTIxOSAzNjUuMzE2NDA2IDkzLjE5OTIxOSBDIDM2NS44MzU5MzggOTMuMTk5MjE5IDM2Ni4yODUxNTYgOTMuMzA4NTk0IDM2Ni42Njc5NjkgOTMuNTM1MTU2IEMgMzY3LjA1MDc4MSA5My43NTc4MTIgMzY3LjM0NzY1NiA5NC4wNTA3ODEgMzY3LjU2MjUgOTQuNDE0MDYyIEwgMzY4LjcwNzAzMSA5My4zNzg5MDYgQyAzNjguMzcxMDk0IDkyLjkwNjI1IDM2Ny45Mjk2ODggOTIuNTM5MDYyIDM2Ny4zNzg5MDYgOTIuMjg1MTU2IEMgMzY2LjgzMjAzMSA5Mi4wMjczNDQgMzY2LjE1NjI1IDkxLjg5ODQzOCAzNjUuMzU1NDY5IDkxLjg5ODQzOCBDIDM2NC43NDIxODggOTEuODk4NDM4IDM2NC4xOTUzMTIgOTEuOTg4MjgxIDM2My43MTg3NSA5Mi4xNjc5NjkgQyAzNjMuMjM4MjgxIDkyLjM0Mzc1IDM2Mi44NDc2NTYgOTIuNTg1OTM4IDM2Mi41NTA3ODEgOTIuODk4NDM4IEMgMzYyLjI1MzkwNiA5My4yMTA5MzggMzYyLjA1ODU5NCA5My41NzQyMTkgMzYxLjk2NDg0NCA5My45OTYwOTQgQyAzNjEuODYzMjgxIDk0LjQ3NjU2MiAzNjEuODc4OTA2IDk0LjkxNzk2OSAzNjIuMDE1NjI1IDk1LjMyMDMxMiBDIDM2Mi4xNDg0MzggOTUuNzE4NzUgMzYyLjQwNjI1IDk2LjA3NDIxOSAzNjIuNzgxMjUgOTYuMzc4OTA2IEMgMzYzLjE2MDE1NiA5Ni42ODc1IDM2My42NTYyNSA5Ni45NTcwMzEgMzY0LjI2OTUzMSA5Ny4xODc1IEMgMzY0Ljc5Njg3NSA5Ny4zODY3MTkgMzY1LjIwMzEyNSA5Ny41NzQyMTkgMzY1LjQ4ODI4MSA5Ny43NTM5MDYgQyAzNjUuNzczNDM4IDk3LjkzMzU5NCAzNjUuOTU3MDMxIDk4LjEyODkwNiAzNjYuMDM5MDYyIDk4LjMzMjAzMSBDIDM2Ni4xMjUgOTguNTM5MDYyIDM2Ni4xNDQ1MzEgOTguNzY1NjI1IDM2Ni4wOTc2NTYgOTkuMDE1NjI1IEMgMzY2LjAzMTI1IDk5LjM5MDYyNSAzNjUuODM5ODQ0IDk5LjY3MTg3NSAzNjUuNTE1NjI1IDk5Ljg2MzI4MSBDIDM2NS4xOTUzMTIgMTAwLjA1MDc4MSAzNjQuODA0Njg4IDEwMC4xNDg0MzggMzY0LjMzNTkzOCAxMDAuMTQ4NDM4IEMgMzYzLjc0MjE4OCAxMDAuMTQ4NDM4IDM2My4yMjI2NTYgMTAwLjAxNTYyNSAzNjIuNzczNDM4IDk5Ljc1IEMgMzYyLjMyODEyNSA5OS40ODQzNzUgMzYxLjk2MDkzOCA5OS4xMTcxODggMzYxLjY3MTg3NSA5OC42NTYyNSBMIDM2MC41ODU5MzggOTkuNzU3ODEyIEMgMzYwLjkwMjM0NCAxMDAuMjUgMzYxLjM2MzI4MSAxMDAuNjU2MjUgMzYxLjk3MjY1NiAxMDAuOTc2NTYyIEMgMzYyLjU4MjAzMSAxMDEuMjk2ODc1IDM2My4yNzM0MzggMTAxLjQ1NzAzMSAzNjQuMDQ2ODc1IDEwMS40NTcwMzEgTSAzNzUuMjEwOTM4IDEwMS4zMDQ2ODggTCAzNzcuMTQ4NDM4IDEwMS4zMDQ2ODggTCAzNzguNjQwNjI1IDkzLjY2MDE1NiBMIDM4MS4wODU5MzggOTMuNjYwMTU2IEwgMzgxLjQwNjI1IDkyLjA2NjQwNiBMIDM3NC41MTE3MTkgOTIuMDY2NDA2IEwgMzc0LjIwNzAzMSA5My42NjAxNTYgTCAzNzYuNjc1NzgxIDkzLjY2MDE1NiBaIE0gMzg1LjY0NDUzMSAxMDEuMzA0Njg4IEwgMzkyLjM1NTQ2OSAxMDEuMzA0Njg4IEwgMzkyLjcxODc1IDk5LjQ2NDg0NCBMIDM4OC4yNTM5MDYgOTkuNDY0ODQ0IEwgMzg4LjY1NjI1IDk3LjM4NjcxOSBMIDM5MS42ODM1OTQgOTcuMzg2NzE5IEwgMzkyLjAxOTUzMSA5NS43MTA5MzggTCAzODguOTgwNDY5IDk1LjcxMDkzOCBMIDM4OS4zNTU0NjkgOTMuNzk2ODc1IEwgMzkzLjY0MDYyNSA5My43OTY4NzUgTCAzOTMuOTcyNjU2IDkyLjA1NDY4OCBMIDM4Ny40NDUzMTIgOTIuMDU0Njg4IFogTSAzOTguNTc0MjE5IDEwMS4zMDQ2ODggTCA0MDEuMTgzNTk0IDEwMS4zMDQ2ODggTCA0MDEuODk0NTMxIDk3LjY3NTc4MSBMIDQwMi40MTQwNjIgOTMuNTg5ODQ0IEwgNDAyLjU5Mzc1IDkzLjU4OTg0NCBMIDQwMi44MzIwMzEgOTYuNjQ0NTMxIEwgNDAzLjQwMjM0NCAxMDEuMzA0Njg4IEwgNDA1LjU3ODEyNSAxMDEuMzA0Njg4IEwgNDA3Ljk4MDQ2OSA5Ni42NDQ1MzEgTCA0MDkuMzQ3NjU2IDkzLjU4OTg0NCBMIDQwOS41NDI5NjkgOTMuNTg5ODQ0IEwgNDA4LjUzOTA2MiA5Ny42NzU3ODEgTCA0MDcuODEyNSAxMDEuMzA0Njg4IEwgNDEwLjQyMTg3NSAxMDEuMzA0Njg4IEwgNDEyLjIyMjY1NiA5Mi4wMjczNDQgTCA0MDguMDQ2ODc1IDkyLjAyNzM0NCBMIDQwNS44OTg0MzggOTYuNjI4OTA2IEwgNDA1LjA4OTg0NCA5OC45NDkyMTkgTCA0MDQuOTgwNDY5IDk4Ljk0OTIxOSBMIDQwNS4wNDY4NzUgOTYuNjI4OTA2IEwgNDA0LjYyODkwNiA5Mi4wMjczNDQgTCA0MDAuMzc1IDkyLjAyNzM0NCBaIE0gMzk4LjU3NDIxOSAxMDEuMzA0Njg4ICIvPjxwYXRoIGZpbGw9IiMzRjQ2NEEiIGQ9Ik0gMzE0LjkyMTg3NSA1Ni40NDE0MDYgQyAzMTguMDQ2ODc1IDU2LjQ0MTQwNiAzMjAuNDE3OTY5IDU3LjQzNzUgMzIyLjAyNzM0NCA1OS40MjE4NzUgQyAzMjMuNjY3OTY5IDYxLjQwNjI1IDMyNC4yNSA2NC4wMzUxNTYgMzIzLjc3NzM0NCA2Ny4zMDg1OTQgTCAzMjIuNzczNDM4IDc0LjUzMTI1IEMgMzIyLjMwMDc4MSA3Ny44MzIwMzEgMzIxLjA2MjUgODAuNDI1NzgxIDMxOS4wNTA3ODEgODIuMzA4NTk0IEMgMzE3LjA0Mjk2OSA4NC4xNzE4NzUgMzE0LjUzNTE1NiA4NS4xMDE1NjIgMzExLjUzNTE1NiA4NS4xMDE1NjIgQyAzMDguNDEwMTU2IDg1LjEwMTU2MiAzMDYuMDI3MzQ0IDg0LjEyMTA5NCAzMDQuMzg2NzE5IDgyLjE2MDE1NiBDIDMwMi43NzM0MzggODAuMTQ4NDM4IDMwMi4yMDMxMjUgNzcuNTA3ODEyIDMwMi42NzU3ODEgNzQuMjM0Mzc1IEwgMzAzLjY3OTY4OCA2Ny4wMTE3MTkgQyAzMDQuMTUyMzQ0IDYzLjczODI4MSAzMDUuMzk0NTMxIDYxLjE1NjI1IDMwNy40MDIzNDQgNTkuMjY5NTMxIEMgMzA5LjM4NjcxOSA1Ny4zODY3MTkgMzExLjg5NDUzMSA1Ni40NDE0MDYgMzE0LjkyMTg3NSA1Ni40NDE0MDYgTSAzMTQuNTQ2ODc1IDYxLjgwMDc4MSBDIDMxMy4yNTc4MTIgNjEuODAwNzgxIDMxMi4xODc1IDYyLjIzMDQ2OSAzMTEuMzI4MTI1IDYzLjA4NTkzOCBDIDMxMC40NzI2NTYgNjMuOTQxNDA2IDMwOS45NDUzMTIgNjUuMTEzMjgxIDMwOS43NDYwOTQgNjYuNjA1NDY5IEwgMzA4LjU1ODU5NCA3NC45Mzc1IEMgMzA4LjM1OTM3NSA3Ni4zNzg5MDYgMzA4LjU2MjUgNzcuNTM5MDYyIDMwOS4xNzE4NzUgNzguNDIxODc1IEMgMzA5Ljc3NzM0NCA3OS4zMDA3ODEgMzEwLjY5MTQwNiA3OS43NDIxODggMzExLjkwNjI1IDc5Ljc0MjE4OCBDIDMxMy4xOTUzMTIgNzkuNzQyMTg4IDMxNC4yNjk1MzEgNzkuMzEyNSAzMTUuMTI1IDc4LjQ1NzAzMSBDIDMxNS45ODA0NjkgNzcuNjAxNTYyIDMxNi41MDc4MTIgNzYuNDI5Njg4IDMxNi43MDcwMzEgNzQuOTM3NSBMIDMxNy44NTkzNzUgNjYuNjA1NDY5IEMgMzE4LjA1ODU5NCA2NS4xNjQwNjIgMzE3Ljg1OTM3NSA2NC4wMDM5MDYgMzE3LjI2NTYyNSA2My4xMjUgQyAzMTYuNjcxODc1IDYyLjI0MjE4OCAzMTUuNzY1NjI1IDYxLjgwMDc4MSAzMTQuNTQ2ODc1IDYxLjgwMDc4MSAiLz48cGF0aCBmaWxsPSIjM0Y0NjRBIiBkPSJNIDMzNy42ODM1OTQgNjUuMzAwNzgxIEwgMzM2Ljk3NjU2MiA3MC42MjEwOTQgQyAzMzUuNDM3NSA3MC42NzE4NzUgMzM0IDcxLjE3OTY4OCAzMzIuNjYwMTU2IDcyLjE0ODQzOCBMIDMzMC43MjY1NjIgODQuNjkxNDA2IEwgMzI1LjIxODc1IDg0LjY5MTQwNiBMIDMyNy45MzM1OTQgNjUuNDQ5MjE5IEwgMzMzLjEwOTM3NSA2NS40NDkyMTkgTCAzMzIuODA4NTk0IDY3LjIzNDM3NSBDIDMzMy45NzY1NjIgNjUuOTcyNjU2IDMzNS42MDE1NjIgNjUuMzI0MjE5IDMzNy42ODM1OTQgNjUuMzAwNzgxICIvPjxwYXRoIGZpbGw9IiMzRjQ2NEEiIGQ9Ik0gMzYxLjQ5MjE4OCA1Ni44NTE1NjIgTCAzNTMuMDgyMDMxIDcxLjA3MDMxMiBMIDM1Ny41ODIwMzEgODQuNjkxNDA2IEwgMzUxLjU1NDY4OCA4NC42OTE0MDYgTCAzNDcuODMyMDMxIDczLjg1OTM3NSBMIDM0Ni4xNTYyNSA3My44NTkzNzUgTCAzNDQuNjMyODEyIDg0LjY5MTQwNiBMIDMzOC43NSA4NC42OTE0MDYgTCAzNDIuNjk1MzEyIDU2Ljg1MTU2MiBMIDM0OC41MzkwNjIgNTYuODUxNTYyIEwgMzQ2LjkwMjM0NCA2OC41MzkwNjIgTCAzNDguMTY3OTY5IDY4LjUzOTA2MiBMIDM1NS4wODk4NDQgNTYuODUxNTYyIFogTSAzNjEuNDkyMTg4IDU2Ljg1MTU2MiAiLz48cGF0aCBmaWxsPSIjM0Y0NjRBIiBkPSJNIDM2OC43MzA0NjkgNjUuMDc4MTI1IEMgMzcwLjU2NjQwNiA2NS4wNzgxMjUgMzcxLjgyODEyNSA2NS43MjI2NTYgMzcyLjUyMzQzOCA2Ny4wMTE3MTkgTCAzNzIuNzg1MTU2IDY1LjQ0OTIxOSBMIDM3OC4xMDkzNzUgNjUuNDQ5MjE5IEwgMzc1LjM5MDYyNSA4NC42OTE0MDYgTCAzNzAuMjUzOTA2IDg0LjY5MTQwNiBMIDM3MC40NDE0MDYgODMuMzg2NzE5IEMgMzY5LjUyMzQzOCA4NC41MzEyNSAzNjguMjE4NzUgODUuMTAxNTYyIDM2Ni41MzUxNTYgODUuMTAxNTYyIEMgMzY0LjU5NzY1NiA4NS4xMDE1NjIgMzYzLjA1ODU5NCA4NC4zOTQ1MzEgMzYxLjkxNzk2OSA4Mi45NzY1NjIgQyAzNjAuODAwNzgxIDgxLjUxNTYyNSAzNjAuNDA2MjUgNzkuNjY3OTY5IDM2MC43MjY1NjIgNzcuNDMzNTk0IEwgMzYxLjQzMzU5NCA3Mi40MTAxNTYgQyAzNjEuNzMwNDY5IDcwLjEyNSAzNjIuNTYyNSA2OC4zMzk4NDQgMzYzLjkyOTY4OCA2Ny4wNTA3ODEgQyAzNjUuMzE2NDA2IDY1LjczNDM3NSAzNjYuOTE3OTY5IDY1LjA3ODEyNSAzNjguNzMwNDY5IDY1LjA3ODEyNSBNIDM2OS42NjAxNTYgNjkuODA0Njg4IEMgMzY4LjkxNDA2MiA2OS44MDQ2ODggMzY4LjMwMDc4MSA3MC4wNTg1OTQgMzY3LjgxNjQwNiA3MC41NjY0MDYgQyAzNjcuMzMyMDMxIDcxLjA3NDIxOSAzNjcuMDQyOTY5IDcxLjczODI4MSAzNjYuOTQxNDA2IDcyLjU1ODU5NCBMIDM2Ni4xOTkyMTkgNzcuNzMwNDY5IEMgMzY2LjA5NzY1NiA3OC41MjczNDQgMzY2LjI0MjE4OCA3OS4xNTYyNSAzNjYuNjI1IDc5LjYyODkwNiBDIDM2Ny4wMTE3MTkgODAuMTAxNTYyIDM2Ny41NTA3ODEgODAuMzM1OTM4IDM2OC4yNDYwOTQgODAuMzM1OTM4IEMgMzY5LjAzOTA2MiA4MC4zMzU5MzggMzY5LjgyMDMxMiA4MCAzNzAuNTg5ODQ0IDc5LjMzMjAzMSBMIDM3MS43ODEyNSA3MC45MjE4NzUgQyAzNzEuMjEwOTM4IDcwLjE3NTc4MSAzNzAuNTAzOTA2IDY5LjgwNDY4OCAzNjkuNjYwMTU2IDY5LjgwNDY4OCAiLz48cGF0aCBmaWxsPSIjM0Y0NjRBIiBkPSJNIDM5MS4zODI4MTIgNjUuMDc4MTI1IEMgMzkzLjI5Mjk2OSA2NS4wNzgxMjUgMzk0Ljc0MjE4OCA2NS43MTA5MzggMzk1LjczNDM3NSA2Ni45NzY1NjIgQyAzOTYuNzI2NTYyIDY4LjI0MjE4OCAzOTcuMDc0MjE5IDY5Ljk0MTQwNiAzOTYuNzc3MzQ0IDcyLjA3NDIxOSBMIDM5NC45OTIxODggODQuNjkxNDA2IEwgMzg5LjQ0NTMxMiA4NC42OTE0MDYgTCAzOTEuMTIxMDk0IDcyLjc0MjE4OCBDIDM5MS4yNDYwOTQgNzIuMDIzNDM4IDM5MS4xNjQwNjIgNzEuNDUzMTI1IDM5MC44Nzg5MDYgNzEuMDMxMjUgQyAzOTAuNTkzNzUgNzAuNjA5Mzc1IDM5MC4xNzU3ODEgNzAuMzk4NDM4IDM4OS42MzI4MTIgNzAuMzk4NDM4IEMgMzg5LjAzNTE1NiA3MC4zOTg0MzggMzg4LjU2NjQwNiA3MC41MzUxNTYgMzg4LjIxODc1IDcwLjgwODU5NCBDIDM4Ny45Njg3NSA3MC45MzM1OTQgMzg3LjY2MDE1NiA3MS4xNzk2ODggMzg3LjI4OTA2MiA3MS41NTQ2ODggTCAzODUuMjc3MzQ0IDg0LjY5MTQwNiBMIDM3OS43Njk1MzEgODQuNjkxNDA2IEwgMzgyLjQ4NDM3NSA2NS40NDkyMTkgTCAzODcuNjIxMDk0IDY1LjQ0OTIxOSBMIDM4Ny40Mzc1IDY2LjcxNDg0NCBDIDM4OC40MDIzNDQgNjUuNjI1IDM4OS43MTg3NSA2NS4wNzgxMjUgMzkxLjM4MjgxMiA2NS4wNzgxMjUgIi8+PC9zdmc+" alt="OrKan System" style="height:64px;width:auto"></div>
         <div class="cert-title">Zertifikat der Absolvierung</div>
         <div class="cert-heading">OrKan Cloud Onboarding</div>
-        <div class="cert-name">${state.name}</div>
-        <div class="cert-company">${state.company}</div>
+        <div class="cert-name">${displayName()}</div>
+        <div class="cert-company">${displayCompany()}</div>
         <div class="cert-body">hat die ${certTotal()} Grundlagen-Module der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen.</div>
         <div style="font-size:13.5px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')}</div>
       </div>
       </div>
-      <p class="cert-preview-note">Ihr echtes Zertifikat mit Druck- und Download-Funktion sowie Rabattcode erhalten Sie automatisch nach Abschluss der Grundlagen-Module.</p>
+      <p class="cert-preview-note">Ihr echtes Zertifikat mit Druck- und Download-Funktion erhalten Sie automatisch nach Abschluss der Grundlagen-Module.</p>
     `;
   } else {
     document.getElementById('view-cert').innerHTML = `
       <h1 class="page-title" data-eyebrow="Ihr Abschluss">Zertifikate</h1>
       <p class="page-sub">Herzlichen Glückwunsch zum Abschluss des Onboardings.</p>
+      <div class="cert-personal"><div class="cert-personal-head"><strong>Zertifikat personalisieren</strong><span>Ihr Name und Ihr Unternehmen erscheinen auf dem Zertifikat.</span></div><label><span>Name</span><input type="text" id="certNameInput" class="profile-input" placeholder="Vor- und Nachname" value="${escHtml(state.name)}" oninput="certPersonalInput()"></label><label><span>Unternehmen</span><input type="text" id="certCompanyInput" class="profile-input" placeholder="Firmenname" value="${escHtml(state.company)}" oninput="certPersonalInput()"></label></div>
       <div class="certificate" id="certPrint"><div class="cert-logo"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjMwMSA1NSAxMTIgNDgiIHdpZHRoPSIxMTIiIGhlaWdodD0iNDgiPjxwYXRoIGZpbGw9IiNBOENDNjgiIGQ9Ik0gMzM5LjQ1MzEyNSAxMDEuNDcyNjU2IEMgMzQwLjA3ODEyNSAxMDEuNDcyNjU2IDM0MC42NDA2MjUgMTAxLjM3NSAzNDEuMTQ4NDM4IDEwMS4xODc1IEMgMzQxLjY1NjI1IDEwMC45OTYwOTQgMzQyLjA2NjQwNiAxMDAuNzIyNjU2IDM0Mi4zODI4MTIgMTAwLjM3MTA5NCBDIDM0Mi42OTkyMTkgMTAwLjAxNTYyNSAzNDIuODgyODEyIDk5LjU5Mzc1IDM0Mi45Mjk2ODggOTkuMTAxNTYyIEMgMzQzLjAxMTcxOSA5OC4zOTQ1MzEgMzQyLjg1OTM3NSA5Ny44MTI1IDM0Mi40Njg3NSA5Ny4zNTU0NjkgQyAzNDIuMDc4MTI1IDk2LjkwMjM0NCAzNDEuNDIxODc1IDk2LjQ5MjE4OCAzNDAuNSA5Ni4xMjg5MDYgQyAzMzkuNzkyOTY5IDk1Ljg0NzY1NiAzMzkuMjkyOTY5IDk1LjU3MDMxMiAzMzkgOTUuMjg1MTU2IEMgMzM4LjcwNzAzMSA5NSAzMzguNTgyMDMxIDk0LjYzNjcxOSAzMzguNjI4OTA2IDk0LjE4NzUgQyAzMzguNjYwMTU2IDkzLjkyOTY4OCAzMzguNzYxNzE5IDkzLjY5NTMxMiAzMzguOTM3NSA5My40OTIxODggQyAzMzkuMTEzMjgxIDkzLjI4NTE1NiAzMzkuMzU1NDY5IDkzLjEyNSAzMzkuNjY0MDYyIDkzLjAxMTcxOSBDIDMzOS45Njg3NSA5Mi44OTQ1MzEgMzQwLjMzMjAzMSA5Mi44MzU5MzggMzQwLjc1IDkyLjgzNTkzOCBDIDM0MS4zMDg1OTQgOTIuODM1OTM4IDM0MS43OTI5NjkgOTIuOTQ1MzEyIDM0Mi4xOTUzMTIgOTMuMTY0MDYyIEMgMzQyLjYwMTU2MiA5My4zODI4MTIgMzQyLjkxMDE1NiA5My42NTYyNSAzNDMuMTIxMDk0IDkzLjk4MDQ2OSBMIDM0My44NDc2NTYgOTMuMjgxMjUgQyAzNDMuNTYyNSA5Mi44NzUgMzQzLjE2MDE1NiA5Mi41NTA3ODEgMzQyLjY0ODQzOCA5Mi4zMTI1IEMgMzQyLjEzNjcxOSA5Mi4wNzQyMTkgMzQxLjUxOTUzMSA5MS45NTcwMzEgMzQwLjc5Mjk2OSA5MS45NTcwMzEgQyAzNDAuMTc5Njg4IDkxLjk1NzAzMSAzMzkuNjM2NzE5IDkyLjA1MDc4MSAzMzkuMTYwMTU2IDkyLjIzNDM3NSBDIDMzOC42ODc1IDkyLjQyMTg3NSAzMzguMzEyNSA5Mi42NzU3ODEgMzM4LjA0Mjk2OSA5My4wMDM5MDYgQyAzMzcuNzczNDM4IDkzLjMyODEyNSAzMzcuNjEzMjgxIDkzLjcwNzAzMSAzMzcuNTU0Njg4IDk0LjEzMjgxMiBDIDMzNy41IDk0LjU5NzY1NiAzMzcuNTUwNzgxIDk1LjAwMzkwNiAzMzcuNzEwOTM4IDk1LjM0NzY1NiBDIDMzNy44NjcxODggOTUuNjkxNDA2IDMzOC4xMTcxODggOTUuOTg4MjgxIDMzOC40NjA5MzggOTYuMjM4MjgxIEMgMzM4LjgwODU5NCA5Ni40OTIxODggMzM5LjI2OTUzMSA5Ni43MzQzNzUgMzM5Ljg0Mzc1IDk2Ljk2NDg0NCBDIDM0MC4zNjMyODEgOTcuMTcxODc1IDM0MC43NzM0MzggOTcuMzY3MTg4IDM0MS4wNjY0MDYgOTcuNTUwNzgxIEMgMzQxLjM1OTM3NSA5Ny43MzgyODEgMzQxLjU3MDMxMiA5Ny45NDkyMTkgMzQxLjY5OTIxOSA5OC4xODc1IEMgMzQxLjgzMjAzMSA5OC40MjE4NzUgMzQxLjg4MjgxMiA5OC43MTA5MzggMzQxLjg1MTU2MiA5OS4wNDY4NzUgQyAzNDEuODE2NDA2IDk5LjUwNzgxMiAzNDEuNTg5ODQ0IDk5Ljg3ODkwNiAzNDEuMTc1NzgxIDEwMC4xNTIzNDQgQyAzNDAuNzYxNzE5IDEwMC40Mjk2ODggMzQwLjI0MjE4OCAxMDAuNTY2NDA2IDMzOS42MjEwOTQgMTAwLjU2NjQwNiBDIDMzOS4wNDI5NjkgMTAwLjU2NjQwNiAzMzguNTE5NTMxIDEwMC40NDE0MDYgMzM4LjA1MDc4MSAxMDAuMTg3NSBDIDMzNy41ODIwMzEgOTkuOTM3NSAzMzcuMjA3MDMxIDk5LjYwOTM3NSAzMzYuOTI5Njg4IDk5LjE5OTIxOSBMIDMzNi4yMTg3NSA5OS45NTMxMjUgQyAzMzYuNTIzNDM4IDEwMC4zOTA2MjUgMzM2Ljk2MDkzOCAxMDAuNzUzOTA2IDMzNy41MjczNDQgMTAxLjAzOTA2MiBDIDMzOC4wOTM3NSAxMDEuMzI4MTI1IDMzOC43MzgyODEgMTAxLjQ3MjY1NiAzMzkuNDUzMTI1IDEwMS40NzI2NTYgTSAzNTAuODEyNSAxMDEuMzA0Njg4IEwgMzUyLjE5NTMxMiAxMDEuMzA0Njg4IEwgMzUyLjkyMTg3NSA5Ny42NDg0MzggTCAzNTcuMTkxNDA2IDkyLjEwOTM3NSBMIDM1NS41NDI5NjkgOTIuMTA5Mzc1IEwgMzUzLjU3ODEyNSA5NC44MTY0MDYgTCAzNTIuMzkwNjI1IDk2Ljc5Njg3NSBMIDM1Mi4zNDc2NTYgOTYuNzk2ODc1IEwgMzUxLjg3NSA5NC44MTY0MDYgTCAzNTAuOTE0MDYyIDkyLjEwOTM3NSBMIDM0OS40MDYyNSA5Mi4xMDkzNzUgTCAzNTEuNTExNzE5IDk3LjY2NDA2MiBaIE0gMzY0LjA0Njg3NSAxMDEuNDU3MDMxIEMgMzY0LjY5NTMxMiAxMDEuNDU3MDMxIDM2NS4yODUxNTYgMTAxLjM3MTA5NCAzNjUuODA4NTk0IDEwMS4xOTkyMTkgQyAzNjYuMzM1OTM4IDEwMS4wMjczNDQgMzY2Ljc2NTYyNSAxMDAuNzczNDM4IDM2Ny4xMDE1NjIgMTAwLjQzMzU5NCBDIDM2Ny40MzM1OTQgMTAwLjA5Mzc1IDM2Ny42NDg0MzggOTkuNjkxNDA2IDM2Ny43NDIxODggOTkuMjI2NTYyIEMgMzY3Ljg5MDYyNSA5OC40NDUzMTIgMzY3Ljc3NzM0NCA5Ny43OTY4NzUgMzY3LjQwNjI1IDk3LjI4MTI1IEMgMzY3LjAzNTE1NiA5Ni43NjE3MTkgMzY2LjM0Mzc1IDk2LjMwODU5NCAzNjUuMzI4MTI1IDk1LjkxNzk2OSBDIDM2NC42MTMyODEgOTUuNjQ4NDM4IDM2NC4xMjUgOTUuMzc4OTA2IDM2My44NzEwOTQgOTUuMTA5Mzc1IEMgMzYzLjYxMzI4MSA5NC44Mzk4NDQgMzYzLjUzNTE1NiA5NC41MDM5MDYgMzYzLjYyNSA5NC4xMDU0NjkgQyAzNjMuNjY0MDYyIDkzLjkxNzk2OSAzNjMuNzU3ODEyIDkzLjc1NzgxMiAzNjMuOTA2MjUgOTMuNjI1IEMgMzY0LjA1NDY4OCA5My40ODgyODEgMzY0LjI0NjA5NCA5My4zODY3MTkgMzY0LjQ4NDM3NSA5My4zMDg1OTQgQyAzNjQuNzIyNjU2IDkzLjIzNDM3NSAzNjQuOTk2MDk0IDkzLjE5OTIxOSAzNjUuMzE2NDA2IDkzLjE5OTIxOSBDIDM2NS44MzU5MzggOTMuMTk5MjE5IDM2Ni4yODUxNTYgOTMuMzA4NTk0IDM2Ni42Njc5NjkgOTMuNTM1MTU2IEMgMzY3LjA1MDc4MSA5My43NTc4MTIgMzY3LjM0NzY1NiA5NC4wNTA3ODEgMzY3LjU2MjUgOTQuNDE0MDYyIEwgMzY4LjcwNzAzMSA5My4zNzg5MDYgQyAzNjguMzcxMDk0IDkyLjkwNjI1IDM2Ny45Mjk2ODggOTIuNTM5MDYyIDM2Ny4zNzg5MDYgOTIuMjg1MTU2IEMgMzY2LjgzMjAzMSA5Mi4wMjczNDQgMzY2LjE1NjI1IDkxLjg5ODQzOCAzNjUuMzU1NDY5IDkxLjg5ODQzOCBDIDM2NC43NDIxODggOTEuODk4NDM4IDM2NC4xOTUzMTIgOTEuOTg4MjgxIDM2My43MTg3NSA5Mi4xNjc5NjkgQyAzNjMuMjM4MjgxIDkyLjM0Mzc1IDM2Mi44NDc2NTYgOTIuNTg1OTM4IDM2Mi41NTA3ODEgOTIuODk4NDM4IEMgMzYyLjI1MzkwNiA5My4yMTA5MzggMzYyLjA1ODU5NCA5My41NzQyMTkgMzYxLjk2NDg0NCA5My45OTYwOTQgQyAzNjEuODYzMjgxIDk0LjQ3NjU2MiAzNjEuODc4OTA2IDk0LjkxNzk2OSAzNjIuMDE1NjI1IDk1LjMyMDMxMiBDIDM2Mi4xNDg0MzggOTUuNzE4NzUgMzYyLjQwNjI1IDk2LjA3NDIxOSAzNjIuNzgxMjUgOTYuMzc4OTA2IEMgMzYzLjE2MDE1NiA5Ni42ODc1IDM2My42NTYyNSA5Ni45NTcwMzEgMzY0LjI2OTUzMSA5Ny4xODc1IEMgMzY0Ljc5Njg3NSA5Ny4zODY3MTkgMzY1LjIwMzEyNSA5Ny41NzQyMTkgMzY1LjQ4ODI4MSA5Ny43NTM5MDYgQyAzNjUuNzczNDM4IDk3LjkzMzU5NCAzNjUuOTU3MDMxIDk4LjEyODkwNiAzNjYuMDM5MDYyIDk4LjMzMjAzMSBDIDM2Ni4xMjUgOTguNTM5MDYyIDM2Ni4xNDQ1MzEgOTguNzY1NjI1IDM2Ni4wOTc2NTYgOTkuMDE1NjI1IEMgMzY2LjAzMTI1IDk5LjM5MDYyNSAzNjUuODM5ODQ0IDk5LjY3MTg3NSAzNjUuNTE1NjI1IDk5Ljg2MzI4MSBDIDM2NS4xOTUzMTIgMTAwLjA1MDc4MSAzNjQuODA0Njg4IDEwMC4xNDg0MzggMzY0LjMzNTkzOCAxMDAuMTQ4NDM4IEMgMzYzLjc0MjE4OCAxMDAuMTQ4NDM4IDM2My4yMjI2NTYgMTAwLjAxNTYyNSAzNjIuNzczNDM4IDk5Ljc1IEMgMzYyLjMyODEyNSA5OS40ODQzNzUgMzYxLjk2MDkzOCA5OS4xMTcxODggMzYxLjY3MTg3NSA5OC42NTYyNSBMIDM2MC41ODU5MzggOTkuNzU3ODEyIEMgMzYwLjkwMjM0NCAxMDAuMjUgMzYxLjM2MzI4MSAxMDAuNjU2MjUgMzYxLjk3MjY1NiAxMDAuOTc2NTYyIEMgMzYyLjU4MjAzMSAxMDEuMjk2ODc1IDM2My4yNzM0MzggMTAxLjQ1NzAzMSAzNjQuMDQ2ODc1IDEwMS40NTcwMzEgTSAzNzUuMjEwOTM4IDEwMS4zMDQ2ODggTCAzNzcuMTQ4NDM4IDEwMS4zMDQ2ODggTCAzNzguNjQwNjI1IDkzLjY2MDE1NiBMIDM4MS4wODU5MzggOTMuNjYwMTU2IEwgMzgxLjQwNjI1IDkyLjA2NjQwNiBMIDM3NC41MTE3MTkgOTIuMDY2NDA2IEwgMzc0LjIwNzAzMSA5My42NjAxNTYgTCAzNzYuNjc1NzgxIDkzLjY2MDE1NiBaIE0gMzg1LjY0NDUzMSAxMDEuMzA0Njg4IEwgMzkyLjM1NTQ2OSAxMDEuMzA0Njg4IEwgMzkyLjcxODc1IDk5LjQ2NDg0NCBMIDM4OC4yNTM5MDYgOTkuNDY0ODQ0IEwgMzg4LjY1NjI1IDk3LjM4NjcxOSBMIDM5MS42ODM1OTQgOTcuMzg2NzE5IEwgMzkyLjAxOTUzMSA5NS43MTA5MzggTCAzODguOTgwNDY5IDk1LjcxMDkzOCBMIDM4OS4zNTU0NjkgOTMuNzk2ODc1IEwgMzkzLjY0MDYyNSA5My43OTY4NzUgTCAzOTMuOTcyNjU2IDkyLjA1NDY4OCBMIDM4Ny40NDUzMTIgOTIuMDU0Njg4IFogTSAzOTguNTc0MjE5IDEwMS4zMDQ2ODggTCA0MDEuMTgzNTk0IDEwMS4zMDQ2ODggTCA0MDEuODk0NTMxIDk3LjY3NTc4MSBMIDQwMi40MTQwNjIgOTMuNTg5ODQ0IEwgNDAyLjU5Mzc1IDkzLjU4OTg0NCBMIDQwMi44MzIwMzEgOTYuNjQ0NTMxIEwgNDAzLjQwMjM0NCAxMDEuMzA0Njg4IEwgNDA1LjU3ODEyNSAxMDEuMzA0Njg4IEwgNDA3Ljk4MDQ2OSA5Ni42NDQ1MzEgTCA0MDkuMzQ3NjU2IDkzLjU4OTg0NCBMIDQwOS41NDI5NjkgOTMuNTg5ODQ0IEwgNDA4LjUzOTA2MiA5Ny42NzU3ODEgTCA0MDcuODEyNSAxMDEuMzA0Njg4IEwgNDEwLjQyMTg3NSAxMDEuMzA0Njg4IEwgNDEyLjIyMjY1NiA5Mi4wMjczNDQgTCA0MDguMDQ2ODc1IDkyLjAyNzM0NCBMIDQwNS44OTg0MzggOTYuNjI4OTA2IEwgNDA1LjA4OTg0NCA5OC45NDkyMTkgTCA0MDQuOTgwNDY5IDk4Ljk0OTIxOSBMIDQwNS4wNDY4NzUgOTYuNjI4OTA2IEwgNDA0LjYyODkwNiA5Mi4wMjczNDQgTCA0MDAuMzc1IDkyLjAyNzM0NCBaIE0gMzk4LjU3NDIxOSAxMDEuMzA0Njg4ICIvPjxwYXRoIGZpbGw9IiMzRjQ2NEEiIGQ9Ik0gMzE0LjkyMTg3NSA1Ni40NDE0MDYgQyAzMTguMDQ2ODc1IDU2LjQ0MTQwNiAzMjAuNDE3OTY5IDU3LjQzNzUgMzIyLjAyNzM0NCA1OS40MjE4NzUgQyAzMjMuNjY3OTY5IDYxLjQwNjI1IDMyNC4yNSA2NC4wMzUxNTYgMzIzLjc3NzM0NCA2Ny4zMDg1OTQgTCAzMjIuNzczNDM4IDc0LjUzMTI1IEMgMzIyLjMwMDc4MSA3Ny44MzIwMzEgMzIxLjA2MjUgODAuNDI1NzgxIDMxOS4wNTA3ODEgODIuMzA4NTk0IEMgMzE3LjA0Mjk2OSA4NC4xNzE4NzUgMzE0LjUzNTE1NiA4NS4xMDE1NjIgMzExLjUzNTE1NiA4NS4xMDE1NjIgQyAzMDguNDEwMTU2IDg1LjEwMTU2MiAzMDYuMDI3MzQ0IDg0LjEyMTA5NCAzMDQuMzg2NzE5IDgyLjE2MDE1NiBDIDMwMi43NzM0MzggODAuMTQ4NDM4IDMwMi4yMDMxMjUgNzcuNTA3ODEyIDMwMi42NzU3ODEgNzQuMjM0Mzc1IEwgMzAzLjY3OTY4OCA2Ny4wMTE3MTkgQyAzMDQuMTUyMzQ0IDYzLjczODI4MSAzMDUuMzk0NTMxIDYxLjE1NjI1IDMwNy40MDIzNDQgNTkuMjY5NTMxIEMgMzA5LjM4NjcxOSA1Ny4zODY3MTkgMzExLjg5NDUzMSA1Ni40NDE0MDYgMzE0LjkyMTg3NSA1Ni40NDE0MDYgTSAzMTQuNTQ2ODc1IDYxLjgwMDc4MSBDIDMxMy4yNTc4MTIgNjEuODAwNzgxIDMxMi4xODc1IDYyLjIzMDQ2OSAzMTEuMzI4MTI1IDYzLjA4NTkzOCBDIDMxMC40NzI2NTYgNjMuOTQxNDA2IDMwOS45NDUzMTIgNjUuMTEzMjgxIDMwOS43NDYwOTQgNjYuNjA1NDY5IEwgMzA4LjU1ODU5NCA3NC45Mzc1IEMgMzA4LjM1OTM3NSA3Ni4zNzg5MDYgMzA4LjU2MjUgNzcuNTM5MDYyIDMwOS4xNzE4NzUgNzguNDIxODc1IEMgMzA5Ljc3NzM0NCA3OS4zMDA3ODEgMzEwLjY5MTQwNiA3OS43NDIxODggMzExLjkwNjI1IDc5Ljc0MjE4OCBDIDMxMy4xOTUzMTIgNzkuNzQyMTg4IDMxNC4yNjk1MzEgNzkuMzEyNSAzMTUuMTI1IDc4LjQ1NzAzMSBDIDMxNS45ODA0NjkgNzcuNjAxNTYyIDMxNi41MDc4MTIgNzYuNDI5Njg4IDMxNi43MDcwMzEgNzQuOTM3NSBMIDMxNy44NTkzNzUgNjYuNjA1NDY5IEMgMzE4LjA1ODU5NCA2NS4xNjQwNjIgMzE3Ljg1OTM3NSA2NC4wMDM5MDYgMzE3LjI2NTYyNSA2My4xMjUgQyAzMTYuNjcxODc1IDYyLjI0MjE4OCAzMTUuNzY1NjI1IDYxLjgwMDc4MSAzMTQuNTQ2ODc1IDYxLjgwMDc4MSAiLz48cGF0aCBmaWxsPSIjM0Y0NjRBIiBkPSJNIDMzNy42ODM1OTQgNjUuMzAwNzgxIEwgMzM2Ljk3NjU2MiA3MC42MjEwOTQgQyAzMzUuNDM3NSA3MC42NzE4NzUgMzM0IDcxLjE3OTY4OCAzMzIuNjYwMTU2IDcyLjE0ODQzOCBMIDMzMC43MjY1NjIgODQuNjkxNDA2IEwgMzI1LjIxODc1IDg0LjY5MTQwNiBMIDMyNy45MzM1OTQgNjUuNDQ5MjE5IEwgMzMzLjEwOTM3NSA2NS40NDkyMTkgTCAzMzIuODA4NTk0IDY3LjIzNDM3NSBDIDMzMy45NzY1NjIgNjUuOTcyNjU2IDMzNS42MDE1NjIgNjUuMzI0MjE5IDMzNy42ODM1OTQgNjUuMzAwNzgxICIvPjxwYXRoIGZpbGw9IiMzRjQ2NEEiIGQ9Ik0gMzYxLjQ5MjE4OCA1Ni44NTE1NjIgTCAzNTMuMDgyMDMxIDcxLjA3MDMxMiBMIDM1Ny41ODIwMzEgODQuNjkxNDA2IEwgMzUxLjU1NDY4OCA4NC42OTE0MDYgTCAzNDcuODMyMDMxIDczLjg1OTM3NSBMIDM0Ni4xNTYyNSA3My44NTkzNzUgTCAzNDQuNjMyODEyIDg0LjY5MTQwNiBMIDMzOC43NSA4NC42OTE0MDYgTCAzNDIuNjk1MzEyIDU2Ljg1MTU2MiBMIDM0OC41MzkwNjIgNTYuODUxNTYyIEwgMzQ2LjkwMjM0NCA2OC41MzkwNjIgTCAzNDguMTY3OTY5IDY4LjUzOTA2MiBMIDM1NS4wODk4NDQgNTYuODUxNTYyIFogTSAzNjEuNDkyMTg4IDU2Ljg1MTU2MiAiLz48cGF0aCBmaWxsPSIjM0Y0NjRBIiBkPSJNIDM2OC43MzA0NjkgNjUuMDc4MTI1IEMgMzcwLjU2NjQwNiA2NS4wNzgxMjUgMzcxLjgyODEyNSA2NS43MjI2NTYgMzcyLjUyMzQzOCA2Ny4wMTE3MTkgTCAzNzIuNzg1MTU2IDY1LjQ0OTIxOSBMIDM3OC4xMDkzNzUgNjUuNDQ5MjE5IEwgMzc1LjM5MDYyNSA4NC42OTE0MDYgTCAzNzAuMjUzOTA2IDg0LjY5MTQwNiBMIDM3MC40NDE0MDYgODMuMzg2NzE5IEMgMzY5LjUyMzQzOCA4NC41MzEyNSAzNjguMjE4NzUgODUuMTAxNTYyIDM2Ni41MzUxNTYgODUuMTAxNTYyIEMgMzY0LjU5NzY1NiA4NS4xMDE1NjIgMzYzLjA1ODU5NCA4NC4zOTQ1MzEgMzYxLjkxNzk2OSA4Mi45NzY1NjIgQyAzNjAuODAwNzgxIDgxLjUxNTYyNSAzNjAuNDA2MjUgNzkuNjY3OTY5IDM2MC43MjY1NjIgNzcuNDMzNTk0IEwgMzYxLjQzMzU5NCA3Mi40MTAxNTYgQyAzNjEuNzMwNDY5IDcwLjEyNSAzNjIuNTYyNSA2OC4zMzk4NDQgMzYzLjkyOTY4OCA2Ny4wNTA3ODEgQyAzNjUuMzE2NDA2IDY1LjczNDM3NSAzNjYuOTE3OTY5IDY1LjA3ODEyNSAzNjguNzMwNDY5IDY1LjA3ODEyNSBNIDM2OS42NjAxNTYgNjkuODA0Njg4IEMgMzY4LjkxNDA2MiA2OS44MDQ2ODggMzY4LjMwMDc4MSA3MC4wNTg1OTQgMzY3LjgxNjQwNiA3MC41NjY0MDYgQyAzNjcuMzMyMDMxIDcxLjA3NDIxOSAzNjcuMDQyOTY5IDcxLjczODI4MSAzNjYuOTQxNDA2IDcyLjU1ODU5NCBMIDM2Ni4xOTkyMTkgNzcuNzMwNDY5IEMgMzY2LjA5NzY1NiA3OC41MjczNDQgMzY2LjI0MjE4OCA3OS4xNTYyNSAzNjYuNjI1IDc5LjYyODkwNiBDIDM2Ny4wMTE3MTkgODAuMTAxNTYyIDM2Ny41NTA3ODEgODAuMzM1OTM4IDM2OC4yNDYwOTQgODAuMzM1OTM4IEMgMzY5LjAzOTA2MiA4MC4zMzU5MzggMzY5LjgyMDMxMiA4MCAzNzAuNTg5ODQ0IDc5LjMzMjAzMSBMIDM3MS43ODEyNSA3MC45MjE4NzUgQyAzNzEuMjEwOTM4IDcwLjE3NTc4MSAzNzAuNTAzOTA2IDY5LjgwNDY4OCAzNjkuNjYwMTU2IDY5LjgwNDY4OCAiLz48cGF0aCBmaWxsPSIjM0Y0NjRBIiBkPSJNIDM5MS4zODI4MTIgNjUuMDc4MTI1IEMgMzkzLjI5Mjk2OSA2NS4wNzgxMjUgMzk0Ljc0MjE4OCA2NS43MTA5MzggMzk1LjczNDM3NSA2Ni45NzY1NjIgQyAzOTYuNzI2NTYyIDY4LjI0MjE4OCAzOTcuMDc0MjE5IDY5Ljk0MTQwNiAzOTYuNzc3MzQ0IDcyLjA3NDIxOSBMIDM5NC45OTIxODggODQuNjkxNDA2IEwgMzg5LjQ0NTMxMiA4NC42OTE0MDYgTCAzOTEuMTIxMDk0IDcyLjc0MjE4OCBDIDM5MS4yNDYwOTQgNzIuMDIzNDM4IDM5MS4xNjQwNjIgNzEuNDUzMTI1IDM5MC44Nzg5MDYgNzEuMDMxMjUgQyAzOTAuNTkzNzUgNzAuNjA5Mzc1IDM5MC4xNzU3ODEgNzAuMzk4NDM4IDM4OS42MzI4MTIgNzAuMzk4NDM4IEMgMzg5LjAzNTE1NiA3MC4zOTg0MzggMzg4LjU2NjQwNiA3MC41MzUxNTYgMzg4LjIxODc1IDcwLjgwODU5NCBDIDM4Ny45Njg3NSA3MC45MzM1OTQgMzg3LjY2MDE1NiA3MS4xNzk2ODggMzg3LjI4OTA2MiA3MS41NTQ2ODggTCAzODUuMjc3MzQ0IDg0LjY5MTQwNiBMIDM3OS43Njk1MzEgODQuNjkxNDA2IEwgMzgyLjQ4NDM3NSA2NS40NDkyMTkgTCAzODcuNjIxMDk0IDY1LjQ0OTIxOSBMIDM4Ny40Mzc1IDY2LjcxNDg0NCBDIDM4OC40MDIzNDQgNjUuNjI1IDM4OS43MTg3NSA2NS4wNzgxMjUgMzkxLjM4MjgxMiA2NS4wNzgxMjUgIi8+PC9zdmc+" alt="OrKan System" style="height:64px;width:auto"></div>
         <div class="cert-title">Zertifikat der Absolvierung</div>
         <div class="cert-heading">OrKan Cloud Onboarding</div>
-        <div class="cert-name">${state.name}</div>
-        <div class="cert-company">${state.company}</div>
+        <div class="cert-name">${displayName()}</div>
+        <div class="cert-company">${displayCompany()}</div>
         <div class="cert-body">hat die ${certTotal()} Grundlagen-Module der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen.</div>
         <div style="font-size:13.5px;color:var(--gray)">Ausgestellt am ${new Date().toLocaleDateString('de-DE')}</div>
       </div>
@@ -3610,18 +3585,19 @@ function renderCert(){
     `;
   }
 }
-function getDiscountCode(){
-  if(!state.discountCode){
-    const rand = Math.random().toString(36).slice(2,6).toUpperCase();
-    state.discountCode = `ORKAN-SHOP-${rand}`;
-  }
-  return state.discountCode;
-}
 function loadScriptOnce(src){
   return new Promise((res,rej)=>{ if(document.querySelector(`script[src="${src}"]`)) return res();
     const sc=document.createElement('script'); sc.src=src; sc.onload=res; sc.onerror=rej; document.head.appendChild(sc); });
 }
+function certPersonalInput(){
+  state.name=document.getElementById('certNameInput').value.trim();
+  state.company=document.getElementById('certCompanyInput').value.trim();
+  const pn=document.getElementById('profileNameInput'); if(pn) pn.value=state.name;
+  const pc=document.getElementById('profileCompanyInput'); if(pc) pc.value=state.company;
+  refreshNameEverywhere(); saveState();
+}
 async function downloadCertPdf(){
+  if(!state.name){ showToast('Bitte tragen Sie zuerst Ihren Namen für das Zertifikat ein.'); const i=document.getElementById('certNameInput'); if(i) i.focus(); return; }
   const btn=document.getElementById('certPdfBtn'); const label=btn?btn.textContent:'';
   try{
     if(btn){ btn.disabled=true; btn.textContent='PDF wird erstellt …'; }
@@ -3658,11 +3634,9 @@ function updateSidebarProgress(){
 /* ============ AI PANEL ============ */
 /* ============ PROFILMENÜ ============ */
 function refreshProfileMenu(){
-  document.getElementById('profileMenuAvatar').textContent = state.name.charAt(0).toUpperCase();
-  document.getElementById('profileMenuName').textContent = state.name;
-  document.getElementById('profileMenuRole').textContent = `${state.company}`;
-  document.getElementById('profileNameInput').value = state.name;
-  document.getElementById('profileCompanyInput').value = state.company;
+  document.getElementById('profileNameInput').value = state.name||'';
+  document.getElementById('profileCompanyInput').value = state.company||'';
+  refreshNameEverywhere();
 }
 function toggleProfileMenu(){
   document.getElementById('profileMenu').classList.toggle('open');
@@ -3672,9 +3646,8 @@ document.addEventListener('click', e=>{
   if(wrap && !wrap.contains(e.target)) document.getElementById('profileMenu')?.classList.remove('open');
 });
 function saveProfile(){
-  state.name = document.getElementById('profileNameInput').value.trim() || state.name;
-  state.company = document.getElementById('profileCompanyInput').value.trim() || state.company;
-  document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
+  state.name = document.getElementById('profileNameInput').value.trim();
+  state.company = document.getElementById('profileCompanyInput').value.trim();
   refreshProfileMenu();
   updateSidebarProgress();
   showToast('Profil aktualisiert.');
@@ -3685,22 +3658,16 @@ let __profileTimer=null;
 function autoSaveProfile(){
   const n=document.getElementById('profileNameInput').value.trim();
   const c=document.getElementById('profileCompanyInput').value.trim();
-  if(n) state.name=n; if(c) state.company=c;
-  document.getElementById('hdrAvatar').textContent = state.name.charAt(0).toUpperCase();
-  document.getElementById('profileMenuAvatar').textContent = state.name.charAt(0).toUpperCase();
-  document.getElementById('profileMenuName').textContent = state.name;
-  document.getElementById('profileMenuRole').textContent = `${state.company}`;
+  state.name=n; state.company=c;
+  refreshNameEverywhere();
+  const cn=document.getElementById('certNameInput'); if(cn&&document.activeElement!==cn) cn.value=n;
+  const cc=document.getElementById('certCompanyInput'); if(cc&&document.activeElement!==cc) cc.value=c;
   updateSidebarProgress();
   saveState();
   const st=document.getElementById('profileSaved'); if(st){ st.textContent='✓ Automatisch gespeichert'; st.classList.add('on'); clearTimeout(st.__t); st.__t=setTimeout(()=>st.classList.remove('on'),1800); }
 }
 document.addEventListener('input', e=>{ if(e.target.id==='profileNameInput'||e.target.id==='profileCompanyInput'){ clearTimeout(__profileTimer); __profileTimer=setTimeout(autoSaveProfile,500); } });
 document.addEventListener('change', e=>{ if(e.target.id==='profileNameInput'||e.target.id==='profileCompanyInput'){ clearTimeout(__profileTimer); autoSaveProfile(); } });
-function logoutProfile(){
-  document.getElementById('profileMenu').classList.remove('open');
-  document.getElementById('app').style.display='none';
-  document.getElementById('onboarding').style.display='flex';
-}
 const CLOUD_DEEPLINKS = {
   1:{label:'Startseite'},
   2:{label:'Lagerverwaltung → Artikel'},
@@ -4113,7 +4080,7 @@ const TOUR_STEPS=[
  {sel:'.nav-item[data-view="modules"]',title:'Lernmodule',text:'Jedes Modul erklärt die wichtigsten Schritte – die Grundlagen mit Lernvideo. Module mit Video schließen sich ab 90 % angesehen automatisch ab, alle anderen über „Modul abschließen“ am Ende.',pos:'right'},
  {sel:'.nav-item[data-view="kb"]',title:'Wissensdatenbank',text:'Schnell etwas nachschlagen? Hier finden Sie Anleitungen zu allen Themen der OrKan Cloud – mit Suchfunktion.',pos:'right'},
  {sel:'.nav-item[data-view="best"]',title:'Best Practices',text:'Praxiserprobte Schritt-für-Schritt-Anleitungen für typische Aufgaben im Lageralltag.',pos:'right'},
- {sel:'.nav-item[data-view="cert"]',title:'Zertifikat & Rabattcode',text:'Sobald Sie die Grundlagen (Module 1–6) abgeschlossen haben, erhalten Sie hier Ihr persönliches Zertifikat inklusive Rabattcode für den OrKan Shop.',pos:'right'},
+ {sel:'.nav-item[data-view="cert"]',title:'Zertifikat',text:'Sobald Sie die Grundlagen (Module 1–6) abgeschlossen haben, erhalten Sie hier Ihr persönliches Zertifikat. Ihren Namen tragen Sie dort oder im Profil ein.',pos:'right'},
  {sel:'.nav-item[data-view="fives"]',title:'5S-Übung & Kostenrechner',text:'Ein kurzes Zahlenspiel zeigt, wie viel Zeit Ordnung im Lager spart – danach sehen Sie, was Suchzeiten Ihren Betrieb kosten.',pos:'right'},
  {sel:'.hero-side',title:'Ihr Lernfortschritt',text:'Der Ring zeigt, wie viel Prozent Ihres Onboardings Sie bereits geschafft haben. Er füllt sich mit jedem abgeschlossenen Modul.'},
  {sel:'.hero .status-overview-btn',title:'Direkt loslegen',text:'Mit diesem Button starten Sie das nächste offene Modul – ohne Suchen.'},
@@ -4169,6 +4136,7 @@ function renderTour(){
 (function(){
   const orig=window.startApp;
   if(typeof orig==='function') window.startApp=function(){ orig.apply(this,arguments); setTimeout(startTour,700); };
+  if(window.__firstVisit) setTimeout(startTour,700);
 })();
 </script>
 
