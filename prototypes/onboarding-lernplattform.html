@@ -1673,12 +1673,22 @@ html:not(.theme-light) .roadmap-line::before{background:radial-gradient(circle,r
 /* ===== /Markendesign 2026 ===== */
 .md-content{margin-top:26px}
 .md-done{display:inline-flex;align-items:center;padding:10px 16px;border-radius:10px;background:var(--green-light);color:var(--green-dark);font-weight:700}
-.watch-status{display:flex;align-items:center;gap:14px;margin:-12px 0 26px;font-size:14px;color:var(--gray)}
-.watch-status .ws-bar{flex:0 0 160px;height:6px;border-radius:6px;background:var(--gray-light);overflow:hidden}
-.watch-status .ws-bar i{display:block;height:100%;background:var(--brand-green,#A8CC68);border-radius:6px;transition:width .4s}
-.watch-status.done{color:var(--green-dark);font-weight:700}
+.watch-status{margin:-8px 0 26px;padding:16px 18px;border:1px solid var(--gray-light);border-radius:14px;background:var(--card-bg,#fff)}
+.ch-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px;font-size:14px}
+.ch-head strong{font-size:15px}
+.ch-sum{color:var(--gray);font-variant-numeric:tabular-nums}.ch-sum.all{color:var(--green-dark);font-weight:700}
+.ch-list{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.ch-item{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;width:100%;padding:8px 10px;border-radius:10px;cursor:pointer;font-size:14px;color:inherit}
+.ch-item:hover,.ch-item:focus-visible{background:var(--gray-lighter,rgba(0,0,0,.04))}
+.ch-item:focus-visible{outline:2px solid var(--brand-green,#A8CC68)}
+.ch-ic{flex:0 0 22px;height:22px;border-radius:50%;border:2px solid var(--gray-light);display:grid;place-items:center;box-sizing:border-box}
+.ch-ic svg{width:13px;height:13px}
+.ch-item.ok .ch-ic{background:var(--brand-green,#A8CC68);border-color:var(--brand-green,#A8CC68);color:#2B3134}
+.ch-item.now{background:rgba(168,204,104,.16)}.ch-item.now .ch-t{font-weight:700}
+.ch-t{flex:1}.ch-time{color:var(--gray);font-variant-numeric:tabular-nums;font-size:13px}
+.ch-note{margin:10px 0 0;font-size:13px;color:var(--gray)}
 .md-hint{display:inline-block;padding:10px 0;color:var(--gray);font-size:14.5px}
-@media(max-width:640px){.watch-status{flex-direction:column;align-items:flex-start;gap:6px}.watch-status .ws-bar{flex-basis:auto;width:100%}}
+@media(max-width:640px){.watch-status{padding:12px}}
 /* ===== Dunkelmodus-Feinschliff: Lesbarkeit und sichtbare Flächen ===== */
 html:not(.theme-light) .sp-track{background:rgba(255,255,255,.12)!important}
 html:not(.theme-light) .sp-fill{background:#A8CC68!important}
@@ -1694,8 +1704,8 @@ html:not(.theme-light) .milestone-gist li,html:not(.theme-light) .chip{backgroun
 html:not(.theme-light) .chip.active{background:#A8CC68!important;color:#22272A!important}
 html:not(.theme-light) .w-heat i{background:rgba(255,255,255,.10)}
 html:not(.theme-light) .w-heat i.lv1{background:rgba(168,204,104,.45)}html:not(.theme-light) .w-heat i.lv2{background:#A8CC68}html:not(.theme-light) .w-heat i.lv3{background:#C9E2A0}
-html:not(.theme-light) .watch-status .ws-bar,html:not(.theme-light) .mc-track{background:rgba(255,255,255,.12)!important}
-html:not(.theme-light) .watch-status{color:#B9C1C5}html:not(.theme-light) .watch-status.done{color:#BCD98A}
+html:not(.theme-light) .mc-track{background:rgba(255,255,255,.12)!important}
+html:not(.theme-light) .watch-status{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12)}html:not(.theme-light) .ch-sum,html:not(.theme-light) .ch-time,html:not(.theme-light) .ch-note{color:#B9C1C5}html:not(.theme-light) .ch-sum.all{color:#BCD98A}html:not(.theme-light) .ch-ic{border-color:rgba(255,255,255,.3)}html:not(.theme-light) .ch-item:hover{background:rgba(255,255,255,.06)}
 html:not(.theme-light) .fc-icon{background:rgba(168,204,104,.16)!important}
 html:not(.theme-light) .fc-icon svg{color:#A8CC68!important}
 html:not(.theme-light) .feature-card{border:1px solid #41484C!important}
@@ -3048,7 +3058,7 @@ function moduleCardHtml(m, isPriority){
   const locked = isModuleLocked(m);
   const badge = locked?'locked':(p.completed?'done':(p.started?'progress':'open'));
   const badgeText = locked?'Gesperrt':(p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen'));
-  const pct = p.completed?100:(MODULE_VIDEOS[m.id]?watchPct(m.id):(p.started?45:0));
+  const pct = p.completed?100:(MODULE_VIDEOS[m.id]?chPct(m.id):(p.started?45:0));
   return `<div class="module-card ${locked?'module-card-locked':''}" onclick="openModule(${m.id})">
     <div class="mc-top"><span class="mc-num">${String(m.id).padStart(2,'0')}</span><span class="mc-badges"><span class="mc-badge ${badge}">${locked?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:inline;vertical-align:-1px;margin-right:3px"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':''}${badgeText}</span>${isPriority&&!locked?'<span class="mc-badge mc-badge-prio">Für Sie</span>':''}</span></div>
     <div class="mc-title">${m.title}</div>
@@ -3072,7 +3082,7 @@ function renderRoadmap(){
     const grp=moduleGroupStart(m.id);
     return `${grp?`<div class="roadmap-group-head">${grp.title}</div>`:''}<div class="milestone ${cls}">
       <div class="milestone-dot">${p.completed?'✓':String(m.id).padStart(2,'0')}</div>
-      <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${m.time} · ${groupOf(m.id).title}${MODULE_VIDEOS[m.id]&&!p.completed&&watchPct(m.id)>0?` · Video ${watchPct(m.id)} % angesehen`:''}</div><ul class="milestone-gist">${(m.gist||[]).map(g=>`<li>${g}</li>`).join('')}</ul></div>
+      <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${m.time} · ${groupOf(m.id).title}${MODULE_VIDEOS[m.id]&&!p.completed&&chDoneCount(m.id)>0?` · ${chDoneCount(m.id)} von ${chList(m.id).length} Videokapiteln angesehen`:''}</div><ul class="milestone-gist">${(m.gist||[]).map(g=>`<li>${g}</li>`).join('')}</ul></div>
       ${i<MODULES.length-1?`<div><span class="ai-hint">Hinweis: ${nextStepHint(m.id)}</span></div>`:''}
     </div>`+(m.id===MODULE_GROUPS[0].ids[MODULE_GROUPS[0].ids.length-1]?`<div class="milestone ${certUnlocked()?'done':''}"><div class="milestone-dot">${certUnlocked()?'✓':'✦'}</div><div class="milestone-card"><h4>Abschlusszertifikat</h4><div class="milestone-meta">Nach Abschluss der Grundlagen (Module 1–6)</div><p>Erhalten Sie Ihr offizielles Onboarding-Zertifikat.</p></div></div>`:'');
   }).join('');
@@ -3188,14 +3198,14 @@ ${l2?`<text x="80" y="222" font-family="Arial,Helvetica,sans-serif" font-size="5
 }
 // Lernvideos je Modul: Modul-ID → Videodatei (liegt neben der Seite im Ordner videos/)
 const MODULE_VIDEOS = {
-  1:{src:'videos/modul-01', ratio:1440/786},
-  2:{src:'videos/modul-02', ratio:1920/1048},
-  3:{src:'videos/modul-03', ratio:1920/950},
-  4:{src:'videos/modul-04', ratio:1920/916},
-  5:{src:'videos/modul-05', ratio:1920/948},
-  6:{src:'videos/modul-06', ratio:1920/948},
-  7:{src:'videos/modul-07', ratio:1440/708},
-  8:{src:'videos/modul-08', ratio:1440/708}
+  1:{src:'videos/modul-01', ratio:1440/786, ch:[[0,'Startseite'],[124,'Kalender'],[186,'Hauptmenü'],[268,'Benutzer anlegen']]},
+  2:{src:'videos/modul-02', ratio:1920/1048, ch:[[0,'Artikelliste'],[116,'Artikel anlegen'],[196,'Artikel bearbeiten'],[286,'Lagerorte']]},
+  3:{src:'videos/modul-03', ratio:1920/950, ch:[[0,'Artikelimport'],[20,'Excel-Vorlage'],[68,'Import durchführen'],[140,'Lieferant anlegen']]},
+  4:{src:'videos/modul-04', ratio:1920/916, ch:[[0,'Etikett-Vorlage gestalten'],[72,'Etiketten drucken'],[140,'Zwei-Etiketten-System']]},
+  5:{src:'videos/modul-05', ratio:1920/948, ch:[[0,'Etiketten erfassen'],[62,'Artikel ohne Etikett'],[96,'Bestellungen erstellen'],[151,'Drei Bestellverfahren'],[196,'Liefertermin im Kalender']]},
+  6:{src:'videos/modul-06', ratio:1920/948, ch:[[0,'Wareneingang buchen'],[78,'Über die Bestellungen'],[140,'Etikett zurück ans Regal']]},
+  7:{src:'videos/modul-07', ratio:1440/708, ch:[[0,'Maschine anlegen'],[158,'Maschine buchen'],[214,'Wer darf was buchen?'],[232,'Service und Wartung'],[302,'Wo finde ich was?']]},
+  8:{src:'videos/modul-08', ratio:1440/708, ch:[[0,'Das Sicherheits-Etikett'],[94,'Schlüssel anlegen'],[165,'Etiketten drucken'],[190,'Ausgeben und zurücknehmen'],[286,'Wo ist welcher Schlüssel?']]}
 };
 function videoBlockHtml(m){
   const vid = MODULE_VIDEOS[m.id], src = vid&&vid.src;
@@ -3231,12 +3241,26 @@ function ovpFmt(t){ t=Math.max(0,Math.floor(t||0)); return Math.floor(t/60)+':'+
 function ovpToggle(el){ const [,v]=ovpOf(el); if(v.paused||v.ended){ const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } else v.pause(); }
 function ovpState(v){ const w=v.closest('.ovp'); w.classList.toggle('playing',!v.paused&&!v.ended);
   w.querySelector('.ovp-play').innerHTML = (!v.paused&&!v.ended) ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>' : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'; }
-function ovpTick(v){ const w=v.closest('.ovp'); const d=isFinite(v.duration)?v.duration:0; watchTrack(v);
+function ovpTick(v){ const w=v.closest('.ovp'); const d=isFinite(v.duration)?v.duration:0; watchTrack(v); watchUpdateUi(+v.dataset.mid);
   w.querySelector('.ovp-time').textContent=ovpFmt(v.currentTime)+' / '+ovpFmt(d);
   const sk=w.querySelector('.ovp-seek'); sk.value=d?Math.round(v.currentTime/d*1000):0; sk.style.setProperty('--pct',(sk.value/10)+'%'); }
 /* ===== Video-Tracking: zählt nur tatsächlich abgespielte Sekunden (Vorspulen zählt nicht) ===== */
-const WATCH_DONE = 0.9;
-function watchPct(mid){ const w=state.moduleProgress[mid]?.watched; if(!w) return 0; return Math.round(w.split('').filter(c=>c==='1').length/w.length*100); }
+// Ein Kapitel gilt als angesehen, wenn 80 % seiner Sekunden wirklich abgespielt wurden.
+// Das Modul ist abgeschlossen, sobald alle Kapitel abgehakt sind.
+const CHAPTER_DONE = 0.8;
+function chList(mid){ const v=MODULE_VIDEOS[mid]; return (v&&v.ch)||[[0,'Video']]; }
+function chDone(mid,i){
+  const p=state.moduleProgress[mid]; if(p&&p.completed) return true;
+  const w=p&&p.watched; if(!w) return false;
+  const ch=chList(mid), a=Math.min(ch[i][0],w.length), b=Math.min(i+1<ch.length?ch[i+1][0]:w.length, w.length);
+  if(b<=a) return false;
+  let n=0; for(let t=a;t<b;t++) if(w[t]==='1') n++;
+  return n/(b-a)>=CHAPTER_DONE;
+}
+function chDoneCount(mid){ return chList(mid).filter((_,i)=>chDone(mid,i)).length; }
+function chPct(mid){ return Math.round(chDoneCount(mid)/chList(mid).length*100); }
+function chCurrent(mid){ const v=document.querySelector(`video[data-mid="${mid}"]`); if(!v||(!v.currentTime&&v.paused)) return -1; const ch=chList(mid); let k=0; ch.forEach((c,i)=>{ if(v.currentTime>=c[0]) k=i; }); return k; }
+function chSeek(mid,i){ const v=document.querySelector(`video[data-mid="${mid}"]`); if(!v) return; v.currentTime=chList(mid)[i][0]; v._wLast=v.currentTime; const pr=v.play(); if(pr&&pr.catch) pr.catch(()=>{}); }
 function watchTrack(v){
   const mid=+v.dataset.mid, d=v.duration; if(!mid||!isFinite(d)||d<=0) return;
   const p=state.moduleProgress[mid], n=Math.ceil(d);
@@ -3249,21 +3273,22 @@ function watchTrack(v){
   const a=p.watched.split(''); for(let t=Math.floor(last);t<=Math.min(n-1,Math.floor(cur));t++) a[t]='1';
   p.watched=a.join('');
   if(!p.started){ p.started=true; }
-  const pct=watchPct(mid); watchUpdateUi(mid,pct);
-  if(!p.completed && pct>=WATCH_DONE*100){ completeModule(mid,true); }
+  watchUpdateUi(mid);
+  if(!p.completed && chDoneCount(mid)===chList(mid).length){ completeModule(mid,true); }
   if(!v._wSaved||Date.now()-v._wSaved>5000){ v._wSaved=Date.now(); saveState(); }
 }
 function watchSave(){ saveState(); }
-function watchStatusHtml(mid){
-  const p=state.moduleProgress[mid], pct=p.completed?Math.max(watchPct(mid),100):watchPct(mid);
-  return `<div class="watch-status ${p.completed?'done':''}" id="watchStatus"><div class="ws-bar"><i style="width:${pct}%"></i></div><span class="ws-txt">${watchText(mid,pct)}</span></div>`;
+function watchStatusHtml(mid){ return `<div class="watch-status" id="watchStatus">${watchInner(mid)}</div>`; }
+function watchInner(mid){
+  const ch=chList(mid), done=chDoneCount(mid), all=done===ch.length, cur=chCurrent(mid);
+  const items=ch.map((c,i)=>{ const ok=chDone(mid,i);
+    return `<li><button type="button" class="ch-item${ok?' ok':''}${i===cur?' now':''}" onclick="chSeek(${mid},${i})" title="Zu diesem Kapitel springen"><span class="ch-ic">${ok?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>':''}</span><span class="ch-t">${c[1]}</span><span class="ch-time">${ovpFmt(c[0])}</span></button></li>`; }).join('');
+  return `<div class="ch-head"><strong>Kapitel dieses Videos</strong><span class="ch-sum${all?' all':''}">${all?'✓ Alle Kapitel angesehen – Modul abgeschlossen':`${done} von ${ch.length} angesehen`}</span></div><ol class="ch-list">${items}</ol>${all?'':'<p class="ch-note">Ein Kapitel wird abgehakt, sobald Sie es angesehen haben. Vorspulen zählt nicht.</p>'}`;
 }
-function watchText(mid,pct){ return state.moduleProgress[mid].completed ? '✓ Video angesehen – Modul abgeschlossen' : `Video zu ${pct} % angesehen · ab ${WATCH_DONE*100} % wird das Modul automatisch abgeschlossen`; }
-function watchUpdateUi(mid,pct){
+function watchUpdateUi(mid){
   const el=document.getElementById('watchStatus'); if(!el||state.currentModule!==mid) return;
-  el.querySelector('i').style.width=(state.moduleProgress[mid].completed?100:pct)+'%';
-  el.querySelector('.ws-txt').textContent=watchText(mid,pct);
-  el.classList.toggle('done',!!state.moduleProgress[mid].completed);
+  const sig=chList(mid).map((_,i)=>chDone(mid,i)?1:0).join('')+'|'+chCurrent(mid)+'|'+(state.moduleProgress[mid].completed?1:0);
+  if(el._sig===sig) return; el._sig=sig; el.innerHTML=watchInner(mid);
 }
 function ovpSeek(sk){ const [,v]=ovpOf(sk); if(isFinite(v.duration)) v.currentTime=sk.value/1000*v.duration; sk.style.setProperty('--pct',(sk.value/10)+'%'); }
 function ovpSkip(el,sec){ const [,v]=ovpOf(el); const max=isFinite(v.duration)?v.duration:Infinity; v.currentTime=Math.min(max,Math.max(0,v.currentTime+sec)); ovpTick(v); }
@@ -3321,7 +3346,7 @@ function renderTab(){
       ${m.id===3 ? templateDownloadCallout() : ''}
       <div class="practice-callout"><strong>In der Praxis</strong><p>${plainQ(m.practice)}</p></div>
       <div class="btn-row" style="margin-top:0">
-        <span id="mdStatus">${p.completed?`<span class="md-done">✓ Modul abgeschlossen</span>`:(MODULE_VIDEOS[m.id]?`<span class="md-hint">Schauen Sie das Video an – ab ${WATCH_DONE*100} % wird das Modul automatisch abgeschlossen.</span>`:`<button class="btn btn-primary" onclick="completeModule(${m.id})">Modul abschließen</button>`)}</span>
+        <span id="mdStatus">${p.completed?`<span class="md-done">✓ Modul abgeschlossen</span>`:(MODULE_VIDEOS[m.id]?`<span class="md-hint">Schauen Sie alle Kapitel des Videos an – dann wird das Modul automatisch abgeschlossen.</span>`:`<button class="btn btn-primary" onclick="completeModule(${m.id})">Modul abschließen</button>`)}</span>
         <button class="btn btn-outline" onclick="openCloudLink(${m.id})">Direkt in der OrKan Cloud üben</button>
       </div>
     `;
@@ -3449,7 +3474,7 @@ function completeModule(mid, fromVideo){
   setTimeout(()=>window.celebrate&&celebrate(),200);
   buildModuleSubNav(); updateSidebarProgress(); saveState();
   if(fromVideo){
-    watchUpdateUi(mid,watchPct(mid));
+    watchUpdateUi(mid);
     const st=document.querySelector('.md-meta > span:last-child'); if(st&&state.currentModule===mid) st.textContent='Abgeschlossen';
     const ms=document.getElementById('mdStatus'); if(ms&&state.currentModule===mid) ms.innerHTML='<span class="md-done">✓ Modul abgeschlossen</span>';
   } else renderModuleDetail();
