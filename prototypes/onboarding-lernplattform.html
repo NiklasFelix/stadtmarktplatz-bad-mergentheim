@@ -2850,7 +2850,7 @@ function renderDashboard(){
         <p class="page-sub">Hier ist Ihr Onboarding-Überblick.</p>
         <div class="status-overview-text">
           <strong>Willkommen auf der OrKan-Cloud-Trainingsplattform</strong>
-          <p>Sie durchlaufen ${MODULES.length} Module in zwei Bereichen (Grundlagen Onboarding → Expertenwissen) — insgesamt rund ${MODULES.reduce((s,m)=>s+parseInt(m.time),0)} Minuten. Bereits nach den Grundlagen (Module 1–6) erhalten Sie Ihr Zertifikat: ${CERT_HINT}</p>
+          <p>Sie durchlaufen ${MODULES.length} Module in zwei Bereichen (Grundlagen Onboarding → Expertenwissen). Sehen Sie sich alle Videos der Grundlagen (Module 1–6) an und erhalten Sie Ihr Zertifikat.</p>
         </div>
         <button class="status-overview-btn" onclick="openModule(${MODULES[0].id})">Jetzt starten</button>
       </div>
@@ -2885,7 +2885,6 @@ const DASHBOARD_WIDGETS = {
   stats: { title:'Kennzahlen', render: () => `
     <div class="stats-row">
       <div class="stat-card stat-raum"><svg class="stat-ic" viewBox="104 196 286 272" aria-hidden="true"><defs><radialGradient id="sxfadeg" gradientUnits="userSpaceOnUse" cx="246.5" cy="332" r="160"><stop offset="0" stop-color="#fff"/><stop offset=".6" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient><mask id="sxfade" maskUnits="userSpaceOnUse" x="80" y="190" width="330" height="290"><rect x="80" y="190" width="330" height="290" fill="url(#sxfadeg)"/></mask></defs><g mask="url(#sxfade)" fill="none" stroke="#A8CC68" stroke-width="9"><g transform="translate(112 203)"><path d="M 0.000223282 -0.000230197 L 110.611484 -110.611491 C 121.700764 -121.700771 139.675876 -121.700771 150.761245 -110.611491 L 261.372506 -0.000230197" transform="matrix(0.998994, 0, 0, -0.998994, 3.972433, 3.886489)"/><path d="M 0.000223282 -0.000369336 L 110.611484 110.610892 C 121.700764 121.700171 139.675876 121.700171 150.761245 110.610892 L 261.372506 -0.000369336" transform="matrix(0.998994, 0, 0, -0.998994, 3.972433, 254.046506)"/></g></g></svg><div class="stat-label">Abgeschlossene Module</div><div class="stat-val"><span data-count="${completedCount()}">${completedCount()}</span><small>/${MODULES.length}</small></div><div class="stat-sub">${progressPct()}% des Onboardings</div></div>
-      <div class="stat-card stat-zeit"><svg class="stat-ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19" fill="none" stroke="#A8CC68" stroke-width="6" stroke-dasharray="1.1 2.2"/></svg><div class="stat-label">Lernzeit gesamt</div><div class="stat-val"><span data-count="${state.totalTime}">${state.totalTime}</span></div><div class="stat-sub">Minuten investiert</div></div>
       <div class="stat-card stat-check"><svg class="stat-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 25 L18 38 L42 9" fill="none" stroke="#A8CC68" stroke-width="5.5"/></svg><div class="stat-label">Offene Module</div><div class="stat-val"><span data-count="${MODULES.length-completedCount()}">${MODULES.length-completedCount()}</span></div><div class="stat-sub">noch zu bearbeiten</div></div>
     </div>` },
   phases: { title:'Onboarding-Phasen', render: () => { const g1=MODULE_GROUPS[0].ids, g2=MODULE_GROUPS[1].ids; const done1=g1.filter(i=>state.moduleProgress[i]?.completed).length, done2=g2.filter(i=>state.moduleProgress[i]?.completed).length; const cert=certUnlocked(); return `
@@ -2944,7 +2943,7 @@ Object.assign(DASHBOARD_WIDGETS, {
     const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
     if(!next) return `<div class="w-next done"><div><strong>Alle Module abgeschlossen!</strong><p>Ihr Zertifikat ist freigeschaltet.</p></div><button class="btn btn-primary" onclick="showView('cert')">Zum Zertifikat</button></div>`;
     const p=state.moduleProgress[next.id];
-    return `<div class="w-next"><span class="w-next-num">${String(next.id).padStart(2,'0')}</span><div class="w-next-body"><strong>${next.title}</strong><p>${next.time} · ${next.points.filter(x=>!x.startsWith("## ")).length} Lerninhalte</p></div><button class="btn btn-primary" onclick="openModule(${next.id})">${p.started?'Fortsetzen':'Starten'} →</button></div>`;
+    return `<div class="w-next"><span class="w-next-num">${String(next.id).padStart(2,'0')}</span><div class="w-next-body"><strong>${next.title}</strong><p>${next.points.filter(x=>!x.startsWith("## ")).length} Lerninhalte</p></div><button class="btn btn-primary" onclick="openModule(${next.id})">${p.started?'Fortsetzen':'Starten'} →</button></div>`;
   } },
   quizchart: { title:'Quiz-Ergebnisse je Modul', render: () => {
     const rows = MODULES.map(m=>{ const s=state.moduleProgress[m.id].quizScore; return `<div class="w-bar-row"><span class="w-bar-lbl" title="${m.title}">${String(m.id).padStart(2,'0')} ${m.title}</span><div class="w-bar"><i style="width:${s??0}%" class="${s===null?'':s>=80?'ok':'warn'}"></i></div><span class="w-bar-val">${s===null?'–':s+'%'}</span></div>`; }).join('');
@@ -3047,7 +3046,6 @@ function moduleCardHtml(m, isPriority){
   return `<div class="module-card ${locked?'module-card-locked':''}" onclick="openModule(${m.id})">
     <div class="mc-top"><span class="mc-num">${String(m.id).padStart(2,'0')}</span><span class="mc-badges"><span class="mc-badge ${badge}">${locked?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:inline;vertical-align:-1px;margin-right:3px"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':''}${badgeText}</span>${isPriority&&!locked?'<span class="mc-badge mc-badge-prio">Für Sie</span>':''}</span></div>
     <div class="mc-title">${m.title}</div>
-    <div class="mc-time">${m.time}</div>
     <div class="mc-track"><div class="mc-fill" style="width:${pct}%"></div></div>
     <button class="mc-btn" onclick="event.stopPropagation();openModule(${m.id})">${locked?`Phase „${lockedPhaseLabel(m)}" abschließen`:(p.completed?'Erneut ansehen':(p.started?'Fortsetzen':'Starten'))}</button>
   </div>`;
@@ -3070,7 +3068,7 @@ function renderRoadmap(){
     const grp=moduleGroupStart(m.id);
     return `${grp?`<div class="roadmap-group-head">${grp.title}</div>`:''}<div class="milestone ${cls}">
       <div class="milestone-dot">${p.completed?'✓':String(m.id).padStart(2,'0')}</div>
-      <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${m.time} · ${groupOf(m.id).title}</div><ul class="milestone-gist">${(m.gist||[]).map(g=>`<li>${g}</li>`).join('')}</ul></div>
+      <div class="milestone-card"><h4>${m.title}</h4><div class="milestone-meta">${groupOf(m.id).title}</div><ul class="milestone-gist">${(m.gist||[]).map(g=>`<li>${g}</li>`).join('')}</ul></div>
       ${i<MODULES.length-1?`<div><span class="ai-hint">Hinweis: ${nextStepHint(m.id)}</span></div>`:''}
     </div>`+(m.id===MODULE_GROUPS[0].ids[MODULE_GROUPS[0].ids.length-1]?`<div class="milestone ${certUnlocked()?'done':''}"><div class="milestone-dot">${certUnlocked()?'✓':'✦'}</div><div class="milestone-card"><h4>Abschlusszertifikat</h4><div class="milestone-meta">Nach Abschluss der Grundlagen (Module 1–6)</div><p>${CERT_HINT}</p></div></div>`:'');
   }).join('');
@@ -3135,7 +3133,7 @@ function renderModuleDetail(){
     <div class="md-back" onclick="renderModulesList()">&larr; Zurück zu allen Modulen</div>
     <div class="module-detail-header">
       <div class="md-title-row"><span class="md-num">${String(m.id).padStart(2,'0')}</span><div class="md-title-col"><span class="phase-badge">${groupOf(m.id).title}</span><h2>${m.title}</h2></div></div>
-      <div class="md-meta"><span>${m.time}</span><span class="diff-dots">${diffDots}</span><span>${p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen')}</span></div>
+      <div class="md-meta"><span class="diff-dots">${diffDots}</span><span>${p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen')}</span></div>
     </div>
     <div id="tabContentHost" class="md-content"></div>
   `;
@@ -3198,7 +3196,7 @@ const MODULE_VIDEOS = {
 function videoBlockHtml(m){
   const vid = MODULE_VIDEOS[m.id], src = vid&&vid.src;
   // Module ohne Lernvideo: kein Platzhalter, sondern ein kurzer Hinweis
-  if(!src) return `<div class="nv-note"><div class="nv-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7M9 11h5"/></svg></div><div><strong>Lesemodul · ca. ${m.time}</strong><p>Für dieses Modul gibt es kein Video – alle Schritte finden Sie unten Punkt für Punkt erklärt. Am besten öffnen Sie parallel die OrKan Cloud und probieren jeden Schritt direkt aus.</p></div><button class="btn btn-outline" onclick="openCloudLink(${m.id})">OrKan Cloud öffnen</button></div>`;
+  if(!src) return `<div class="nv-note"><div class="nv-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7M9 11h5"/></svg></div><div><strong>Lesemodul</strong><p>Für dieses Modul gibt es kein Video – alle Schritte finden Sie unten Punkt für Punkt erklärt. Am besten öffnen Sie parallel die OrKan Cloud und probieren jeden Schritt direkt aus.</p></div><button class="btn btn-outline" onclick="openCloudLink(${m.id})">OrKan Cloud öffnen</button></div>`;
   let inner;
   if(src){
     inner = `<div class="ovp" tabindex="0" onkeydown="ovpKey(event,this)">
