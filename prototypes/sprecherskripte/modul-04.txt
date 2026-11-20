@@ -1,0 +1,31 @@
+Willkommen zu Modul 4: das Zwei-Etiketten-System. In diesem Video zeigen wir Ihnen, wie Sie Ihre Etiketten gestalten, wie Sie sie drucken und wie das Zwei-Etiketten-System im Lager funktioniert.
+
+Beginnen wir mit der Gestaltung. Ihre Etiketten-Vorlagen erstellen Sie im Etiketten-Designer. Sie finden ihn unter Einstellungen, Mandant, Lagerverwaltung und Artikelkarte.
+
+Dort legen Sie fest, was auf Ihrem Etikett stehen soll. Zur Auswahl stehen zum Beispiel die Bezeichnungen eins bis drei, das Artikelbild, ein QR-Code, Lager MIN und Lager MAX sowie der Lagerort. Die einzelnen Elemente ziehen Sie per Drag and Drop an die gewünschte Stelle und passen ihre Größe an.
+
+Sie können auch mehrere Vorlagen parallel anlegen, gerne mit Ihrem Firmenlogo. So gestalten Sie zum Beispiel für jede Artikelgruppe ein passendes Etikett.
+
+Kommen wir zum Drucken. Öffnen Sie dazu Lagerverwaltung und Artikel. Markieren Sie die gewünschten Artikel, indem Sie links das Kästchen anklicken. Ein Häkchen bestätigt Ihre Auswahl.
+
+Klicken Sie dann auf Drucken und wählen Sie Ihre Vorlage aus. Anschließend legen Sie fest, welche Artikel gedruckt werden sollen: alle, nur aktualisierte, nur nicht aktualisierte oder nur die markierten Artikel.
+
+Nach einem Klick auf Speichern erhalten Sie eine PDF-Datei. Diese drucken Sie auf OrKan-Etikettenpapier. Papier und passendes Zubehör finden Sie im OrKan System Shop.
+
+Ein wichtiger Hinweis: Steht ein Begriff im Suchfeld, bezieht sich die Auswahl „Alle“ nur auf dieses Suchergebnis. Prüfen Sie deshalb vor dem Drucken, ob das Suchfeld leer ist.
+
+Und nun zum Herzstück: dem Zwei-Etiketten-System. An jedem Lagerplatz hängen zwei Etiketten.
+
+Das blaue Etikett ist fest am Lagerplatz angebracht. Es kennzeichnet den Platz dauerhaft.
+
+Davor hängt das weiße Etikett, das sogenannte Wanderetikett. Es wandert, sobald nachbestellt werden muss.
+
+So funktioniert es im Alltag: Ist der Mindestbestand eines Artikels erreicht, nimmt der Mitarbeiter das weiße Etikett vom Regal und legt es in die Bestellbox. Mehr ist nicht zu tun.
+
+Der große Vorteil: Fehlt das weiße Etikett am Regal, sieht jeder sofort, dass dieser Artikel bereits bestellt ist. So wird nichts doppelt bestellt, und niemand muss dafür ins System schauen.
+
+Kommt die Ware später an, hängen Sie das weiße Etikett einfach wieder an seinen Platz. Der Kreislauf beginnt von vorn.
+
+Wie aus den Etiketten in der Bestellbox eine Bestellung wird, zeigen wir Ihnen im nächsten Modul.
+
+Damit kennen Sie das Zwei-Etiketten-System. Gestalten Sie jetzt Ihre erste Vorlage und drucken Sie die Etiketten für einen Testartikel.
