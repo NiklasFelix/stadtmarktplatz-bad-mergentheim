@@ -1768,6 +1768,11 @@ html.theme-light{--bg:#E2E7DC}
 html.theme-light .kp-num{color:#6E8F33}
 html.theme-light,html.theme-light body,html.theme-light .main,html.theme-light .main-content,html.theme-light .content{background:#E2E7DC}
 html.theme-light body{background:radial-gradient(ellipse 70% 50% at 100% 0%,rgba(168,204,104,.22),rgba(168,204,104,0) 70%),#E2E7DC fixed}
+
+/* ===== Breitere Menüleiste, Inhalt auf großen Bildschirmen begrenzt ===== */
+@media(min-width:1101px){.sidebar{width:300px!important;padding-left:18px!important;padding-right:18px!important}}
+@media(min-width:1001px) and (max-width:1100px){.sidebar{width:260px!important}}
+.main-scroll>.view{max-width:1240px;margin-inline:auto}
 </style>
 </head>
 <body>
