@@ -1912,6 +1912,17 @@ html:not(.theme-light) #view-best .bp-time{color:#BCD98A}
 .milestone-meta{color:var(--gray)}
 .milestone.done .milestone-card{border-color:rgba(168,204,104,.6)!important}
 @media (prefers-reduced-motion:reduce){#view-kb .kb-card,#view-best .bp-card,.milestone-card,#view-kb .kb-card h4::before,#view-best .bp-card h4::before,.milestone-card h4::before{transition:none!important}}
+
+/* Suche: Ausschnitt mit Treffern, „Meinten Sie …?“ */
+.gs-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.gs-title{font-weight:600}
+.gs-snip{font-size:12.5px;line-height:1.4;color:var(--gray);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.gs-snip mark,.kb-hint mark{background:rgba(168,204,104,.35);color:inherit;border-radius:3px;padding:0 2px}
+.gs-item{align-items:flex-start!important}.gs-item .w-tag{margin-top:2px}
+.gs-hint,.kb-hint{padding:8px 10px;font-size:13.5px;color:var(--gray)}
+.kb-hint{padding:0;margin:-6px 0 14px}
+.gs-hint button,.kb-hint button{border:0;background:none;padding:0;font:inherit;font-weight:700;color:var(--green-dark);text-decoration:underline;cursor:pointer}
+html:not(.theme-light) .gs-hint button,html:not(.theme-light) .kb-hint button{color:#BCD98A}
 </style>
 </head>
 <body>
@@ -3716,12 +3727,21 @@ function renderKB(){
 }
 function kbFilterClick(c){ state.kbFilter=c; renderKB(); }
 function kbSearchInput(v){ state.kbSearch=v; renderKBGrid(); }
+function kbApply(t){ state.kbSearch=t; const i=document.querySelector('.kb-search'); if(i) i.value=t; renderKBGrid(); }
 function renderKBGrid(){
   const host = document.getElementById('kbGridHost');
   if(!host) return;
-  const q=(state.kbSearch||'').toLowerCase(); if(state.kbFilter!=='Alle'&&!KB_TOPICS.some(t=>t.t===state.kbFilter)) state.kbFilter='Alle';
+  const q=(state.kbSearch||'').trim(); if(state.kbFilter!=='Alle'&&!KB_TOPICS.some(t=>t.t===state.kbFilter)) state.kbFilter='Alle';
   const grp=KB_TOPICS.find(t=>t.t===state.kbFilter);
-  const filtered = KB_ARTICLES.filter(a=>(!grp||grp.m.includes(a.mod)) && (!q || (a.title+' '+a.desc+' '+a.body.join(' ')).toLowerCase().includes(q)));
+  const pool = KB_ARTICLES.filter(a=>!grp||grp.m.includes(a.mod));
+  const kbCard=a=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(a)})"><h4>${a.title}</h4><p>${uiBtns(a.desc)}</p><button class="btn btn-primary kb-btn" onclick="event.stopPropagation();openArticle(${KB_ARTICLES.indexOf(a)})">Artikel lesen</button></div>`;
+  if(q.length>=2){ // Volltextsuche mit Tippfehler-Toleranz und Synonymen, nach Relevanz sortiert
+    const {Q,res,partial}=srSearch(q,pool.map(a=>({t:a.title,d:a.desc+' '+(a.path||''),r:a.body.join(' '),a})));
+    const hint=Q.corrected?`<p class="kb-hint">Meinten Sie <button type="button" onclick="kbApply('${escHtml(Q.corrected).replace(/'/g,'')}')">${escHtml(Q.corrected)}</button>? Die Ergebnisse unten berücksichtigen das bereits.</p>`:(partial?'<p class="kb-hint">Keine Artikel mit allen Begriffen – hier die besten Treffer:</p>':'');
+    host.innerHTML = `<div class="module-group-head"><h2>Suchergebnisse</h2><span>${res.length} ${res.length===1?'Treffer':'Treffer'}</span></div>${hint}`+(res.length?`<div class="kb-grid">${res.map(x=>kbCard(x.it.a)).join('')}</div>`:'<p style="color:var(--gray)">Keine Artikel gefunden. Versuchen Sie es mit einem anderen Begriff oder wählen Sie oben „Alle“.</p>');
+    return;
+  }
+  const filtered = pool;
   host.innerHTML = filtered.length ? groupByModule(filtered, a=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(a)})"><h4>${a.title}</h4><p>${uiBtns(a.desc)}</p><button class="btn btn-primary kb-btn" onclick="event.stopPropagation();openArticle(${KB_ARTICLES.indexOf(a)})">Artikel lesen</button></div>`) : '<p style="color:var(--gray)">Keine Artikel gefunden.</p>';
 }
 function openArticle(idx){
@@ -4063,13 +4083,13 @@ function favItem(k){
   if(type==='bp'&&BEST_PRACTICES[id]) return {tag:'Best Practice',title:BEST_PRACTICES[id].title,open:`showView('best');openBP(${id})`};
   return null;
 }
-const GS_SYN={bestellung:'bestell',bestellen:'bestell',kaufen:'bestell',einkauf:'bestell',nachbestellen:'bestell',order:'bestell',lager:'lager',regal:'lagerplatz',fach:'lagerplatz',ort:'lagerplatz',label:'etikett',barcode:'etikett',qr:'etikett',scannen:'scan',scanner:'scan',werkzeug:'maschine',geraet:'maschine',gerat:'maschine',baustelle:'baustelle',projekt:'projekt',auftrag:'projekt',ruecksendung:'retoure',rueckgabe:'retoure',zurueck:'retoure',kommissionierung:'kommission',zaehlung:'inventur',zaehlen:'inventur',stichtag:'inventur',bestand:'bestand',menge:'bestand',kosten:'preis',ek:'preis',vk:'preis',import:'import',excel:'import',csv:'import',hochladen:'import',lieferung:'wareneingang',anlieferung:'wareneingang',warenannahme:'wareneingang',haendler:'lieferant',login:'anmeld',passwort:'anmeld',einloggen:'anmeld',key:'schluessel',zertifikat:'zertifikat'};
+/* ===== Suche: Volltext, Tippfehler-tolerant, Synonyme & Umschreibungen ===== */
 const gsNorm=t=>String(t).replace(/<[^>]+>/g,' ').toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,' ');
 // Grundform bilden: Endungen, Partizip (an-ge-legt) und Ablaut (Anlage/anlegen, Ausgabe/ausgeben …) vereinheitlichen
 const gsStem=w=>{
   w=w.replace(/^(an|ab|auf|aus|ein|zu|vor|nach|um|zurueck|weiter)ge(?=[a-z]{3})/,'$1');
   for(const suf of ['ungen','ung','ern','en','er','es','e','n','s','et','t']) if(w.length-suf.length>=4&&w.endsWith(suf)){ w=w.slice(0,-suf.length); break; }
-  return w.replace(/lag$/,'leg').replace(/gab$/,'geb').replace(/nahm$/,'nehm').replace(/gang$/,'geh').replace(/zug$/,'zieh').replace(/fuhr$/,'fahr').replace(/schrieb$/,'schreib').replace(/stell$/,'stell');
+  return w.replace(/lag$/,'leg').replace(/gab$/,'geb').replace(/nahm$/,'nehm').replace(/gang$/,'geh').replace(/zug$/,'zieh').replace(/fuhr$/,'fahr').replace(/schrieb$/,'schreib');
 };
 const gsCanon=t=>' '+gsNorm(t).split(' ').filter(Boolean).map(gsStem).join(' ')+' ';
 function gsDist(a,b){ // Damerau-Levenshtein (Tippfehler, Buchstabendreher)
@@ -4078,60 +4098,133 @@ function gsDist(a,b){ // Damerau-Levenshtein (Tippfehler, Buchstabendreher)
     d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c); if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1]) d[i][j]=Math.min(d[i][j],d[i-2][j-2]+1); }
   return d[a.length][b.length];
 }
-let GS_VOCAB=null, GS_ITEMS=null; const GS_NCACHE={};
-function gsNeedles(w){ // Schreibweisen, unter denen ein Suchwort im Text vorkommen darf: [[needle, Gewicht]]
-  if(GS_NCACHE[w]) return GS_NCACHE[w];
-  const st=gsStem(w), syn=GS_SYN[w]||GS_SYN[st], out=[[st,1]]; if(syn) out.push([gsStem(syn),.9]);
-  const known=syn||GS_VOCAB.some(v=>v.includes(st));
-  if(!known&&st.length>=4){ const k=st.length>=10?2:1; // nur bei unbekannten Wörtern: Tippfehler tolerieren
-    for(const v of GS_VOCAB){ if(Math.abs(v.length-st.length)>k&&v.length<st.length) continue;
-      if(gsDist(st,v)<=k||(v.length>st.length&&gsDist(st,v.slice(0,st.length))<=k)) out.push([v,.6]); } }
-  return GS_NCACHE[w]=out;
+// Füllwörter, die bei Fragen wie „Wie bestelle ich neue Ware?“ nichts zur Suche beitragen
+const SR_STOP=new Set(('der die das den dem des ein eine einen einem einer eines und oder aber ich du er sie es wir ihr man mein meine meinen mich mir uns unser unsere wie was wo wer wann warum wieso weshalb welche welcher welches kann kann koennen konnte muss muessen soll sollen will wollen moechte mochte bitte mal noch auch schon nur zu zum zur im in an am auf aus bei mit nach von vor fuer ueber unter um bis ist sind war bin hat habe haben wird werden wurde gibt geht gehen machen mache macht tun richtig neue neuen neues neu einfach dann denn so da dass ob nicht kein keine hier dort etwas alle alles viele sehr gerne genau damit dabei wenn sich sein seine ihre ihren jetzt immer schnell eigentlich irgendwie funktioniert klappt finde finden suche suchen').split(' '));
+// Begriffsgruppen: Wörter einer Gruppe meinen dasselbe (auch Umschreibungen aus Kundensicht)
+const SR_GROUPS=[
+ 'bestellung bestellen bestellvorschlag nachbestellen nachbestellung kaufen einkaufen einkauf ordern order nachschub nachkaufen beschaffen beschaffung besorgen warenkorb',
+ 'wareneingang lieferung liefern geliefert ankunft angekommen eingang annehmen annahme warenannahme empfangen paket lieferschein einbuchen einlagern',
+ 'etikett etiketten label labels aufkleber schild schilder barcode qr qrcode code drucken ausdrucken druck drucker',
+ 'lagerplatz lagerort lagerorte regal regale fach faecher platz ablage stellplatz',
+ 'mindestbestand minimum min mindestmenge meldebestand untergrenze knapp leer nachfuellen',
+ 'hoechstbestand maximum max hoechstmenge obergrenze voll',
+ 'bestand menge anzahl vorrat lagerbestand stueckzahl stueck',
+ 'inventur zaehlen zaehlung bestandsaufnahme jahresinventur stichtag durchzaehlen',
+ 'artikel material produkt produkte teil teile ware waren position',
+ 'lieferant lieferanten haendler grosshandel grosshaendler shop onlineshop ids zulieferer anbieter',
+ 'import importieren excel tabelle hochladen einlesen datei csv vorlage',
+ 'maschine maschinen geraet geraete werkzeug werkzeuge bohrmaschine bohrhammer akkuschrauber pressmaschine leiter',
+ 'wartung pruefung pruefen vde service inspektion intervall pruftermin',
+ 'schluessel schluesselkasten schloss tuer',
+ 'ausgeben ausgabe verleihen ausleihen leihen buchen buchung mitnehmen uebergeben uebergabe',
+ 'rueckgabe zurueckgeben zurueckbringen zurueckbuchen',
+ 'projekt projekte baustelle baustellen auftrag kunde kundenobjekt objekt einsatzort',
+ 'entnahme entnehmen verbrauch verbrauchen abbuchen rausnehmen wegnehmen',
+ 'retoure retouren ruecksendung zuruecksenden zurueckschicken reklamation umtausch falschlieferung',
+ 'kommission kommissionieren kommissionsware sonderbestellung kundenbestellung',
+ 'preis preise kosten einkaufspreis verkaufspreis ek vk aufschlag kalkulation teuer guenstig',
+ 'benutzer mitarbeiter nutzer kollege konto zugang login anmelden einloggen passwort rechte berechtigung berechtigungen rolle',
+ 'kalender termin liefertermin datum ampel',
+ 'app handy smartphone mobil tablet iphone android',
+ 'scanner scannen scan einscannen handscanner',
+ 'startseite dashboard home kachel kacheln uebersicht hauptmenue menue navigation',
+ 'fahrzeug fahrzeuge auto transporter wagen bus',
+ 'statistik auswertung bericht berichte report analyse',
+ 'anlegen erstellen neuanlage hinzufuegen erfassen eintragen',
+ 'loeschen entfernen',
+ 'einstellen festlegen setzen eingeben hinterlegen anpassen definieren einrichten konfigurieren'
+].map(g=>[...new Set(g.split(' ').map(gsStem))]);
+const SR_GROUP_OF={}; SR_GROUPS.forEach((g,i)=>g.forEach(w=>{ (SR_GROUP_OF[w]=SR_GROUP_OF[w]||[]).push(i); }));
+let SR_VOCAB=null, SR_VSET=null, SR_SURF={}; const SR_TCACHE={};
+function srVocab(){
+  if(SR_VOCAB) return;
+  const all=[...MODULES.map(m=>[m.title,(m.points||[]).join(' '),(m.gist||[]).join(' ')].join(' ')),...KB_ARTICLES.map(a=>a.title+' '+a.desc+' '+a.body.join(' ')),...BEST_PRACTICES.map(b=>b.title+' '+b.desc+' '+b.steps.map(x=>x.t+' '+x.d).join(' '))].join(' ');
+  SR_VSET=new Set(gsCanon(all).split(' ').filter(v=>v.length>=3));
+  // Schreibweise für „Meinten Sie …?“: häufigste Originalform je Grundform
+  const cnt={}; String(all).replace(/<[^>]+>/g,' ').split(/[^A-Za-zÄÖÜäöüß0-9]+/).forEach(w=>{ if(w.length<3) return; const k=gsStem(gsNorm(w).trim()); const lw=w.toLowerCase(); cnt[k]=cnt[k]||{}; cnt[k][lw]=(cnt[k][lw]||0)+1; });
+  for(const k in cnt){ SR_SURF[k]=Object.entries(cnt[k]).sort((a,b)=>b[1]-a[1])[0][0]; }
+  SR_GROUPS.forEach(g=>g.forEach(w=>SR_VSET.add(w)));
+  SR_VOCAB=[...SR_VSET].filter(v=>v.length>=4);
 }
-const gsHit=(w,text)=>Math.max(0,...gsNeedles(w).filter(([n])=>text.includes(n)).map(([,g])=>g));
-// Suchwort in Teile zerlegen, falls es als Ganzes nicht vorkommt (Artikelanlage -> artikel + anleg)
-function gsParts(w){
-  const st=gsStem(w); if(st.length<6||gsNeedles(w).length>1||GS_SYN[w]||GS_SYN[st]) return [w];
-  // Teil zählt, wenn Wörter mit ihm beginnen; gewählt wird die Zerlegung mit den häufigsten Teilwörtern
-  const freq=x=>{ if(GS_SYN[x]) return 50; const y=gsStem(x); return GS_VOCAB.filter(v=>v.startsWith(y)).length; };
-  let best=null;
-  for(let i=4;i<=w.length-4;i++){ const a=w.slice(0,i), b=w.slice(i), fa=freq(a), fb=freq(b);
-    if(fa&&fb){ const sc=Math.log(1+fa)+Math.log(1+fb); if(!best||sc>best[0]) best=[sc,[a,b]]; } }
-  return best?best[1]:[w];
+// Suchwort -> Begriff (ggf. korrigiert) + alle Schreibweisen, unter denen es im Text vorkommen darf
+function srTerm(raw){
+  if(SR_TCACHE[raw]) return SR_TCACHE[raw];
+  let st=gsStem(raw), fixed=null;
+  if(!SR_VSET.has(st)&&!SR_GROUP_OF[st]&&![...SR_VSET].some(v=>v.length>st.length&&v.startsWith(st))&&st.length>=4){
+    const k=st.length>=7?2:1; let best=null;
+    for(const v of SR_VOCAB){ if(Math.abs(v.length-st.length)>k) continue; const d=gsDist(st,v); if(d<=k&&(!best||d<best[0]||(d===best[0]&&(SR_GROUP_OF[v]?1:0)>(SR_GROUP_OF[best[1]]?1:0)))) best=[d,v]; }
+    if(best){ fixed=best[1]; st=best[1]; }
+  }
+  const needles=new Map([[st,1]]); const nr=gsNorm(raw).trim(); if(!fixed&&nr.length>=4&&nr!==st) needles.set(nr,1);
+  (SR_GROUP_OF[st]||[]).forEach(gi=>SR_GROUPS[gi].forEach(w=>{ if(!needles.has(w)) needles.set(w,.85); }));
+  // zusammengesetzte Wörter in bekannte Teile zerlegen (Artikelanlage -> Artikel + Anlage)
+  let parts=null;
+  if(st.length>=8){ let best=null; const ok=x=>x.length>=4&&(SR_VSET.has(x)||SR_GROUP_OF[x]);
+    for(let i=4;i<=st.length-4;i++){ const a=gsStem(st.slice(0,i)), b=gsStem(st.slice(i)); if(ok(a)&&ok(b)){ const sc=(SR_GROUP_OF[a]?2:1)+(SR_GROUP_OF[b]?2:1); if(!best||sc>best[0]) best=[sc,[a,b]]; } }
+    if(best) parts=best[1].map(p=>{ const m=new Map([[p,1]]); (SR_GROUP_OF[p]||[]).forEach(gi=>SR_GROUPS[gi].forEach(w=>{ if(!m.has(w)) m.set(w,.85); })); return [...m]; }); }
+  return SR_TCACHE[raw]={raw,st,fixed,needles:[...needles],parts};
 }
-function gsScore(words,item){
-  if(!item._c) item._c=[gsCanon(item.t),gsCanon(item.r)];
-  const [t,r]=item._c; let sc=0;
-  for(let parts of words){ // ganzes Wort oder alle Wortteile müssen vorkommen
-    const [w,...sub]=parts; let a=gsHit(w,t), b=gsHit(w,r);
-    if(sub.length){ parts=sub; const pa=parts.map(x=>gsHit(x,t)), pb=parts.map(x=>gsHit(x,r)), both=parts.map((x,i)=>pa[i]||pb[i]);
-      if(both.every(Boolean)){ a=Math.max(a,.8*pa.reduce((s,x)=>s+x,0)/parts.length); b=Math.max(b,.8); }
-      else if(!a&&!b&&both.some(Boolean)){ a=.3*Math.max(...pa); b=.3*Math.max(...pb); } } // Teiltreffer, z. B. Schlüssel-übergabe
-    if(!a&&!b) return 0; sc+=a*10+b; }
-  return sc;
+// Kurze Begriffe (ek, vk, qr, ids …) nur als ganzes Wort werten, längere auch als Wortteil (Schlüssel-etikett)
+// Treffergüte: ganzes Wort 1, Wortanfang .85, Wortteil (z. B. Schlüssel-etikett) .6; kurze Begriffe nur als ganzes Wort
+const srHas=(text,n)=>text.includes(' '+n+' ')?1:n.length<4?0:text.includes(' '+n)?.85:text.includes(n)?.6:0;
+function srQuery(q){
+  srVocab();
+  const words=gsNorm(q).split(' ').filter(w=>w.length>=2);
+  let terms=words.filter(w=>!SR_STOP.has(w)); if(!terms.length) terms=words;
+  terms=terms.map(srTerm);
+  const corrected=terms.some(t=>t.fixed)?words.map(w=>{ const t=terms.find(x=>x.raw===w); return t&&t.fixed?(SR_SURF[t.fixed]||t.fixed):w; }).join(' '):null;
+  return {terms,corrected};
 }
-function gsInit(){
-  if(!GS_VOCAB){ const all=[...MODULES.map(m=>[m.title,(m.points||[]).join(' '),(m.gist||[]).join(' ')].join(' ')),...KB_ARTICLES.map(a=>a.title+' '+a.desc+' '+a.body.join(' ')),...BEST_PRACTICES.map(b=>b.title+' '+b.desc+' '+b.steps.map(x=>x.t+' '+x.d).join(' '))].join(' ');
-    GS_VOCAB=[...new Set(gsCanon(all).split(' ').filter(v=>v.length>=4))]; }
+function srScore(Q,item){
+  if(!item._c){ const f=x=>gsCanon(x)+gsNorm(x)+' '; item._c=[f(item.t),f(item.d||''),f(item.r||'')]; }
+  const [t,d,r]=item._c; let sc=0, hit=0;
+  const fieldScore=(n,g)=>Math.max(srHas(t,n)*10,srHas(d,n)*4,srHas(r,n)*1.5)*g;
+  for(const term of Q.terms){
+    let best=0;
+    for(const [n,g] of term.needles){ const v=fieldScore(n,g); if(v>best) best=v; }
+    if(term.parts){ const ps=term.parts.map(ns=>Math.max(0,...ns.map(([n,g])=>fieldScore(n,g)))); if(ps.every(Boolean)) best=Math.max(best,.8*ps.reduce((a,b)=>a+b,0)/ps.length); }
+    if(best){ hit++; sc+=best; }
+  }
+  const cov=Q.terms.length?hit/Q.terms.length:0;
+  return {sc:sc*(0.4+0.6*cov),cov};
+}
+function srSearch(q,items,minCov){
+  const Q=srQuery(q); if(!Q.terms.length) return {Q,res:[]};
+  const need=minCov!=null?minCov:(Q.terms.length<=2?1:0.5);
+  const res=items.map(it=>({it,...srScore(Q,it)})).filter(x=>x.sc>0&&x.cov>=need-1e-9).sort((a,b)=>b.cov-a.cov||b.sc-a.sc);
+  // bei zwei Wörtern ohne Treffer mit beiden: auf Treffer mit einem Wort zurückfallen
+  if(!res.length&&Q.terms.length===2) return {Q,res:items.map(it=>({it,...srScore(Q,it)})).filter(x=>x.sc>0).sort((a,b)=>b.sc-a.sc),partial:true};
+  return {Q,res};
+}
+// Textausschnitt mit markierten Treffern
+function srSnippet(Q,raw){
+  const plain=String(raw||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(); if(!plain) return '';
+  const sents=plain.split(/(?<=[.!?:])\s+/);
+  const needles=Q.terms.flatMap(t=>t.needles.map(([n])=>n)).filter(n=>n.length>=3);
+  const matchW=w=>{ const c=gsStem(gsNorm(w).trim()); return c.length>=3&&needles.some(n=>c.includes(n)||(n.length>=5&&n.includes(c)&&c.length>=5)); };
+  const s=sents.find(x=>x.split(/\s+/).some(matchW))||'';
+  if(!s) return '';
+  const cut=s.length>160?s.slice(0,157)+' …':s;
+  return cut.split(/(\s+)/).map(w=>/\s+/.test(w)?w:(matchW(w)?`<mark>${escHtml(w)}</mark>`:escHtml(w))).join('');
+}
+let GS_ITEMS=null;
+function gsItems(){
+  if(!GS_ITEMS) GS_ITEMS=[
+    ...MODULES.map(m=>({t:m.title,d:[(m.gist||[]).join(' '),typeof moduleDesc==='function'?moduleDesc(m):''].join(' '),r:(m.points||[]).join(' '),tag:'Modul '+m.id,kind:'mod',title:m.title,open:`openModule(${m.id})`})),
+    ...KB_ARTICLES.map((a,i)=>({t:a.title,d:a.desc+' '+(a.path||''),r:a.body.join(' ')+' '+((MODULES.find(m=>m.id===a.mod)||{}).title||''),tag:'Wissensdatenbank',kind:'kb',title:a.title,open:`showView('kb');openArticle(${i})`})),
+    ...BEST_PRACTICES.map((b,i)=>({t:b.title,d:b.desc,r:b.steps.map(x=>x.t+'. '+x.d).join(' ')+' '+((MODULES.find(m=>m.id===b.mod)||{}).title||''),tag:'Best Practice',kind:'bp',title:b.title,open:`showView('best');openBP(${i})`}))];
+  return GS_ITEMS;
 }
 function globalSearch(q){
   const box=document.getElementById('gsearchResults'); q=(q||'').trim();
   if(q.length<2){ box.hidden=true; box.innerHTML=''; return; }
-  const rawWords=gsNorm(q).split(' ').filter(w=>w.length>=2);
-  gsInit();
-  const rank=list=>list.filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc).slice(0,5);
-  const words=rawWords.map(w=>{ const p=gsParts(w); return p.length>1?[w,...p]:[w]; });
-  if(!GS_ITEMS) GS_ITEMS=[
-    ...MODULES.map(m=>({t:m.title,r:[(m.points||[]).join(' '),(m.gist||[]).join(' '),m.desc||''].join(' '),tag:'Modul '+m.id,title:m.title,open:`openModule(${m.id})`})),
-    ...KB_ARTICLES.map((a,i)=>({t:a.title,r:[a.desc,a.path||'',a.body.join(' '),(MODULES.find(m=>m.id===a.mod)||{}).title||''].join(' '),tag:'Wissensdatenbank',title:a.title,open:`showView('kb');openArticle(${i})`})),
-    ...BEST_PRACTICES.map((b,i)=>({t:b.title,r:[b.desc,b.steps.map(x=>x.t+' '+x.d).join(' '),(MODULES.find(m=>m.id===b.mod)||{}).title||''].join(' '),tag:'Best Practice',title:b.title,open:`showView('best');openBP(${i})`}))];
-  const scored=GS_ITEMS.map(it=>({...it,sc:gsScore(words,it)}));
-  const grp=tag=>rank(scored.filter(x=>x.tag.startsWith(tag)));
-  const mods=grp('Modul'), kbs=grp('Wissens'), bps=grp('Best');
-  const all=[...mods,...kbs,...bps];
-  box.innerHTML = all.length ? all.map(r=>`<button class="gs-item" onmousedown="event.preventDefault()" onclick="${r.open};closeGlobalSearch()"><span class="w-tag">${r.tag}</span><span>${r.title}</span></button>`).join('') : '<div class="gs-empty">Keine Treffer</div>';
+  const {Q,res,partial}=srSearch(q,gsItems());
+  const list=res.slice(0,7); // nach Relevanz, egal ob Modul, Artikel oder Anleitung
+  const hint=Q.corrected?`<div class="gs-hint">Meinten Sie <button type="button" onmousedown="event.preventDefault()" onclick="gsApply('${escHtml(Q.corrected).replace(/'/g,'')}')">${escHtml(Q.corrected)}</button>?</div>`:(partial?'<div class="gs-hint">Keine Treffer mit allen Begriffen – hier die besten Treffer:</div>':'');
+  box.innerHTML = hint+(list.length ? list.map(({it})=>{ const sn=srSnippet(Q,it.d+' '+it.r); return `<button class="gs-item" onmousedown="event.preventDefault()" onclick="${it.open};closeGlobalSearch()"><span class="w-tag">${it.tag}</span><span class="gs-txt"><span class="gs-title">${it.title}</span>${sn?`<span class="gs-snip">${sn}</span>`:''}</span></button>`; }).join('') : '<div class="gs-empty">Keine Treffer. Versuchen Sie es mit einem anderen Begriff, zum Beispiel „Etikett“, „Bestellung“ oder „Inventur“.</div>');
   box.hidden=false;
 }
+function gsApply(t){ const i=document.getElementById('gsearchInput'); i.value=t; i.focus(); globalSearch(t); }
 function closeGlobalSearch(){ const i=document.getElementById('gsearchInput'); i.value=''; i.blur(); document.getElementById('gsearchResults').hidden=true; }
 document.addEventListener('click',e=>{ if(!e.target.closest('#gsearch')){ const b=document.getElementById('gsearchResults'); if(b) b.hidden=true; } const h=document.getElementById('helpFab'); if(h&&!e.target.closest('#helpFab')) h.classList.remove('open'); });
 function toggleHelp(){ document.getElementById('helpFab').classList.toggle('open'); }
