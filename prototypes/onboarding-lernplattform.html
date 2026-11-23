@@ -1892,6 +1892,9 @@ html:not(.theme-light) .module-card.ac:hover .ac-link{color:#BCD98A}
 .ac-bar{flex:1;height:6px;border-radius:6px;background:rgba(127,138,145,.2);overflow:hidden}
 .ac-bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#A8CC68,#7FA23F);transition:width .6s cubic-bezier(.2,.7,.2,1)}
 .ac-prog b{font-family:var(--font-mono);font-size:12.5px;font-weight:700;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* Wissensdatenbank: grüner Button wie bei den Best Practices */
+.kb-card{display:flex;flex-direction:column}.kb-card p{flex:1}.kb-btn{width:100%;margin-top:6px}
 </style>
 </head>
 <body>
@@ -3702,7 +3705,7 @@ function renderKBGrid(){
   const q=(state.kbSearch||'').toLowerCase(); if(state.kbFilter!=='Alle'&&!KB_TOPICS.some(t=>t.t===state.kbFilter)) state.kbFilter='Alle';
   const grp=KB_TOPICS.find(t=>t.t===state.kbFilter);
   const filtered = KB_ARTICLES.filter(a=>(!grp||grp.m.includes(a.mod)) && (!q || (a.title+' '+a.desc+' '+a.body.join(' ')).toLowerCase().includes(q)));
-  host.innerHTML = filtered.length ? groupByModule(filtered, a=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(a)})"><h4>${a.title}</h4><p>${uiBtns(a.desc)}</p><span class="kb-link">Lesen &rarr;</span></div>`) : '<p style="color:var(--gray)">Keine Artikel gefunden.</p>';
+  host.innerHTML = filtered.length ? groupByModule(filtered, a=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(a)})"><h4>${a.title}</h4><p>${uiBtns(a.desc)}</p><button class="btn btn-primary kb-btn" onclick="event.stopPropagation();openArticle(${KB_ARTICLES.indexOf(a)})">Artikel lesen</button></div>`) : '<p style="color:var(--gray)">Keine Artikel gefunden.</p>';
 }
 function openArticle(idx){
   state.currentArticle = idx;
@@ -3721,7 +3724,7 @@ function openArticle(idx){
       ${a.downloadable ? templateDownloadCallout() : ''}
       <div class="kb-actions"><button class="btn btn-outline" onclick="openModule(${a.mod})">Zum Lernmodul ${a.mod} →</button></div>
       ${rel.length?`<div class="section-heading" style="margin-top:8px">Weitere Artikel zu diesem Thema</div>
-      <div class="kb-grid">${rel.slice(0,3).map(x=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(x)})"><h4>${x.title}</h4><p>${x.desc}</p><span class="kb-link">Lesen &rarr;</span></div>`).join('')}</div>`:''}
+      <div class="kb-grid">${rel.slice(0,3).map(x=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(x)})"><h4>${x.title}</h4><p>${x.desc}</p><button class="btn btn-primary kb-btn" onclick="event.stopPropagation();openArticle(${KB_ARTICLES.indexOf(x)})">Artikel lesen</button></div>`).join('')}</div>`:''}
     </div>
   `;
   const ms=document.querySelector('.main-scroll'); if(ms) ms.scrollTop=0;
