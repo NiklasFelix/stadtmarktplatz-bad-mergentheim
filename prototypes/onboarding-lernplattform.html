@@ -1928,7 +1928,7 @@ html:not(.theme-light) .gs-hint button,html:not(.theme-light) .kb-hint button{co
 html:not(.theme-light){--bg:#2B3034;--white:#353C41;--surface:#353C41;--surface-2:#3D454B;--line:rgba(255,255,255,.09);--border:rgba(255,255,255,.09);--gray-light:#4A5259;--gray:#B3BCC2;--ink:#F1F3F4}
 html:not(.theme-light) .main-scroll{background:
   radial-gradient(900px 520px at 100% 0%,rgba(168,204,104,.13),rgba(168,204,104,0) 62%),
-  radial-gradient(circle,rgba(168,204,104,.16) .9px,transparent 1.3px) 0 0/18px 18px,
+  var(--wave-page,none) center/cover no-repeat fixed,
   linear-gradient(120deg,#2B3034 0%,#353C41 55%,#3F464A 100%) fixed!important}
 html:not(.theme-light) .sidebar{background:#2E3337!important;border-right:1px solid rgba(255,255,255,.06)!important}
 html:not(.theme-light) .sidebar>.nav-item{background:rgba(255,255,255,.04)!important;border-color:rgba(255,255,255,.08)!important}
@@ -3385,6 +3385,40 @@ const MODULE_ICON_ART={
     ${[0,1,2,3,4,5,6].map(i=>`<rect x="${25.5+i*2.1}" y="24" width="${i%3?1.1:1.6}" height="14" class="mi-f"/>`).join('')}<rect class="mi-scan" x="22" y="30" width="20" height="2" rx="1" fill="${MI_G}"/><circle cx="32" cy="54" r="1.8" class="mi-f"/>`
 };
 function moduleIcon(id){ return `<svg class="mi" viewBox="0 0 64 64" aria-hidden="true" focusable="false">${MODULE_ICON_ART[id]||MODULE_ICON_ART[1]}</svg>`; }
+
+/* ===== Punktraster als geschwungenes Wellenfeld (Corporate Design 2026, Broschüre S. 9) ===== */
+function brandWave(W,H,seed){
+  const c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d');
+  const s=seed||0, cols=Math.round(W/9), rows=Math.round(H/9);
+  for(let j=0;j<=rows;j++){
+    for(let i=0;i<=cols;i++){
+      const u=i/cols, v=j/rows;
+      // gekrümmte Fläche: zwei überlagerte Wellen verschieben das Raster, dadurch Verdichtungen und Bögen
+      const w1=Math.sin(u*Math.PI*1.6+v*2.2+s), w2=Math.sin(v*Math.PI*1.2-u*3.1+s*1.7);
+      const x=u*W + 70*w2*(0.4+0.6*v) + 40*Math.sin(v*6+u*2+s);
+      const y=v*H + 90*w1*(0.3+0.7*u) - 120*Math.pow(u,2.2)*Math.sin(v*Math.PI);
+      // Sichtbarkeit: Felder mit Dichte, ruhige Zonen dazwischen, Rand rechts und unten betont
+      const band=0.5+0.5*Math.sin(u*3.4+v*2.6+s*2.3);
+      const edge=Math.max(Math.pow(u,6),Math.pow(1-u,5)*0.8,Math.pow(v,5)*0.7);
+      let a=0.08+0.42*Math.pow(band,2.2)+0.5*edge;
+      a*=0.85+0.15*Math.sin(i*0.7)*Math.sin(j*0.9);
+      if(a<0.06) continue;
+      const r=0.65+0.55*band;
+      g.fillStyle=`rgba(168,204,104,${Math.min(0.75,a).toFixed(3)})`;
+      g.beginPath(); g.arc(x,y,r,0,6.283); g.fill();
+    }
+  }
+  return c.toDataURL('image/png');
+}
+(function(){
+  try{
+    const page=brandWave(1800,1100,0.3), band=brandWave(1600,520,1.4);
+    const r=document.documentElement.style;
+    r.setProperty('--wave-page',`url(${page})`);
+    r.setProperty('--dots','linear-gradient(transparent,transparent)');
+    r.setProperty('--dots-fade',`url(${band}) center/cover no-repeat`);
+  }catch(e){}
+})();
 
 /* ===== Kurzbeschreibung je Modul (Modulkarte und Modulkopf) ===== */
 const MODULE_DESC={
