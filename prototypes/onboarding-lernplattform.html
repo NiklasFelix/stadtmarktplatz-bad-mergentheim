@@ -2851,15 +2851,17 @@ function escHtml(t){ return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&l
 function avatarHtml(){ return state.name ? escHtml(state.name.charAt(0).toUpperCase()) : AVATAR_ICON; }
 function displayName(){ return state.name ? escHtml(state.name) : 'Ihr Name'; }
 function displayCompany(){ return state.company ? escHtml(state.company) : 'Ihr Unternehmen'; }
+// Nur Texte austauschen, die sich wirklich ändern – nichts neu aufbauen, damit nichts ruckelt
 function refreshNameEverywhere(){
-  document.getElementById('hdrAvatar').innerHTML = avatarHtml();
-  document.getElementById('profileMenuAvatar').innerHTML = avatarHtml();
-  document.getElementById('profileMenuName').textContent = state.name || 'Name noch nicht eingetragen';
-  document.getElementById('profileMenuRole').textContent = state.company || 'Bitte unten Name und Unternehmen eintragen';
-  document.querySelectorAll('.cert-name').forEach(e=>e.innerHTML=displayName());
-  document.querySelectorAll('.cert-company').forEach(e=>e.innerHTML=displayCompany());
-  document.querySelectorAll('.w-cert-mini b').forEach(e=>e.innerHTML=displayName());
-  const h=document.querySelector('#view-dashboard h1.page-title'); if(h) h.textContent = state.name ? `Guten Tag, ${state.name}.` : 'Herzlich willkommen.';
+  const setH=(el,v)=>{ if(el&&el.innerHTML!==v) el.innerHTML=v; }, setT=(el,v)=>{ if(el&&el.textContent!==v) el.textContent=v; };
+  const av=avatarHtml();
+  setH(document.getElementById('hdrAvatar'),av); setH(document.getElementById('profileMenuAvatar'),av);
+  setT(document.getElementById('profileMenuName'), state.name || 'Name noch nicht eingetragen');
+  setT(document.getElementById('profileMenuRole'), state.company || 'Bitte unten Name und Unternehmen eintragen');
+  document.querySelectorAll('.cert-name').forEach(e=>setH(e,displayName()));
+  document.querySelectorAll('.cert-company').forEach(e=>setH(e,displayCompany()));
+  document.querySelectorAll('.w-cert-mini b').forEach(e=>setH(e,displayName()));
+  setT(document.querySelector('#view-dashboard h1.page-title'), state.name ? `Guten Tag, ${state.name}.` : 'Herzlich willkommen.');
 }
 function initializeApp(){
   refreshProfileMenu();
@@ -3972,11 +3974,13 @@ function autoSaveProfile(){
   refreshNameEverywhere();
   const cn=document.getElementById('certNameInput'); if(cn&&document.activeElement!==cn) cn.value=n;
   const cc=document.getElementById('certCompanyInput'); if(cc&&document.activeElement!==cc) cc.value=c;
-  updateSidebarProgress();
   saveState();
   const st=document.getElementById('profileSaved'); if(st){ st.textContent='✓ Automatisch gespeichert'; st.classList.add('on'); clearTimeout(st.__t); st.__t=setTimeout(()=>st.classList.remove('on'),1800); }
 }
-document.addEventListener('input', e=>{ if(e.target.id==='profileNameInput'||e.target.id==='profileCompanyInput'){ clearTimeout(__profileTimer); __profileTimer=setTimeout(autoSaveProfile,500); } });
+// Beim Tippen sofort Buchstaben und Namen aktualisieren, gespeichert wird kurz danach
+document.addEventListener('input', e=>{ if(e.target.id==='profileNameInput'||e.target.id==='profileCompanyInput'){
+  state.name=document.getElementById('profileNameInput').value.trim(); state.company=document.getElementById('profileCompanyInput').value.trim();
+  refreshNameEverywhere(); clearTimeout(__profileTimer); __profileTimer=setTimeout(autoSaveProfile,600); } });
 document.addEventListener('change', e=>{ if(e.target.id==='profileNameInput'||e.target.id==='profileCompanyInput'){ clearTimeout(__profileTimer); autoSaveProfile(); } });
 const CLOUD_DEEPLINKS = {
   1:{label:'Startseite'},
