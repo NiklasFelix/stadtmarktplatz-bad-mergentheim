@@ -1887,6 +1887,11 @@ html:not(.theme-light) .module-card.ac:hover .ac-link{color:#BCD98A}
 .ac-prio{position:absolute;top:22px;right:22px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#2B3134;background:#A8CC68;border-radius:999px;padding:4px 10px}
 .module-card.ac.module-card-locked{opacity:.6}.module-card.ac.module-card-locked:hover{transform:none!important;border-color:var(--line)!important}
 @media (prefers-reduced-motion:reduce){.module-card.ac,.module-card.ac *{transition:none!important}}
+
+.ac-prog{display:inline-flex;align-items:center;gap:10px;min-width:0;flex:1;max-width:150px}
+.ac-bar{flex:1;height:6px;border-radius:6px;background:rgba(127,138,145,.2);overflow:hidden}
+.ac-bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#A8CC68,#7FA23F);transition:width .6s cubic-bezier(.2,.7,.2,1)}
+.ac-prog b{font-family:var(--font-mono);font-size:12.5px;font-weight:700;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -3189,6 +3194,20 @@ function renderDashCustomizeList(){
     </label>`).join('');
 }
 
+// Fortschritt je Modul: Video = angesehener Anteil (bis zur 90-%-Schwelle), Lesemodul = wie weit gelesen
+function moduleProgressPct(id){
+  const p=state.moduleProgress[id]; if(!p) return 0; if(p.completed) return 100;
+  const v = MODULE_VIDEOS[id] ? Math.round(watchPct(id)/(WATCH_DONE*100)*100) : (p.readPct||0);
+  return Math.max(0,Math.min(99,v));
+}
+document.addEventListener('scroll',e=>{
+  const ms=e.target; if(!ms||ms.id!=='mainScroll'||state.currentView!=='modules'||!state.currentModule) return;
+  const id=state.currentModule, p=state.moduleProgress[id]; if(!p||p.completed||MODULE_VIDEOS[id]) return;
+  const host=document.getElementById('tabContentHost'); if(!host) return;
+  const r=host.getBoundingClientRect(), vis=ms.getBoundingClientRect().bottom;
+  const pct=Math.round(Math.min(1,Math.max(0,(vis-r.top)/r.height))*100);
+  if(pct>(p.readPct||0)){ p.readPct=pct; if(!p.started) p.started=true; clearTimeout(ms._rp); ms._rp=setTimeout(saveState,800); }
+},true);
 function moduleCardHtml(m, isPriority){
   const p = state.moduleProgress[m.id];
   const locked = isModuleLocked(m);
@@ -3200,7 +3219,7 @@ function moduleCardHtml(m, isPriority){
     <div class="ac-no">${String(m.id).padStart(2,'0')}<span>.</span></div>
     <div class="ac-rule"></div>
     <div class="ac-title">${m.title}</div>
-    <div class="ac-foot"><span class="ac-pill ${st}"><i></i>${stText}</span><button class="ac-link" onclick="event.stopPropagation();openModule(${m.id})">${btnText}${locked?'':'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'}</button></div>
+    <div class="ac-foot">${st==='prog'?(()=>{const pc=moduleProgressPct(m.id);return `<span class="ac-prog" title="${pc} % bearbeitet"><span class="ac-bar"><i style="width:${Math.max(pc,4)}%"></i></span><b>${pc} %</b></span>`;})():`<span class="ac-pill ${st}"><i></i>${stText}</span>`}<button class="ac-link" onclick="event.stopPropagation();openModule(${m.id})">${btnText}${locked?'':'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'}</button></div>
   </div>`;
 }
 
