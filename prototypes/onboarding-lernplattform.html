@@ -1895,6 +1895,23 @@ html:not(.theme-light) .module-card.ac:hover .ac-link{color:#BCD98A}
 
 /* Wissensdatenbank: grüner Button wie bei den Best Practices */
 .kb-card{display:flex;flex-direction:column}.kb-card p{flex:1}.kb-btn{width:100%;margin-top:6px}
+
+/* ===== Wissensdatenbank, Best Practices und Lernpfad im Stil der Modulkarten ===== */
+#view-kb .kb-card,#view-best .bp-card,.milestone-card{position:relative;background:var(--white)!important;border:1px solid var(--line)!important;border-radius:8px!important;box-shadow:0 1px 2px rgba(29,35,39,.04)!important;transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s,border-color .3s!important}
+#view-kb .kb-card,#view-best .bp-card{padding:24px!important}
+.milestone-card{padding:22px 24px!important}
+.milestone-card::before,.milestone-card::after{display:none!important}
+#view-kb .kb-card:hover,#view-best .bp-card:hover,.milestone-card:hover{transform:translateY(-4px)!important;border-color:#A8CC68!important;box-shadow:0 26px 46px -30px rgba(29,35,39,.55)!important}
+#view-kb .kb-card h4,#view-best .bp-card h4,.milestone-card h4{font-family:var(--font-display);font-size:19px!important;font-weight:700!important;line-height:1.25;letter-spacing:-.005em;margin-bottom:8px!important;text-wrap:balance}
+#view-kb .kb-card h4::before,#view-best .bp-card h4::before,.milestone-card h4::before{content:'';display:block;width:36px;height:2px;background:var(--ink);margin-bottom:14px;transition:width .55s cubic-bezier(.2,.7,.2,1),background .3s}
+#view-kb .kb-card:hover h4::before,#view-best .bp-card:hover h4::before,.milestone-card:hover h4::before,.milestone.done .milestone-card h4::before{width:100%;background:#A8CC68}
+#view-kb .kb-card p,#view-best .bp-card p{font-size:14.5px!important;line-height:1.55!important;color:var(--gray)!important;margin-bottom:18px!important}
+#view-best .bp-top{align-items:center;margin-bottom:14px!important}
+#view-best .bp-time{font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;color:var(--green-dark)}
+html:not(.theme-light) #view-best .bp-time{color:#BCD98A}
+.milestone-meta{color:var(--gray)}
+.milestone.done .milestone-card{border-color:rgba(168,204,104,.6)!important}
+@media (prefers-reduced-motion:reduce){#view-kb .kb-card,#view-best .bp-card,.milestone-card,#view-kb .kb-card h4::before,#view-best .bp-card h4::before,.milestone-card h4::before{transition:none!important}}
 </style>
 </head>
 <body>
