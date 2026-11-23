@@ -566,6 +566,9 @@ p.page-sub{color:var(--gray);font-size:15px;margin-bottom:28px;line-height:1.5}
 .ai-panel-head{padding:18px 18px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .ai-panel-head h4{font-size:15px;font-weight:700}
 .ai-panel-head .close-x{cursor:pointer;color:var(--gray);font-size:18px;line-height:1}
+.vm-head .close-x,.vm-modal .close-x{cursor:pointer;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;font-size:24px;line-height:1;color:var(--gray);user-select:none;transition:background .15s,color .15s}
+.vm-head .close-x:hover,.vm-modal .close-x:hover{background:rgba(0,0,0,.07);color:var(--dark-bg,#2B3134)}
+html:not(.theme-light) .vm-modal .close-x:hover{background:rgba(255,255,255,.1);color:#fff}
 .ai-status-line{padding:0 18px;font-size:13px;color:var(--green-dark);display:flex;align-items:center;gap:6px;margin:10px 0}
 .ai-status-line::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse2 2s infinite}
 @keyframes pulse2{0%,100%{opacity:1}50%{opacity:.4}}
