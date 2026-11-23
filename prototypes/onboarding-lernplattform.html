@@ -3582,7 +3582,7 @@ function ovpKey(e,w){ const v=w.querySelector('video'); if(e.target.tagName==='S
   else if(e.key==='f'){ ovpFull(w); } }
 /* ===== Klickpfade als Buttons darstellen ===== */
 // „Begriffe“ in Klickpfaden werden als grüne Buttons gezeigt – Beispielwerte, Feldnamen und Buchstaben bleiben normaler Text.
-const UI_NOBTN=['Pack','Stück','Enter','Aufmaß','Anlage','klein','Befestigung','Abw. Bestelleinheit','Menge (VPE)','Mengeneinheit (VPE)','Standardbestellverfahren','Offset in Tagen'];
+const UI_NOBTN=['Pack','Dokumente','Stück','Enter','Aufmaß','Anlage','klein','Befestigung','Abw. Bestelleinheit','Menge (VPE)','Mengeneinheit (VPE)','Standardbestellverfahren','Offset in Tagen'];
 function uiBtns(html){
   if(!html||html.indexOf('„')<0) return html;
   const plain=t=>t.replace(/<[^>]+>/g,'');
