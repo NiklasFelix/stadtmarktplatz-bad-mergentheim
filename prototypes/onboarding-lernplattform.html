@@ -3519,7 +3519,7 @@ function videoBlockHtml(m){
   let inner;
   if(src){
     inner = `<div class="ovp" tabindex="0" onkeydown="ovpKey(event,this)">
-      <video data-mid="${m.id}" poster="${modulePoster(m)}" preload="metadata" playsinline onclick="ovpToggle(this)" ontimeupdate="ovpTick(this)" onloadedmetadata="ovpTick(this)" onplay="ovpState(this)" onpause="ovpState(this);watchSave()" onended="ovpState(this);watchSave()"><source src="${src}.mp4?v=${VIDEO_VER}" type="video/mp4"><source src="${src}.webm?v=${VIDEO_VER}" type="video/webm"></video>
+      <video data-mid="${m.id}" poster="${modulePoster(m)}" preload="metadata" playsinline onclick="ovpToggle(this)" ontimeupdate="ovpTick(this)" onloadedmetadata="videoResume(this);ovpTick(this)" onplay="ovpState(this)" onpause="ovpState(this);watchSave()" onended="ovpState(this);watchSave()"><source src="${src}.mp4?v=${VIDEO_VER}" type="video/mp4"><source src="${src}.webm?v=${VIDEO_VER}" type="video/webm"></video>
       <div class="ovp-bar">
         <input type="range" class="ovp-seek" min="0" max="1000" value="0" aria-label="Position" oninput="ovpSeek(this)">
         <div class="ovp-row">
@@ -3553,9 +3553,12 @@ function ovpTick(v){ const w=v.closest('.ovp'); const d=isFinite(v.duration)?v.d
 // Ein Video gilt als angesehen, wenn 90 % wirklich abgespielt wurden (Vorspulen zählt nicht). Es gibt dazu bewusst keine Anzeige.
 const WATCH_DONE = 0.9;
 function watchPct(mid){ const w=state.moduleProgress[mid]?.watched; if(!w) return 0; return Math.round(w.split('').filter(c=>c==='1').length/w.length*100); }
+// Wiedergabeposition merken und beim nächsten Öffnen dort weitermachen
+function videoResume(v){ const p=state.moduleProgress[+v.dataset.mid]; const t=p&&p.pos; if(t&&isFinite(v.duration)&&t>2&&t<v.duration-3){ v.currentTime=t; v._wLast=t; } }
 function watchTrack(v){
   const mid=+v.dataset.mid, d=v.duration; if(!mid||!isFinite(d)||d<=0) return;
   const p=state.moduleProgress[mid], n=Math.ceil(d);
+  if(!v.seeking&&v.currentTime>0) p.pos=v.ended?0:Math.round(v.currentTime);
   if(!p.watched||p.watched.length!==n) p.watched='0'.repeat(n);
   const cur=v.currentTime, last=v._wLast;
   v._wLast=cur;
