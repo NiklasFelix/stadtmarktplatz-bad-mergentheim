@@ -1740,21 +1740,14 @@ html:not(.theme-light) .nv-ic{color:#A8CC68}
 .hdr-avatar svg,.profile-menu-avatar svg{display:block;margin:auto}
 
 /* ===== Modulkopf mit animiertem Zahlen-Motiv ===== */
-.module-detail-header{min-height:220px;display:flex!important;flex-direction:column;justify-content:center}
+.module-detail-header{display:flex!important;flex-direction:column;justify-content:center}
 .module-detail-header .md-title-row,.module-detail-header .md-meta{position:relative;z-index:1}
-.md-motif{position:absolute;right:0;top:0;bottom:0;width:50%;pointer-events:none;overflow:hidden;border-radius:0 18px 18px 0}
-.md-motif .mm{width:100%;height:100%;display:block}
-.md-title-col{max-width:min(520px,46%)}
+.md-title-col{max-width:760px}
 @keyframes mmSpin{to{transform:rotate(360deg)}}
 .module-detail-header .md-num,.module-detail-header .md-title-col,.module-detail-header .md-meta{animation:mdIn .7s cubic-bezier(.2,.7,.2,1) backwards}
 .module-detail-header .md-title-col{animation-delay:.12s}.module-detail-header .md-meta{animation-delay:.24s}
 @keyframes mdIn{from{opacity:0;transform:translateY(12px)}}
-@media(max-width:900px){.md-motif{width:100%;opacity:.22}.md-title-col{max-width:100%}}
-@media(prefers-reduced-motion:reduce){.module-detail-header .md-num,.module-detail-header .md-title-col,.module-detail-header .md-meta{animation:none}}
-
-.mc-art{position:relative;margin:-20px -20px 16px;height:118px;border-radius:13px 13px 0 0;overflow:hidden;background:radial-gradient(ellipse 55% 110% at 50% 50%,rgba(168,204,104,.18),rgba(168,204,104,0) 70%),linear-gradient(120deg,#2E3337 0%,#3F464A 100%)}
-.mc-art .mm{width:100%;height:100%;display:block}
-.module-card-locked .mc-art{filter:grayscale(.8)}
+@media(prefers-reduced-motion:reduce){.module-detail-header .md-num,.module-detail-header .md-title-col,.module-detail-header .md-meta,.module-detail-header .md-desc{animation:none}}
 
 /* ===== Hell-Modus: getönter OrKan-Hintergrund statt Fast-Weiß ===== */
 html.theme-light{--bg:#E2E7DC}
@@ -1790,109 +1783,18 @@ html:not(.theme-light) .sidebar>.nav-item:hover{background:rgba(255,255,255,.07)
 html:not(.theme-light) .sidebar>.nav-item.active{background:rgba(168,204,104,.16)!important}
 @media(max-width:1000px){.sidebar>.nav-item{border:0!important;background:none;padding:10px!important}.sidebar>.nav-item svg{padding:0;border:0;background:none}}
 
-/* ===== Animierte Modul-Szenen: ruhige 12-Sekunden-Schleifen ===== */
-.sc *{animation-duration:12s;animation-iteration-count:infinite;animation-timing-function:cubic-bezier(.45,.05,.35,1)}
-.sc .fb{transform-box:fill-box}
-/* 1 Grundlagen */
-.s1-cur{animation-name:s1cur}
-@keyframes s1cur{0%,8%{transform:translate(240px,150px)}18%,26%{transform:translate(172px,86px)}36%,44%{transform:translate(332px,86px)}54%,62%{transform:translate(172px,126px)}72%,80%{transform:translate(332px,126px)}92%,100%{transform:translate(240px,150px)}}
-.s1-t{transform-box:fill-box;transform-origin:center}
-.s1-t.t1{animation-name:s1a}.s1-t.t2{animation-name:s1b}.s1-t.t3{animation-name:s1c}.s1-t.t4{animation-name:s1d}
-@keyframes s1a{0%,17%,30%,100%{transform:scale(1)}21%,26%{transform:scale(1.08)}}
-@keyframes s1b{0%,35%,48%,100%{transform:scale(1)}39%,44%{transform:scale(1.08)}}
-@keyframes s1c{0%,53%,66%,100%{transform:scale(1)}57%,62%{transform:scale(1.08)}}
-@keyframes s1d{0%,71%,84%,100%{transform:scale(1)}75%,80%{transform:scale(1.08)}}
-/* 2 Artikel & Lagerplätze */
-.s2-in{animation-name:s2in}.s2-lab{animation-name:s2lab}.s2-chip{animation-name:s2chip}
-@keyframes s2in{0%,8%{opacity:1;transform:none}14%{opacity:0;transform:none}15%{opacity:0;transform:translateX(150px)}22%{opacity:1;transform:translateX(150px)}40%,100%{opacity:1;transform:none}}
-@keyframes s2lab{0%,8%{opacity:1;transform:none}14%,42%{opacity:0;transform:translateY(8px)}52%,100%{opacity:1;transform:none}}
-@keyframes s2chip{0%,54%{opacity:0;transform:translateY(6px)}60%,86%{opacity:1;transform:none}92%,100%{opacity:0}}
-/* 3 Import */
-.s3-r{animation-name:s3r0}.s3-r.r1{animation-name:s3r1}.s3-r.r2{animation-name:s3r2}.s3-r.r3{animation-name:s3r3}.s3-ok{animation-name:s3ok}
-@keyframes s3r0{0%,8%{opacity:1;transform:none}12%,20%{opacity:0;transform:translateX(-12px)}26%,100%{opacity:1;transform:none}}
-@keyframes s3r1{0%,8%{opacity:1;transform:none}12%,30%{opacity:0;transform:translateX(-12px)}36%,100%{opacity:1;transform:none}}
-@keyframes s3r2{0%,8%{opacity:1;transform:none}12%,40%{opacity:0;transform:translateX(-12px)}46%,100%{opacity:1;transform:none}}
-@keyframes s3r3{0%,8%{opacity:1;transform:none}12%,50%{opacity:0;transform:translateX(-12px)}56%,100%{opacity:1;transform:none}}
-@keyframes s3ok{0%,8%{opacity:1}12%,60%{opacity:0;transform:translateY(6px)}66%,100%{opacity:1;transform:none}}
-/* 4 Zwei-Etiketten-System: weißes Etikett wandert in die Bestellbox, blaues bleibt */
-.s4-c1{animation-name:s4c1}.s4-c2{animation-name:s4c2}
-@keyframes s4c1{0%,20%{opacity:1}24%,92%{opacity:0}96%,100%{opacity:1}}
-@keyframes s4c2{0%,22%{opacity:0}26%,80%{opacity:1}84%,100%{opacity:0}}
-.s4-white{transform-box:fill-box;transform-origin:0 0;animation-name:s4w}
-@keyframes s4w{0%,32%{transform:none;opacity:1}40%{transform:translate(0,-22px)}58%{transform:translate(296px,-30px) scale(.62);opacity:1}66%{transform:translate(296px,-6px) scale(.62);opacity:1}72%,86%{transform:translate(296px,16px) scale(.62);opacity:0}87%{transform:translate(0,-12px);opacity:0}96%,100%{transform:none;opacity:1}}
-/* 5 Bestellvorschlag */
-.s5-lab{animation-name:s5lab}.s5-beam{animation-name:s5beam}.s5-sc{animation-name:s5sc}.s5-row{animation-name:s5row}.s5-btn{transform-box:fill-box;transform-origin:center;animation-name:s5btn}
-@keyframes s5lab{0%,8%{opacity:1;transform:none}12%,16%{opacity:0;transform:translateY(46px)}28%,100%{opacity:1;transform:none}}
-@keyframes s5sc{0%,22%{transform:translateX(34px)}30%,44%{transform:none}54%,100%{transform:translateX(34px)}}
-@keyframes s5beam{0%,32%{opacity:0}34%,40%{opacity:1}42%,100%{opacity:0}}
-@keyframes s5row{0%,8%{opacity:1;transform:none}12%,42%{opacity:0;transform:translateY(-6px)}48%,100%{opacity:1;transform:none}}
-@keyframes s5btn{0%,66%{transform:scale(1)}70%{transform:scale(.92)}74%,100%{transform:scale(1)}}
-/* 6 Wareneingang */
-.s6-box{animation-name:s6box}.s6-ok{transform-box:fill-box;transform-origin:center;animation-name:s6ok}
-.s6-tick{animation-name:s6k0}.s6-tick.k1{animation-name:s6k1}.s6-tick.k2{animation-name:s6k2}.s6-tick.k3{animation-name:s6k3}
-.s6-white{transform-box:fill-box;transform-origin:0 0;animation-name:s6w}
-@keyframes s6box{0%,8%{opacity:1;transform:none}12%,14%{opacity:0;transform:translateX(-40px)}24%,100%{opacity:1;transform:none}}
-@keyframes s6k0{0%,8%{opacity:1}12%,26%{opacity:0}30%,100%{opacity:1}}
-@keyframes s6k1{0%,8%{opacity:1}12%,34%{opacity:0}38%,100%{opacity:1}}
-@keyframes s6k2{0%,8%{opacity:1}12%,42%{opacity:0}46%,100%{opacity:1}}
-@keyframes s6k3{0%,8%{opacity:1}12%,50%{opacity:0}54%,100%{opacity:1}}
-@keyframes s6ok{0%,8%{opacity:1;transform:scale(1)}12%,54%{opacity:0;transform:scale(.4)}60%,100%{opacity:1;transform:scale(1)}}
-@keyframes s6w{0%,8%{opacity:1;transform:none}12%,60%{opacity:0;transform:translate(-170px,30px) scale(.7)}64%{opacity:1;transform:translate(-170px,30px) scale(.7)}80%,100%{opacity:1;transform:none}}
-/* 7 Maschinen */
-.s7-beam{animation-name:s7beam}.s7-card{animation-name:s7card}.s7-svc{animation-name:s7svc}.s7-ok{transform-box:fill-box;transform-origin:center;animation-name:s7ok}
-@keyframes s7beam{0%,22%{opacity:0;transform:none}24%{opacity:1}32%{opacity:1;transform:translateX(-30px)}34%,100%{opacity:0}}
-@keyframes s7card{0%,8%{opacity:1;transform:none}12%,34%{opacity:0;transform:translateX(16px)}42%,100%{opacity:1;transform:none}}
-@keyframes s7svc{0%,8%{opacity:1;transform:none}12%,48%{opacity:0;transform:translateX(16px)}56%,100%{opacity:1;transform:none}}
-@keyframes s7ok{0%,8%{opacity:1;transform:scale(1)}12%,60%{opacity:0;transform:scale(.4)}66%,100%{opacity:1;transform:scale(1)}}
-/* 8 Schlüssel */
-.s8-key{animation-name:s8key}.s8-chip{animation-name:s8chip}
-@keyframes s8key{0%,10%{transform:none}18%{transform:translate(0,-8px)}40%,78%{transform:translate(150px,40px)}94%,100%{transform:none}}
-@keyframes s8chip{0%,40%{opacity:0;transform:translateY(6px)}46%,78%{opacity:1;transform:none}84%,100%{opacity:0}}
-/* 9 Projekte */
-.s9-btn{transform-box:fill-box;transform-origin:center;animation-name:s9btn}.s9-part{animation-name:s9part}.s9-ok{transform-box:fill-box;transform-origin:center;animation-name:s9ok}
-@keyframes s9btn{0%,18%{transform:scale(1)}22%{transform:scale(.9)}26%,100%{transform:scale(1)}}
-@keyframes s9part{0%,26%{opacity:0;transform:none}30%{opacity:1;transform:none}56%{opacity:1;transform:translate(142px,46px)}62%,100%{opacity:0;transform:translate(142px,46px)}}
-@keyframes s9ok{0%,58%{opacity:0;transform:scale(.4)}64%,92%{opacity:1;transform:scale(1)}98%,100%{opacity:0}}
-/* 10 Bestandsführung */
-.s10-minus{animation-name:s10m}.s10-n{opacity:0}.s10-n.n0{animation-name:s10n0}.s10-n.n1{animation-name:s10n1}.s10-n.n2{animation-name:s10n2}
-.s10-bar{transform-box:fill-box;transform-origin:0 50%;animation-name:s10bar}
-@keyframes s10m{0%,14%{opacity:0;transform:none}18%{opacity:1}28%,44%{opacity:0;transform:translateY(-16px)}46%{opacity:0;transform:none}50%{opacity:1}60%,100%{opacity:0;transform:translateY(-16px)}}
-@keyframes s10n0{0%,20%{opacity:1}22%,94%{opacity:0}96%,100%{opacity:1}}
-@keyframes s10n1{0%,20%{opacity:0}22%,52%{opacity:1}54%,100%{opacity:0}}
-@keyframes s10n2{0%,52%{opacity:0}54%,94%{opacity:1}96%,100%{opacity:0}}
-@keyframes s10bar{0%,20%{transform:scaleX(1);fill:#A8CC68}26%,52%{transform:scaleX(.667);fill:#A8CC68}58%,94%{transform:scaleX(.333);fill:#E5A93B}100%{transform:scaleX(1);fill:#A8CC68}}
-/* 11 Inventur */
-.s11-beam{animation-name:s11beam}.s11-sc{animation-name:s11sc}.s11-val{animation-name:s11val}.s11-bar{transform-box:fill-box;transform-origin:0 50%;animation-name:s11bar}.s11-c0{animation-name:s11c0}.s11-c1{animation-name:s11c1}
-@keyframes s11sc{0%,14%{transform:translateX(30px)}22%,36%{transform:none}46%,100%{transform:translateX(30px)}}
-@keyframes s11beam{0%,24%{opacity:0}26%,32%{opacity:1}34%,100%{opacity:0}}
-@keyframes s11val{0%,8%{opacity:1}12%,34%{opacity:0}38%,100%{opacity:1}}
-@keyframes s11bar{0%,8%{transform:scaleX(.75)}12%,34%{transform:scaleX(.5)}42%,100%{transform:scaleX(.75)}}
-@keyframes s11c0{0%,8%{opacity:0}10%,36%{opacity:1}38%,100%{opacity:0}}
-@keyframes s11c1{0%,8%{opacity:1}10%,36%{opacity:0}38%,100%{opacity:1}}
-.s11-c0,.s11-c1{font-weight:700}
-/* 12 Preise */
-.s12-a{animation-name:s12a}.s12-b{animation-name:s12b}.s12-sync{animation-name:s12sync}
-@keyframes s12a{0%,8%{opacity:0}12%,32%{opacity:1}36%,100%{opacity:0}}
-@keyframes s12b{0%,8%{opacity:1}12%,32%{opacity:0}36%,100%{opacity:1}}
-@keyframes s12sync{0%,18%{transform:rotate(0)}34%,100%{transform:rotate(360deg)}}
-/* 13 Kommission / Retoure */
-.s13-k{animation-name:s13k}.s13-r{animation-name:s13r}.s13-a1,.s13-a2{animation-name:s13dash;animation-timing-function:linear}
-@keyframes s13k{0%,10%{opacity:1;transform:none}34%{opacity:1;transform:translateX(40px)}40%{opacity:0;transform:translateX(52px)}42%{opacity:0;transform:none}52%,100%{opacity:1;transform:none}}
-@keyframes s13r{0%,50%{opacity:1;transform:none}74%{opacity:1;transform:translateX(40px)}80%{opacity:0;transform:translateX(52px)}82%{opacity:0;transform:none}92%,100%{opacity:1;transform:none}}
-@keyframes s13dash{to{stroke-dashoffset:-96}}
-/* 14 Digitale Warenannahme */
-.s14-box{animation-name:s14box}.s14-beam{animation-name:s14beam}.s14-ok{animation-name:s14ok}
-.s14-t{animation-name:s14t0}.s14-t.t1{animation-name:s14t1}.s14-t.t2{animation-name:s14t2}
-@keyframes s14box{0%,8%{opacity:1;transform:none}12%{opacity:0;transform:translateX(30px)}20%,100%{opacity:1;transform:none}}
-@keyframes s14beam{0%,22%{opacity:0;transform:none}24%{opacity:1;transform:translateY(-14px)}40%{opacity:1;transform:translateY(14px)}56%{opacity:1;transform:translateY(-14px)}58%,100%{opacity:0}}
-@keyframes s14t0{0%,8%{opacity:1}12%,30%{opacity:0}34%,100%{opacity:1}}
-@keyframes s14t1{0%,8%{opacity:1}12%,42%{opacity:0}46%,100%{opacity:1}}
-@keyframes s14t2{0%,8%{opacity:1}12%,54%{opacity:0}58%,100%{opacity:1}}
-@keyframes s14ok{0%,8%{opacity:1;transform:none}12%,60%{opacity:0;transform:translateY(6px)}66%,100%{opacity:1;transform:none}}
-/* Modulkarten: Szene steht still im fertigen Zustand und läuft beim Darüberfahren */
-.mc-art .sc *{animation-play-state:paused}
-.module-card:hover .mc-art .sc *{animation-play-state:running}
-@media (prefers-reduced-motion:reduce){.sc *{animation:none!important}}
+
+/* ===== Modulkarten: Nummer und Titel oben im dunklen Feld, darunter Kurzbeschreibung ===== */
+.mc-head{position:relative;margin:-20px -20px 16px;min-height:116px;padding:18px 20px 18px;border-radius:13px 13px 0 0;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;overflow:hidden;
+  background:radial-gradient(ellipse 70% 120% at 100% 0%,rgba(168,204,104,.22),rgba(168,204,104,0) 60%),linear-gradient(120deg,#2E3337 0%,#3F464A 100%)}
+.mc-head::after{content:'';position:absolute;left:20px;right:20px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#A8CC68;opacity:.9}
+.mc-head-eyebrow{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.04em;color:#A8CC68}
+.mc-head-title{font-family:var(--font-display);font-size:19px;font-weight:700;line-height:1.2;color:#fff;text-wrap:balance}
+.module-card .mc-top{margin-bottom:10px!important}
+.mc-desc{margin:0 0 14px;font-size:14px;line-height:1.5;color:var(--gray);flex:1}
+.module-card-locked .mc-head{filter:grayscale(.8)}
+.md-desc{margin:10px 0 0;max-width:62ch;font-size:15.5px;line-height:1.55;color:rgba(255,255,255,.78)}
+.module-detail-header .md-desc{animation:mdIn .7s cubic-bezier(.2,.7,.2,1) .3s backwards}
 </style>
 </head>
 <body>
@@ -3202,9 +3104,9 @@ function moduleCardHtml(m, isPriority){
   const badgeText = locked?'Gesperrt':(p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen'));
   const pct = p.completed?100:(p.started?45:0);
   return `<div class="module-card ${locked?'module-card-locked':''}" onclick="openModule(${m.id})">
-    <div class="mc-art" aria-hidden="true">${moduleMotif(m.id,true)}</div>
-    <div class="mc-top"><span class="mc-num">${String(m.id).padStart(2,'0')}</span><span class="mc-badges"><span class="mc-badge ${badge}">${locked?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:inline;vertical-align:-1px;margin-right:3px"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':''}${badgeText}</span>${isPriority&&!locked?'<span class="mc-badge mc-badge-prio">Für Sie</span>':''}</span></div>
-    <div class="mc-title">${m.title}</div>
+    <div class="mc-head"><span class="mc-head-eyebrow">Modul ${String(m.id).padStart(2,'0')} · ${groupOf(m.id).title}</span><span class="mc-head-title">${m.title}</span></div>
+    <div class="mc-top"><span class="mc-badges"><span class="mc-badge ${badge}">${locked?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:inline;vertical-align:-1px;margin-right:3px"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':''}${badgeText}</span>${isPriority&&!locked?'<span class="mc-badge mc-badge-prio">Für Sie</span>':''}</span></div>
+    <p class="mc-desc">${moduleDesc(m)}</p>
     <div class="mc-track"><div class="mc-fill" style="width:${pct}%"></div></div>
     <button class="mc-btn" onclick="event.stopPropagation();openModule(${m.id})">${locked?`Phase „${lockedPhaseLabel(m)}" abschließen`:(p.completed?'Erneut ansehen':(p.started?'Fortsetzen':'Starten'))}</button>
   </div>`;
@@ -3284,144 +3186,23 @@ function openModule(id){
 }
 
 
-/* ===== Animierte Modul-Szenen (ruhige 12-Sekunden-Schleifen, nach dem Look der Lernvideos) ===== */
-const SC_F="Barlow, Arial, sans-serif", SC_M="'JetBrains Mono', monospace";
-function scQr(x,y,s,c='#1D2327'){ // vereinfachter QR-Code
-  const n=9,k=s/n, on=[[3,0],[5,0],[4,1],[3,3],[5,3],[4,4],[6,4],[8,4],[3,5],[7,5],[4,6],[6,6],[8,6],[3,7],[5,7],[7,8],[4,8],[0,4],[1,4],[2,5],[6,8],[8,8]];
-  const f=(fx,fy)=>`<rect x="${x+fx*k+k*.25}" y="${y+fy*k+k*.25}" width="${k*2.5}" height="${k*2.5}" fill="none" stroke="${c}" stroke-width="${k*.5}"/><rect x="${x+fx*k+k}" y="${y+fy*k+k}" width="${k}" height="${k}" fill="${c}"/>`;
-  return `<rect x="${x-2}" y="${y-2}" width="${s+4}" height="${s+4}" fill="#fff"/>`+f(0,0)+f(6,0)+f(0,6)+on.map(([i,j])=>`<rect x="${x+i*k}" y="${y+j*k}" width="${k}" height="${k}" fill="${c}"/>`).join('');
-}
-// Lagerplatz-Etikett wie in der OrKan Cloud (weiß = wandert, blau = fest am Lagerplatz)
-function scLabel(x,y,o={}){
-  const w=o.w||150,h=o.h||52,bg=o.blue?'#CFE3F2':'#FFFFFF',t=o.t||'Stockschrauben',sub=o.sub||'TX 25 · 8 × 120',nr=o.nr||'1009',lo=o.lo||'1_10';
-  return `<g class="${o.cls||''}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${bg}" stroke="rgba(0,0,0,.18)"/>
-  <rect x="${x+7}" y="${y+9}" width="3" height="${h-20}" rx="1.5" fill="#2B3134"/>
-  <text x="${x+17}" y="${y+15}" font-family="${SC_F}" font-weight="700" font-size="11" fill="#1D2327">${t}</text>
-  <text x="${x+17}" y="${y+25}" font-family="${SC_F}" font-size="7.5" fill="#4E5860">${sub}</text>
-  <text x="${x+17}" y="${y+37}" font-family="${SC_F}" font-weight="700" font-size="8.5" fill="#1D2327">Min: ${o.min||1}   Max: ${o.max||3}   ${o.unit||'Pack'}</text>
-  <text x="${x+17}" y="${y+47}" font-family="${SC_F}" font-size="7" fill="#4E5860">Lagerort: ${lo}</text>
-  ${scQr(x+w-33,y+7,26)}<text x="${x+w-20}" y="${y+h-5}" text-anchor="middle" font-family="${SC_F}" font-size="7" fill="#1D2327">${nr}</text></g>`;
-}
-function scBestellbox(x,y,w=96,h=66,cls=''){
-  return `<g class="${cls}"><path d="M${x} ${y}h${w}l-6 ${h}h-${w-12}z" fill="#8FB64E"/><rect x="${x-4}" y="${y-8}" width="${w+8}" height="12" rx="2" fill="#A8CC68"/>
-  <rect x="${x+w/2-9}" y="${y+14}" width="18" height="12" rx="2" fill="none" stroke="#fff" stroke-width="2"/><path d="M${x+w/2-9} ${y+15}l9 6 9-6" fill="none" stroke="#fff" stroke-width="2"/>
-  <text x="${x+w/2}" y="${y+46}" text-anchor="middle" font-family="${SC_F}" font-weight="800" font-size="11" letter-spacing="1.5" fill="#fff">BESTELLBOX</text></g>`;
-}
-function scBox(x,y,w,h,o={}){ // Artikelkarton
-  return `<g class="${o.cls||''}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${o.fill||'#EEF0EC'}" stroke="rgba(0,0,0,.12)"/>
-  <rect x="${x+8}" y="${y+10}" width="4" height="${h-22}" rx="2" fill="#8E979B"/>
-  <text x="${x+20}" y="${y+h*.42}" font-family="${SC_F}" font-weight="700" font-size="${o.fs||12}" fill="#1D2327">${o.t||'Stockschraube'}</text>
-  <text x="${x+20}" y="${y+h*.42+13}" font-family="${SC_F}" font-size="9" fill="#4E5860">${o.sub||'8 × 120'}</text>
-  <rect x="${x}" y="${y+h-9}" width="${w}" height="9" fill="#2B3134"/></g>`;
-}
-function scCheck(x,y,r=15,cls=''){ return `<g class="${cls}"><circle cx="${x}" cy="${y}" r="${r}" fill="#A8CC68"/><path d="M${x-r*.45} ${y}l${r*.32} ${r*.36} ${r*.6}-${r*.7}" fill="none" stroke="#2B3134" stroke-width="${r*.22}" stroke-linecap="round" stroke-linejoin="round"/></g>`; }
-function scChip(x,y,txt,o={}){ const w=o.w||(txt.length*5.6+22); return `<g class="${o.cls||''}"><rect x="${x}" y="${y}" width="${w}" height="20" rx="10" fill="${o.bg||'#fff'}"/><text x="${x+w/2}" y="${y+13.5}" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="9.5" fill="${o.fg||'#1D2327'}">${txt}</text></g>`; }
-function scWin(x,y,w,h,title){ return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="#F6F8F3"/><rect x="${x}" y="${y}" width="${w}" height="16" rx="6" fill="#8FB64E"/><rect x="${x}" y="${y+8}" width="${w}" height="8" fill="#8FB64E"/><text x="${x+8}" y="${y+11.5}" font-family="${SC_F}" font-weight="700" font-size="8" fill="#fff">${title}</text>`; }
-function scRow(x,y,w,cols,cls=''){ return `<g class="${cls}"><rect x="${x}" y="${y}" width="${w}" height="14" fill="#fff" stroke="#E1E4DC"/>${cols.map((c,i)=>`<text x="${x+6+i*(w/cols.length)}" y="${y+10}" font-family="${SC_F}" font-size="7.5" fill="#1D2327">${c}</text>`).join('')}</g>`; }
-function scScanner(x,y,cls=''){ return `<g class="${cls}"><path d="M${x} ${y}l46 -8c6-1 10 3 10 9v14c0 6-4 9-10 8l-14-2-8 34c-1 5-5 7-10 6l-6-1c-5-1-7-5-6-10l7-32-9-2z" fill="#3A4045" stroke="rgba(255,255,255,.25)"/><rect x="${x+44}" y="${y-2}" width="6" height="4" rx="1" fill="#A8CC68"/></g>`; }
-function scShelf(x1,x2,y){ return `<rect x="${x1}" y="${y}" width="${x2-x1}" height="7" rx="1.5" fill="rgba(255,255,255,.55)"/><rect x="${x1}" y="${y+7}" width="${x2-x1}" height="3" fill="rgba(0,0,0,.25)"/>`; }
-function scPerson(x,y,name,cls=''){ return `<g class="${cls}"><rect x="${x}" y="${y}" width="118" height="44" rx="8" fill="#fff"/><circle cx="${x+22}" cy="${y+22}" r="13" fill="#E3E9D6"/><circle cx="${x+22}" cy="${y+18}" r="5" fill="#5F7A33"/><path d="M${x+13} ${y+31}a9 7 0 0 1 18 0" fill="#5F7A33"/><text x="${x+42}" y="${y+19}" font-family="${SC_F}" font-size="7.5" fill="#4E5860">Gebucht auf</text><text x="${x+42}" y="${y+31}" font-family="${SC_F}" font-weight="700" font-size="10" fill="#1D2327">${name}</text></g>`; }
-
-const MODULE_SCENES={
- 1:()=>`<rect x="70" y="26" width="300" height="168" rx="10" fill="#1F2427" stroke="rgba(255,255,255,.25)"/><rect x="80" y="36" width="280" height="148" rx="3" fill="#F6F8F3"/>
-   <rect x="80" y="36" width="280" height="18" fill="#8FB64E"/><text x="90" y="48.5" font-family="${SC_F}" font-weight="800" font-style="italic" font-size="10" fill="#fff">OrKan</text><text x="128" y="48.5" font-family="${SC_F}" font-weight="700" font-size="8.5" fill="#fff">Home</text>
-   <rect x="88" y="62" width="40" height="114" rx="3" fill="#E7EBE2"/>
-   <g class="s1-t t1"><rect x="134" y="62" width="62" height="34" rx="4" fill="#4FA05A"/><text x="165" y="83" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="6.5" fill="#fff">Bestellvorschläge</text></g>
-   <rect x="202" y="62" width="88" height="114" rx="4" fill="#C9DE55"/>${[0,1,2,3,4].map(r=>[0,1,2,3,4,5].map(c=>`<circle cx="${212+c*13}" cy="${80+r*19}" r="4.2" fill="none" stroke="rgba(0,0,0,.25)"/>`).join('')).join('')}
-   <g class="s1-t t2"><rect x="296" y="62" width="58" height="34" rx="4" fill="#3F86C6"/><text x="325" y="83" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="6.5" fill="#fff">Einstellungen</text></g>
-   <g class="s1-t t3"><rect x="134" y="102" width="62" height="34" rx="4" fill="#D9707A"/><text x="165" y="123" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="6.5" fill="#fff">Artikel</text></g>
-   <g class="s1-t t4"><rect x="296" y="102" width="58" height="34" rx="4" fill="#A97C50"/><text x="325" y="123" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="6.5" fill="#fff">Artikel erstellen</text></g>
-   <rect x="134" y="142" width="62" height="34" rx="4" fill="#3C8DBC"/><text x="165" y="163" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="6.5" fill="#fff">Projekte</text>
-   <rect x="296" y="142" width="58" height="34" rx="4" fill="#2E9C83"/><text x="325" y="163" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="6.5" fill="#fff">Lieferanten</text>
-   <rect x="196" y="194" width="48" height="10" fill="#1F2427"/><rect x="176" y="204" width="88" height="5" rx="2" fill="#1F2427"/>
-   <g class="s1-cur"><path d="M0 0l0 16 4.5-4 3.5 7 3-1.5-3.5-7 6 0z" fill="#fff" stroke="#1D2327" stroke-width="1.2"/></g>`,
- 2:()=>`${scShelf(40,410,108)}${scShelf(40,410,196)}<rect x="40" y="20" width="5" height="190" fill="rgba(255,255,255,.4)"/><rect x="405" y="20" width="5" height="190" fill="rgba(255,255,255,.4)"/>
-   ${scBox(56,48,104,60,{t:'Bogen 90°',sub:'28 mm'})}${scBox(176,54,104,54,{t:'Muffe',sub:'22 mm'})}
-   ${scLabel(56,116,{t:'Bogen 90°',sub:'Pressfitting · 28 mm',nr:'1482',lo:'1_04',w:110,h:46,min:5,max:20,unit:'Stück'})}${scLabel(176,116,{t:'Muffe',sub:'Pressfitting · 22 mm',nr:'1487',lo:'1_05',w:110,h:46,min:5,max:15,unit:'Stück'})}
-   <g class="s2-in">${scBox(296,50,100,58,{t:'T-Stück',sub:'28 mm'})}</g>
-   <g class="s2-lab">${scLabel(292,116,{t:'T-Stück',sub:'Pressfitting · 28 mm',nr:'1501',lo:'1_06',w:110,h:46,min:5,max:20,unit:'Stück'})}</g>
-   ${scChip(300,24,'Lagerort 1_06 angelegt',{w:104,cls:'s2-chip',bg:'#A8CC68'})}`,
- 3:()=>`<g><rect x="34" y="40" width="150" height="140" rx="6" fill="#fff"/><rect x="34" y="40" width="150" height="16" rx="6" fill="#1F7244"/><rect x="34" y="48" width="150" height="8" fill="#1F7244"/><text x="42" y="51.5" font-family="${SC_F}" font-weight="700" font-size="8" fill="#fff">Artikelimport.xlsx</text>
-   <rect x="34" y="56" width="150" height="14" fill="#E2EFDA"/>${['Artikelnr.','Bezeichnung','EK'].map((c,i)=>`<text x="${40+i*50}" y="66" font-family="${SC_F}" font-weight="700" font-size="7.5" fill="#1D2327">${c}</text>`).join('')}
-   ${[['1482','Bogen 90°','4,10'],['1487','Muffe','2,35'],['1501','T-Stück','5,80'],['1618','Bogen 45°','3,95']].map((r,i)=>`<g class="s3-x x${i}"><rect x="34" y="${70+i*14}" width="150" height="14" fill="#fff" stroke="#E1E4DC"/>${r.map((c,j)=>`<text x="${40+j*50}" y="${80+i*14}" font-family="${SC_F}" font-size="7.5" fill="#1D2327">${c}</text>`).join('')}</g>`).join('')}</g>
-   <path d="M196 110h34" stroke="#A8CC68" stroke-width="3" stroke-linecap="round"/><path d="M224 102l9 8-9 8" fill="none" stroke="#A8CC68" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-   ${scWin(244,40,170,140,'Artikelverwaltung')}<rect x="244" y="56" width="170" height="14" fill="#E7EBE2"/>${['Artikelnr.','Bezeichnung','Lieferant'].map((c,i)=>`<text x="${250+i*56}" y="66" font-family="${SC_F}" font-weight="700" font-size="7.5" fill="#1D2327">${c}</text>`).join('')}
-   ${[['1482','Bogen 90°','Großhandel'],['1487','Muffe','Großhandel'],['1501','T-Stück','Großhandel'],['1618','Bogen 45°','Großhandel']].map((r,i)=>scRow(244,70+i*14,170,r,'s3-r r'+i)).join('')}
-   ${scChip(268,148,'4 Artikel importiert',{w:122,cls:'s3-ok',bg:'#A8CC68'})}`,
- 4:()=>`${scShelf(26,316,124)}<rect x="26" y="20" width="5" height="114" fill="rgba(255,255,255,.4)"/><rect x="311" y="20" width="5" height="114" fill="rgba(255,255,255,.4)"/>
-   ${scBox(48,42,118,82,{t:'Stockschraube',sub:'8 × 120 · 100 St.',fs:13})}${scBox(180,52,118,72,{t:'Stockschraube',sub:'10 × 140 · 50 St.',fs:13})}
-   ${scLabel(46,134,{blue:true,nr:'1009'})}${scLabel(184,134,{blue:true,t:'Stockschrauben',sub:'TX 40 · 10 × 140',nr:'1010',lo:'1_11',w:126})}${scLabel(184,128,{t:'Stockschrauben',sub:'TX 40 · 10 × 140',nr:'1010',lo:'1_11',w:126})}
-   <g class="s4-white">${scLabel(46,128,{nr:'1009'})}</g>
-   <g class="s4-c1">${scChip(60,18,'Bestand: 3 Pack',{w:96})}</g><g class="s4-c2">${scChip(44,18,'1 Pack · Mindestbestand erreicht',{w:150,bg:'#F3D9A4',fg:'#6B4A00'})}</g>
-   ${scBestellbox(330,142,92,66)}`,
- 5:()=>`${scBestellbox(40,146,100,64)}
-   <g class="s5-lab">${scLabel(44,96,{t:'Senkschrauben',sub:'M5 × 30 PH · verzinkt',nr:'9742',lo:'1_10',w:138})}</g>
-   <rect class="s5-beam" x="186" y="104" width="2" height="40" fill="#E5484D"/>
-   ${scScanner(196,118,'s5-sc')}
-   ${scWin(262,30,160,130,'Bestellvorschlag')}${scRow(262,46,160,['Artikel','Menge','Lieferant'])}
-   ${scRow(262,60,160,['Muffe 22 mm','5 Stück','Großhandel'])}${scRow(262,74,160,['Bogen 90°','10 Stück','Großhandel'])}
-   ${scRow(262,88,160,['Senkschrauben','2 Pack','Großhandel'],'s5-row')}
-   <g class="s5-btn"><rect x="300" y="124" width="84" height="22" rx="11" fill="#8FB64E"/><text x="342" y="138.5" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="9" fill="#fff">Bestellen</text></g>`,
- 6:()=>`${scShelf(250,420,104)}${scLabel(262,112,{blue:true,w:146})}<g class="s6-white">${scLabel(262,106,{w:146})}</g>
-   <g class="s6-box"><rect x="40" y="110" width="110" height="80" rx="3" fill="#C9A273"/><rect x="40" y="110" width="110" height="14" fill="#B58D5E"/><rect x="88" y="110" width="14" height="80" fill="#E6D3B3" opacity=".6"/></g>
-   <g class="s6-sheet"><rect x="104" y="24" width="116" height="140" rx="3" fill="#fff"/><text x="114" y="40" font-family="${SC_F}" font-weight="700" font-size="9" fill="#1D2327">Wareneingangsprüfung</text>
-   ${[0,1,2,3].map(i=>`<rect x="114" y="${52+i*24}" width="11" height="11" rx="2" fill="none" stroke="#4E5860"/><rect x="132" y="${54+i*24}" width="${64-i*8}" height="5" rx="2" fill="#C7CDC3"/><path class="s6-tick k${i}" d="M116 ${58+i*24}l3 3 6-7" fill="none" stroke="#5F7A33" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`).join('')}</g>
-   ${scCheck(206,170,15,'s6-ok')}`,
- 7:()=>`${scShelf(30,200,170)}<g class="s7-drill"><path d="M70 92h96c8 0 12 5 12 12v8c0 7-4 12-12 12H70z" fill="#E1B83A"/><rect x="178" y="102" width="26" height="10" rx="2" fill="#3A4045"/><rect x="204" y="105" width="20" height="4" rx="1" fill="#C7CDC3"/>
-   <path d="M96 124h34l-6 32H102z" fill="#2B3134"/><rect x="88" y="156" width="56" height="14" rx="3" fill="#3A4045"/><rect x="70" y="92" width="24" height="32" rx="4" fill="#2B3134"/>
-   <rect x="120" y="98" width="40" height="22" rx="2" fill="#fff"/>${scQr(123,100,17)}<text x="153" y="112" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="6" fill="#1D2327">M-12</text></g>
-   <rect class="s7-beam" x="152" y="92" width="2" height="34" fill="#E5484D"/>
-   ${scPerson(266,36,'Monteur · Fahrzeug 2','s7-card')}
-   <g class="s7-svc"><rect x="266" y="96" width="140" height="52" rx="8" fill="#fff"/><rect x="278" y="108" width="24" height="26" rx="3" fill="none" stroke="#5F7A33" stroke-width="2"/><path d="M278 115h24M284 104v7M296 104v7" stroke="#5F7A33" stroke-width="2"/>
-   <text x="312" y="117" font-family="${SC_F}" font-size="7.5" fill="#4E5860">Nächste Prüfung</text><text x="312" y="130" font-family="${SC_F}" font-weight="700" font-size="10" fill="#1D2327">VDE · 21.10.</text></g>
-   ${scCheck(400,40,13,'s7-ok')}`,
- 8:()=>`<rect x="34" y="22" width="150" height="186" rx="6" fill="#4A5157" stroke="rgba(255,255,255,.25)"/><rect x="42" y="30" width="134" height="170" rx="3" fill="#3A4045"/>
-   ${[0,1,2].map(r=>[0,1,2].map(c=>`<circle cx="${66+c*42}" cy="${52+r*58}" r="3" fill="#C7CDC3"/>`).join('')).join('')}
-   ${[[0,0],[2,0],[0,1],[1,2]].map(([c,r])=>`<g><circle cx="${66+c*42}" cy="${64+r*58}" r="7" fill="none" stroke="#C7CDC3" stroke-width="2"/><rect x="${55+c*42}" y="${70+r*58}" width="22" height="16" rx="2" fill="#fff" opacity=".9"/></g>`).join('')}
-   <g class="s8-key"><circle cx="108" cy="64" r="7" fill="none" stroke="#C7CDC3" stroke-width="2"/><path d="M108 71v14" stroke="#D8C27A" stroke-width="4" stroke-linecap="round"/>
-   <rect x="86" y="80" width="46" height="34" rx="3" fill="#fff"/><text x="109" y="90" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="6.5" fill="#1D2327">Heizraum</text>${scQr(100,93,13)}<text x="109" y="112" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="6.5" fill="#1D2327">003</text></g>
-   ${scPerson(272,84,'Monteur','s8-card')}${scChip(272,140,'Schlüssel 003 ausgegeben',{w:118,cls:'s8-chip',bg:'#A8CC68'})}`,
- 9:()=>`<rect x="40" y="22" width="104" height="188" rx="14" fill="#1F2427" stroke="rgba(255,255,255,.3)"/><rect x="47" y="34" width="90" height="164" rx="4" fill="#F6F8F3"/><rect x="47" y="34" width="90" height="16" fill="#8FB64E"/><text x="54" y="45" font-family="${SC_F}" font-weight="700" font-size="7.5" fill="#fff">Entnahme</text>
-   ${[['Artikel','Armatur'],['Menge','1 Stück'],['Projekt','Umbau Musterstr.']].map(([a,b],i)=>`<text x="54" y="${64+i*26}" font-family="${SC_F}" font-size="6.5" fill="#4E5860">${a}</text><rect x="54" y="${67+i*26}" width="76" height="13" rx="2" fill="#fff" stroke="#D3DACB"/><text x="58" y="${76+i*26}" font-family="${SC_F}" font-weight="700" font-size="7" fill="#1D2327">${b}</text>`).join('')}
-   <g class="s9-btn"><rect x="62" y="150" width="60" height="18" rx="9" fill="#8FB64E"/><text x="92" y="162" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="7.5" fill="#fff">Speichern</text></g>
-   <g class="s9-part"><rect x="150" y="112" width="24" height="18" rx="2" fill="#C9A273"/><path d="M150 117h24" stroke="#B58D5E" stroke-width="3"/></g>
-   <path d="M232 196h180" stroke="rgba(255,255,255,.35)" stroke-width="3"/><path d="M262 196V120h96v76" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="3"/><path d="M262 148h96M294 120v76M326 120v76" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
-   <path d="M386 196V40M386 44h-120M386 44h24M386 66l-26-22M300 44v28" fill="none" stroke="#E1B83A" stroke-width="3" stroke-linecap="round"/><rect x="292" y="72" width="16" height="10" fill="#E1B83A"/>
-   ${scChip(268,100,'Umbau Musterstraße',{w:84,bg:'#A8CC68'})}${scCheck(400,120,12,'s9-ok')}`,
- 10:()=>`${scShelf(30,220,142)}${scBox(46,78,156,64,{t:'Stockschraube',sub:'8 × 120 · 100 St.',fs:13})}${scLabel(46,152,{w:156})}
-   <g class="s10-minus"><text x="196" y="66" font-family="${SC_F}" font-weight="800" font-size="20" fill="#E5A93B">−1</text></g>
-   <rect x="250" y="40" width="166" height="118" rx="8" fill="#fff"/><text x="264" y="60" font-family="${SC_F}" font-size="8.5" fill="#4E5860">Bestand Lagerort 1_10</text>
-   <g class="s10-n n0"><text x="264" y="94" font-family="${SC_F}" font-weight="800" font-size="30" fill="#1D2327">3</text></g><g class="s10-n n1"><text x="264" y="94" font-family="${SC_F}" font-weight="800" font-size="30" fill="#1D2327">2</text></g><g class="s10-n n2"><text x="264" y="94" font-family="${SC_F}" font-weight="800" font-size="30" fill="#B77A00">1</text></g>
-   <text x="290" y="94" font-family="${SC_F}" font-weight="700" font-size="11" fill="#4E5860">Pack</text>
-   <rect x="264" y="112" width="138" height="8" rx="4" fill="#E7EBE2"/><rect class="s10-bar" x="264" y="112" width="138" height="8" rx="4" fill="#A8CC68"/><rect x="308" y="108" width="2" height="16" fill="#B77A00"/>
-   <text x="264" y="140" font-family="${SC_F}" font-size="7.5" fill="#4E5860">Min: 1</text><text x="402" y="140" text-anchor="end" font-family="${SC_F}" font-size="7.5" fill="#4E5860">Max: 3</text>`,
- 11:()=>`${scShelf(30,200,120)}${scBox(44,56,140,64,{t:'Bogen 90°',sub:'28 mm · Pressfitting'})}${scLabel(44,130,{t:'Bogen 90°',sub:'Pressfitting · 28 mm',nr:'1482',lo:'1_04',w:140,min:5,max:20,unit:'Stück'})}
-   <rect class="s11-beam" x="160" y="130" width="2" height="52" fill="#E5484D"/>${scScanner(170,150,'s11-sc')}
-   ${scWin(250,30,170,150,'Inventur · Hauptlager')}${scRow(250,46,170,['Artikel','Soll','Gezählt'])}
-   ${scRow(250,60,170,['Muffe 22 mm','12','12'])}${scRow(250,74,170,['T-Stück','8','8'])}
-   <g>${scRow(250,88,170,['Bogen 90°','15',''])}<text class="s11-val" x="369" y="98" font-family="${SC_F}" font-weight="700" font-size="7.5" fill="#5F7A33">14</text></g>
-   <rect x="262" y="132" width="146" height="8" rx="4" fill="#E7EBE2"/><rect class="s11-bar" x="262" y="132" width="146" height="8" rx="4" fill="#A8CC68"/><text x="262" y="156" font-family="${SC_F}" font-size="8" fill="#4E5860">Gezählt: <tspan class="s11-c0">2</tspan><tspan class="s11-c1">3</tspan> von 4 Lagerorten</text>`,
- 12:()=>`<rect x="40" y="34" width="220" height="160" rx="8" fill="#fff"/><text x="56" y="56" font-family="${SC_F}" font-weight="700" font-size="11" fill="#1D2327">Stockschrauben TX 25 · 8 × 120</text><text x="56" y="70" font-family="${SC_F}" font-size="8" fill="#4E5860">Artikelnr. 1009 · 100 St.</text>
-   <text x="56" y="98" font-family="${SC_F}" font-size="8.5" fill="#4E5860">Einkaufspreis</text><g class="s12-a"><text x="244" y="98" text-anchor="end" font-family="${SC_F}" font-weight="700" font-size="12" fill="#1D2327">12,40 €</text></g><g class="s12-b"><text x="244" y="98" text-anchor="end" font-family="${SC_F}" font-weight="700" font-size="12" fill="#5F7A33">12,90 €</text></g>
-   <text x="56" y="124" font-family="${SC_F}" font-size="8.5" fill="#4E5860">Aufschlag</text><text x="244" y="124" text-anchor="end" font-family="${SC_F}" font-weight="700" font-size="12" fill="#1D2327">+ 35 %</text>
-   <rect x="56" y="136" width="188" height="1" fill="#E1E4DC"/><text x="56" y="160" font-family="${SC_F}" font-weight="700" font-size="9.5" fill="#1D2327">Verkaufspreis</text><g class="s12-a"><text x="244" y="160" text-anchor="end" font-family="${SC_F}" font-weight="800" font-size="16" fill="#1D2327">16,74 €</text></g><g class="s12-b"><text x="244" y="160" text-anchor="end" font-family="${SC_F}" font-weight="800" font-size="16" fill="#5F7A33">17,42 €</text></g>
-   <g class="s12-sync" style="transform-origin:330px 110px"><circle cx="330" cy="110" r="26" fill="rgba(168,204,104,.18)" stroke="#A8CC68" stroke-width="2.5"/><path d="M318 104a13 13 0 0 1 23-4M342 116a13 13 0 0 1-23 4" fill="none" stroke="#C8E39A" stroke-width="3" stroke-linecap="round"/><path d="M341 92v8h-8M319 128v-8h8" fill="none" stroke="#C8E39A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
-   <text x="330" y="156" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="9" fill="rgba(255,255,255,.8)">Preise vom Händler</text><path d="M270 110h28" stroke="#A8CC68" stroke-width="2" stroke-dasharray="4 4"/>`,
- 13:()=>`<path d="M30 196h390" stroke="rgba(255,255,255,.3)" stroke-width="3"/>
-   <g class="s13-k"><rect x="60" y="112" width="96" height="70" rx="3" fill="#C9A273"/><rect x="60" y="112" width="96" height="12" fill="#B58D5E"/><rect x="70" y="132" width="76" height="40" rx="2" fill="#fff"/><rect x="70" y="132" width="76" height="11" fill="#E5A93B"/><text x="108" y="140.5" text-anchor="middle" font-family="${SC_F}" font-weight="800" font-size="7" letter-spacing="1" fill="#fff">KOMMISSION</text><text x="76" y="155" font-family="${SC_F}" font-weight="700" font-size="7" fill="#1D2327">Umbau Musterstr.</text><text x="76" y="166" font-family="${SC_F}" font-size="6.5" fill="#4E5860">Kunde: Muster GmbH</text></g>
-   <g class="s13-r"><rect x="250" y="122" width="84" height="60" rx="3" fill="#C9A273"/><rect x="250" y="122" width="84" height="11" fill="#B58D5E"/><rect x="258" y="140" width="68" height="34" rx="2" fill="#fff"/><rect x="258" y="140" width="68" height="11" fill="#D9707A"/><text x="292" y="148.5" text-anchor="middle" font-family="${SC_F}" font-weight="800" font-size="7" letter-spacing="1" fill="#fff">RETOURE</text><text x="264" y="164" font-family="${SC_F}" font-size="6.5" fill="#1D2327">an Großhandel</text></g>
-   <path class="s13-a1" d="M168 150h56" stroke="#E5A93B" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 6"/><text x="196" y="140" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="8" fill="rgba(255,255,255,.75)">zum Projekt</text>
-   <path class="s13-a2" d="M346 152h56" stroke="#D9707A" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 6"/><text x="374" y="142" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="8" fill="rgba(255,255,255,.75)">zurück</text>`,
- 14:()=>`<rect x="50" y="24" width="178" height="182" rx="14" fill="#1F2427" stroke="rgba(255,255,255,.3)"/><rect x="60" y="36" width="158" height="158" rx="4" fill="#F6F8F3"/><rect x="60" y="36" width="158" height="16" fill="#8FB64E"/><text x="68" y="47.5" font-family="${SC_F}" font-weight="700" font-size="8" fill="#fff">Warenannahme · Bestellung 1042</text>
-   ${['Bogen 90° · 10 Stück','Muffe 22 mm · 5 Stück','T-Stück · 8 Stück'].map((t,i)=>`<rect x="68" y="${62+i*26}" width="142" height="20" rx="3" fill="#fff" stroke="#D3DACB"/><text x="90" y="${75+i*26}" font-family="${SC_F}" font-size="8" fill="#1D2327">${t}</text><rect x="74" y="${67+i*26}" width="10" height="10" rx="2" fill="none" stroke="#8E979B"/><path class="s14-t t${i}" d="M75.5 ${72+i*26}l3 3 5-6" fill="none" stroke="#5F7A33" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`).join('')}
-   <g class="s14-ok"><rect x="80" y="152" width="118" height="22" rx="11" fill="#8FB64E"/><text x="139" y="166.5" text-anchor="middle" font-family="${SC_F}" font-weight="700" font-size="8.5" fill="#fff">Wareneingang gebucht</text></g>
-   <g class="s14-box"><rect x="286" y="104" width="116" height="84" rx="3" fill="#C9A273"/><rect x="286" y="104" width="116" height="14" fill="#B58D5E"/><rect x="300" y="128" width="70" height="40" rx="2" fill="#fff"/>${[0,1,2,3,4,5,6,7,8,9,10,11].map(i=>`<rect x="${306+i*5}" y="134" width="${i%3?2:3}" height="22" fill="#1D2327"/>`).join('')}<text x="306" y="164" font-family="${SC_F}" font-size="6" fill="#1D2327">Lieferschein 1042</text></g>
-   <rect class="s14-beam" x="282" y="146" width="96" height="2" fill="#E5484D"/>`
-};
-function moduleMotif(id,mini){
-  const f=MODULE_SCENES[id]||MODULE_SCENES[1];
-  return `<svg class="mm sc" viewBox="0 0 440 230" preserveAspectRatio="${mini?'xMidYMid slice':'xMaxYMid meet'}" aria-hidden="true" focusable="false">${f()}</svg>`;
-}
+/* ===== Kurzbeschreibung je Modul (Modulkarte und Modulkopf) ===== */
+const MODULE_DESC={
+ 1:'Startseite, Kalender und Hauptmenü kennenlernen und verstehen, wie das Kanban-Prinzip in der OrKan Cloud funktioniert.',
+ 2:'Artikel anlegen, Lager MIN und MAX festlegen und Lagerorte so strukturieren, dass jeder alles schnell findet.',
+ 3:'Artikel per Excel-Vorlage importieren, Lieferanten anlegen und den Onlineshop des Händlers anbinden.',
+ 4:'Etiketten gestalten und drucken und verstehen, wie das blaue und das weiße Etikett den Nachschub steuern.',
+ 5:'Weiße Etiketten aus der Bestellbox scannen, Mengen prüfen und die Bestellung je Lieferant auslösen.',
+ 6:'Lieferungen prüfen, den Wareneingang buchen und die weißen Etiketten zurück an den Lagerplatz bringen.',
+ 7:'Maschinen anlegen, an Mitarbeiter ausgeben und Wartungs- und Prüftermine im Blick behalten.',
+ 8:'Schlüssel sicher erfassen, Schlüsseletiketten drucken und Ausgabe und Rückgabe lückenlos dokumentieren.',
+ 9:'Projekte anlegen und Material und Geräte direkt auf die Baustelle buchen.',
+ 10:'Den laufenden Ist-Bestand im Lager führen, Entnahmen buchen und Abweichungen früh erkennen.',
+ 11:'Die Inventur vorbereiten, Bestände zählen und die Ergebnisse sauber in die OrKan Cloud übernehmen.',
+ 12:'Einkaufs- und Verkaufspreise pflegen und aktuelle Preise beim Händler abfragen.',
+ 13:'Etiketten für Kommissions- und Retourenware drucken und Ware eindeutig zuordnen.',
+ 14:'Kommissions- und externe Bestellungen digital annehmen und den Wareneingang direkt buchen.'};
+function moduleDesc(m){ return MODULE_DESC[m.id]||''; }
 
 function renderModuleDetail(){
   const m = MODULES.find(x=>x.id===state.currentModule);
@@ -3431,8 +3212,7 @@ function renderModuleDetail(){
   document.getElementById('view-modules').innerHTML = `
     <div class="md-back" onclick="renderModulesList()">&larr; Zurück zu allen Modulen</div>
     <div class="module-detail-header">
-      <div class="md-motif" aria-hidden="true">${moduleMotif(m.id)}</div>
-      <div class="md-title-row"><span class="md-num">${String(m.id).padStart(2,'0')}</span><div class="md-title-col"><span class="phase-badge">${groupOf(m.id).title}</span><h2>${m.title}</h2></div></div>
+      <div class="md-title-row"><span class="md-num">${String(m.id).padStart(2,'0')}</span><div class="md-title-col"><span class="phase-badge">${groupOf(m.id).title}</span><h2>${m.title}</h2><p class="md-desc">${moduleDesc(m)}</p></div></div>
       <div class="md-meta"><span class="diff-dots">${diffDots}</span><span>${p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen')}</span></div>
     </div>
     <div id="tabContentHost" class="md-content"></div>
