@@ -1804,7 +1804,7 @@ html:not(.theme-light) .mc-eyebrow{color:#BCD98A}
 .module-detail-header{position:relative}
 .md-icon{position:absolute;right:34px;top:50%;transform:translateY(-50%);width:132px;height:132px;border-radius:32px;background:rgba(255,255,255,.96);box-shadow:0 18px 40px -18px rgba(0,0,0,.6),inset 0 0 0 1px rgba(168,204,104,.6);display:grid;place-items:center;--mi-ink:#2B3134;animation:mdIn .7s cubic-bezier(.2,.7,.2,1) .2s backwards}
 .md-icon .mi{width:92px;height:92px}
-.module-detail-header .md-title-col{max-width:min(720px,calc(100% - 190px))}
+.module-detail-header .md-title-col{max-width:760px}
 @media(max-width:760px){.md-icon{position:static;transform:none;width:84px;height:84px;border-radius:22px;margin-bottom:14px;order:-1}.md-icon .mi{width:58px;height:58px}.module-detail-header .md-title-col{max-width:100%}}
 /* Symbol-Grundstil */
 .mi-s{stroke:var(--mi-ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
@@ -1861,33 +1861,32 @@ html:not(.theme-light) .mc-eyebrow{color:#BCD98A}
 .module-card:hover .mc-icon .mi *{animation-play-state:running}
 @media (prefers-reduced-motion:reduce){.mi *{animation:none!important}}
 
-/* ===== Modulkarten 3.0: Nummer, Symbol, Titel, Status, Button ===== */
+
+/* ===== Modulkarten: typografisch und ruhig (Entwurf A) ===== */
 .modules-grid{gap:20px!important}
-.module-card.mc2{position:relative;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;align-items:stretch;min-height:318px;padding:22px 22px 20px!important;border-radius:22px!important;border:1px solid var(--line)!important;background:var(--white);box-shadow:0 1px 2px rgba(29,35,39,.04),0 14px 34px -26px rgba(29,35,39,.45)!important;transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s,border-color .3s!important}
-.mc2::before{content:'';position:absolute;inset:0;width:auto;height:auto;border:0;border-radius:inherit;pointer-events:none;z-index:-1;background:radial-gradient(320px circle at var(--mx,50%) var(--my,30%),rgba(168,204,104,.26),rgba(168,204,104,0) 62%);opacity:0;transition:opacity .35s}
-.mc2::after{content:'';position:absolute;left:22px;right:22px;top:0;width:auto;height:3px;opacity:1;pointer-events:none;border-radius:0 0 3px 3px;background:linear-gradient(90deg,#A8CC68,#7FA23F);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
-.mc2:hover{transform:translateY(-6px)!important;border-color:rgba(168,204,104,.75)!important;box-shadow:0 26px 50px -28px rgba(63,90,22,.55),0 0 0 1px rgba(168,204,104,.35)!important}
-.mc2:hover::before{opacity:1}.mc2:hover::after,.mc2.is-done::after{transform:scaleX(1)}
-.mc2-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.mc2-no{display:flex;flex-direction:column;font-family:var(--font-mono);font-weight:700;font-size:30px;line-height:1;color:var(--ink);letter-spacing:-.02em}
-.mc2-no small{font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--green-dark);margin-bottom:6px}
-html:not(.theme-light) .mc2-no small{color:#BCD98A}
-.mc2 .mc-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-.mc2-visual{position:relative;display:grid;place-items:center;margin:14px 0 16px;height:120px}
-.mc2-halo{position:absolute;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(168,204,104,.32),rgba(168,204,104,0) 68%);transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .4s;opacity:.7}
-.mc2:hover .mc2-halo{transform:scale(1.18);opacity:1}
-.mc2 .mc-icon{position:relative;flex:none;width:104px;height:104px;border-radius:30px;box-shadow:inset 0 0 0 1px rgba(168,204,104,.55),0 14px 30px -18px rgba(63,90,22,.55);background:linear-gradient(160deg,#FFFFFF 0%,#EEF4E3 100%);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
-.mc2:hover .mc-icon{transform:translateY(-3px) scale(1.04)}
-.mc2 .mc-icon .mi{width:72px;height:72px}
-.mc2-title{font-family:var(--font-display);font-size:19px;font-weight:700;line-height:1.25;text-align:center;text-wrap:balance;margin:0 0 18px;flex:1;display:flex;align-items:flex-start;justify-content:center}
-.mc2-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;border-radius:999px;border:1.5px solid #A8CC68;background:transparent;color:var(--ink);font:inherit;font-weight:700;font-size:14.5px;cursor:pointer;transition:background .3s,color .3s,box-shadow .3s}
-.mc2-btn svg{transition:transform .35s cubic-bezier(.2,.7,.2,1)}
-.mc2:hover .mc2-btn{background:#A8CC68;color:#1D2327;box-shadow:0 10px 22px -12px rgba(95,122,51,.8)}
-.mc2:hover .mc2-btn svg{transform:translateX(4px)}
-.mc2.is-done .mc2-btn{border-color:var(--line)}
-.mc2.module-card-locked{opacity:.65}.mc2.module-card-locked:hover{transform:none!important}
-.mc2.module-card-locked .mc-icon{filter:grayscale(1)}
-@media (prefers-reduced-motion:reduce){.mc2,.mc2 *{transition:none!important}.mc2:hover{transform:none!important}}
+.module-card.ac{position:relative;display:flex;flex-direction:column;min-height:262px;padding:24px 22px 20px 24px!important;border-radius:8px!important;border:1px solid var(--line)!important;background:var(--white)!important;box-shadow:0 1px 2px rgba(29,35,39,.04)!important;transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s,border-color .3s!important}
+.module-card.ac::before,.module-card.ac::after{display:none!important}
+.module-card.ac:hover{transform:translateY(-4px)!important;border-color:#A8CC68!important;box-shadow:0 26px 46px -30px rgba(29,35,39,.55)!important}
+.ac-no{font-family:var(--font-display);font-weight:800;font-size:64px;line-height:.9;letter-spacing:-.04em;color:var(--ink)}
+.ac-no span{color:#A8CC68}
+.ac-rule{height:2px;width:36px;background:var(--ink);margin:18px 0 14px;transition:width .55s cubic-bezier(.2,.7,.2,1),background .3s}
+.module-card.ac:hover .ac-rule,.module-card.ac.is-done .ac-rule{width:100%;background:#A8CC68}
+.ac-title{font-family:var(--font-display);font-size:21px;font-weight:700;line-height:1.2;flex:1;text-wrap:balance}
+.ac-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:20px;flex-wrap:nowrap}
+.ac-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;white-space:nowrap}
+.ac-pill i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.ac-pill.done{background:rgba(168,204,104,.22);color:#4E6A1F}
+.ac-pill.prog{background:#FCEFD2;color:#8A5A00}
+.ac-pill.open,.ac-pill.locked{background:rgba(127,138,145,.16);color:var(--gray)}
+html:not(.theme-light) .ac-pill.done{color:#BCD98A}html:not(.theme-light) .ac-pill.prog{background:rgba(233,180,76,.14);color:#E9B44C}
+.ac-link{display:inline-flex;align-items:center;gap:8px;border:0;background:none;padding:6px 0;font:inherit;font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;white-space:nowrap}
+.ac-link svg{transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+.module-card.ac:hover .ac-link{color:var(--green-dark)}
+html:not(.theme-light) .module-card.ac:hover .ac-link{color:#BCD98A}
+.module-card.ac:hover .ac-link svg{transform:translateX(5px)}
+.ac-prio{position:absolute;top:22px;right:22px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#2B3134;background:#A8CC68;border-radius:999px;padding:4px 10px}
+.module-card.ac.module-card-locked{opacity:.6}.module-card.ac.module-card-locked:hover{transform:none!important;border-color:var(--line)!important}
+@media (prefers-reduced-motion:reduce){.module-card.ac,.module-card.ac *{transition:none!important}}
 </style>
 </head>
 <body>
@@ -3193,18 +3192,17 @@ function renderDashCustomizeList(){
 function moduleCardHtml(m, isPriority){
   const p = state.moduleProgress[m.id];
   const locked = isModuleLocked(m);
-  const badge = locked?'locked':(p.completed?'done':(p.started?'progress':'open'));
-  const badgeText = locked?'Gesperrt':(p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen'));
+  const st = locked?'locked':(p.completed?'done':(p.started?'prog':'open'));
+  const stText = locked?'Gesperrt':(p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen'));
   const btnText = locked?`Phase „${lockedPhaseLabel(m)}" abschließen`:(p.completed?'Erneut ansehen':(p.started?'Fortsetzen':'Starten'));
-  return `<div class="module-card mc2 ${locked?'module-card-locked':''} ${p.completed?'is-done':''}" onclick="openModule(${m.id})">
-    <div class="mc2-top"><span class="mc2-no"><small>Modul</small>${String(m.id).padStart(2,'0')}</span><span class="mc-badges">${isPriority&&!locked?'<span class="mc-badge mc-badge-prio">Für Sie</span>':''}<span class="mc-badge ${badge}">${p.completed?'✓ ':''}${badgeText}</span></span></div>
-    <div class="mc2-visual" aria-hidden="true"><span class="mc2-halo"></span><div class="mc-icon">${moduleIcon(m.id)}</div></div>
-    <div class="mc2-title">${m.title}</div>
-    <button class="mc2-btn" onclick="event.stopPropagation();openModule(${m.id})"><span>${btnText}</span>${locked?'':'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'}</button>
+  return `<div class="module-card ac ${locked?'module-card-locked':''} ${p.completed?'is-done':''}" onclick="openModule(${m.id})">
+    ${isPriority&&!locked?'<span class="ac-prio">Für Sie</span>':''}
+    <div class="ac-no">${String(m.id).padStart(2,'0')}<span>.</span></div>
+    <div class="ac-rule"></div>
+    <div class="ac-title">${m.title}</div>
+    <div class="ac-foot"><span class="ac-pill ${st}"><i></i>${stText}</span><button class="ac-link" onclick="event.stopPropagation();openModule(${m.id})">${btnText}${locked?'':'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'}</button></div>
   </div>`;
 }
-// Lichtkegel folgt der Maus über den Modulkarten
-document.addEventListener('pointermove',e=>{ const c=e.target&&e.target.closest&&e.target.closest('.mc2'); if(!c) return; const r=c.getBoundingClientRect(); c.style.setProperty('--mx',(e.clientX-r.left)+'px'); c.style.setProperty('--my',(e.clientY-r.top)+'px'); });
 
 function moduleGroupStart(id){ return MODULE_GROUPS.find(g=>g.ids[0]===id); }
 // Zertifikat: alle Grundlagen-Module mit Lernvideo müssen vollständig angesehen sein
@@ -3344,7 +3342,6 @@ function renderModuleDetail(){
   document.getElementById('view-modules').innerHTML = `
     <div class="md-back" onclick="renderModulesList()">&larr; Zurück zu allen Modulen</div>
     <div class="module-detail-header">
-      <div class="md-icon" aria-hidden="true">${moduleIcon(m.id)}</div>
       <div class="md-title-row"><span class="md-num">${String(m.id).padStart(2,'0')}</span><div class="md-title-col"><span class="phase-badge">${groupOf(m.id).title}</span><h2>${m.title}</h2><p class="md-desc">${moduleDesc(m)}</p></div></div>
       <div class="md-meta"><span class="diff-dots">${diffDots}</span><span>${p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen')}</span></div>
     </div>
