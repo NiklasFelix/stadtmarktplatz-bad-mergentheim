@@ -1738,6 +1738,18 @@ html:not(.theme-light) .nv-ic{color:#A8CC68}
 .cert-personal label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:600;color:var(--gray)}
 @media(max-width:640px){.cert-personal{grid-template-columns:1fr}}
 .hdr-avatar svg,.profile-menu-avatar svg{display:block;margin:auto}
+
+/* ===== Modulkopf mit Illustration ===== */
+.module-detail-header{min-height:216px;display:flex!important;flex-direction:column;justify-content:center}
+.module-detail-header .md-title-row,.module-detail-header .md-meta{position:relative;z-index:1}
+.md-art{position:absolute;right:0;top:0;bottom:0;width:54%;pointer-events:none;overflow:hidden;border-radius:0 18px 18px 0}
+.md-art svg{width:100%;height:100%;display:block;filter:drop-shadow(0 10px 24px rgba(0,0,0,.28))}
+.md-title-col{max-width:min(520px,60%)}
+@media(max-width:900px){.md-art{width:100%;opacity:.14}.md-title-col{max-width:100%}}
+
+.mc-art{margin:-20px -20px 16px;height:112px;border-radius:13px 13px 0 0;overflow:hidden;background:radial-gradient(ellipse 60% 120% at 80% 50%,rgba(168,204,104,.28),rgba(168,204,104,0) 65%),linear-gradient(120deg,#2E3337 0%,#3F464A 100%)}
+.mc-art svg{width:100%;height:100%;display:block}
+.module-card-locked .mc-art{filter:grayscale(.7)}
 </style>
 </head>
 <body>
@@ -3047,6 +3059,7 @@ function moduleCardHtml(m, isPriority){
   const badgeText = locked?'Gesperrt':(p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen'));
   const pct = p.completed?100:(p.started?45:0);
   return `<div class="module-card ${locked?'module-card-locked':''}" onclick="openModule(${m.id})">
+    <div class="mc-art" aria-hidden="true">${moduleArt(m.id,true)}</div>
     <div class="mc-top"><span class="mc-num">${String(m.id).padStart(2,'0')}</span><span class="mc-badges"><span class="mc-badge ${badge}">${locked?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:inline;vertical-align:-1px;margin-right:3px"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':''}${badgeText}</span>${isPriority&&!locked?'<span class="mc-badge mc-badge-prio">Für Sie</span>':''}</span></div>
     <div class="mc-title">${m.title}</div>
     <div class="mc-track"><div class="mc-fill" style="width:${pct}%"></div></div>
@@ -3127,6 +3140,80 @@ function openModule(id){
   saveState();
 }
 
+
+/* ===== Modul-Illustrationen (Banner im Modulkopf und auf den Modulkarten) ===== */
+const ART={g:'#A8CC68',gd:'#7FA23F',l:'rgba(255,255,255,.62)',p:'rgba(255,255,255,.08)',pf:'rgba(255,255,255,.17)',w:'rgba(255,255,255,.92)',red:'#D5857B',blue:'#6FA6C9',teal:'#58B09A',amb:'#E3B565'};
+const aR=(x,y,w,h,r=8,f=ART.p,st=ART.l,sw=1.6,extra='')=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${f}" stroke="${st}" stroke-width="${sw}" ${extra}/>`;
+const aL=(x1,y1,x2,y2,st=ART.l,sw=1.6,extra='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${st}" stroke-width="${sw}" stroke-linecap="round" ${extra}/>`;
+const aC=(cx,cy,r,f='none',st=ART.l,sw=1.6,extra='')=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${f}" stroke="${st}" stroke-width="${sw}" ${extra}/>`;
+const aP=(d,f='none',st=ART.l,sw=1.6)=>`<path d="${d}" fill="${f}" stroke="${st}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>`;
+function aQr(x,y,sz,col=ART.d,bg=ART.w){
+  const n=7,c=sz/n; let o=`<rect x="${x}" y="${y}" width="${sz}" height="${sz}" rx="3" fill="${bg}"/>`;
+  const fnd=(fx,fy)=>`<rect x="${x+fx*c+c*.3}" y="${y+fy*c+c*.3}" width="${c*2.4}" height="${c*2.4}" fill="none" stroke="${col}" stroke-width="${c*.45}"/><rect x="${x+fx*c+c*.95}" y="${y+fy*c+c*.95}" width="${c*1.1}" height="${c*1.1}" fill="${col}"/>`;
+  o+=fnd(0,0)+fnd(4,0)+fnd(0,4);
+  [[3,0],[3,2],[4,3],[5,4],[3,4],[4,5],[6,3],[5,6],[3,6],[6,6]].forEach(([i,j])=>o+=`<rect x="${x+i*c+c*.1}" y="${y+j*c+c*.1}" width="${c*.8}" height="${c*.8}" fill="${col}"/>`);
+  return o;
+}
+function aGear(cx,cy,r,teeth=8,f=ART.pf,st=ART.l){
+  let d=''; const ri=r*.78;
+  for(let i=0;i<teeth;i++){const a=i/teeth*Math.PI*2,w=Math.PI/teeth*.55,a1=a-w,a2=a+w;
+    const P=(rr,aa)=>[(cx+Math.cos(aa)*rr).toFixed(1),(cy+Math.sin(aa)*rr).toFixed(1)];
+    const [x1,y1]=P(ri,a1-w*.35),[x2,y2]=P(r,a1),[x3,y3]=P(r,a2),[x4,y4]=P(ri,a2+w*.35);
+    d+=(i?'L':'M')+x1+' '+y1+' L'+x2+' '+y2+' L'+x3+' '+y3+' L'+x4+' '+y4+' ';}
+  return aP(d+'Z',f,st)+aC(cx,cy,r*.34,'none',st);
+}
+function aBox(x,y,w,h,fill=ART.pf,lab=true){
+  return aR(x,y,w,h,4,fill,ART.l,1.5)+aL(x+w*.5,y,x+w*.5,y+h*.32,ART.l,1.3)+(lab?aR(x+w*.18,y+h*.52,w*.36,h*.26,2,ART.w,'none',0):'');
+}
+const MODULE_ART_SCENES={
+ 1:()=>aR(130,38,270,168,12)+aC(150,56,3.5,ART.red,'none',0)+aC(163,56,3.5,ART.amb,'none',0)+aC(176,56,3.5,ART.g,'none',0)
+   +aR(146,76,58,46,8,ART.g,'none',0)+aR(212,76,58,46,8,ART.blue,'none',0)+aR(278,76,58,46,8,ART.red,'none',0)+aR(344,76,40,46,8,ART.teal,'none',0)
+   +aR(146,132,150,60,8,'rgba(168,204,104,.28)','none',0)+aR(304,132,80,60,8,ART.pf,'none',0)
+   +[0,1,2,3,4,5].map(i=>aC(166+i*20,162,5,i%3?'none':ART.w,ART.l,1.2)).join(''),
+ 2:()=>[78,134,190].map(y=>aL(120,y,410,y,ART.l,2.4)).join('')+aL(122,52,122,194,ART.l,2.4)+aL(408,52,408,194,ART.l,2.4)
+   +aBox(138,34,54,44,ART.g)+aBox(200,46,46,32,ART.pf)+aBox(254,28,60,50,ART.pf)+aBox(324,40,48,38,ART.g)
+   +aBox(138,98,66,36,ART.pf)+aBox(212,90,44,44,ART.g)+aBox(266,102,58,32,ART.pf)+aBox(332,94,56,40,ART.pf)
+   +aBox(140,152,48,38,ART.pf)+aBox(196,146,62,44,ART.pf)+aBox(268,156,44,34,ART.g)+aBox(320,148,64,42,ART.pf),
+ 3:()=>aR(104,44,150,148,10)+aR(104,44,150,28,10,ART.g,'none',0)
+   +[0,1,2,3].map(i=>aL(104,100+i*22,254,100+i*22,ART.l,1.2)).join('')+[0,1].map(i=>aL(154+i*50,72,154+i*50,192,ART.l,1.2)).join('')
+   +aL(268,118,322,118,ART.g,3)+aP('M312 106 L326 118 L312 130',  'none',ART.g,3)
+   +aBox(338,84,72,60,ART.pf)+aR(338,156,72,10,4,ART.g,'none',0)+aR(338,172,50,8,4,ART.pf,'none',0),
+ 4:()=>`<g transform="rotate(-5 250 100)">`+aR(116,48,190,100,10,ART.w,'none',0)+aQr(128,60,48,'#2B3134','#FFFFFF')
+   +aR(190,66,100,9,3,'#2B3134','none',0)+aR(190,84,70,7,3,'#8E979B','none',0)+aR(190,100,100,7,3,'#8E979B','none',0)+aR(190,118,46,14,4,ART.g,'none',0)+`</g>`
+   +`<g transform="rotate(6 320 170)">`+aR(238,128,180,86,10,'#B9D7EC','none',0)+aQr(250,140,44,'#2B3134','#FFFFFF')+aR(306,146,90,8,3,'#2B3134','none',0)+aR(306,162,60,7,3,'#4F6F86','none',0)+aR(306,178,86,7,3,'#4F6F86','none',0)+`</g>`,
+ 5:()=>aR(110,40,132,160,10)+[0,1,2,3].map(i=>aC(134,76+i*34,9,i<3?ART.g:'none',ART.l,1.5)+(i<3?aP(`M129 ${76+i*34} l4 4 l7 -8`,'none','#2B3134',2):'')+aR(154,72+i*34,68,8,3,ART.pf,'none',0)).join('')
+   +aP('M270 150 L286 210 L398 210 L414 150 Z','rgba(168,204,104,.35)',ART.g,2)+aR(262,138,160,16,4,'rgba(168,204,104,.55)',ART.g,2)
+   +`<g transform="rotate(-12 300 70)">`+aR(278,52,54,30,4,ART.w,'none',0)+aR(284,60,30,5,2,'#8E979B','none',0)+`</g><g transform="rotate(9 380 96)">`+aR(354,78,54,30,4,'#B9D7EC','none',0)+`</g>`+aR(318,108,50,28,4,ART.w,'none',0),
+ 6:()=>aR(104,92,170,88,8)+aBox(116,108,44,56,ART.g)+aBox(168,118,40,46,ART.pf)+aBox(216,106,48,58,ART.pf)
+   +aP('M274 112 L322 112 L356 142 L356 180 L274 180 Z',ART.pf,ART.l,1.8)+aP('M286 122 L316 122 L338 142 L286 142 Z','rgba(255,255,255,.28)','none',0)
+   +aC(148,186,15,'#2B3134',ART.l,2.4)+aC(148,186,5,ART.l,'none',0)+aC(318,186,15,'#2B3134',ART.l,2.4)+aC(318,186,5,ART.l,'none',0)
+   +aC(392,84,24,ART.g,'none',0)+aP('M381 84 l8 9 l15 -17','none','#2B3134',3.6)+aL(100,200,420,200,ART.l,1.2,'stroke-dasharray="3 7"'),
+ 7:()=>aGear(210,112,70,10)+aGear(310,70,38,8,'rgba(168,204,104,.35)',ART.g)+`<g transform="rotate(-38 350 150)">`+aR(260,142,180,16,8,ART.pf,ART.l,1.8)+aC(440,150,0,'none','none',0)+aP('M258 150 a20 20 0 1 1 0.1 0 M258 150 l22 0','none',ART.g,0)+`</g>`
+   +aP('M330 196 L398 128 a24 24 0 1 0 -26 -26 L304 170 Z',ART.pf,ART.l,1.8)+aC(372,120,8,'none',ART.l,1.5),
+ 8:()=>aC(196,112,46,'none',ART.g,10)+aC(196,112,46,'none',ART.l,1.3)+aP('M242 112 L388 112 L388 140 L372 140 L372 128 L356 128 L356 140 L338 140 L338 128 L320 128 L320 112','none',ART.g,10)
+   +aR(318,152,100,64,10,ART.w,'none',0)+aC(334,168,5,'#2B3134','none',0)+aQr(350,162,48,'#2B3134','#FFFFFF')+aP('M334 168 Q 300 130 262 140','none',ART.l,1.6),
+ 9:()=>aL(150,200,150,40,ART.l,3)+aL(150,40,330,40,ART.l,3)+aL(150,40,110,40,ART.l,3)+aP('M150 40 L210 40 M150 66 L210 40 M150 66 L110 40','none',ART.l,1.4)
+   +aL(300,40,300,112,ART.g,2)+aBox(280,110,40,34,ART.g,false)+aR(214,92,176,110,6,ART.pf)+[0,1,2].map(r=>[0,1,2,3].map(c=>aR(228+c*40,106+r*30,24,18,3,(r+c)%3?'rgba(255,255,255,.16)':ART.g,'none',0)).join('')).join('')
+   +aR(168,188,252,14,4,ART.pf)+aC(398,64,14,ART.g,'none',0)+aC(398,64,5,'#2B3134','none',0),
+ 10:()=>aL(118,200,420,200,ART.l,2)+aL(118,200,118,40,ART.l,2)+[[60,96],[110,70],[160,120],[210,84],[262,52],[312,104]].map(([x,h],i)=>aR(130+x,200-h,36,h,4,i==4?ART.g:ART.pf,i==4?'none':ART.l,1.5)).join('')
+   +aP('M134 150 L184 124 L234 140 L284 90 L334 66 L396 54','none',ART.g,3)+aC(396,54,6,ART.g,'none',0),
+ 11:()=>aR(150,40,150,172,10)+aR(196,30,58,22,6,ART.g,'none',0)+[0,1,2,3].map(i=>aR(168,74+i*34,20,20,5,i<3?ART.g:'none',ART.l,1.5)+(i<3?aP(`M173 ${84+i*34} l5 5 l9 -11`,'none','#2B3134',2.4):'')+aR(198,78+i*34,84,7,3,ART.pf,'none',0)+aR(198,90+i*34,56,6,3,'rgba(255,255,255,.12)','none',0)).join('')
+   +aR(318,70,100,86,8,ART.w,'none',0)+[0,1,2,3,4,5,6,7,8].map(i=>aR(330+i*9,82,(i%3?3:5),50,0,'#2B3134','none',0)).join('')+aL(318,164,418,164,ART.g,3),
+ 12:()=>aP('M140 120 L228 40 L398 40 L398 200 L228 200 Z',ART.pf,ART.l,1.8)+aC(246,120,10,'#2B3134',ART.l,1.5)+aR(276,72,96,12,5,ART.w,'none',0)+aR(276,98,70,9,4,'rgba(255,255,255,.4)','none',0)
+   +aC(330,162,32,ART.g,'none',0)+`<text x="330" y="174" text-anchor="middle" font-family="Barlow,Arial,sans-serif" font-weight="700" font-size="36" fill="#2B3134">€</text>`+aL(276,196,276,196),
+ 13:()=>aBox(130,92,70,60,ART.pf)+aBox(344,110,60,50,ART.g)
+   +aP('M222 92 a60 52 0 0 1 108 -16','none',ART.g,4)+aP('M318 62 L332 76 L312 84','none',ART.g,4)
+   +aP('M330 170 a60 52 0 0 1 -108 16','none',ART.l,4)+aP('M234 200 L220 186 L240 178','none',ART.l,4),
+ 14:()=>aR(142,34,168,172,16)+aR(154,48,144,138,6,'rgba(0,0,0,.18)','none',0)
+   +[[166,60],[262,60],[166,150],[262,150]].map(([x,y],i)=>aP(`M${x} ${y+(i<2?20:0)} v${i<2?-20:20} ${i%2?'':''}h${i%2?-20:20}`.replace(/ $/,''),'none',ART.g,3)).join('')
+   +aL(172,110,288,110,ART.g,2.5)+aQr(200,78,64,'#2B3134','#FFFFFF')+aBox(338,120,70,58,ART.pf)+aC(396,100,16,ART.g,'none',0)+aP('M389 100 l5 6 l10 -12','none','#2B3134',3)
+};
+function moduleArt(id,mini){
+  const f=MODULE_ART_SCENES[id]||MODULE_ART_SCENES[1];
+  const ring=aC(300,118,112,'none','rgba(168,204,104,.35)',9,'stroke-dasharray="1.6 5.2"')+aC(300,118,84,'none','rgba(168,204,104,.16)',1.2)+`<ellipse cx="300" cy="118" rx="150" ry="52" transform="rotate(-18 300 118)" fill="none" stroke="rgba(168,204,104,.22)" stroke-width="1.4"/>`;
+  return `<svg viewBox="-14 -18 478 264" preserveAspectRatio="${mini?'xMidYMid slice':'xMaxYMid meet'}" aria-hidden="true" focusable="false">${ring}${f()}</svg>`;
+}
+
 function renderModuleDetail(){
   const m = MODULES.find(x=>x.id===state.currentModule);
   const p = state.moduleProgress[m.id];
@@ -3135,6 +3222,7 @@ function renderModuleDetail(){
   document.getElementById('view-modules').innerHTML = `
     <div class="md-back" onclick="renderModulesList()">&larr; Zurück zu allen Modulen</div>
     <div class="module-detail-header">
+      <div class="md-art" aria-hidden="true">${moduleArt(m.id)}</div>
       <div class="md-title-row"><span class="md-num">${String(m.id).padStart(2,'0')}</span><div class="md-title-col"><span class="phase-badge">${groupOf(m.id).title}</span><h2>${m.title}</h2></div></div>
       <div class="md-meta"><span class="diff-dots">${diffDots}</span><span>${p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen')}</span></div>
     </div>
