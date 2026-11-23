@@ -1784,17 +1784,82 @@ html:not(.theme-light) .sidebar>.nav-item.active{background:rgba(168,204,104,.16
 @media(max-width:1000px){.sidebar>.nav-item{border:0!important;background:none;padding:10px!important}.sidebar>.nav-item svg{padding:0;border:0;background:none}}
 
 
-/* ===== Modulkarten: Nummer und Titel oben im dunklen Feld, darunter Kurzbeschreibung ===== */
-.mc-head{position:relative;margin:-20px -20px 16px;min-height:116px;padding:18px 20px 18px;border-radius:13px 13px 0 0;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;overflow:hidden;
-  background:radial-gradient(ellipse 70% 120% at 100% 0%,rgba(168,204,104,.22),rgba(168,204,104,0) 60%),linear-gradient(120deg,#2E3337 0%,#3F464A 100%)}
-.mc-head::after{content:'';position:absolute;left:20px;right:20px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#A8CC68;opacity:.9}
-.mc-head-eyebrow{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.04em;color:#A8CC68}
-.mc-head-title{font-family:var(--font-display);font-size:19px;font-weight:700;line-height:1.2;color:#fff;text-wrap:balance}
-.module-card .mc-top{margin-bottom:10px!important}
-.mc-desc{margin:0 0 14px;font-size:14px;line-height:1.5;color:var(--gray);flex:1}
-.module-card-locked .mc-head{filter:grayscale(.8)}
 .md-desc{margin:10px 0 0;max-width:62ch;font-size:15.5px;line-height:1.55;color:rgba(255,255,255,.78)}
 .module-detail-header .md-desc{animation:mdIn .7s cubic-bezier(.2,.7,.2,1) .3s backwards}
+
+/* ===== Modulkarten: ein einheitliches Feld mit animiertem Themen-Symbol ===== */
+:root{--mi-ink:#2B3134;--mi-tile:#EEF4E3;--mi-ring:rgba(168,204,104,.45)}
+html:not(.theme-light){--mi-ink:#2B3134;--mi-tile:#EEF4E3;--mi-ring:rgba(168,204,104,.6)}
+.module-card{padding:22px!important;gap:0}
+.mc-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+.mc-icon{flex:0 0 76px;width:76px;height:76px;border-radius:20px;background:var(--mi-tile);box-shadow:inset 0 0 0 1px var(--mi-ring);display:grid;place-items:center;transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
+.module-card:hover .mc-icon{transform:translateY(-2px);box-shadow:inset 0 0 0 1.5px #A8CC68,0 10px 22px -14px rgba(95,122,51,.7)}
+.mc-icon .mi{width:54px;height:54px}
+.mc-eyebrow{display:block;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.04em;color:var(--green-dark);margin-bottom:6px}
+html:not(.theme-light) .mc-eyebrow{color:#BCD98A}
+.mc-title2{font-family:var(--font-display);font-size:18.5px;font-weight:700;line-height:1.25;margin-bottom:8px;text-wrap:balance}
+.mc-desc{margin:0 0 16px;font-size:14px;line-height:1.5;color:var(--gray);flex:1}
+.module-card-locked .mc-icon{filter:grayscale(1);opacity:.7}
+/* Modulkopf: Symbol groß rechts */
+.module-detail-header{position:relative}
+.md-icon{position:absolute;right:34px;top:50%;transform:translateY(-50%);width:132px;height:132px;border-radius:32px;background:rgba(255,255,255,.96);box-shadow:0 18px 40px -18px rgba(0,0,0,.6),inset 0 0 0 1px rgba(168,204,104,.6);display:grid;place-items:center;--mi-ink:#2B3134;animation:mdIn .7s cubic-bezier(.2,.7,.2,1) .2s backwards}
+.md-icon .mi{width:92px;height:92px}
+.module-detail-header .md-title-col{max-width:min(720px,calc(100% - 190px))}
+@media(max-width:760px){.md-icon{position:static;transform:none;width:84px;height:84px;border-radius:22px;margin-bottom:14px;order:-1}.md-icon .mi{width:58px;height:58px}.module-detail-header .md-title-col{max-width:100%}}
+/* Symbol-Grundstil */
+.mi-s{stroke:var(--mi-ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.mi-s2{stroke:var(--mi-ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mi-s:not([fill]),.mi-s2:not([fill]){fill:none}
+.mi-f{fill:var(--mi-ink)}
+.mi .mi-g{stroke:#6E9A2E}
+.mi-bar{stroke:var(--mi-ink)}
+.mi *{transform-box:fill-box;transform-origin:center}
+/* Animationen: im Modulkopf in Schleife, auf den Karten beim Darüberfahren */
+.mi-pop{animation:miPop 3.6s cubic-bezier(.3,1.4,.5,1) infinite}.mi-pop.p1{animation-delay:.08s}.mi-pop.p2{animation-delay:.16s}.mi-pop.p3{animation-delay:.24s}.mi-pop.p4{animation-delay:.32s}.mi-pop.p5{animation-delay:.4s}
+@keyframes miPop{0%,50%{transform:scale(1);opacity:1}58%{transform:scale(.2);opacity:0}72%,100%{transform:scale(1);opacity:1}}
+.mi-slide{animation:miSlide 3.6s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes miSlide{0%,45%{transform:none;opacity:1}54%,58%{transform:translateX(18px);opacity:0}80%,100%{transform:none;opacity:1}}
+.mi-drop{animation:miDrop 3.6s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes miDrop{0%,40%{transform:none}56%{transform:translateY(6px)}72%,100%{transform:none}}
+.mi-lift{animation:miLift 3.6s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes miLift{0%,38%{transform:none}54%,68%{transform:translate(5px,-10px) rotate(-6deg)}86%,100%{transform:none}}
+.mi-roll{animation:miRoll 3.6s ease-in-out infinite}
+@keyframes miRoll{0%,48%{transform:none}58%{transform:translateX(-2px)}70%{transform:translateX(2px)}82%,100%{transform:none}}
+.mi-in{animation:miIn 3.6s cubic-bezier(.5,0,.4,1) infinite}
+@keyframes miIn{0%,38%{transform:none;opacity:1}44%{transform:translateY(-14px);opacity:0}50%{transform:translateY(-14px);opacity:1}64%,100%{transform:none;opacity:1}}
+.mi-drive{animation:miDrive 3.6s ease-in-out infinite}
+@keyframes miDrive{0%,36%{transform:none}54%{transform:translateX(3px)}72%,100%{transform:none}}
+.mi-wheel{transform-box:view-box;animation:miSpin 3.6s ease-in-out infinite}
+@keyframes miSpin{0%,34%{transform:rotate(0)}74%,100%{transform:rotate(360deg)}}
+.mi-road{stroke-dasharray:4 5;animation:miRoad 3.6s linear infinite}
+@keyframes miRoad{0%,34%{stroke-dashoffset:0}74%,100%{stroke-dashoffset:18}}
+.mi-check{animation:miCheck 3.6s cubic-bezier(.3,1.5,.5,1) infinite}
+@keyframes miCheck{0%,50%{transform:scale(1)}56%{transform:scale(0)}70%{transform:scale(1.12)}78%,100%{transform:scale(1)}}
+.mi-buzz{animation:miBuzz 3.6s linear infinite}
+@keyframes miBuzz{0%,40%,72%,100%{transform:none}44%,52%,60%,68%{transform:translate(-.6px,.4px)}48%,56%,64%{transform:translate(.6px,-.4px)}}
+.mi-bit{stroke-dasharray:2 2;animation:miBit 3.6s linear infinite}
+@keyframes miBit{0%,40%{stroke-dashoffset:0}72%,100%{stroke-dashoffset:-16}}
+.mi-turn{transform-box:view-box;transform-origin:21px 22px;animation:miTurn 3.6s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes miTurn{0%,38%{transform:rotate(0)}54%,68%{transform:rotate(-28deg)}86%,100%{transform:rotate(0)}}
+.mi-swing{transform-box:view-box;transform-origin:14px 30px;animation:miSwing 3.6s ease-in-out infinite}
+@keyframes miSwing{0%,40%{transform:rotate(0)}50%{transform:rotate(14deg)}62%{transform:rotate(-10deg)}74%{transform:rotate(5deg)}86%,100%{transform:rotate(0)}}
+.mi-hoist rect{animation:miHoist 3.6s cubic-bezier(.4,0,.2,1) infinite}
+.mi-cable{transform-origin:50% 0;animation:miCable 3.6s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes miHoist{0%,38%{transform:none}58%,70%{transform:translateY(7px)}90%,100%{transform:none}}
+@keyframes miCable{0%,38%{transform:scaleY(1)}58%,70%{transform:scaleY(1.58)}90%,100%{transform:scaleY(1)}}
+.mi-bar{transform-origin:50% 100%;animation:miBar 3.6s cubic-bezier(.3,1.3,.5,1) infinite}.mi-bar.b1{animation-delay:.08s}.mi-bar.b2{animation-delay:.16s}.mi-bar.b3{animation-delay:.24s}
+@keyframes miBar{0%,40%{transform:scaleY(1)}50%{transform:scaleY(.35)}72%,100%{transform:scaleY(1)}}
+.mi-tick{stroke-dasharray:1;animation:miTick 3.6s ease-out infinite}.mi-tick.k1{animation-delay:.22s}.mi-tick.k2{animation-delay:.44s}
+@keyframes miTick{0%,40%{stroke-dashoffset:0}44%{stroke-dashoffset:1}62%,100%{stroke-dashoffset:0}}
+.mi-tag{transform-box:view-box;transform-origin:45px 17px;animation:miTag 3.6s ease-in-out infinite}
+@keyframes miTag{0%,40%{transform:rotate(0)}52%{transform:rotate(10deg)}64%{transform:rotate(-7deg)}76%{transform:rotate(3deg)}86%,100%{transform:rotate(0)}}
+.mi-cycle{transform-box:view-box;animation:miCycle 3.6s cubic-bezier(.5,0,.3,1) infinite}
+@keyframes miCycle{0%,36%{transform:rotate(0)}80%,100%{transform:rotate(360deg)}}
+.mi-scan{animation:miScan 3.6s ease-in-out infinite}
+@keyframes miScan{0%,30%{transform:none}48%{transform:translateY(-7px)}66%{transform:translateY(8px)}84%,100%{transform:none}}
+.mc-icon .mi *{animation-play-state:paused}
+.module-card:hover .mc-icon .mi *{animation-play-state:running}
+@media (prefers-reduced-motion:reduce){.mi *{animation:none!important}}
 </style>
 </head>
 <body>
@@ -3104,8 +3169,9 @@ function moduleCardHtml(m, isPriority){
   const badgeText = locked?'Gesperrt':(p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen'));
   const pct = p.completed?100:(p.started?45:0);
   return `<div class="module-card ${locked?'module-card-locked':''}" onclick="openModule(${m.id})">
-    <div class="mc-head"><span class="mc-head-eyebrow">Modul ${String(m.id).padStart(2,'0')} · ${groupOf(m.id).title}</span><span class="mc-head-title">${m.title}</span></div>
-    <div class="mc-top"><span class="mc-badges"><span class="mc-badge ${badge}">${locked?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:inline;vertical-align:-1px;margin-right:3px"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':''}${badgeText}</span>${isPriority&&!locked?'<span class="mc-badge mc-badge-prio">Für Sie</span>':''}</span></div>
+    <div class="mc-row"><div class="mc-icon" aria-hidden="true">${moduleIcon(m.id)}</div><span class="mc-badges"><span class="mc-badge ${badge}">${locked?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:inline;vertical-align:-1px;margin-right:3px"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':''}${badgeText}</span>${isPriority&&!locked?'<span class="mc-badge mc-badge-prio">Für Sie</span>':''}</span></div>
+    <span class="mc-eyebrow">Modul ${String(m.id).padStart(2,'0')} · ${groupOf(m.id).title}</span>
+    <div class="mc-title2">${m.title}</div>
     <p class="mc-desc">${moduleDesc(m)}</p>
     <div class="mc-track"><div class="mc-fill" style="width:${pct}%"></div></div>
     <button class="mc-btn" onclick="event.stopPropagation();openModule(${m.id})">${locked?`Phase „${lockedPhaseLabel(m)}" abschließen`:(p.completed?'Erneut ansehen':(p.started?'Fortsetzen':'Starten'))}</button>
@@ -3186,6 +3252,44 @@ function openModule(id){
 }
 
 
+/* ===== Animierte Themen-Symbole je Modul (einheitlicher Stil: Linie + grüne Akzentflächen) ===== */
+const MI_G='#A8CC68', MI_L='rgba(168,204,104,.38)';
+const MODULE_ICON_ART={
+ 1:`<rect x="7" y="11" width="50" height="42" rx="6" class="mi-s"/><path d="M7 21h50" class="mi-s"/><circle cx="13" cy="16" r="1.6" class="mi-f"/><circle cx="18" cy="16" r="1.6" class="mi-f"/>
+    ${[[13,26],[27,26],[41,26],[13,38],[27,38],[41,38]].map(([x,y],i)=>`<rect class="mi-pop p${i}" x="${x}" y="${y}" width="10" height="9" rx="2" fill="${i===0||i===4?MI_G:MI_L}"/>`).join('')}`,
+ 2:`<path d="M9 8v48M55 8v48" class="mi-s"/><path d="M9 31h46M9 54h46" class="mi-s"/>
+    <rect x="14" y="40" width="13" height="14" rx="1.5" fill="${MI_G}" class="mi-s2"/><rect x="31" y="44" width="11" height="10" rx="1.5" fill="${MI_L}" class="mi-s2"/>
+    <rect x="15" y="20" width="11" height="11" rx="1.5" fill="${MI_L}" class="mi-s2"/><g class="mi-slide"><rect x="36" y="17" width="13" height="14" rx="1.5" fill="${MI_G}" class="mi-s2"/></g>`,
+ 3:`<rect x="17" y="6" width="30" height="22" rx="3" class="mi-s"/><path d="M17 13h30M27 6v22M37 6v22" class="mi-s2"/><rect x="17" y="6" width="30" height="7" rx="3" fill="${MI_G}"/>
+    <g class="mi-drop"><path d="M32 30v13M26 38l6 6 6-6" class="mi-s mi-g"/></g><path d="M11 45v9h42v-9" class="mi-s"/>`,
+ 4:`<g class="mi-back"><rect x="9" y="14" width="36" height="24" rx="3" fill="#CFE3F2" class="mi-s"/><rect x="13" y="19" width="2.5" height="14" rx="1" class="mi-f"/></g>
+    <g class="mi-lift"><rect x="19" y="27" width="38" height="25" rx="3" fill="#fff" class="mi-s"/><rect x="23" y="32" width="2.5" height="15" rx="1" class="mi-f"/><path d="M29 34h12M29 39h9M29 45h14" class="mi-s2"/>
+    <rect x="45" y="31" width="8" height="8" class="mi-f"/><rect x="46.8" y="32.8" width="4.4" height="4.4" fill="#fff"/><rect x="48" y="34" width="2" height="2" class="mi-f"/><rect x="45" y="42" width="8" height="4" rx="1" fill="${MI_G}"/></g>`,
+ 5:`<g class="mi-roll"><path d="M6 13h7l6 27h27l6-19H16" class="mi-s"/><circle cx="23" cy="48" r="3.6" class="mi-s"/><circle cx="43" cy="48" r="3.6" class="mi-s"/><path d="M19 30h31" class="mi-s2"/></g>
+    <g class="mi-in"><rect x="26" y="9" width="12" height="11" rx="1.5" fill="${MI_G}" class="mi-s2"/><path d="M32 9v4" class="mi-s2"/></g>`,
+ 6:`<g class="mi-drive"><rect x="5" y="19" width="33" height="23" rx="2.5" fill="${MI_L}" class="mi-s"/><path d="M38 27h9l7 8v7H38z" class="mi-s"/><path d="M41 30h5l4 5h-9z" fill="${MI_G}"/>
+    <g class="mi-wheel" style="transform-origin:15px 46px"><circle cx="15" cy="46" r="5" fill="#fff" class="mi-s"/><path d="M15 42.5v7M11.5 46h7" class="mi-s2"/></g><g class="mi-wheel" style="transform-origin:46px 46px"><circle cx="46" cy="46" r="5" fill="#fff" class="mi-s"/><path d="M46 42.5v7M42.5 46h7" class="mi-s2"/></g></g>
+    <path d="M2 54h60" class="mi-s2 mi-road"/><g class="mi-check"><circle cx="51" cy="13" r="8" fill="${MI_G}"/><path d="M47 13l3 3 5.5-6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></g>`,
+ 7:`<g class="mi-buzz"><path d="M12 19h29a7 7 0 0 1 7 7v2a7 7 0 0 1-7 7H12z" fill="${MI_G}" class="mi-s"/><path d="M12 19v16" class="mi-s"/><rect x="48" y="23" width="6" height="8" rx="1.5" class="mi-s"/>
+    <path d="M21 35l-3 13h11l2-13" class="mi-s"/><rect x="14" y="48" width="20" height="8" rx="2" class="mi-f"/><path d="M18 24h14" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <path d="M54 27h7" class="mi-s mi-bit"/>`,
+ 8:`<g class="mi-turn"><circle cx="21" cy="22" r="11" class="mi-s" stroke-width="3.2"/><circle cx="21" cy="22" r="4" class="mi-s2"/><path d="M29 30l21 21M43 44l5-5M48 49l4-4" class="mi-s" stroke-width="3.2"/></g>
+    <g class="mi-swing"><path d="M14 30l-3 8" class="mi-s2"/><rect x="3" y="37" width="16" height="12" rx="2" fill="#fff" class="mi-s"/><rect x="6.5" y="40" width="5" height="5" class="mi-f"/><path d="M13.5 41h3" class="mi-s2"/></g>`,
+ 9:`<path d="M13 57V9M13 11h42M13 11H7M13 19l8-8M21 11v0" class="mi-s"/><path d="M5 57h54" class="mi-s"/>
+    <g class="mi-hoist"><path d="M44 11v12" class="mi-s2 mi-cable"/><rect x="39" y="23" width="10" height="8" rx="1.5" fill="${MI_G}" class="mi-s2"/></g>
+    <rect x="26" y="38" width="28" height="19" rx="1.5" fill="${MI_L}" class="mi-s"/><path d="M33 44h4M43 44h4M33 50h4M43 50h4" class="mi-s2"/>`,
+ 10:`<path d="M8 55h50M8 8v47" class="mi-s"/>${[[14,20,MI_L],[25,30,MI_L],[36,22,MI_L],[47,38,MI_G]].map(([x,h,c],i)=>`<rect class="mi-bar b${i}" x="${x}" y="${55-h}" width="8" height="${h}" rx="1.5" fill="${c}" stroke="#2B3134" stroke-width="2"/>`).join('')}`,
+ 11:`<rect x="13" y="10" width="38" height="47" rx="4" class="mi-s"/><rect x="24" y="6" width="16" height="8" rx="2" fill="${MI_G}" class="mi-s2"/>
+    ${[0,1,2].map(i=>`<rect x="19" y="${22+i*11}" width="7" height="7" rx="1.5" class="mi-s2"/><path class="mi-tick k${i}" d="M20.5 ${25.5+i*11}l2 2 3.5-4" fill="none" stroke="#5F7A33" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/><path d="M31 ${25.5+i*11}h14" class="mi-s2"/>`).join('')}`,
+ 12:`<g class="mi-tag"><path d="M33 8h17a4 4 0 0 1 4 4v17L30 53a3 3 0 0 1-4 0L11 38a3 3 0 0 1 0-4z" fill="${MI_L}" class="mi-s"/><circle cx="45" cy="17" r="3.2" fill="#fff" class="mi-s2"/>
+    <text x="30" y="38" text-anchor="middle" font-family="Barlow, Arial, sans-serif" font-weight="800" font-size="16" class="mi-f">€</text></g>`,
+ 13:`<path d="M32 18l14 7v15l-14 7-14-7V25z" fill="${MI_L}" class="mi-s"/><path d="M18 25l14 7 14-7M32 32v15" class="mi-s"/>
+    <g class="mi-cycle" style="transform-origin:32px 32px"><path d="M10 26a23 23 0 0 1 36-15" class="mi-s mi-g"/><path d="M45 5l2 7-7 1" class="mi-s mi-g"/><path d="M54 38a23 23 0 0 1-36 15" class="mi-s"/><path d="M19 59l-2-7 7-1" class="mi-s"/></g>`,
+ 14:`<rect x="19" y="5" width="26" height="54" rx="5" class="mi-s"/><path d="M28 9h8" class="mi-s2"/><rect x="23" y="15" width="18" height="34" rx="1.5" fill="${MI_L}"/>
+    ${[0,1,2,3,4,5,6].map(i=>`<rect x="${25.5+i*2.1}" y="24" width="${i%3?1.1:1.6}" height="14" class="mi-f"/>`).join('')}<rect class="mi-scan" x="22" y="30" width="20" height="2" rx="1" fill="${MI_G}"/><circle cx="32" cy="54" r="1.8" class="mi-f"/>`
+};
+function moduleIcon(id){ return `<svg class="mi" viewBox="0 0 64 64" aria-hidden="true" focusable="false">${MODULE_ICON_ART[id]||MODULE_ICON_ART[1]}</svg>`; }
+
 /* ===== Kurzbeschreibung je Modul (Modulkarte und Modulkopf) ===== */
 const MODULE_DESC={
  1:'Startseite, Kalender und Hauptmenü kennenlernen und verstehen, wie das Kanban-Prinzip in der OrKan Cloud funktioniert.',
@@ -3212,6 +3316,7 @@ function renderModuleDetail(){
   document.getElementById('view-modules').innerHTML = `
     <div class="md-back" onclick="renderModulesList()">&larr; Zurück zu allen Modulen</div>
     <div class="module-detail-header">
+      <div class="md-icon" aria-hidden="true">${moduleIcon(m.id)}</div>
       <div class="md-title-row"><span class="md-num">${String(m.id).padStart(2,'0')}</span><div class="md-title-col"><span class="phase-badge">${groupOf(m.id).title}</span><h2>${m.title}</h2><p class="md-desc">${moduleDesc(m)}</p></div></div>
       <div class="md-meta"><span class="diff-dots">${diffDots}</span><span>${p.completed?'Abgeschlossen':(p.started?'In Bearbeitung':'Offen')}</span></div>
     </div>
