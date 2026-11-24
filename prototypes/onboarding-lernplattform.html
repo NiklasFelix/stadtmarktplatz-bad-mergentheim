@@ -3522,7 +3522,7 @@ const MODULE_VIDEOS = {
   7:{src:'videos/modul-07', ratio:1440/708},
   8:{src:'videos/modul-08', ratio:1440/708}
 };
-const VIDEO_VER='2026-11-24d'; // bei neuen Videofassungen erhöhen, damit Browser nicht die alte Fassung aus dem Cache zeigen
+const VIDEO_VER='2026-11-24e'; // bei neuen Videofassungen erhöhen, damit Browser nicht die alte Fassung aus dem Cache zeigen
 function videoBlockHtml(m){
   const vid = MODULE_VIDEOS[m.id], src = vid&&vid.src;
   // Module ohne Lernvideo: kein Platzhalter, sondern ein kurzer Hinweis
@@ -3530,7 +3530,7 @@ function videoBlockHtml(m){
   let inner;
   if(src){
     inner = `<div class="ovp" tabindex="0" onkeydown="ovpKey(event,this)">
-      <video data-mid="${m.id}" poster="${modulePoster(m)}" preload="metadata" playsinline onclick="ovpToggle(this)" ontimeupdate="ovpTick(this)" onloadedmetadata="videoResume(this);ovpTick(this)" onplay="ovpState(this)" onpause="ovpState(this);watchSave()" onended="ovpState(this);watchSave()"><source src="${src}.mp4?v=${VIDEO_VER}" type="video/mp4"><source src="${src}.webm?v=${VIDEO_VER}" type="video/webm"></video>
+      <video data-mid="${m.id}" poster="${modulePoster(m)}" preload="auto" playsinline onclick="ovpToggle(this)" ontimeupdate="ovpTick(this)" onloadedmetadata="videoResume(this);ovpTick(this)" onplay="ovpState(this)" onpause="ovpState(this);watchSave()" onended="ovpState(this);watchSave()"><source src="${src}.mp4?v=${VIDEO_VER}" type="video/mp4"><source src="${src}.webm?v=${VIDEO_VER}" type="video/webm"></video>
       <div class="ovp-bar">
         <input type="range" class="ovp-seek" min="0" max="1000" value="0" aria-label="Position" oninput="ovpSeek(this)">
         <div class="ovp-row">
