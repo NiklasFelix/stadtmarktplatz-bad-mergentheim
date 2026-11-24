@@ -2899,7 +2899,8 @@ function saveState(){
       moduleProgress: state.moduleProgress, totalTime: state.totalTime,
       quizAnswers: state.quizAnswers, weakTopics: state.weakTopics, adaptiveLog: state.adaptiveLog,
       integrationOptions: state.integrationOptions, discountCode: state.discountCode,
-      activityDays: state.activityDays, recent: state.recent, ratings: state.ratings, favorites: state.favorites
+      activityDays: state.activityDays, recent: state.recent, ratings: state.ratings, favorites: state.favorites,
+      lastView: state.currentView, lastModule: state.currentView==='modules'?state.currentModule:null
     };
     localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(snapshot));
   }catch(e){}
@@ -2923,8 +2924,16 @@ let __autosaveInterval = null;
 let __resetting = false;
 function __visibilitySave(){ if(document.hidden && !__resetting) saveState(); }
 function bootApp(){
-  if(loadState()) initializeApp();
+  if(loadState()){
+    initializeApp();
+    // Wiederkommen: dort weitermachen, wo zuletzt gearbeitet wurde (Ansicht bzw. Modul)
+    try{ const v=state.lastView, mid=state.lastModule;
+      if(v==='modules'&&mid&&MODULES.some(m=>m.id===mid)) openModule(mid);
+      else if(v&&v!=='dashboard'&&document.getElementById('view-'+v)) showView(v); }catch(e){}
+  }
   else { window.__firstVisit = true; startApp(); }
+  // Browser bitten, die gespeicherten Daten dauerhaft zu behalten (nicht automatisch zu löschen)
+  try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{}); }catch(e){}
   window.addEventListener('beforeunload', saveState);
   window.addEventListener('pagehide', saveState);
   document.addEventListener('visibilitychange', __visibilitySave);
