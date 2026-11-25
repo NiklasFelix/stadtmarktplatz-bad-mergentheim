@@ -2724,7 +2724,7 @@ const BEST_PRACTICES = [
    steps:[
     {t:"Artikelmaske öffnen",d:"„Lagerverwaltung“ → „Artikel“ → „Erstellen“."},
     {t:"Pflichtfelder ausfüllen",d:"Alle mit * gekennzeichneten Felder ausfüllen – Artikelgruppe, Bezeichnung 1, Lager/Gebäude, Lagerort, Lager MIN/MAX, Lagereinheit, Lieferant, Menge (VPE) und Mengeneinheit (VPE). Die interne Artikelnummer wird im Standard fortlaufend vergeben (Systematik individuell festlegbar)."},
-    {t:"Einheiten prüfen",d:"Erst die Lagereinheit eintragen. Bei „Pack“ die abweichende Bestelleinheit „Stück“ sowie Menge und Mengeneinheit (VPE) ergänzen."},
+    {t:"Einheiten prüfen",d:"Zuerst die Lagereinheit eintragen, dann je nach Einheit:<ul class=\"sub-points\"><li><strong>Lagereinheit „Pack“:</strong> Bei „Abw. Bestelleinheit“ „Stück“ eintragen, bei „Menge (VPE)“ die Anzahl pro Pack (z. B. Schrauben pro Pack) und bei „Mengeneinheit (VPE)“ „Stück“.</li><li><strong>Lagereinheit „Stück“:</strong> „Abw. Bestelleinheit“, „Menge (VPE)“ und „Mengeneinheit (VPE)“ bleiben leer.</li></ul>"},
     {t:"Lager MIN und MAX festlegen",d:"Sicherheitsbestand und Höchstbestand eintragen.",hint:"Lieber etwas großzügiger starten und nach einigen Wochen nachjustieren."},
     {t:"Bild hochladen",d:"Unter „Dokumente“ ein Foto per Drag & Drop hochladen – das erste Dokument erscheint auf dem Etikett."},
     {t:"Speichern",d:"„Speichern“ klicken – der Artikel erscheint sofort in der Artikelliste.",hint:"Für ähnliche Artikel „Eingaben beibehalten“ oder „Kopieren“ nutzen."}
