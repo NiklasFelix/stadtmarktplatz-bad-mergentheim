@@ -200,6 +200,7 @@ p.page-sub{color:var(--gray);font-size:15px;margin-bottom:28px;line-height:1.5}
 .appointment-contact-detail-row svg{width:13px;height:13px;flex-shrink:0;color:var(--green-dark)}
 .appointment-form-actions{display:flex;gap:10px;margin-top:16px}
 .appointment-form-actions .btn{flex:1}
+.appt-book-hint{font-size:14px;line-height:1.55;color:var(--gray);margin:14px 0 4px}
 .appointment-send-status{font-size:13.5px;color:var(--green-dark);font-weight:600;margin-top:10px;text-align:center;min-height:14px}
 .appointment-send-status.appointment-send-error{color:#dc2626}
 .appointment-field-error{display:block;font-size:13px;color:#dc2626;margin-top:4px;min-height:14px}
@@ -2141,20 +2142,12 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
     <div id="appointmentContactList"></div>
     <form id="appointmentMsgForm" style="display:none" novalidate>
       <div class="appointment-selected-contact" id="appointmentSelectedContact"></div>
-      <label class="field-label">Ihr Name</label>
-      <input type="text" id="appointmentName" class="profile-input">
-      <span class="appointment-field-error" id="appointmentNameError"></span>
-      <label class="field-label" style="margin-top:10px">Ihre E-Mail-Adresse (für die Antwort)</label>
-      <input type="email" id="appointmentEmail" class="profile-input" placeholder="name@firma.de">
-      <span class="appointment-field-error" id="appointmentEmailError"></span>
-      <label class="field-label" style="margin-top:10px">Ihre Nachricht</label>
-      <textarea id="appointmentMessage" class="profile-input" rows="4" style="resize:vertical" placeholder="Ihre Frage oder Ihr Terminwunsch..."></textarea>
-      <span class="appointment-field-error" id="appointmentMessageError"></span>
+      <p class="appt-book-hint" id="appointmentBookHint"></p>
       <div class="appointment-form-actions">
         <button type="button" class="btn btn-outline" onclick="backToContactList()">Zurück</button>
-        <a class="btn btn-primary" id="appointmentSendBtn" href="#" target="_blank" rel="noopener" style="text-align:center;text-decoration:none" onclick="event.preventDefault();openMailChooser();return false">Per E-Mail senden</a>
+        <a class="btn btn-primary" id="appointmentBookBtn" href="#" target="_blank" rel="noopener" style="text-align:center;text-decoration:none">Termin online buchen ↗</a>
       </div>
-      <p style="text-align:center;margin-top:8px;font-size:13px"><a href="#" onclick="copyAppointmentMail();return false" style="color:#A8CC68">Öffnet sich nichts? Nachricht kopieren</a></p>
+      <p style="text-align:center;margin-top:8px;font-size:13px"><a href="#" onclick="copyBookingLink();return false" style="color:#A8CC68">Öffnet sich nichts? Buchungslink kopieren</a></p>
       <p id="appointmentSendStatus" class="appointment-send-status"></p>
     </form>
   </div>
@@ -4038,8 +4031,8 @@ const CLOUD_DEEPLINKS = {
 };
 const ORKAN_CLOUD_BASE = 'https://cloud.orkan-system.de/';
 const APPOINTMENT_CONTACTS = [
-  {name:'Michael Seiler', org:'OrKan System', email:'Michael.Seiler@orkan-system.de', mobile:'+49 151 54445511', phone:'+49 7940 9188-857'},
-  {name:'Niklas Pietsch', org:'OrKan System', email:'Niklas.Pietsch@orkan-system.de', mobile:'+49 170 7932020', phone:'+49 7940 9188-847'}
+  {name:'Michael Seiler', org:'OrKan System', email:'Michael.Seiler@orkan-system.de', booking:'https://bookings.cloud.microsoft/bookwithme/user/6410d3fb9337445db312a9dfabe8c077%40orkan-system.de?anonymous&ismsaljsauthenabled', mobile:'+49 151 54445511', phone:'+49 7940 9188-857'},
+  {name:'Niklas Pietsch', org:'OrKan System', email:'Niklas.Pietsch@orkan-system.de', booking:'https://bookings.cloud.microsoft/bookwithme/user/9a52b98d210c437d88ca4df7c674dab1@orkan-system.de?anonymous&ismsaljsauthenabled&ep=plink', mobile:'+49 170 7932020', phone:'+49 7940 9188-847'}
 ];
 let appointmentSelected = null;
 function bookAppointment(){
@@ -4069,7 +4062,7 @@ function selectAppointmentContact(idx){
   appointmentSelected = APPOINTMENT_CONTACTS[idx];
   document.getElementById('appointmentContactList').style.display = 'none';
   document.getElementById('appointmentMsgForm').style.display = 'block';
-  document.getElementById('appointmentTitle').textContent = `Nachricht an ${appointmentSelected.name}`;
+  document.getElementById('appointmentTitle').textContent = `Termin mit ${appointmentSelected.name}`;
   document.getElementById('appointmentSubtitle').textContent = `Oder direkt Kontakt aufnehmen:`;
   document.getElementById('appointmentSelectedContact').innerHTML = `
     <div class="appointment-contact-avatar">${appointmentSelected.name.split(' ').map(n=>n[0]).join('')}</div>
@@ -4082,12 +4075,16 @@ function selectAppointmentContact(idx){
         ${appointmentSelected.phone?`<a href="tel:${appointmentSelected.phone.replace(/\s/g,'')}" class="appointment-contact-detail-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>${appointmentSelected.phone}</a>`:''}
       </div>
     </div>`;
-  document.getElementById('appointmentName').value = state.name || '';
-  document.getElementById('appointmentEmail').value = '';
-  document.getElementById('appointmentMessage').value = `Hallo ${appointmentSelected.name.split(' ')[0]},\n\nich würde gerne einen persönlichen Termin zu meinen individuellen Fragen zur OrKan Cloud vereinbaren.\n\nViele Grüße`;
-  setTimeout(updateAppointmentMailLink,0);
+  document.getElementById('appointmentBookHint').textContent = `Wählen Sie im Online-Kalender von ${appointmentSelected.name} einen freien Termin aus. Die Buchung öffnet sich in einem neuen Fenster.`;
+  document.getElementById('appointmentBookBtn').href = appointmentSelected.booking;
   document.getElementById('appointmentSendStatus').textContent = '';
-  clearAppointmentFieldErrors();
+}
+function copyBookingLink(){
+  if(!appointmentSelected) return;
+  const url=appointmentSelected.booking, st=document.getElementById('appointmentSendStatus');
+  const done=()=>{ st.textContent='Buchungslink kopiert – bitte im Browser einfügen.'; };
+  const fallback=()=>{ st.innerHTML='Bitte diesen Link kopieren:<br><input class="profile-input" style="margin-top:6px;font-size:12px" readonly value="'+url.replace(/"/g,'&quot;')+'" onclick="this.select()">'; };
+  try{ navigator.clipboard.writeText(url).then(done,fallback); }catch(e){ fallback(); }
 }
 function backToContactList(){
   document.getElementById('appointmentContactList').style.display = '';
