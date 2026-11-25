@@ -2237,10 +2237,10 @@ const MODULES = [
       "[Suchfeld] <div><strong>Wichtig:</strong> Die Gesamtanzahl bezieht sich auf das aktuelle Suchergebnis. Steht z. B. „Befestigung“ im Suchfeld, werden nur diese Artikel gezählt.</div>",
       "[Artikelliste exportieren] <div>Über „Export“ speichern Sie die Artikelliste als Excel-Datei – wahlweise mit oder ohne Artikelbilder. Damit können Sie:<ul class=\"sub-points\"><li><strong>Daten prüfen:</strong> Artikelstamm in Excel kontrollieren, z. B. Lager MIN/MAX oder Lieferanten.</li><li><strong>Weitergeben:</strong> Artikellisten an Kollegen, den Einkauf oder an Händler für ein Angebot schicken.</li><li><strong>Weiterverarbeiten:</strong> Daten in Excel überarbeiten und per „Import“ wieder einspielen.</li></ul>Filtern Sie die Liste vorher über das Suchfeld, wenn Sie nur bestimmte Artikel exportieren möchten.</div>",
       "## 2. Artikel anlegen",
-      "[Vier Wege der Artikelanlage] Die vier Wege: Neuanlage über „Erstellen“, einen bestehenden Artikel über „Kopieren“, Serienanlage per „Eingabe behalten“ oder per Excel über „Import“ (siehe Modul 3).",
+      "[Vier Wege der Artikelanlage] Die vier Wege: Neuanlage über „Erstellen“, einen bestehenden Artikel über „Kopieren“, Serienanlage per „Eingaben beibehalten“ oder per Excel über „Import“ (siehe Modul 3).",
       "[Pflichtfelder] Pflichtfelder (*): Artikelgruppe, Bezeichnung 1, Lager/Gebäude, Lagerort, Lager MIN, Lager MAX, Lagereinheit, Lieferant, Menge (VPE) und Mengeneinheit (VPE).",
       "[Interne Artikelnummer] Im Standard wird die interne Artikelnummer fortlaufend vergeben (höchste Nummer +1). Die Systematik können Sie aber flexibel für Ihren Betrieb festlegen.",
-      "[Eingabe behalten] Bei „Eingabe behalten“ übernimmt die OrKan Cloud alle Felder des vorherigen Artikels – außer der internen Artikelnummer und der Lieferanten-Artikelnummer.",
+      "[Eingaben beibehalten] Bei „Eingaben beibehalten“ übernimmt die OrKan Cloud alle Felder des vorherigen Artikels – außer der internen Artikelnummer und der Lieferanten-Artikelnummer.",
       "## 3. Bestand und Einheiten in der Artikelkarte festlegen",
       "[Artikelkarte anpassen] <div>So passen Sie die Artikelkarte an Ihren Bedarf an:<ul class=\"sub-points\"><li><strong>Alle Daten sehen:</strong> Über <span class=\"ui-box\">Vollständige Ansicht</span> zeigt die Artikelkarte alle Felder an.</li><li><strong>Eigene Artikelkarte bauen:</strong> In der Artikelkarte über <span class=\"ui-box\">Einstellungen</span> → <span class=\"ui-box\">Artikeldialog-Einstellungen</span> wählen Sie die Felder aus, die für Sie relevant sind.</li></ul></div>",
       "[Lager MIN & MAX] Lager MIN ist der Sicherheitsbestand, Lager MAX der Höchstbestand. Die Bestellmenge ergibt sich automatisch aus Lager MAX minus Lager MIN.",
@@ -2251,23 +2251,23 @@ const MODULES = [
       "[Lagerplätze anlegen] <div>Lager/Gebäude und Lagerorte (Lagerplätze) anlegen:<ul class=\"sub-points\"><li><strong>Direkt in der Artikelkarte:</strong> Auf das Feld „Lager/Gebäude“ bzw. „Lagerort“ klicken und <span class=\"ui-box\">Hinzufügen</span> wählen – praktisch, wenn beim Anlegen ein Platz fehlt.</li><li><strong>Über die Einstellungen:</strong> Menü → „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Lager/Gebäude“ bzw. „Lagerorte/Lagerplätze“ → „Erstellen“, dann die Pflichtfelder (*) ausfüllen.</li><li><strong>Viele auf einmal:</strong> Dort auch per Excel-Liste importierbar, wie Artikel. Ein Export ist jederzeit möglich.</li></ul></div>"
     ],
     features:[
-      {t:'Vier Wege der Artikelanlage',d:'Neuanlage, Kopieren, Serienanlage per „Eingabe behalten" oder Import'},
+      {t:'Vier Wege der Artikelanlage',d:'Neuanlage, Kopieren, Serienanlage per „Eingaben beibehalten" oder Import'},
       {t:'Lager MIN / Lager MAX',d:'Sicherheitsbestand und Höchstbestand steuern die Bestellmenge automatisch'},
       {t:'Erstes Dokument = Etikettenbild',d:'Weitere Dokumente wie Sicherheitsdatenblätter bleiben reine Anhänge'}
     ],
     practice:'Beispiel: Für ein Schraubenpäckchen wird Lager MIN = 1 und Lager MAX = 3 hinterlegt. Sobald der Mindestbestand von 1 erreicht ist, entnimmt der Mitarbeiter das weiße Etikett und bestellt über die OrKan Cloud – in diesem Fall die Differenz von 2 Päckchen.',
-    task:'Legen Sie einen Artikel mit Lager MIN/MAX nach dem Schraubenpäckchen-Beispiel an und legen Sie per „Eingabe behalten" eine ähnliche Variante nach.',
-    checklist:["Alle mit * gekennzeichneten Pflichtfelder ausfüllen", "Lager MIN und Lager MAX festlegen (z. B. 2 / 6)", "Artikelbild per Drag & Drop unter „Dokumente“ hinzufügen und speichern", "Einen zweiten, ähnlichen Artikel per „Eingabe behalten“ oder „Kopieren“ anlegen", "Einen neuen Lagerort anlegen – direkt in der Artikelkarte über „Hinzufügen“ oder über „Einstellungen“ → „Mandant“ → „Lagerverwaltung“"],
-    tip:'Nutzen Sie „Eingabe behalten" oder „Kopieren" für ähnliche Artikel (z. B. gleicher Bohrer in anderer Größe) – nur die interne Artikelnummer und die Lieferanten-Artikelnummer müssen Sie dann noch anpassen.',
+    task:'Legen Sie einen Artikel mit Lager MIN/MAX nach dem Schraubenpäckchen-Beispiel an und legen Sie per „Eingaben beibehalten" eine ähnliche Variante nach.',
+    checklist:["Alle mit * gekennzeichneten Pflichtfelder ausfüllen", "Lager MIN und Lager MAX festlegen (z. B. 2 / 6)", "Artikelbild per Drag & Drop unter „Dokumente“ hinzufügen und speichern", "Einen zweiten, ähnlichen Artikel per „Eingaben beibehalten“ oder „Kopieren“ anlegen", "Einen neuen Lagerort anlegen – direkt in der Artikelkarte über „Hinzufügen“ oder über „Einstellungen“ → „Mandant“ → „Lagerverwaltung“"],
+    tip:'Nutzen Sie „Eingaben beibehalten" oder „Kopieren" für ähnliche Artikel (z. B. gleicher Bohrer in anderer Größe) – nur die interne Artikelnummer und die Lieferanten-Artikelnummer müssen Sie dann noch anpassen.',
     quiz:[
-      {q:"Sie müssen nur drei Bohrer (6, 8 und 10 mm) anlegen, die sich lediglich in der Größe unterscheiden. Welcher Weg bietet sich an?",o:["Jeden Bohrer vollständig manuell neu anlegen", "Per „Eingabe behalten“ oder „Kopieren“ anlegen und nur interne Artikelnummer und Lieferanten-Artikelnummer anpassen", "Alle drei Größen als einen Artikel mit drei Bezeichnungen anlegen", "Die Bohrer nur über den Bestellvorschlag erfassen"],a:1,t:"Serienanlage"},
+      {q:"Sie müssen nur drei Bohrer (6, 8 und 10 mm) anlegen, die sich lediglich in der Größe unterscheiden. Welcher Weg bietet sich an?",o:["Jeden Bohrer vollständig manuell neu anlegen", "Per „Eingaben beibehalten“ oder „Kopieren“ anlegen und nur interne Artikelnummer und Lieferanten-Artikelnummer anpassen", "Alle drei Größen als einen Artikel mit drei Bezeichnungen anlegen", "Die Bohrer nur über den Bestellvorschlag erfassen"],a:1,t:"Serienanlage"},
       {q:"Ein Artikel hat Lager MIN = 5 und Lager MAX = 20. Welche Menge wird bei Erreichen des Mindestbestands nachbestellt?",o:["5", "20", "25", "15"],a:3,t:"Bestellmengen-Berechnung"},
       {q:"Zu einem Artikel wurde zuerst das Sicherheitsdatenblatt und danach ein Produktfoto hochgeladen. Was erscheint auf dem Etikett?",o:["Das Sicherheitsdatenblatt, da immer das zuerst hochgeladene Dokument verwendet wird", "Das Produktfoto, weil Bilder immer Vorrang haben", "Beide Dokumente nebeneinander", "Keines – das Etikettenbild muss separat gewählt werden"],a:0,t:"Dokumente & Etikett"},
       {q:"Die höchste interne Artikelnummer ist 1250. Welche Nummer erhält der nächste neu angelegte Artikel im Standard automatisch?",o:["1250", "Die kleinste noch freie Nummer", "1251", "Keine – die Nummer muss immer manuell vergeben werden"],a:2,t:"Artikelnummern-Vergabe"},
-      {q:"Welche Wege gibt es, einen neuen Artikel in der OrKan Cloud anzulegen?",o:["Nur manuell über „Erstellen“", "Manuelle Neuanlage, Serienanlage per „Eingabe behalten“, Kopieren eines bestehenden Artikels oder Excel-Import", "Nur per Excel-Import", "Ausschließlich über den Bestellvorschlag"],a:1,t:"Wege der Artikelanlage"}
+      {q:"Welche Wege gibt es, einen neuen Artikel in der OrKan Cloud anzulegen?",o:["Nur manuell über „Erstellen“", "Manuelle Neuanlage, Serienanlage per „Eingaben beibehalten“, Kopieren eines bestehenden Artikels oder Excel-Import", "Nur per Excel-Import", "Ausschließlich über den Bestellvorschlag"],a:1,t:"Wege der Artikelanlage"}
     ],
-    summary:{ kern:['Artikel lassen sich auf vier Wegen anlegen – bei vielen Artikeln ist der Excel-Import am effizientesten; müssen nur ein paar ähnliche Artikel angelegt werden, bieten sich „Eingabe behalten" oder „Kopieren" an.','Lager MIN und Lager MAX steuern automatisch die vorgeschlagene Bestellmenge (MAX minus MIN).','Das zuerst hochgeladene Dokument eines Artikels wird automatisch als Etikettenbild verwendet.'],
-      funk:['Vier Wege der Artikelanlage','Lager MIN / Lager MAX'], hand:['Lager MIN/MAX realistisch anhand des Verbrauchs festlegen','Bei ähnlichen Artikeln konsequent „Eingabe behalten" oder „Kopieren" nutzen'] }
+    summary:{ kern:['Artikel lassen sich auf vier Wegen anlegen – bei vielen Artikeln ist der Excel-Import am effizientesten; müssen nur ein paar ähnliche Artikel angelegt werden, bieten sich „Eingaben beibehalten" oder „Kopieren" an.','Lager MIN und Lager MAX steuern automatisch die vorgeschlagene Bestellmenge (MAX minus MIN).','Das zuerst hochgeladene Dokument eines Artikels wird automatisch als Etikettenbild verwendet.'],
+      funk:['Vier Wege der Artikelanlage','Lager MIN / Lager MAX'], hand:['Lager MIN/MAX realistisch anhand des Verbrauchs festlegen','Bei ähnlichen Artikeln konsequent „Eingaben beibehalten" oder „Kopieren" nutzen'] }
   },
   { id:3, phase:2, title:'Artikelimport und Lieferantenanbindung', time:'18 Min.', diff:3,
     gist:['Excel-Import','Lieferanten anlegen','Shop-Anbindung'],
@@ -2727,7 +2727,7 @@ const BEST_PRACTICES = [
     {t:"Einheiten prüfen",d:"Erst die Lagereinheit eintragen. Bei „Pack“ die abweichende Bestelleinheit „Stück“ sowie Menge und Mengeneinheit (VPE) ergänzen."},
     {t:"Lager MIN und MAX festlegen",d:"Sicherheitsbestand und Höchstbestand eintragen.",hint:"Lieber etwas großzügiger starten und nach einigen Wochen nachjustieren."},
     {t:"Bild hochladen",d:"Unter „Dokumente“ ein Foto per Drag & Drop hochladen – das erste Dokument erscheint auf dem Etikett."},
-    {t:"Speichern",d:"„Speichern“ klicken – der Artikel erscheint sofort in der Artikelliste.",hint:"Für ähnliche Artikel „Eingabe behalten“ oder „Kopieren“ nutzen."}
+    {t:"Speichern",d:"„Speichern“ klicken – der Artikel erscheint sofort in der Artikelliste.",hint:"Für ähnliche Artikel „Eingaben beibehalten“ oder „Kopieren“ nutzen."}
    ]},
   {mod:2,title:"Lager MIN/MAX realistisch festlegen",time:"15",diff:"easy",desc:"Sicherheits- und Höchstbestand anhand des Verbrauchs bestimmen.",
    steps:[
@@ -2752,14 +2752,14 @@ const BEST_PRACTICES = [
     {t:"Shop-URL eintragen",d:"Über die Lupe suchen. Wird der Händler nicht gefunden, beim Händler nachfragen oder in der Branchensoftware nachsehen.",hint:"Die Shop-URL ist nicht die normale Webadresse des Shops."},
     {t:"Standard Bestellverfahren wählen",d:"Im Feld „Standard Bestellverfahren“ Online (IDS), PDF oder E-Mail wählen."},
     {t:"Liefertage und Offset festlegen",d:"Liefertage und Offset in Tagen hinterlegen, damit der voraussichtliche Wareneingang stimmt.",hint:"Der Offset bildet nur die Zustelldauer ab – keinen Bestellrhythmus."},
-    {t:"Testen",d:"Speichern und mit einer kleinen Testbestellung prüfen, ob sie beim Händler ankommt."}
+    {t:"Speichern",d:"„Speichern“ klicken. Danach steht der Lieferant in der Artikelmaske zur Auswahl und Bestellungen laufen über das hinterlegte Bestellverfahren."}
    ]},
   {mod:4,title:"Etiketten für Ihre Artikel drucken",time:"10",diff:"easy",desc:"Vom Template bis zur druckfertigen PDF.",
    steps:[
     {t:"Template anlegen",d:"Falls noch nicht vorhanden: „Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Artikelkarte“ und ein Template gestalten."},
     {t:"Artikel markieren",d:"„Lagerverwaltung“ → „Artikel“, links die Häkchen bei den gewünschten Artikeln setzen.",hint:"Vorher prüfen, ob im Suchfeld noch ein Begriff steht."},
     {t:"Drucken",d:"„Drucken“ klicken und das Template wählen."},
-    {t:"Auswahl festlegen",d:"Alle, nur aktualisierte, nur nicht aktualisierte oder nur markierte Artikel."},
+    {t:"Auswahl festlegen",d:"<span class=\"ui-box\">Alle</span>, <span class=\"ui-box\">aktualisierte</span>, <span class=\"ui-box\">nicht aktualisierte</span> oder <span class=\"ui-box\">Markierte</span> Artikel."},
     {t:"PDF drucken",d:"„Speichern“ – die PDF auf OrKan-Etikettenpapier drucken."}
    ]},
   {mod:4,title:"Zwei-Etiketten-System im Team einführen",time:"10",diff:"easy",desc:"Blaues und weißes Etikett korrekt im Lageralltag nutzen.",
@@ -2774,7 +2774,7 @@ const BEST_PRACTICES = [
     {t:"Bestellvorschlag öffnen",d:"„Lagerverwaltung“ → „Bestellvorschlag“ → „Erstellen“ – oder per Shortcut auf der Startseite."},
     {t:"Etiketten scannen",d:"Die weißen Etiketten aus der Bestellbox nacheinander scannen.",hint:"Landen Artikel nicht in der Liste, prüfen Sie, ob der Cursor im Scan-Feld steht – nach „Erstellen“ springt er automatisch dorthin."},
     {t:"Mengen prüfen",d:"Mengen bei Bedarf per Doppelklick korrigieren."},
-    {t:"Bestellungen erstellen und senden",d:"Bei mehreren Lieferanten jede Teilbestellung einzeln über „Bestellungen erstellen“ und „Senden“ abschicken."},
+    {t:"Bestellungen erstellen und senden",d:"Zuerst auf „Bestellungen erstellen“ klicken. Danach jede Bestellung pro Lieferant einzeln über „Senden“ abschicken."},
     {t:"Bestellung auslösen",d:"Beim finalen „Bestellen“ sind Ansprechpartner, Liefertermin und Lieferadresse vorbereitet – kurz prüfen. Dann je nach Bestellverfahren des Lieferanten: Onlineshop (IDS) – der Warenkorb im Händler-Shop öffnet sich, dort lösen Sie final aus; E-Mail – die Bestellung geht per E-Mail an den Lieferanten; PDF – die Bestellung wird als PDF erzeugt."}
    ]},
   {mod:6,title:"Wareneingang bestätigen und Etikett zurückhängen",time:"5",diff:"easy",desc:"Lieferung prüfen, bestätigen und das Regal wieder bestellbereit machen.",
@@ -2802,10 +2802,10 @@ const BEST_PRACTICES = [
   {mod:9,title:"Baustelle von Anfang bis Ende abbilden",time:"10",diff:"medium",desc:"Projekt anlegen, Material und Geräte buchen, sauber abschließen.",
    steps:[
     {t:"Projekt anlegen",d:"„Projekte“ → „Projekte“ → „Erstellen“ mit Name und Auftragsnummer; bei mehreren Adressen Projektorte ergänzen."},
-    {t:"Geräte buchen",d:"Maschinen und Schlüssel mit dem Standorttyp „Projekt“ auf die Baustelle buchen – in der App über „Gebrauchsgut“ → „Buchung“."},
+    {t:"Geräte buchen",d:"Maschinen und Schlüssel mit dem Standorttyp „Projekt“ auf die Baustelle buchen: im Menüpunkt „Gebrauchsgut“ „Buchungen“ öffnen und „Erstellen“ klicken – unterwegs in der App über „Gebrauchsgut“ → „Buchung“."},
     {t:"Material buchen",d:"In der OrKan-App „Lagerverwaltung“ → „Entnahme“ → „Artikelsuche“: Artikel scannen, Menge wählen, Projekt auswählen und speichern."},
     {t:"Materialliste prüfen",d:"„Gebrauchsgut“ → „Standorte“ → Projekt markieren → „Materialliste“."},
-    {t:"Abschließen",d:"Alle Gebrauchsgüter zurückbuchen und das Projekt über „Abschließen“ beenden."}
+    {t:"Zurückbuchen",d:"Nach Projektende alle Maschinen und Schlüssel zurück auf ihren Lagerort buchen und in der Materialliste prüfen, dass nichts mehr auf dem Projekt liegt."}
    ]},
   {mod:11,title:"Inventur vorbereiten und durchführen",time:"20",diff:"medium",desc:"Zählen nach Lagerort – per Liste oder App.",
    steps:[
