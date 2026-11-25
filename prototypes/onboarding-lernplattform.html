@@ -2680,7 +2680,7 @@ const KB_ARTICLES = [
   {mod:2,title:"Lager MIN und Lager MAX richtig setzen",desc:"Wie viel bei Mindestbestand nachbestellt wird.",path:"Artikelkarte → Bereich „Lager/Gebäude“",body:["Lager MIN ist der Sicherheitsbestand, ab dem nachbestellt wird; Lager MAX der gewünschte Höchstbestand.", "Die Bestellmenge ergibt sich aus der Differenz MAX minus MIN.", "Beispiel: MIN 2, MAX 6 – ist der Mindestbestand erreicht, entnimmt der Mitarbeiter das weiße Etikett und bestellt 4 Pack.", "Tipp: Werte anfangs eher großzügig wählen und nach einigen Wochen anhand des tatsächlichen Verbrauchs nachjustieren."]},
   {mod:2,title:"Lager/Gebäude und Lagerorte anlegen",desc:"Lagerplätze einzeln oder für viele auf einmal anlegen.",path:"„Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Lager/Gebäude“ bzw. „Lagerorte/Lagerplätze“",body:["Direkt in der Artikelkarte: Auf das Feld „Lager/Gebäude“ bzw. „Lagerort“ klicken und <span class=\"ui-box\">Hinzufügen</span> wählen.", "Über die Einstellungen: „Erstellen“ klicken und die Pflichtfelder (*) ausfüllen.", "Viele auf einmal: per Excel-Liste importieren; ein Export ist jederzeit möglich."]},
   {mod:2,title:"Weitere Grundeinstellungen der Lagerverwaltung",desc:"Artikelgruppen, Einheiten und Bestell-Optionen.",path:"„Einstellungen“ → „Mandant“ → „Lagerverwaltung“",body:["„Artikelgruppen“: zweistufige Struktur aus Gruppen und Untergruppen.", "„Einheiten“: Mengeneinheiten wie Stück, Liter oder Meter pflegen.", "„Artikeldialog-Einstellungen“ (in der Artikelkarte über „Einstellungen“ → „Artikeldialog-Einstellungen“): festlegen, welche Felder die Artikelkarte anzeigt.", "„Optionen“: z. B. Nummernschema für neue Artikel, Standard-Lieferadresse und Regeln wie „Bestellungen mit Preisen“."]},
-  {mod:3,title:"Artikelimport per Excel und ZIP",desc:"Viele Artikel auf einmal anlegen – inklusive Bildern.",path:"„Lagerverwaltung“ → „Artikel“ → „Import“",body:["Sie benötigen die Excel-Importvorlage mit den Artikeldaten – oder eine Exportdatei aus „Lagerverwaltung“ → „Artikel“ → „Export“, die genauso aufgebaut ist – und optional eine ZIP-Datei (max. 40 MB) mit den Bildern.", "In der Importvorlage sind grüne Spalten sehr wichtig, gelbe relativ wichtig und graue weniger wichtig. Beachten Sie die Kommentare in den Spalten U–W.", "Der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen.", "Import-Modi: „Nur importieren“ (nur neue Artikel), „Nur aktualisieren“ (nur bestehende) oder „Importieren und aktualisieren“ (beides).", "Abgleichfeld: Lieferanten-Artikelnummer, EAN oder interne Artikelnummer. Bei Lieferantenwechsel zwingend über die interne Artikelnummer abgleichen – sonst entsteht der Artikel doppelt und Bestandsdaten gehen verloren."],downloadable:true},
+  {mod:3,tm:2,after:"Einen neuen Artikel anlegen",title:"Artikelimport per Excel und ZIP",desc:"Viele Artikel auf einmal anlegen – inklusive Bildern.",path:"„Lagerverwaltung“ → „Artikel“ → „Import“",body:["Sie benötigen die Excel-Importvorlage mit den Artikeldaten – oder eine Exportdatei aus „Lagerverwaltung“ → „Artikel“ → „Export“, die genauso aufgebaut ist – und optional eine ZIP-Datei (max. 40 MB) mit den Bildern.", "In der Importvorlage sind grüne Spalten sehr wichtig, gelbe relativ wichtig und graue weniger wichtig. Beachten Sie die Kommentare in den Spalten U–W.", "Der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen.", "Import-Modi: „Nur importieren“ (nur neue Artikel), „Nur aktualisieren“ (nur bestehende) oder „Importieren und aktualisieren“ (beides).", "Abgleichfeld: Lieferanten-Artikelnummer, EAN oder interne Artikelnummer. Bei Lieferantenwechsel zwingend über die interne Artikelnummer abgleichen – sonst entsteht der Artikel doppelt und Bestandsdaten gehen verloren."],downloadable:true},
   {mod:3,title:"Lieferant anlegen: Shop-URL und Bestellverfahren",desc:"Die wichtigsten Felder beim Anlegen eines Lieferanten.",path:"„Lagerverwaltung“ → „Lieferant“ → „Erstellen“",body:["Alle mit * gekennzeichneten Pflichtfelder ausfüllen.", "Die Shop-URL ist die URL der IDS-Schnittstelle, nicht die normale Webadresse des Shops.", "Über die Lupe lässt sich die Shop-URL suchen. Wird der Händler nicht gefunden, fragen Sie ihn danach oder schauen Sie in Ihrer Branchensoftware nach.", "Standard Bestellverfahren: Online (IDS) direkt an den Webshop, als PDF oder per E-Mail."]},
   {mod:3,title:"Liefertage und Offset in Tagen",desc:"Wie der voraussichtliche Wareneingang berechnet wird.",path:"Lieferant öffnen → Liefertermine",body:["Je Lieferant werden die Liefertage hinterlegt, z. B. Montag bis Freitag oder nur donnerstags.", "Offset = Tage zwischen Bestellung und Wareneingang: Offset 0 = Lieferung am nächsten Liefertag, Offset 1 = ein Tag Zwischenraum.", "Beispiel: Lieferung nur donnerstags, Offset 1, Bestellung am Mittwoch → Wareneingang am Donnerstag der Folgewoche.", "Der Wert gilt für alle Standardbestellungen und lässt sich pro Bestellung überschreiben.", "Wichtig: Der Offset bildet nur die Zustelldauer ab, keinen Bestellrhythmus."]},
   {mod:3,title:"Daten aus OrKan Desktop übernehmen",desc:"Stammdaten aus der Vorgängersoftware übernehmen.",path:"„Einstellungen“ → „Mandant“ → „Orkan Desktop Import“",body:["Importiert Lieferanten- und Artikeldaten aus der älteren OrKan-Desktop-Software direkt in die OrKan Cloud.", "Danach empfiehlt sich eine Stichprobenprüfung der wichtigsten Artikel und Lieferanten."]},
@@ -3788,9 +3788,12 @@ function retryQuiz(mid){ delete state.quizAnswers[mid]; if(state.quizTries) dele
 function modLabel(id){ const m=MODULES.find(x=>x.id===id); return m?`Modul ${String(id).padStart(2,'0')} · ${m.title}`:''; }
 const KB_TOPICS=[{t:'Erste Schritte',m:[1]},{t:'Artikel & Lagerplätze',m:[2]},{t:'Lieferanten & Preise',m:[3,12]},{t:'Etiketten',m:[4,13]},{t:'Bestellen & Wareneingang',m:[5,6,14]},{t:'Bestand & Inventur',m:[10,11]},{t:'Gebrauchsgut & Schlüssel',m:[7,8]},{t:'Projekte & Baustellen',m:[9]}];
 function topicOf(mod){ const t=KB_TOPICS.find(x=>x.m.includes(mod)); return t?t.t:''; }
+// Themenbereich eines Eintrags: tm überschreibt bei Bedarf das Modul (z. B. Artikelimport unter Artikel & Lagerplätze)
+const tmOf=x=>x.tm||x.mod;
 function groupByModule(list, card){
   return KB_TOPICS.map(t=>{
-    const items=t.m.flatMap(id=>list.filter(x=>x.mod===id));
+    const key=x=>{ if(x.after){ const j=list.findIndex(z=>z.title===x.after); if(j>=0) return j+.5; } return list.indexOf(x); };
+    const items=t.m.flatMap(id=>list.filter(x=>tmOf(x)===id)).sort((a,b)=>key(a)-key(b));
     if(!items.length) return '';
     return `<div class="module-group-head"><h2>${t.t}</h2><span>${items.length} ${items.length===1?'Eintrag':'Einträge'}</span></div><div class="kb-grid">${items.map(card).join('')}</div>`;
   }).join('');
@@ -3813,7 +3816,7 @@ function renderKBGrid(){
   if(!host) return;
   const q=(state.kbSearch||'').trim(); if(state.kbFilter!=='Alle'&&!KB_TOPICS.some(t=>t.t===state.kbFilter)) state.kbFilter='Alle';
   const grp=KB_TOPICS.find(t=>t.t===state.kbFilter);
-  const pool = KB_ARTICLES.filter(a=>!grp||grp.m.includes(a.mod));
+  const pool = KB_ARTICLES.filter(a=>!grp||grp.m.includes(tmOf(a)));
   const kbCard=a=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(a)})"><h4>${a.title}</h4><p>${uiBtns(a.desc)}</p><button class="btn btn-primary kb-btn" onclick="event.stopPropagation();openArticle(${KB_ARTICLES.indexOf(a)})">Artikel lesen</button></div>`;
   if(q.length>=2){ // Volltextsuche mit Tippfehler-Toleranz und Synonymen, nach Relevanz sortiert
     const {Q,res,partial}=srSearch(q,pool.map(a=>({t:a.title,d:a.desc+' '+(a.path||''),r:a.body.join(' '),a})));
@@ -3836,11 +3839,11 @@ function openArticle(idx){
   markActivity(); pushRecent({type:'article',id:idx});
   const a = KB_ARTICLES[idx];
   if(typeof showView==='function' && state.currentView!=='kb') showView('kb');
-  const rel = KB_ARTICLES.filter(x=>topicOf(x.mod)===topicOf(a.mod) && x!==a);
+  const rel = KB_ARTICLES.filter(x=>topicOf(tmOf(x))===topicOf(tmOf(a)) && x!==a);
   document.getElementById('view-kb').innerHTML = `
     <div class="md-back" onclick="kbBack()">&larr; Zurück zur Wissensdatenbank</div>
     <div class="kb-article">
-      <div class="kb-article-crumb">Wissensdatenbank / ${topicOf(a.mod)}</div>
+      <div class="kb-article-crumb">Wissensdatenbank / ${topicOf(tmOf(a))}</div>
       <div class="kb-title-row"><h2>${a.title}</h2>${favBtn('kb',idx)}</div>
       <p class="kb-lead">${uiBtns(a.desc)}</p>
       ${a.path?`<div class="kb-path"><span>So kommen Sie hin</span><div>${uiBtns(a.path)}</div></div>`:''}
