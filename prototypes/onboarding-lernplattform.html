@@ -446,6 +446,25 @@ p.page-sub{color:var(--gray);font-size:15px;margin-bottom:28px;line-height:1.5}
 .kb-card h4{font-size:15px;font-weight:700;margin-bottom:6px}
 .kb-card p{font-size:14px;color:var(--gray);line-height:1.5;margin-bottom:10px}
 .kb-link{font-size:13.5px;font-weight:700;color:var(--dark-bg)}
+
+/* Seitenspalte "Auf dieser Seite" für Wissensdatenbank und Best Practices */
+.art-layout{display:grid;grid-template-columns:minmax(0,820px) 260px;gap:28px;align-items:start}
+.art-aside{position:sticky;top:16px;background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px 18px;box-shadow:var(--shadow)}
+.art-aside-h{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);margin:0 0 10px}
+.art-aside-path{font-size:13px;line-height:1.9;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.art-aside-path .ui-btn,.art-aside-path .ui-box{font-size:12px}
+.art-toc{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;counter-reset:toc}
+.art-toc a{display:flex;gap:10px;align-items:flex-start;padding:7px 10px;border-radius:9px;font-size:13.5px;line-height:1.35;color:var(--text,inherit);text-decoration:none;border-left:3px solid transparent;cursor:pointer;transition:background .15s,border-color .15s}
+.art-toc a:hover{background:rgba(168,204,104,.12)}
+.art-toc a.active{background:rgba(168,204,104,.18);border-left-color:#A8CC68;font-weight:600}
+.art-toc .toc-n{flex:0 0 20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;background:var(--border);color:inherit}
+.art-toc a.active .toc-n{background:#A8CC68;color:#2B3134}
+.art-aside-prog{margin-top:16px;padding-top:14px;border-top:1px solid var(--border);font-size:12.5px;color:var(--gray)}
+.art-aside-bar{height:5px;border-radius:5px;background:var(--border);margin-top:7px;overflow:hidden}.art-aside-bar i{display:block;height:100%;width:0;background:#A8CC68;border-radius:5px;transition:width .2s}
+.art-target{scroll-margin-top:20px}
+@keyframes artFlash{0%{background:rgba(168,204,104,.28)}100%{background:transparent}}
+.art-flash{animation:artFlash 1.2s ease-out}
+@media(max-width:1180px){.art-layout{grid-template-columns:minmax(0,1fr)}.art-aside{display:none}}
 .kb-article{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:26px 30px;box-shadow:var(--shadow)}
 .kb-article-crumb{font-size:13.5px;color:var(--gray);margin-bottom:10px}
 .kb-article h2{font-size:21px;font-weight:800;margin-bottom:16px;letter-spacing:-.4px}
@@ -3833,6 +3852,25 @@ function saveListPos(view,sel){ const ms=document.getElementById('mainScroll'), 
 function restoreListPos(view){ const ms=document.getElementById('mainScroll'); if(!ms) return; const y=listPos[view]||0; ms.scrollTop=y; requestAnimationFrame(()=>{ ms.scrollTop=y; }); }
 function kbBack(){ renderKB(); restoreListPos('kb'); }
 function bpBack(){ renderBest(); restoreListPos('best'); }
+/* Seitenspalte mit Sprungliste */
+function tocLabel(html){ const m=String(html).match(/^\s*<strong>([^<]{1,60}?):?<\/strong>/); let t=(m?m[1]:String(html).replace(/<[^>]+>/g,'').split(/[.:;]/)[0]).replace(/[„“]/g,'').replace(/:$/,'').trim(); return t.length>48?t.slice(0,46).trim()+' …':t; }
+function artAside(head,items,pathHtml){
+  return `<aside class="art-aside" aria-label="Auf dieser Seite">${pathHtml?`<p class="art-aside-h">So kommen Sie hin</p><div class="art-aside-path">${uiBtns(pathHtml)}</div>`:''}
+    <p class="art-aside-h">${head}</p><ol class="art-toc">${items.map((t,i)=>`<li><a data-toc="${i}" onclick="tocGo(${i})"><span class="toc-n">${i+1}</span><span>${t}</span></a></li>`).join('')}</ol>
+    <div class="art-aside-prog"><span class="art-prog-txt">Gelesen: 0 %</span><div class="art-aside-bar"><i></i></div></div></aside>`;
+}
+function tocGo(i){ const el=document.querySelector('.view.active [data-anchor="'+i+'"]'); if(!el) return; el.scrollIntoView({behavior:'smooth',block:'start'}); el.classList.remove('art-flash'); void el.offsetWidth; el.classList.add('art-flash'); }
+function tocSpy(){
+  const ms=document.getElementById('mainScroll'), v=document.querySelector('.view.active'); if(!ms||!v) return;
+  const links=v.querySelectorAll('.art-toc a'); if(!links.length) return;
+  const top=ms.getBoundingClientRect().top+120; let act=0;
+  v.querySelectorAll('[data-anchor]').forEach(el=>{ if(el.getBoundingClientRect().top<=top) act=+el.dataset.anchor; });
+  const max=ms.scrollHeight-ms.clientHeight; const pct=max>0?Math.min(100,Math.round(ms.scrollTop/max*100)):100;
+  if(max>0&&ms.scrollTop>=max-4) act=links.length-1;
+  links.forEach((a,i)=>a.classList.toggle('active',i===act));
+  const bar=v.querySelector('.art-aside-bar i'), tx=v.querySelector('.art-prog-txt'); if(bar) bar.style.width=pct+'%'; if(tx) tx.textContent='Gelesen: '+pct+' %';
+}
+(function(){ const hook=()=>{ const ms=document.getElementById('mainScroll'); if(ms&&!ms.__toc){ ms.__toc=1; ms.addEventListener('scroll',()=>requestAnimationFrame(tocSpy),{passive:true}); } }; if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',hook); else hook(); })();
 function openArticle(idx){
   saveListPos('kb','#kbGridHost');
   state.currentArticle = idx;
@@ -3842,19 +3880,19 @@ function openArticle(idx){
   const rel = KB_ARTICLES.filter(x=>!x.off&&topicOf(tmOf(x))===topicOf(tmOf(a)) && x!==a);
   document.getElementById('view-kb').innerHTML = `
     <div class="md-back" onclick="kbBack()">&larr; Zurück zur Wissensdatenbank</div>
-    <div class="kb-article">
+    <div class="art-layout"><div class="kb-article">
       <div class="kb-article-crumb">Wissensdatenbank / ${topicOf(tmOf(a))}</div>
       <div class="kb-title-row"><h2>${a.title}</h2>${favBtn('kb',idx)}</div>
       <p class="kb-lead">${uiBtns(a.desc)}</p>
       ${a.path?`<div class="kb-path"><span>So kommen Sie hin</span><div>${uiBtns(a.path)}</div></div>`:''}
-      <ul class="kb-points">${a.body.map(p=>`<li>${uiBtns(p)}</li>`).join('')}</ul>
+      <ul class="kb-points">${a.body.map((p,i)=>`<li class="art-target" data-anchor="${i}">${uiBtns(p)}</li>`).join('')}</ul>
       ${a.downloadable ? templateDownloadCallout() : ''}
       <div class="kb-actions"><button class="btn btn-outline" onclick="openModule(${a.mod})">Zum Lernmodul ${a.mod} →</button></div>
       ${rel.length?`<div class="section-heading" style="margin-top:8px">Weitere Artikel zu diesem Thema</div>
       <div class="kb-grid">${rel.slice(0,3).map(x=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(x)})"><h4>${x.title}</h4><p>${x.desc}</p><button class="btn btn-primary kb-btn" onclick="event.stopPropagation();openArticle(${KB_ARTICLES.indexOf(x)})">Artikel lesen</button></div>`).join('')}</div>`:''}
-    </div>
+    </div>${artAside('Auf dieser Seite',a.body.map(tocLabel),a.path)}</div>
   `;
-  const ms=document.querySelector('.main-scroll'); if(ms) ms.scrollTop=0;
+  const ms=document.querySelector('.main-scroll'); if(ms) ms.scrollTop=0; tocSpy();
 }
 
 /* ============ BEST PRACTICES ============ */
@@ -3875,16 +3913,16 @@ function openBP(idx){
   const b = BEST_PRACTICES[idx];
   document.getElementById('view-best').innerHTML = `
     <div class="md-back" onclick="bpBack()">&larr; Zurück zu Best Practices</div>
-    <div class="kb-article bp-article">
+    <div class="art-layout"><div class="kb-article bp-article">
     <div class="kb-article-crumb">Best Practices / ${topicOf(b.mod)}</div>
     <div class="kb-title-row"><h2>${b.title}</h2>${favBtn('bp',idx)}</div>
     <p class="kb-lead">${uiBtns(b.desc)} · ${b.steps.length} Schritte</p>
     ${b.downloadable ? templateDownloadCallout() : ''}
-    <div class="step-list">${b.steps.map((s,i)=>`<div class="step-item"><div class="step-num">${i+1}</div><div class="step-body"><h5>${uiBtns(s.t)}</h5><p>${uiBtns(s.d)}</p>${s.hint?`<div class="step-hint">Hinweis: ${uiBtns(s.hint)}</div>`:''}</div></div>`).join('')}</div>
+    <div class="step-list">${b.steps.map((s,i)=>`<div class="step-item art-target" data-anchor="${i}"><div class="step-num">${i+1}</div><div class="step-body"><h5>${uiBtns(s.t)}</h5><p>${uiBtns(s.d)}</p>${s.hint?`<div class="step-hint">Hinweis: ${uiBtns(s.hint)}</div>`:''}</div></div>`).join('')}</div>
     <div class="kb-actions"><button class="btn btn-outline" onclick="openModule(${b.mod})">Zum Lernmodul ${b.mod} →</button></div>
-    </div>
+    </div>${artAside('Schritte',b.steps.map(x=>tocLabel(x.t)))}</div>
   `;
-  const ms=document.getElementById('mainScroll'); if(ms) ms.scrollTop=0;
+  const ms=document.getElementById('mainScroll'); if(ms) ms.scrollTop=0; tocSpy();
 }
 
 
