@@ -2683,7 +2683,7 @@ const KB_ARTICLES = [
   {mod:3,tm:2,after:"Einen neuen Artikel anlegen",title:"Artikelimport per Excel und ZIP",desc:"Viele Artikel auf einmal anlegen – inklusive Bildern.",path:"„Lagerverwaltung“ → „Artikel“ → „Import“",body:["Sie benötigen die Excel-Importvorlage mit den Artikeldaten – oder eine Exportdatei aus „Lagerverwaltung“ → „Artikel“ → „Export“, die genauso aufgebaut ist – und optional eine ZIP-Datei (max. 40 MB) mit den Bildern.", "In der Importvorlage sind grüne Spalten sehr wichtig, gelbe relativ wichtig und graue weniger wichtig. Beachten Sie die Kommentare in den Spalten U–W.", "Der Bildname in der Excel-Spalte muss exakt dem Dateinamen im ZIP-Ordner entsprechen.", "Import-Modi: „Nur importieren“ (nur neue Artikel), „Nur aktualisieren“ (nur bestehende) oder „Importieren und aktualisieren“ (beides).", "Abgleichfeld: Lieferanten-Artikelnummer, EAN oder interne Artikelnummer. Bei Lieferantenwechsel zwingend über die interne Artikelnummer abgleichen – sonst entsteht der Artikel doppelt und Bestandsdaten gehen verloren."],downloadable:true},
   {mod:3,title:"Lieferant anlegen: Shop-URL und Bestellverfahren",desc:"Die wichtigsten Felder beim Anlegen eines Lieferanten.",path:"„Lagerverwaltung“ → „Lieferant“ → „Erstellen“",body:["Alle mit * gekennzeichneten Pflichtfelder ausfüllen.", "Die Shop-URL ist die URL der IDS-Schnittstelle, nicht die normale Webadresse des Shops.", "Über die Lupe lässt sich die Shop-URL suchen. Wird der Händler nicht gefunden, fragen Sie ihn danach oder schauen Sie in Ihrer Branchensoftware nach.", "Standard Bestellverfahren: Online (IDS) direkt an den Webshop, als PDF oder per E-Mail."]},
   {mod:3,title:"Liefertage und Offset in Tagen",desc:"Wie der voraussichtliche Wareneingang berechnet wird.",path:"Lieferant öffnen → Liefertermine",body:["Je Lieferant werden die Liefertage hinterlegt, z. B. Montag bis Freitag oder nur donnerstags.", "Offset = Tage zwischen Bestellung und Wareneingang: Offset 0 = Lieferung am nächsten Liefertag, Offset 1 = ein Tag Zwischenraum.", "Beispiel: Lieferung nur donnerstags, Offset 1, Bestellung am Mittwoch → Wareneingang am Donnerstag der Folgewoche.", "Der Wert gilt für alle Standardbestellungen und lässt sich pro Bestellung überschreiben.", "Wichtig: Der Offset bildet nur die Zustelldauer ab, keinen Bestellrhythmus."]},
-  {mod:3,title:"Daten aus OrKan Desktop übernehmen",desc:"Stammdaten aus der Vorgängersoftware übernehmen.",path:"„Einstellungen“ → „Mandant“ → „Orkan Desktop Import“",body:["Importiert Lieferanten- und Artikeldaten aus der älteren OrKan-Desktop-Software direkt in die OrKan Cloud.", "Danach empfiehlt sich eine Stichprobenprüfung der wichtigsten Artikel und Lieferanten."]},
+  {mod:3,off:true,title:"Daten aus OrKan Desktop übernehmen",desc:"Stammdaten aus der Vorgängersoftware übernehmen.",path:"„Einstellungen“ → „Mandant“ → „Orkan Desktop Import“",body:["Importiert Lieferanten- und Artikeldaten aus der älteren OrKan-Desktop-Software direkt in die OrKan Cloud.", "Danach empfiehlt sich eine Stichprobenprüfung der wichtigsten Artikel und Lieferanten."]},
   {mod:4,title:"Etiketten-Templates gestalten",desc:"Das Aussehen Ihrer Etiketten frei festlegen.",path:"„Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Artikelkarte“",body:["Per Checkbox wählen Sie die Felder auf dem Etikett, z. B. Bezeichnung, Artikelbild, QR-Code, Lager MIN/MAX und Lagerort; rechts sehen Sie eine Live-Vorschau.", "Elemente per Drag & Drop positionieren und in der Größe anpassen; Maße bis maximal DIN A4.", "Beliebig viele Templates sind möglich, auch mit Firmenlogo – z. B. eigene Templates für unterschiedliche Artikelgruppen.", "„Standortkarte“ und „Gebrauchsgutbeschriftung“ funktionieren nach demselben Prinzip."]},
   {mod:4,title:"Etiketten drucken",desc:"Vom markierten Artikel zur druckfertigen PDF.",path:"„Lagerverwaltung“ → „Artikel“ → „Drucken“",body:["Artikel links per Häkchen markieren, auf „Drucken“ klicken und das Template wählen.", "Festlegen, welche Artikel gedruckt werden: alle, nur aktualisierte, nur nicht aktualisierte oder nur markierte.", "Nach „Speichern“ entsteht eine PDF-Datei zum Druck auf das OrKan-Etikettenpapier.", "Achtung: Steht im Suchfeld ein Begriff, bezieht sich „Alle“ nur auf dieses Suchergebnis."]},
   {mod:4,title:"Das Zwei-Etiketten-System",desc:"Blaues und weißes Etikett im Lageralltag.",path:"Am Regal",body:["Blaues Etikett: kennzeichnet dauerhaft den Lagerplatz.", "Weißes Etikett: liegt davor und wird bei Mindestbestand gezogen und in die Bestellbox gelegt.", "Fehlt das weiße Etikett am Regal, ist der Artikel bereits bestellt."]},
@@ -3194,7 +3194,7 @@ Object.assign(DASHBOARD_WIDGETS, {
   recent: { title:'Zuletzt angesehen', render: () => {
     const r=(state.recent||[]).slice(0,3);
     if(!r.length) return `<p class="w-note" style="margin:0">Hier erscheinen die zuletzt geöffneten Module und Artikel – für den schnellen Wiedereinstieg.</p>`;
-    return `<div class="w-recent">${r.map(it=>{ if(it.type==='module'){ const m=MODULES.find(x=>x.id===it.id); return m?`<button class="w-recent-item" onclick="openModule(${m.id})"><span class="w-tag">Modul ${String(m.id).padStart(2,'0')}</span><strong>${m.title}</strong><span class="w-arrow">→</span></button>`:''; } const a=KB_ARTICLES[it.id]; return a?`<button class="w-recent-item" onclick="showView('kb');openArticle(${it.id})"><span class="w-tag">Wissensdatenbank</span><strong>${a.title||a.t}</strong><span class="w-arrow">→</span></button>`:''; }).join('')}</div>`;
+    return `<div class="w-recent">${r.map(it=>{ if(it.type==='module'){ const m=MODULES.find(x=>x.id===it.id); return m?`<button class="w-recent-item" onclick="openModule(${m.id})"><span class="w-tag">Modul ${String(m.id).padStart(2,'0')}</span><strong>${m.title}</strong><span class="w-arrow">→</span></button>`:''; } const a=KB_ARTICLES[it.id]; return a&&!a.off?`<button class="w-recent-item" onclick="showView('kb');openArticle(${it.id})"><span class="w-tag">Wissensdatenbank</span><strong>${a.title||a.t}</strong><span class="w-arrow">→</span></button>`:''; }).join('')}</div>`;
   } },
 });
 function switchTabTo(tab){ state.currentTab=tab; document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['content','task','quiz','summary'][i]===tab)); renderTab(); }
@@ -3816,7 +3816,7 @@ function renderKBGrid(){
   if(!host) return;
   const q=(state.kbSearch||'').trim(); if(state.kbFilter!=='Alle'&&!KB_TOPICS.some(t=>t.t===state.kbFilter)) state.kbFilter='Alle';
   const grp=KB_TOPICS.find(t=>t.t===state.kbFilter);
-  const pool = KB_ARTICLES.filter(a=>!grp||grp.m.includes(tmOf(a)));
+  const pool = KB_ARTICLES.filter(a=>!a.off&&(!grp||grp.m.includes(tmOf(a))));
   const kbCard=a=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(a)})"><h4>${a.title}</h4><p>${uiBtns(a.desc)}</p><button class="btn btn-primary kb-btn" onclick="event.stopPropagation();openArticle(${KB_ARTICLES.indexOf(a)})">Artikel lesen</button></div>`;
   if(q.length>=2){ // Volltextsuche mit Tippfehler-Toleranz und Synonymen, nach Relevanz sortiert
     const {Q,res,partial}=srSearch(q,pool.map(a=>({t:a.title,d:a.desc+' '+(a.path||''),r:a.body.join(' '),a})));
@@ -3839,7 +3839,7 @@ function openArticle(idx){
   markActivity(); pushRecent({type:'article',id:idx});
   const a = KB_ARTICLES[idx];
   if(typeof showView==='function' && state.currentView!=='kb') showView('kb');
-  const rel = KB_ARTICLES.filter(x=>topicOf(tmOf(x))===topicOf(tmOf(a)) && x!==a);
+  const rel = KB_ARTICLES.filter(x=>!x.off&&topicOf(tmOf(x))===topicOf(tmOf(a)) && x!==a);
   document.getElementById('view-kb').innerHTML = `
     <div class="md-back" onclick="kbBack()">&larr; Zurück zur Wissensdatenbank</div>
     <div class="kb-article">
@@ -4173,7 +4173,7 @@ function favLabel(on){ return on?'★ Gemerkt':'☆ Merken'; }
 function favBtn(type,id){ const on=isFav(type,id); return `<button class="fav-btn ${on?'on':''}" onclick="toggleFav('${type}',${id},this)">${favLabel(on)}</button>`; }
 function favItem(k){
   const [type,idS]=k.split(':'); const id=+idS;
-  if(type==='kb'&&KB_ARTICLES[id]) return {tag:'Wissensdatenbank',title:KB_ARTICLES[id].title,open:`showView('kb');openArticle(${id})`};
+  if(type==='kb'&&KB_ARTICLES[id]&&!KB_ARTICLES[id].off) return {tag:'Wissensdatenbank',title:KB_ARTICLES[id].title,open:`showView('kb');openArticle(${id})`};
   if(type==='bp'&&BEST_PRACTICES[id]) return {tag:'Best Practice',title:BEST_PRACTICES[id].title,open:`showView('best');openBP(${id})`};
   return null;
 }
@@ -4232,7 +4232,7 @@ const SR_GROUP_OF={}; SR_GROUPS.forEach((g,i)=>g.forEach(w=>{ (SR_GROUP_OF[w]=SR
 let SR_VOCAB=null, SR_VSET=null, SR_SURF={}; const SR_TCACHE={};
 function srVocab(){
   if(SR_VOCAB) return;
-  const all=[...MODULES.map(m=>[m.title,(m.points||[]).join(' '),(m.gist||[]).join(' ')].join(' ')),...KB_ARTICLES.map(a=>a.title+' '+a.desc+' '+a.body.join(' ')),...BEST_PRACTICES.map(b=>b.title+' '+b.desc+' '+b.steps.map(x=>x.t+' '+x.d).join(' '))].join(' ');
+  const all=[...MODULES.map(m=>[m.title,(m.points||[]).join(' '),(m.gist||[]).join(' ')].join(' ')),...KB_ARTICLES.filter(a=>!a.off).map(a=>a.title+' '+a.desc+' '+a.body.join(' ')),...BEST_PRACTICES.map(b=>b.title+' '+b.desc+' '+b.steps.map(x=>x.t+' '+x.d).join(' '))].join(' ');
   SR_VSET=new Set(gsCanon(all).split(' ').filter(v=>v.length>=3));
   // Schreibweise für „Meinten Sie …?“: häufigste Originalform je Grundform
   const cnt={}; String(all).replace(/<[^>]+>/g,' ').split(/[^A-Za-zÄÖÜäöüß0-9]+/).forEach(w=>{ if(w.length<3) return; const k=gsStem(gsNorm(w).trim()); const lw=w.toLowerCase(); cnt[k]=cnt[k]||{}; cnt[k][lw]=(cnt[k][lw]||0)+1; });
@@ -4305,7 +4305,7 @@ let GS_ITEMS=null;
 function gsItems(){
   if(!GS_ITEMS) GS_ITEMS=[
     ...MODULES.map(m=>({t:m.title,d:[(m.gist||[]).join(' '),typeof moduleDesc==='function'?moduleDesc(m):''].join(' '),r:(m.points||[]).join(' '),tag:'Modul '+m.id,kind:'mod',title:m.title,open:`openModule(${m.id})`})),
-    ...KB_ARTICLES.map((a,i)=>({t:a.title,d:a.desc+' '+(a.path||''),r:a.body.join(' ')+' '+((MODULES.find(m=>m.id===a.mod)||{}).title||''),tag:'Wissensdatenbank',kind:'kb',title:a.title,open:`showView('kb');openArticle(${i})`})),
+    ...KB_ARTICLES.map((a,i)=>({t:a.title,d:a.desc+' '+(a.path||''),r:a.body.join(' ')+' '+((MODULES.find(m=>m.id===a.mod)||{}).title||''),tag:'Wissensdatenbank',kind:'kb',title:a.title,open:`showView('kb');openArticle(${i})`})).filter((x,i)=>!KB_ARTICLES[i].off),
     ...BEST_PRACTICES.map((b,i)=>({t:b.title,d:b.desc,r:b.steps.map(x=>x.t+'. '+x.d).join(' ')+' '+((MODULES.find(m=>m.id===b.mod)||{}).title||''),tag:'Best Practice',kind:'bp',title:b.title,open:`showView('best');openBP(${i})`}))];
   return GS_ITEMS;
 }
