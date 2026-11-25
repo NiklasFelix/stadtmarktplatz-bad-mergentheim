@@ -3824,14 +3824,21 @@ function renderKBGrid(){
   const filtered = pool;
   host.innerHTML = filtered.length ? groupByModule(filtered, a=>`<div class="kb-card" onclick="openArticle(${KB_ARTICLES.indexOf(a)})"><h4>${a.title}</h4><p>${uiBtns(a.desc)}</p><button class="btn btn-primary kb-btn" onclick="event.stopPropagation();openArticle(${KB_ARTICLES.indexOf(a)})">Artikel lesen</button></div>`) : '<p style="color:var(--gray)">Keine Artikel gefunden.</p>';
 }
+// Listen-Position merken, damit "Zurück" an dieselbe Stelle führt
+const listPos={kb:0,best:0};
+function saveListPos(view,sel){ const ms=document.getElementById('mainScroll'), v=document.getElementById('view-'+view); if(state.currentView===view&&v&&v.querySelector(sel)) listPos[view]=ms?ms.scrollTop:0; else if(state.currentView!==view) listPos[view]=0; }
+function restoreListPos(view){ const ms=document.getElementById('mainScroll'); if(!ms) return; const y=listPos[view]||0; ms.scrollTop=y; requestAnimationFrame(()=>{ ms.scrollTop=y; }); }
+function kbBack(){ renderKB(); restoreListPos('kb'); }
+function bpBack(){ renderBest(); restoreListPos('best'); }
 function openArticle(idx){
+  saveListPos('kb','#kbGridHost');
   state.currentArticle = idx;
   markActivity(); pushRecent({type:'article',id:idx});
   const a = KB_ARTICLES[idx];
   if(typeof showView==='function' && state.currentView!=='kb') showView('kb');
   const rel = KB_ARTICLES.filter(x=>topicOf(x.mod)===topicOf(a.mod) && x!==a);
   document.getElementById('view-kb').innerHTML = `
-    <div class="md-back" onclick="renderKB()">&larr; Zurück zur Wissensdatenbank</div>
+    <div class="md-back" onclick="kbBack()">&larr; Zurück zur Wissensdatenbank</div>
     <div class="kb-article">
       <div class="kb-article-crumb">Wissensdatenbank / ${topicOf(a.mod)}</div>
       <div class="kb-title-row"><h2>${a.title}</h2>${favBtn('kb',idx)}</div>
@@ -3861,9 +3868,10 @@ function renderBest(){
   `;
 }
 function openBP(idx){
+  saveListPos('best','.bp-grid');
   const b = BEST_PRACTICES[idx];
   document.getElementById('view-best').innerHTML = `
-    <div class="md-back" onclick="renderBest()">&larr; Zurück zu Best Practices</div>
+    <div class="md-back" onclick="bpBack()">&larr; Zurück zu Best Practices</div>
     <div class="kb-article-crumb">Best Practices / ${topicOf(b.mod)}</div>
     <div class="kb-title-row"><h1 class="page-title">${b.title}</h1>${favBtn('bp',idx)}</div>
     <p class="page-sub">${uiBtns(b.desc)} · ${b.steps.length} Schritte</p>
@@ -3871,6 +3879,7 @@ function openBP(idx){
     <div class="step-list">${b.steps.map((s,i)=>`<div class="step-item"><div class="step-num">${i+1}</div><div class="step-body"><h5>${uiBtns(s.t)}</h5><p>${uiBtns(s.d)}</p>${s.hint?`<div class="step-hint">Hinweis: ${uiBtns(s.hint)}</div>`:''}</div></div>`).join('')}</div>
     <div class="kb-actions"><button class="btn btn-outline" onclick="openModule(${b.mod})">Zum Lernmodul ${b.mod} →</button></div>
   `;
+  const ms=document.getElementById('mainScroll'); if(ms) ms.scrollTop=0;
 }
 
 
