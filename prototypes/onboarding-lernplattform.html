@@ -1955,6 +1955,22 @@ html:not(.theme-light) .gs-snip mark,html:not(.theme-light) .kb-hint mark{backgr
 .lupe-ic{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:5px;background:#D4E6B5;vertical-align:-4px;margin:0 2px}
 
 .plus-ic{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#6FA63A;vertical-align:-3px;margin:0 2px}
+
+/* ===== Seitenleiste: immer im dunklen Anthrazit mit geschwungenem Punktraster ===== */
+html .sidebar,html:not(.theme-light) .sidebar{background:#2B3134 var(--wave-side,none) center bottom/100% 100% no-repeat!important;border-right:1px solid rgba(255,255,255,.06)!important;color:#E3E8EB}
+html .sidebar>.nav-item{background:rgba(43,49,52,.55)!important;border-color:rgba(255,255,255,.10)!important;color:#E3E8EB!important;backdrop-filter:blur(2px)}
+html .sidebar>.nav-item svg{background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.13)!important;color:#BCD98A!important}
+html .sidebar>.nav-item:hover{background:rgba(168,204,104,.12)!important;border-color:rgba(168,204,104,.45)!important}
+html .sidebar>.nav-item.active{background:rgba(168,204,104,.18)!important;border-color:#A8CC68!important;color:#fff!important;box-shadow:0 8px 20px -12px rgba(0,0,0,.7)}
+html .sidebar>.nav-item.active svg{background:#A8CC68!important;border-color:#A8CC68!important;color:#2B3134!important}
+html .sidebar .nav-shop svg:last-child,html .sidebar .nav-item>svg+span+svg{background:none!important;border:0!important}
+html .sidebar .nav-sub,html .sidebar .nav-sub *{color:#C9D0D4}
+html .sidebar .nav-sub .active,html .sidebar .nav-sub [class*="active"]{color:#fff}
+html .sidebar-progress{background:rgba(43,49,52,.7)!important;border-color:rgba(255,255,255,.10)!important;color:#E3E8EB!important}
+html .sidebar-progress *{color:#E3E8EB}
+html .sidebar-progress .sp-label{color:#9FAAB0!important}
+html .sidebar-progress .sp-track{background:rgba(255,255,255,.12)!important}
+html .sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15)}
 </style>
 </head>
 <body>
@@ -3486,6 +3502,29 @@ function brandWave(W,H,seed){
     r.setProperty('--dots-fade',`url(${band}) center/cover no-repeat`);
   }catch(e){}
 })();
+
+
+/* Eigenes, geschwungenes Punktraster für die Seitenleiste (fließende Bögen, unten dichter) */
+function sideWave(W,H){
+  const c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d');
+  const lines=34, step=7;
+  for(let l=0;l<lines;l++){
+    const t=l/(lines-1);
+    for(let x=-40;x<=W+40;x+=step){
+      const u=x/W;
+      const y=H*(0.22+0.78*t) - 170*Math.sin(u*Math.PI*0.9+t*1.8) - 90*u*u*(1-t) + 26*Math.sin(u*7+t*5);
+      if(y<0||y>H) continue;
+      const v=y/H;
+      let a=1.7*Math.pow(v,1.5)*(0.3+0.7*Math.pow(Math.sin(t*Math.PI*1.3+u*2.2)*0.5+0.5,1.6));
+      if(a<0.05) continue;
+      const r=0.7+0.9*v*(0.5+0.5*Math.sin(u*5+t*3));
+      g.fillStyle=`rgba(168,204,104,${Math.min(0.8,a).toFixed(3)})`;
+      g.beginPath(); g.arc(x,y,r,0,6.283); g.fill();
+    }
+  }
+  return c.toDataURL('image/png');
+}
+(function(){ try{ document.documentElement.style.setProperty('--wave-side',`url(${sideWave(600,1500)})`); }catch(e){} })();
 
 /* ===== Kurzbeschreibung je Modul (Modulkarte und Modulkopf) ===== */
 const MODULE_DESC={
