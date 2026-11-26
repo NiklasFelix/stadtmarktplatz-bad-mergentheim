@@ -1970,6 +1970,40 @@ html .sidebar-progress *{color:#E3E8EB}
 html .sidebar-progress .sp-label{color:#9FAAB0!important}
 html .sidebar-progress .sp-track{background:rgba(255,255,255,.12)!important}
 html .sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15)}
+
+/* ===== (5) Lernpfad als geschwungene Linie ===== */
+.roadmap-line::before,.roadmap-line::after{display:none!important}
+.roadmap-line{padding-left:118px!important}
+.roadmap-line .milestone-dot{left:-100px!important}
+@media(max-width:760px){.roadmap-line{padding-left:56px!important}.roadmap-line .milestone-dot{left:-50px!important}}
+.rm-svg{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:0}
+.rm-svg .rm-base{fill:none;stroke:rgba(95,122,51,.35);stroke-width:2.5;stroke-dasharray:1 7;stroke-linecap:round}
+html:not(.theme-light) .rm-svg .rm-base{stroke:rgba(168,204,104,.35)}
+.rm-svg .rm-done{fill:none;stroke:#A8CC68;stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 0 5px rgba(168,204,104,.6))}
+@media(min-width:761px){.roadmap-line>.milestone.rm-o1{margin-left:36px}.roadmap-line>.milestone.rm-o2{margin-left:72px}}
+.roadmap-line .milestone-dot{z-index:2}
+.milestone.rm-next .milestone-dot{animation:rmPulse 2s ease-in-out infinite!important}
+@keyframes rmPulse{0%,100%{box-shadow:0 0 0 0 rgba(168,204,104,.55)}50%{box-shadow:0 0 0 12px rgba(168,204,104,0)}}
+/* ===== (7) Best Practices: Schritte als Zeitstrahl ===== */
+.bp-article .step-item{position:relative}
+.bp-article .step-item:not(:last-child)::before{content:'';position:absolute;left:17px;top:42px;bottom:-18px;width:2px;border-radius:2px;background:linear-gradient(180deg,#A8CC68,rgba(168,204,104,.25))}
+.bp-article .step-num{position:relative;z-index:1;box-shadow:0 0 0 4px var(--white)}
+/* ===== (8) Zertifikat ===== */
+.certificate{position:relative;overflow:hidden}
+.cert-corner{position:absolute;width:240px;height:190px;background-size:100% 100%;pointer-events:none}
+.cert-corner.tl{left:0;top:0}.cert-corner.br{right:0;bottom:0;transform:rotate(180deg)}
+.cert-frame{position:absolute;inset:12px;border:1px solid rgba(168,204,104,.55);border-radius:10px;pointer-events:none}
+.certificate>*:not(.cert-corner):not(.cert-frame){position:relative}
+.cert-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-top:26px;text-align:center}
+.cert-foot-col{flex:1;font-size:13px;color:#6B757B}
+.cert-foot-line{border-top:1px solid #9AA3A8;padding-top:6px;margin:0 auto;max-width:190px}
+.cert-foot-val{font-weight:700;color:#2B3134;font-size:14px;margin-bottom:6px}
+.cert-seal{flex:0 0 96px;width:96px;height:96px}
+@media(max-width:640px){.cert-foot{flex-wrap:wrap}.cert-seal{order:-1;margin:0 auto}.cert-corner{width:120px;height:95px}}
+/* ===== (9) Weiche Seitenübergänge ===== */
+.view.active{animation:viewIn .38s cubic-bezier(.2,.7,.2,1)}
+@keyframes viewIn{from{opacity:.35;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.view.active{animation:none}.milestone.rm-next .milestone-dot{animation:none!important}}
 </style>
 </head>
 <body>
@@ -3003,6 +3037,7 @@ function showView(name){
   if(name==='modules') renderModulesList();
   if(name==='fives') renderFives();
   if(name==='dashboard') renderDashboard();
+  if(name==='roadmap') requestAnimationFrame(rmDraw);
   animateCounts(document.getElementById('view-'+name));
 }
 function toggleMobileSidebar(force){
@@ -3336,7 +3371,8 @@ function renderRoadmap(){
     <h1 class="page-title" data-eyebrow="Ihre Roadmap">Mein Lernpfad</h1>
     <p class="page-sub">Ihre persönliche Onboarding-Roadmap für die OrKan Cloud.</p>
     <div class="roadmap-wrap">
-      <div class="roadmap-line" style="--fill:${Math.min(100, completedCount()/MODULES.length*100)}%">
+      <div class="roadmap-line" id="rmLine" style="--fill:${Math.min(100, completedCount()/MODULES.length*100)}%">
+        <svg class="rm-svg" aria-hidden="true"><path class="rm-base"/><path class="rm-done"/></svg>
         ${html}
       </div>
       <div class="roadmap-side">
@@ -3347,7 +3383,25 @@ function renderRoadmap(){
       </div>
     </div>
   `;
+  requestAnimationFrame(rmDraw);
 }
+/* Lernpfad: Stationen versetzt anordnen und eine geschwungene Linie durch alle Punkte ziehen */
+function rmDraw(){
+  const line=document.getElementById('rmLine'); if(!line||!line.offsetParent) return;
+  const ms=[...line.querySelectorAll(':scope>.milestone')];
+  let next=null;
+  ms.forEach((m,i)=>{ const o=[0,1,2,1][i%4]; m.classList.toggle('rm-o1',o===1); m.classList.toggle('rm-o2',o===2); m.classList.remove('rm-next'); if(!next&&!m.classList.contains('done')) next=m; });
+  if(next) next.classList.add('rm-next');
+  const box=line.getBoundingClientRect();
+  const pts=ms.map(m=>{ const d=m.querySelector('.milestone-dot').getBoundingClientRect(); return {x:d.left-box.left+d.width/2,y:d.top-box.top+d.height/2,done:m.classList.contains('done')}; });
+  if(pts.length<2) return;
+  const path=a=>a.map((p,i)=>{ if(!i) return `M${p.x},${p.y}`; const q=a[i-1], dy=(p.y-q.y)/2; return `C${q.x},${q.y+dy} ${p.x},${p.y-dy} ${p.x},${p.y}`; }).join(' ');
+  const svg=line.querySelector('.rm-svg'); svg.setAttribute('viewBox',`0 0 ${box.width} ${box.height}`);
+  svg.querySelector('.rm-base').setAttribute('d',path(pts));
+  let k=-1; pts.forEach((p,i)=>{ if(p.done) k=i; });
+  const donePts=pts.slice(0,k+1); svg.querySelector('.rm-done').setAttribute('d',donePts.length>1?path(donePts):'');
+}
+window.addEventListener('resize',()=>{ if(state.currentView==='roadmap') rmDraw(); });
 function nextStepHint(id){
   const hints = {1:'Modul 2 baut direkt auf den hier gelernten Grundlagen auf.',2:'Mit Lager MIN/MAX vertraut? Als Nächstes: Artikelimport und die Anbindung an Lieferanten-Shops einrichten.',3:'Weiter geht es mit Etiketten-Templates, dem Etikettendruck und dem Zwei-Etiketten-System.',4:'Die Etiketten hängen – als Nächstes lernen Sie, wie daraus eine Bestellung wird.',5:'Weiter geht es mit dem Wareneingang.',6:'Grundlagen geschafft! Vertiefung: Die Maschinenverwaltung mit Service & Wartung.',7:'Ähnliches Prinzip, andere Sicherheitslogik: Als Nächstes die Schlüsselverwaltung.',8:'Als Nächstes folgt das Projekte-Modul für Baustellen.',9:'Weiter geht es mit der Bestandsführung – dem laufenden Ist-Bestand im Lager.',10:'Weiter geht es mit der Inventur.',11:'Weiter geht es mit Preisen pflegen und abfragen.',12:'Weiter geht es mit Etiketten für Kommission und Retoure.',13:'Zum Abschluss: die digitale Warenannahme mit Kommissions- und externen Bestellungen.'};
   return hints[id]||'';
@@ -3925,7 +3979,8 @@ function openBP(idx){
 
 
 /* ============ CERTIFICATE ============ */
-function renderCert(){
+function renderCert(){ renderCertBase(); decorateCerts(); }
+function renderCertBase(){
   const done = certDoneCount();
   const unlocked = certUnlocked();
   if(!unlocked){
@@ -3970,6 +4025,30 @@ function renderCert(){
       <div class="cert-actions"><button class="btn btn-primary" id="certPdfBtn" onclick="downloadCertPdf()">Zertifikat als PDF speichern</button>${window.self===window.top?'<button class="btn btn-outline" onclick="window.print()">Drucken</button>':''}</div>
     `;
   }
+}
+
+/* Zertifikat: Punktraster in den Ecken, Rahmen, Siegel und Unterschriftszeile */
+let __certCorner=null;
+function certCornerImg(){
+  if(__certCorner) return __certCorner;
+  const W=380,H=300,c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d');
+  for(let j=0;j<=34;j++) for(let i=0;i<=44;i++){
+    const u=i/44, v=j/34, x=u*W+18*Math.sin(v*4+u*2), y=v*H+22*Math.sin(u*3.2+v*1.5);
+    const d=Math.sqrt(u*u*0.8+v*v); const a=Math.max(0,1-d*1.05)*1.5*(0.6+0.4*Math.sin(u*6+v*5));
+    if(a<0.05) continue; g.fillStyle=`rgba(168,204,104,${Math.min(.85,a).toFixed(3)})`; g.beginPath(); g.arc(x,y,1.1+1.2*(1-d),0,6.283); g.fill();
+  }
+  return (__certCorner=c.toDataURL('image/png'));
+}
+const CERT_SEAL=`<svg class="cert-seal" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="44" fill="#2B3134"/><circle cx="48" cy="48" r="38" fill="none" stroke="#A8CC68" stroke-width="1.5" stroke-dasharray="1.5 3.5"/><circle cx="48" cy="48" r="30" fill="#A8CC68"/><path d="M36 48.5l8 8 16-17" fill="none" stroke="#2B3134" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path id="sealArc" d="M14 48a34 34 0 0 1 68 0" fill="none"/><text font-family="Barlow, Arial, sans-serif" font-size="8.5" font-weight="700" letter-spacing="2" fill="#A8CC68"><textPath href="#sealArc" startOffset="50%" text-anchor="middle">ONBOARDING</textPath></text></svg>`;
+function decorateCerts(){
+  document.querySelectorAll('.certificate').forEach(el=>{
+    if(el.querySelector('.cert-frame')) return;
+    const img=certCornerImg();
+    el.insertAdjacentHTML('afterbegin',`<div class="cert-frame"></div><div class="cert-corner tl" style="background-image:url(${img})"></div><div class="cert-corner br" style="background-image:url(${img})"></div>`);
+    const date=[...el.children].find(c=>/Ausgestellt am/.test(c.textContent));
+    if(date){ const d=date.textContent.replace('Ausgestellt am','').trim();
+      date.outerHTML=`<div class="cert-foot"><div class="cert-foot-col"><div class="cert-foot-val">${d}</div><div class="cert-foot-line">Ausgestellt am</div></div>${CERT_SEAL}<div class="cert-foot-col"><div class="cert-foot-val">OrKan System</div><div class="cert-foot-line">Schulung &amp; Onboarding</div></div></div>`; }
+  });
 }
 function loadScriptOnce(src){
   return new Promise((res,rej)=>{ if(document.querySelector(`script[src="${src}"]`)) return res();
