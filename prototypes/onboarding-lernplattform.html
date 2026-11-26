@@ -204,6 +204,7 @@ html:not(.theme-light) .appointment-contact-detail-row svg{color:#BCD98A}
 html:not(.theme-light) .appt-book-hint{color:#B9C1C5}
 .appointment-form-actions{display:flex;gap:10px;margin-top:16px}
 .appointment-form-actions .btn{flex:1}
+.backup-note{font-size:12px;line-height:1.45;color:var(--gray);margin:2px 2px 0}
 .appt-book-hint{font-size:14px;line-height:1.55;color:var(--gray);margin:14px 0 4px}
 .appointment-send-status{font-size:13.5px;color:var(--green-dark);font-weight:600;margin-top:10px;text-align:center;min-height:14px}
 .appointment-send-status.appointment-send-error{color:#dc2626}
@@ -2010,6 +2011,10 @@ function setTheme(t){try{localStorage.setItem('orkanTheme',t)}catch(e){}applyThe
           <button class="btn btn-outline" style="width:100%" onclick="bookAppointment()">Persönlichen Termin vereinbaren</button>
           <button class="btn btn-outline" style="width:100%" onclick="startTour()">Einführungstour starten</button>
           <button class="btn btn-outline" style="width:100%" onclick="manualSaveProgress()">Fortschritt jetzt speichern</button>
+          <button class="btn btn-outline" style="width:100%" onclick="downloadBackup()">Sicherungsdatei herunterladen</button>
+          <button class="btn btn-outline" style="width:100%" onclick="document.getElementById('backupFileInput').click()">Sicherungsdatei laden</button>
+          <input type="file" id="backupFileInput" accept=".json,application/json" hidden onchange="restoreBackup(this)">
+          <p class="backup-note">Mit der Sicherungsdatei nehmen Sie Ihren Stand auf einen anderen PC oder Laptop mit.</p>
           <p class="autosave-note">Ihr Lernfortschritt wird automatisch laufend gespeichert.</p>
           <div class="profile-menu-footer-row">
             <button class="profile-reset" onclick="resetProgress()">Fortschritt zurücksetzen</button>
@@ -2923,6 +2928,48 @@ function manualSaveProgress(){
   saveState();
   showToast('Fortschritt gespeichert.');
   document.getElementById('profileMenu').classList.remove('open');
+}
+/* Sicherungsdatei: Fortschritt als Datei mitnehmen (z. B. vom Büro-PC auf den Laptop) */
+const BACKUP_KEYS=['orkanTrainingProgress_v1','orkanDashboardPrefs','orkanTourDone','orkan5sDone'];
+async function downloadBackup(){
+  saveState();
+  const data={app:'orkan-schulung',version:1,created:new Date().toISOString(),items:{}};
+  try{ BACKUP_KEYS.forEach(k=>{ const v=localStorage.getItem(k); if(v!==null) data.items[k]=v; }); }catch(e){}
+  if(!data.items.orkanTrainingProgress_v1) data.items.orkanTrainingProgress_v1=JSON.stringify({moduleProgress:state.moduleProgress,name:state.name,company:state.company,favorites:state.favorites});
+  const d=new Date(), pad=n=>String(n).padStart(2,'0');
+  const filename=`OrKan-Schulung_Fortschritt_${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.json`;
+  const text=JSON.stringify(data,null,1);
+  document.getElementById('profileMenu').classList.remove('open');
+  let dl=null;
+  try{ if(window.claude && typeof claude.use==='function') dl=await claude.use('downloads'); }catch(e){ dl=null; }
+  if(dl){
+    try{ await dl.save({filename,data:new TextEncoder().encode(text)}); showToast('Sicherungsdatei „'+filename+'“ wurde gespeichert.'); }
+    catch(e){ if(!(e&&e.code==='declined')) showToast('Der Download ist in dieser Ansicht leider nicht möglich.'); }
+    return;
+  }
+  const url=URL.createObjectURL(new Blob([text],{type:'application/json'}));
+  const a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+  showToast('Sicherungsdatei „'+filename+'“ wird heruntergeladen.');
+}
+function restoreBackup(input){
+  const f=input.files&&input.files[0]; input.value=''; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    let data=null; try{ data=JSON.parse(r.result); }catch(e){}
+    if(!data||data.app!=='orkan-schulung'||!data.items||!data.items.orkanTrainingProgress_v1){ showToast('Diese Datei ist keine gültige Sicherungsdatei der OrKan Schulung.'); return; }
+    let saved=null; try{ saved=JSON.parse(data.items.orkanTrainingProgress_v1); }catch(e){ showToast('Die Sicherungsdatei ist beschädigt.'); return; }
+    try{ BACKUP_KEYS.forEach(k=>{ if(typeof data.items[k]==='string') localStorage.setItem(k,data.items[k]); else localStorage.removeItem(k); }); }catch(e){}
+    Object.keys(state).forEach(k=>delete state[k]);
+    Object.assign(state, JSON.parse(JSON.stringify(__initialState)), saved);
+    MODULES.forEach(m=>{ if(!state.moduleProgress[m.id]) state.moduleProgress[m.id]={started:false,completed:false,quizScore:null,checklist:[]}; });
+    try{ state.dashboardPrefs=data.items.orkanDashboardPrefs?JSON.parse(data.items.orkanDashboardPrefs):null; }catch(e){ state.dashboardPrefs=null; }
+    document.getElementById('profileMenu').classList.remove('open');
+    initializeApp(); showView('dashboard'); saveState();
+    const done=MODULES.filter(m=>state.moduleProgress[m.id]&&state.moduleProgress[m.id].completed).length;
+    showToast('Sicherung geladen – Sie machen mit Ihrem Stand weiter ('+done+' von '+MODULES.length+' Modulen abgeschlossen).');
+  };
+  r.readAsText(f);
 }
 let __autosaveInterval = null;
 let __resetting = false;
