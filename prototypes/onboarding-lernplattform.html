@@ -2766,7 +2766,7 @@ const KB_ARTICLES = [
   {mod:12,title:"DATANORM-Preisimport",desc:"Preislisten eines Lieferanten auf einmal einspielen.",path:"„Lagerverwaltung“ → „Artikel“ → „Import“ → Reiter „DATANORM Preis Import“",body:["Importiert die DATANORM-Preisdatei eines Lieferanten und aktualisiert die hinterlegten Preise und Daten.", "Ersetzt die Einzelpflege bei jeder Preisänderung – besonders hilfreich bei großen Katalogen."]},
   {mod:12,title:"Preise beim Händler abfragen",desc:"Aktuelle Preise über den Händler-Shop erfahren.",path:"„Lagerverwaltung“ → „Lieferant“ → Lieferantenkarte",body:["Preisabfrage über die Lieferantenkarte starten – mit den Artikeln, deren Preise Sie wissen möchten.", "Die definierte Preisabfrage an den Shop des Händlers senden.", "Im Händler-Shop die Funktion „Preisabfrage“ nutzen, statt zu bestellen.", "Die erhaltenen Preise auf der Artikelkarte hinterlegen.", "Voraussetzung: Der Lieferant ist per Shop-URL (IDS) angebunden."]},
   {mod:13,title:"Etiketten für Kommission und Retoure",desc:"Bereitgestellte und zurückgehende Ware kennzeichnen.",path:"„Einstellungen“ → „Mandant“ → „Lagerverwaltung“ → „Vorlagendruck“",body:["„Kommission“ bzw. „Retoure“: 4 Etiketten pro Blatt.", "„Kommission klein“ bzw. „Retoure klein“: 8 Etiketten pro Blatt."]},
-  {mod:11,after:"Inventur durchführen",title:"Inventur in der App freischalten",desc:"Die App-Berechtigung für die Inventur freigeben.",path:"„Einstellungen“ → „Mandant“ → „Mandantenverwaltung“ → „Benutzer“ → „Berechtigung“",body:["<strong>Anwendungen:</strong> Beim Benutzer unter „Berechtigung“ das Häkchen bei <span class=\"ui-box\">App</span> setzen (<em>Erlaubt das Anmelden in der App</em>).", "<strong>App:</strong> Alle Häkchen setzen – darin ist auch die Inventur enthalten.", "Sieht ein Kollege die Inventur nicht in der App, fehlen meist genau diese Berechtigungen."]}
+  {mod:11,after:"Warenwert ermitteln",title:"Inventur in der App freischalten",desc:"Die App-Berechtigung für die Inventur freigeben.",path:"„Einstellungen“ → „Mandant“ → „Mandantenverwaltung“ → „Benutzer“ → „Berechtigung“",body:["<strong>Anwendungen:</strong> Beim Benutzer unter „Berechtigung“ das Häkchen bei <span class=\"ui-box\">App</span> setzen (<em>Erlaubt das Anmelden in der App</em>).", "<strong>App:</strong> Alle Häkchen setzen – darin ist auch die Inventur enthalten.", "Sieht ein Kollege die Inventur nicht in der App, fehlen meist genau diese Berechtigungen."]}
 ];
 
 const BEST_PRACTICES = [
@@ -3777,7 +3777,6 @@ function renderTab(){
         <div class="summary-block"><h5>Kernaussagen</h5><ul>${m.summary.kern.map(x=>`<li><span>${uiBtns(x)}</span></li>`).join('')}</ul></div>
         <div class="summary-block"><h5>Wichtigste Funktionen</h5><ul>${m.summary.funk.map(x=>`<li>${x}</li>`).join('')}</ul></div>
         <div class="summary-block"><h5>Handlungsempfehlungen</h5><ul>${m.summary.hand.map(x=>`<li><span>${uiBtns(x)}</span></li>`).join('')}</ul></div>
-        <div class="summary-block"><h5>Nächste Lernschritte</h5><ul><li>${nextModuleLink(m.id)}</li></ul></div>
       `;
     }
   }
@@ -3883,7 +3882,7 @@ function completeModule(mid, fromVideo){
   } else renderModuleDetail();
   const next = MODULES.find(x=>!state.moduleProgress[x.id].completed);
   if(fromVideo) return; // nach einem Video keine Meldung
-  showToast(certUnlocked() && certIds().includes(mid) && certDoneCount()>=certTotal() ? 'Alle Grundlagen-Module abgeschlossen – Ihr Zertifikat ist freigeschaltet.' : (next ? `Modul abgeschlossen. Weiter mit Modul ${next.id}: ${next.title}` : 'Alle Module abgeschlossen!'));
+  showToast(certUnlocked() && certIds().includes(mid) && certDoneCount()>=certTotal() ? 'Alle Grundlagen-Module abgeschlossen – Ihr Zertifikat ist freigeschaltet.' : (next ? 'Modul abgeschlossen.' : 'Alle Module abgeschlossen!'));
 }
 function retryQuiz(mid){ delete state.quizAnswers[mid]; if(state.quizTries) delete state.quizTries[mid]; renderQuiz(MODULES.find(x=>x.id===mid)); }
 
@@ -3942,7 +3941,12 @@ function openArticle(idx){
   markActivity(); pushRecent({type:'article',id:idx});
   const a = KB_ARTICLES[idx];
   if(typeof showView==='function' && state.currentView!=='kb') showView('kb');
-  const rel = KB_ARTICLES.filter(x=>!x.off&&topicOf(tmOf(x))===topicOf(tmOf(a)) && x!==a);
+  // Weitere Artikel in der Reihenfolge der Wissensdatenbank: erst die folgenden, dann die vorherigen
+  const tp=KB_TOPICS.find(t=>t.m.includes(tmOf(a)));
+  const kkey=x=>{ if(x.after){ const j=KB_ARTICLES.findIndex(z=>z.title===x.after); if(j>=0) return j+.5; } return KB_ARTICLES.indexOf(x); };
+  const ordered=tp?tp.m.flatMap(id=>KB_ARTICLES.filter(x=>!x.off&&tmOf(x)===id).sort((u,v)=>kkey(u)-kkey(v))):[];
+  const pos=ordered.indexOf(a);
+  const rel = pos<0?ordered.filter(x=>x!==a):[...ordered.slice(pos+1),...ordered.slice(0,pos)];
   document.getElementById('view-kb').innerHTML = `
     <div class="md-back" onclick="kbBack()">&larr; Zurück zur Wissensdatenbank</div>
     <div class="kb-article">
