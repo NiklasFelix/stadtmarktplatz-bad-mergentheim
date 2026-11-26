@@ -2784,7 +2784,7 @@ const BEST_PRACTICES = [
     {t:"Lager MAX festlegen",d:"Den gewünschten Höchstbestand am Lagerplatz eintragen und speichern."},
     {t:"Bestellmenge prüfen",d:"Die Bestellmenge ergibt sich aus MAX minus MIN – passt sie zum Verbrauch?"}
    ]},
-  {mod:3,title:"Artikel-Stammdaten per Excel importieren",time:"22",diff:"medium",desc:"Viele Artikel inklusive Bildern auf einmal anlegen.",downloadable:true,
+  {mod:3,tm:2,title:"Artikel-Stammdaten per Excel importieren",time:"22",diff:"medium",desc:"Viele Artikel inklusive Bildern auf einmal anlegen.",downloadable:true,
    steps:[
     {t:"Import öffnen",d:"„Lagerverwaltung“ → „Artikel“ → „Import“."},
     {t:"Vorlage befüllen",d:"Die Importvorlage aus Modul 3 nutzen: grüne Spalten sind sehr wichtig, gelbe relativ wichtig, graue weniger wichtig. Kommentare in den Spalten U–W beachten."},
@@ -3957,7 +3957,7 @@ function renderBest(){
     <h1 class="page-title" data-eyebrow="Aus der Praxis für die Praxis">Praxiserprobte Anleitungen für häufige Aufgaben</h1>
     <p class="page-sub">Schritt-für-Schritt-Anleitungen, nach Themen geordnet.</p>
     <div class="chip-row">${['Alle',...KB_TOPICS.map(t=>t.t)].map(c=>`<div class="chip ${(state.bpFilter||'Alle')===c?'active':''}" onclick="state.bpFilter='${c}';renderBest()">${c}</div>`).join('')}</div>
-    ${groupByModule(BEST_PRACTICES.filter(b=>{const t=KB_TOPICS.find(x=>x.t===state.bpFilter);return !t||t.m.includes(b.mod);}), card).replace(/class="kb-grid"/g,'class="bp-grid"')}
+    ${groupByModule(BEST_PRACTICES.filter(b=>{const t=KB_TOPICS.find(x=>x.t===state.bpFilter);return !t||t.m.includes(tmOf(b));}), card).replace(/class="kb-grid"/g,'class="bp-grid"')}
   `;
 }
 function openBP(idx){
@@ -3966,7 +3966,7 @@ function openBP(idx){
   document.getElementById('view-best').innerHTML = `
     <div class="md-back" onclick="bpBack()">&larr; Zurück zu Best Practices</div>
     <div class="kb-article bp-article">
-    <div class="kb-article-crumb">Best Practices / ${topicOf(b.mod)}</div>
+    <div class="kb-article-crumb">Best Practices / ${topicOf(tmOf(b))}</div>
     <div class="kb-title-row"><h2>${b.title}</h2>${favBtn('bp',idx)}</div>
     <p class="kb-lead">${uiBtns(b.desc)} · ${b.steps.length} Schritte</p>
     ${b.downloadable ? templateDownloadCallout() : ''}
