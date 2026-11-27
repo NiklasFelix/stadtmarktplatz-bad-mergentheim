@@ -2014,29 +2014,29 @@ html:not(.theme-light) .rm-svg .rm-base{stroke:rgba(168,204,104,.35)}
 @media (prefers-reduced-motion:reduce){.view.active{animation:none}.milestone.rm-next .milestone-dot{animation:none!important}}
 
 /* ===== Zertifikat im A4-Querformat (297 × 210 mm, rahmenfertig) ===== */
-.cert-a4{width:100%;max-width:900px;margin:0 auto;box-shadow:0 24px 50px -24px rgba(0,0,0,.45);border-radius:4px;overflow:hidden;background:#fff}
-.certificate.a4{width:1123px!important;height:794px!important;max-width:none!important;margin:0!important;padding:66px 90px 58px!important;box-sizing:border-box;border:0!important;border-radius:0!important;box-shadow:none!important;display:flex;flex-direction:column;align-items:center;text-align:center;background:#fff!important;color:#2D3234;animation:none!important}
+.cert-a4{width:100%;max-width:620px;margin:0 auto;box-shadow:0 24px 50px -24px rgba(0,0,0,.45);border-radius:4px;overflow:hidden;background:#fff}
+.certificate.a4{width:794px!important;height:1123px!important;max-width:none!important;margin:0!important;padding:96px 70px 84px!important;box-sizing:border-box;border:0!important;border-radius:0!important;box-shadow:none!important;display:flex;flex-direction:column;align-items:center;text-align:center;background:#fff!important;color:#2D3234;animation:none!important}
 .certificate.a4 .cert-frame{inset:18px!important;border:1.5px solid #A8CC68!important;border-radius:6px!important}
 .certificate.a4 .cert-frame2{position:absolute;inset:26px;border:1px solid rgba(168,204,104,.45);border-radius:4px;pointer-events:none}
 .certificate.a4 .cert-corner{width:330px!important;height:260px!important}
-.certificate.a4 .cert-logo{margin-bottom:22px!important}.certificate.a4 .cert-logo img{height:78px!important}
+.certificate.a4 .cert-logo{margin-bottom:46px!important}.certificate.a4 .cert-logo img{height:96px!important}
 .certificate.a4 .cert-title{font-size:15px!important;letter-spacing:.3em!important;color:#6B757B!important;margin-bottom:6px!important}
-.certificate.a4 .cert-heading{font-size:44px!important;font-weight:800;color:#2D3234;margin-bottom:30px!important}
+.certificate.a4 .cert-heading{font-size:44px!important;font-weight:800;color:#2D3234;margin-bottom:90px!important}
 .certificate.a4 .cert-intro{font-size:15px;color:#6B757B}
 .certificate.a4 .cert-name{font-size:48px!important;color:#5F7A33!important;margin:4px 0 2px!important}
 .certificate.a4 .cert-company{font-size:26px!important;font-weight:700!important;color:#2D3234!important;margin:4px 0 22px!important;letter-spacing:.01em}
 .certificate.a4 .cert-body{font-size:17px!important;line-height:1.6!important;color:#2D3234!important;max-width:620px!important;margin:0 auto!important}
-.certificate.a4 .cert-foot{margin-top:auto!important;gap:70px!important;justify-content:center!important;width:100%}
-.certificate.a4 .cert-foot-col{flex:0 0 220px!important;font-size:14px!important}
+.certificate.a4 .cert-foot{margin-top:auto!important;gap:34px!important;justify-content:center!important;width:100%}
+.certificate.a4 .cert-foot-col{flex:0 0 200px!important;font-size:14px!important}
 .certificate.a4 .cert-foot-val{font-size:17px!important}
 .certificate.a4 .cert-foot-line{max-width:none!important}
 .certificate.a4 .cert-seal{flex:0 0 110px!important;width:110px!important;height:110px!important}
-.cert-preview-wrap{max-width:900px!important}
+.cert-preview-wrap{max-width:620px!important}
 
 .certificate.a4 .cert-intro{font-family:'Cormorant Garamond',Georgia,serif!important;font-style:italic;font-size:21px!important;color:#5E666B!important;letter-spacing:.01em}
-.certificate.a4 .cert-name{font-family:'Cormorant Garamond',Georgia,serif!important;font-weight:600!important;font-size:62px!important;line-height:1.05!important;color:#2D3234!important;letter-spacing:.01em;margin:6px 0 10px!important;padding:0 40px 10px;border-bottom:1.5px solid #A8CC68}
-.certificate.a4 .cert-company{font-family:Barlow,Arial,sans-serif!important;font-size:19px!important;font-weight:700!important;letter-spacing:.22em!important;text-transform:uppercase;color:#5F7A33!important;margin:8px 0 22px!important}
-.certificate.a4 .cert-body{font-family:'Cormorant Garamond',Georgia,serif!important;font-size:21px!important;line-height:1.5!important;color:#2D3234!important;max-width:640px!important}
+.certificate.a4 .cert-name{font-family:'Cormorant Garamond',Georgia,serif!important;font-weight:600!important;font-size:58px!important;line-height:1.05!important;color:#2D3234!important;letter-spacing:.01em;margin:6px 0 10px!important;padding:0 40px 10px;border-bottom:1.5px solid #A8CC68}
+.certificate.a4 .cert-company{font-family:Barlow,Arial,sans-serif!important;font-size:19px!important;font-weight:700!important;letter-spacing:.22em!important;text-transform:uppercase;color:#5F7A33!important;margin:10px 0 40px!important}
+.certificate.a4 .cert-body{font-family:'Cormorant Garamond',Georgia,serif!important;font-size:22px!important;line-height:1.55!important;color:#2D3234!important;max-width:560px!important}
 .certificate.a4 .cert-heading{letter-spacing:.01em}
 .certificate.a4 .cert-seal{flex:0 0 120px!important;width:120px!important;height:120px!important}
 </style>
@@ -4041,7 +4041,7 @@ function openBP(idx){
 
 /* ============ CERTIFICATE ============ */
 function renderCert(){ renderCertBase(); decorateCerts(); fitCerts(); }
-function fitCerts(){ document.querySelectorAll('.cert-a4').forEach(w=>{ const c=w.querySelector('.certificate'); if(!c) return; const z=(w.clientWidth||900)/1123; c.style.zoom=z; w.style.height=Math.round(794*z)+'px'; }); }
+function fitCerts(){ document.querySelectorAll('.cert-a4').forEach(w=>{ const c=w.querySelector('.certificate'); if(!c) return; const z=(w.clientWidth||620)/794; c.style.zoom=z; w.style.height=Math.round(1123*z)+'px'; }); }
 window.addEventListener('resize',()=>{ try{ if(state.currentView==='cert') fitCerts(); }catch(e){} });
 function renderCertBase(){
   const done = certDoneCount();
@@ -4141,12 +4141,12 @@ async function downloadCertPdf(){
     await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
     await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
     const src=document.getElementById('certPrint');
-    const box=document.createElement('div'); box.style.cssText='position:fixed;left:-20000px;top:0;width:1123px;height:794px;';
+    const box=document.createElement('div'); box.style.cssText='position:fixed;left:-20000px;top:0;width:794px;height:1123px;';
     const el=src.cloneNode(true); el.removeAttribute('id'); el.style.zoom='1'; box.appendChild(el); document.body.appendChild(box);
-    let canvas; try{ canvas=await html2canvas(el,{scale:2.5,backgroundColor:'#ffffff',width:1123,height:794,windowWidth:1400}); } finally{ box.remove(); }
+    let canvas; try{ canvas=await html2canvas(el,{scale:3,backgroundColor:'#ffffff',width:794,height:1123,windowWidth:1400}); } finally{ box.remove(); }
     const { jsPDF } = window.jspdf;
-    const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
-    pdf.addImage(canvas.toDataURL('image/jpeg',0.95),'JPEG',0,0,297,210);
+    const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    pdf.addImage(canvas.toDataURL('image/jpeg',0.95),'JPEG',0,0,210,297);
     const filename='OrKan-Zertifikat-'+(state.name||'Teilnehmer').replace(/[^A-Za-z0-9ÄÖÜäöüß_-]+/g,'_')+'.pdf';
     let dl=null; try{ if(window.claude&&typeof claude.use==='function') dl=await claude.use('downloads'); }catch(e){}
     if(dl){ try{ await dl.save({filename,data:pdf.output('arraybuffer')}); showToast('Zertifikat gespeichert.'); }catch(e){ if(!e||e.code!=='declined') showToast('Speichern ist in dieser Ansicht leider nicht möglich.'); } }
