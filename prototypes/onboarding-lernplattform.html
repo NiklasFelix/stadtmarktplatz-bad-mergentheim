@@ -2039,6 +2039,16 @@ html:not(.theme-light) .rm-svg .rm-base{stroke:rgba(168,204,104,.35)}
 .certificate.a4 .cert-body{font-family:'Cormorant Garamond',Georgia,serif!important;font-size:22px!important;line-height:1.55!important;color:#2D3234!important;max-width:560px!important}
 .certificate.a4 .cert-heading{letter-spacing:.01em}
 .certificate.a4 .cert-seal{flex:0 0 120px!important;width:120px!important;height:120px!important}
+
+/* Zertifikat: Seitenspalte mit Speichern-Button */
+.cert-layout{display:grid;grid-template-columns:minmax(0,620px) minmax(260px,330px);gap:32px;align-items:start;justify-content:center}
+.cert-layout .cert-a4{margin:0}
+.cert-side{position:sticky;top:12px;display:flex;flex-direction:column;gap:14px}
+.cert-side .cert-personal{grid-template-columns:1fr!important;margin:0!important;max-width:none!important}
+.cert-side .cert-actions{flex-direction:column;margin:0!important;gap:10px}
+.cert-side .cert-actions .btn{width:100%;padding:14px 18px;font-size:15px}
+.cert-side-note{font-size:13px;line-height:1.5;color:var(--gray);margin:0 2px}
+@media(max-width:1100px){.cert-layout{grid-template-columns:minmax(0,620px);}.cert-side{position:static;order:-1}}
 </style>
 </head>
 <body>
@@ -4040,7 +4050,18 @@ function openBP(idx){
 
 
 /* ============ CERTIFICATE ============ */
-function renderCert(){ renderCertBase(); decorateCerts(); fitCerts(); }
+function renderCert(){ renderCertBase(); decorateCerts(); certLayout(); fitCerts(); }
+/* Freigeschaltetes Zertifikat: links das Zertifikat, rechts Personalisierung und Speichern (bleibt beim Scrollen sichtbar) */
+function certLayout(){
+  const v=document.getElementById('view-cert'); const btn=v&&v.querySelector('#certPdfBtn'); if(!btn) return;
+  const a4=v.querySelector('.cert-a4'), pers=v.querySelector('.cert-personal'), act=v.querySelector('.cert-actions'); if(!a4||!act) return;
+  const lay=document.createElement('div'); lay.className='cert-layout';
+  const side=document.createElement('aside'); side.className='cert-side';
+  if(pers) side.appendChild(pers);
+  side.appendChild(act);
+  side.insertAdjacentHTML('beforeend','<p class="cert-side-note">Das PDF hat genau DIN A4 im Hochformat und passt in jeden A4-Bilderrahmen.</p>');
+  a4.parentNode.insertBefore(lay,a4); lay.appendChild(a4); lay.appendChild(side);
+}
 function fitCerts(){ document.querySelectorAll('.cert-a4').forEach(w=>{ const c=w.querySelector('.certificate'); if(!c) return; const z=(w.clientWidth||620)/794; c.style.zoom=z; w.style.height=Math.round(1123*z)+'px'; }); }
 window.addEventListener('resize',()=>{ try{ if(state.currentView==='cert') fitCerts(); }catch(e){} });
 function renderCertBase(){
