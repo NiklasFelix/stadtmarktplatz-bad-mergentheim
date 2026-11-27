@@ -4059,7 +4059,6 @@ function certLayout(){
   const side=document.createElement('aside'); side.className='cert-side';
   if(pers) side.appendChild(pers);
   side.appendChild(act);
-  side.insertAdjacentHTML('beforeend','<p class="cert-side-note">Das PDF hat genau DIN A4 im Hochformat und passt in jeden A4-Bilderrahmen.</p>');
   a4.parentNode.insertBefore(lay,a4); lay.appendChild(a4); lay.appendChild(side);
 }
 function fitCerts(){ document.querySelectorAll('.cert-a4').forEach(w=>{ const c=w.querySelector('.certificate'); if(!c) return; const z=(w.clientWidth||620)/794; c.style.zoom=z; w.style.height=Math.round(1123*z)+'px'; }); }
