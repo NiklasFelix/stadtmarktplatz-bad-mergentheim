@@ -3406,7 +3406,8 @@ function certTotal(){ return certIds().length; }
 const CERT_HINT = 'Sehen Sie sich alle Videos an und erhalten Sie Ihr Zertifikat.';
 // VORSCHAU-Schalter: true = Zertifikat für alle freigeschaltet (nur zum Testen)
 // Test: Mit #testzertifikat am Ende des Links ist das Zertifikat sofort freigeschaltet (nur in diesem Browser-Tab)
-const CERT_PREVIEW = (function(){ try{ return /testzertifikat/i.test(location.hash||''); }catch(e){ return false; } })();
+// Vorschau: In der Claude-Vorschau (nicht auf orkan-system.de) ist das Zertifikat zum Testen immer freigeschaltet
+const CERT_PREVIEW = (function(){ try{ if(/testzertifikat/i.test(location.hash||'')) return true; const h=location.hostname||''; return /claude|anthropic|usercontent/i.test(h); }catch(e){ return false; } })();
 function certUnlocked(){ return CERT_PREVIEW || certDoneCount()>=certTotal(); }
 /* ============ ROADMAP ============ */
 function renderRoadmap(){
