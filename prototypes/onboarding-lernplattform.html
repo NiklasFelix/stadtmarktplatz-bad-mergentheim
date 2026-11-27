@@ -3364,7 +3364,8 @@ function certDoneCount(){ return certIds().filter(id=>state.moduleProgress[id]&&
 function certTotal(){ return certIds().length; }
 const CERT_HINT = 'Sehen Sie sich alle Videos an und erhalten Sie Ihr Zertifikat.';
 // VORSCHAU-Schalter: true = Zertifikat für alle freigeschaltet (nur zum Testen)
-const CERT_PREVIEW = false;
+// Test: Mit #testzertifikat am Ende des Links ist das Zertifikat sofort freigeschaltet (nur in diesem Browser-Tab)
+const CERT_PREVIEW = (function(){ try{ return /testzertifikat/i.test(location.hash||''); }catch(e){ return false; } })();
 function certUnlocked(){ return CERT_PREVIEW || certDoneCount()>=certTotal(); }
 /* ============ ROADMAP ============ */
 function renderRoadmap(){
