@@ -2049,6 +2049,13 @@ html:not(.theme-light) .rm-svg .rm-base{stroke:rgba(168,204,104,.35)}
 .cert-side .cert-actions .btn{width:100%;padding:14px 18px;font-size:15px}
 .cert-side-note{font-size:13px;line-height:1.5;color:var(--gray);margin:0 2px}
 @media(max-width:1100px){.cert-layout{grid-template-columns:minmax(0,620px);}.cert-side{position:static;order:-1}}
+
+@media(max-width:640px){.phases-row{flex-wrap:wrap;row-gap:16px}.phase-step{flex:1 1 45%;min-width:0;padding:0 6px}.phase-step::before{display:none}}
+
+.cert-preview-wrap .cert-personal-head{padding-right:72px}
+@media(max-width:640px){.cert-preview-badge{top:14px!important;right:-54px!important;padding:4px 50px!important;font-size:10.5px!important}}
+
+html:not(.theme-light) .step-num{background:#2D3234!important;color:#A8CC68!important;box-shadow:inset 0 0 0 1.5px rgba(168,204,104,.75),0 0 0 4px var(--white)!important}
 </style>
 </head>
 <body>
@@ -3416,8 +3423,7 @@ function certTotal(){ return certIds().length; }
 const CERT_HINT = 'Sehen Sie sich alle Videos an und erhalten Sie Ihr Zertifikat.';
 // VORSCHAU-Schalter: true = Zertifikat für alle freigeschaltet (nur zum Testen)
 // Test: Mit #testzertifikat am Ende des Links ist das Zertifikat sofort freigeschaltet (nur in diesem Browser-Tab)
-// Vorschau: In der Claude-Vorschau (nicht auf orkan-system.de) ist das Zertifikat zum Testen immer freigeschaltet
-const CERT_PREVIEW = (function(){ try{ if(/testzertifikat/i.test(location.hash||'')) return true; const h=location.hostname||''; return /claude|anthropic|usercontent/i.test(h); }catch(e){ return false; } })();
+const CERT_PREVIEW = false;
 function certUnlocked(){ return CERT_PREVIEW || certDoneCount()>=certTotal(); }
 /* ============ ROADMAP ============ */
 function renderRoadmap(){
