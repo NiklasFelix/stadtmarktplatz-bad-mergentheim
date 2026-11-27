@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OrKan Cloud Training-Plattform</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,500;1,700&family=Roboto+Mono:wght@400;500;600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,500;1,700&family=Roboto+Mono:wght@400;500;600&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -2032,6 +2032,13 @@ html:not(.theme-light) .rm-svg .rm-base{stroke:rgba(168,204,104,.35)}
 .certificate.a4 .cert-foot-line{max-width:none!important}
 .certificate.a4 .cert-seal{flex:0 0 110px!important;width:110px!important;height:110px!important}
 .cert-preview-wrap{max-width:900px!important}
+
+.certificate.a4 .cert-intro{font-family:'Cormorant Garamond',Georgia,serif!important;font-style:italic;font-size:21px!important;color:#5E666B!important;letter-spacing:.01em}
+.certificate.a4 .cert-name{font-family:'Cormorant Garamond',Georgia,serif!important;font-weight:600!important;font-size:62px!important;line-height:1.05!important;color:#2D3234!important;letter-spacing:.01em;margin:6px 0 10px!important;padding:0 40px 10px;border-bottom:1.5px solid #A8CC68}
+.certificate.a4 .cert-company{font-family:Barlow,Arial,sans-serif!important;font-size:19px!important;font-weight:700!important;letter-spacing:.22em!important;text-transform:uppercase;color:#5F7A33!important;margin:8px 0 22px!important}
+.certificate.a4 .cert-body{font-family:'Cormorant Garamond',Georgia,serif!important;font-size:21px!important;line-height:1.5!important;color:#2D3234!important;max-width:640px!important}
+.certificate.a4 .cert-heading{letter-spacing:.01em}
+.certificate.a4 .cert-seal{flex:0 0 120px!important;width:120px!important;height:120px!important}
 </style>
 </head>
 <body>
@@ -4094,7 +4101,12 @@ function certCornerImg(){
   }
   return (__certCorner=c.toDataURL('image/png'));
 }
-const CERT_SEAL=`<svg class="cert-seal" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="44" fill="#2D3234"/><circle cx="48" cy="48" r="38" fill="none" stroke="#A8CC68" stroke-width="1.5" stroke-dasharray="1.5 3.5"/><circle cx="48" cy="48" r="30" fill="#A8CC68"/><path d="M36 48.5l8 8 16-17" fill="none" stroke="#2D3234" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path id="sealArc" d="M14 48a34 34 0 0 1 68 0" fill="none"/><text font-family="Barlow, Arial, sans-serif" font-size="8.5" font-weight="700" letter-spacing="2" fill="#A8CC68"><textPath href="#sealArc" startOffset="50%" text-anchor="middle">ONBOARDING</textPath></text></svg>`;
+const CERT_SEAL=`<svg class="cert-seal" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="sealTop" d="M22 60a38 38 0 0 1 76 0"/><path id="sealBot" d="M17 60a43 43 0 0 0 86 0"/></defs>
+<circle cx="60" cy="60" r="57" fill="#fff" stroke="#A8CC68" stroke-width="1.2"/><circle cx="60" cy="60" r="53" fill="#2D3234"/><circle cx="60" cy="60" r="35" fill="none" stroke="#A8CC68" stroke-width="1"/>
+<text font-family="Barlow, Arial, sans-serif" font-size="8.2" font-weight="700" letter-spacing="2.6" fill="#E8ECEF"><textPath href="#sealTop" startOffset="50%" text-anchor="middle">ZERTIFIZIERT</textPath></text>
+<text font-family="Barlow, Arial, sans-serif" font-size="7.4" font-weight="600" letter-spacing="2.2" fill="#A8CC68"><textPath href="#sealBot" startOffset="50%" text-anchor="middle">ORKAN CLOUD</textPath></text>
+<circle cx="18.5" cy="60" r="1.6" fill="#A8CC68"/><circle cx="101.5" cy="60" r="1.6" fill="#A8CC68"/>
+<circle cx="60" cy="60" r="27" fill="#A8CC68"/><path d="M48 60.5l8.5 8.5 16-17.5" fill="none" stroke="#2D3234" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 function decorateCerts(){
   document.querySelectorAll('.certificate').forEach(el=>{
     if(el.querySelector('.cert-frame')) return;
@@ -4102,7 +4114,7 @@ function decorateCerts(){
     el.classList.add('a4');
     if(!el.parentElement.classList.contains('cert-a4')){ const w=document.createElement('div'); w.className='cert-a4'; el.parentNode.insertBefore(w,el); w.appendChild(el); }
     const nm=el.querySelector('.cert-name'); if(nm) nm.insertAdjacentHTML('beforebegin','<div class="cert-intro">Hiermit wird bestätigt, dass</div>');
-    const bd=el.querySelector('.cert-body'); if(bd) bd.textContent=`die ${certTotal()} Grundlagen-Module der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen hat.`;
+    const bd=el.querySelector('.cert-body'); if(bd) bd.textContent='das Grundlagen-Onboarding der OrKan Cloud erfolgreich abgeschlossen und damit die wesentlichen Abläufe der digitalen Lagerverwaltung kennengelernt hat.';
     el.insertAdjacentHTML('afterbegin',`<div class="cert-frame"></div><div class="cert-frame2"></div><div class="cert-corner tl" style="background-image:url(${img})"></div><div class="cert-corner br" style="background-image:url(${img})"></div>`);
     const date=[...el.children].find(c=>/Ausgestellt am/.test(c.textContent));
     if(date){ const d=date.textContent.replace('Ausgestellt am','').trim();
