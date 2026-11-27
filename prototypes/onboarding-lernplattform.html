@@ -2008,6 +2008,26 @@ html:not(.theme-light) .rm-svg .rm-base{stroke:rgba(168,204,104,.35)}
 .view.active{animation:viewIn .38s cubic-bezier(.2,.7,.2,1)}
 @keyframes viewIn{from{opacity:.35;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.view.active{animation:none}.milestone.rm-next .milestone-dot{animation:none!important}}
+
+/* ===== Zertifikat im A4-Querformat (297 × 210 mm, rahmenfertig) ===== */
+.cert-a4{width:100%;max-width:900px;margin:0 auto;box-shadow:0 24px 50px -24px rgba(0,0,0,.45);border-radius:4px;overflow:hidden;background:#fff}
+.certificate.a4{width:1123px!important;height:794px!important;max-width:none!important;margin:0!important;padding:66px 90px 58px!important;box-sizing:border-box;border:0!important;border-radius:0!important;box-shadow:none!important;display:flex;flex-direction:column;align-items:center;text-align:center;background:#fff!important;color:#2B3134;animation:none!important}
+.certificate.a4 .cert-frame{inset:18px!important;border:1.5px solid #A8CC68!important;border-radius:6px!important}
+.certificate.a4 .cert-frame2{position:absolute;inset:26px;border:1px solid rgba(168,204,104,.45);border-radius:4px;pointer-events:none}
+.certificate.a4 .cert-corner{width:330px!important;height:260px!important}
+.certificate.a4 .cert-logo{margin-bottom:22px!important}.certificate.a4 .cert-logo img{height:78px!important}
+.certificate.a4 .cert-title{font-size:15px!important;letter-spacing:.3em!important;color:#6B757B!important;margin-bottom:6px!important}
+.certificate.a4 .cert-heading{font-size:44px!important;font-weight:800;color:#2B3134;margin-bottom:30px!important}
+.certificate.a4 .cert-intro{font-size:15px;color:#6B757B}
+.certificate.a4 .cert-name{font-size:48px!important;color:#5F7A33!important;margin:4px 0 2px!important}
+.certificate.a4 .cert-company{font-size:18px!important;color:#6B757B!important;margin-bottom:20px!important}
+.certificate.a4 .cert-body{font-size:17px!important;line-height:1.6!important;color:#2B3134!important;max-width:620px!important;margin:0 auto!important}
+.certificate.a4 .cert-foot{margin-top:auto!important;gap:70px!important;justify-content:center!important;width:100%}
+.certificate.a4 .cert-foot-col{flex:0 0 220px!important;font-size:14px!important}
+.certificate.a4 .cert-foot-val{font-size:17px!important}
+.certificate.a4 .cert-foot-line{max-width:none!important}
+.certificate.a4 .cert-seal{flex:0 0 110px!important;width:110px!important;height:110px!important}
+.cert-preview-wrap{max-width:900px!important}
 </style>
 </head>
 <body>
@@ -3050,6 +3070,7 @@ function showView(name){
   if(name==='fives') renderFives();
   if(name==='dashboard') renderDashboard();
   if(name==='roadmap') requestAnimationFrame(rmDraw);
+  if(name==='cert') requestAnimationFrame(fitCerts);
   animateCounts(document.getElementById('view-'+name));
 }
 function toggleMobileSidebar(force){
@@ -3996,7 +4017,9 @@ function openBP(idx){
 
 
 /* ============ CERTIFICATE ============ */
-function renderCert(){ renderCertBase(); decorateCerts(); }
+function renderCert(){ renderCertBase(); decorateCerts(); fitCerts(); }
+function fitCerts(){ document.querySelectorAll('.cert-a4').forEach(w=>{ const c=w.querySelector('.certificate'); if(!c) return; const z=(w.clientWidth||900)/1123; c.style.zoom=z; w.style.height=Math.round(794*z)+'px'; }); }
+window.addEventListener('resize',()=>{ try{ if(state.currentView==='cert') fitCerts(); }catch(e){} });
 function renderCertBase(){
   const done = certDoneCount();
   const unlocked = certUnlocked();
@@ -4061,7 +4084,11 @@ function decorateCerts(){
   document.querySelectorAll('.certificate').forEach(el=>{
     if(el.querySelector('.cert-frame')) return;
     const img=certCornerImg();
-    el.insertAdjacentHTML('afterbegin',`<div class="cert-frame"></div><div class="cert-corner tl" style="background-image:url(${img})"></div><div class="cert-corner br" style="background-image:url(${img})"></div>`);
+    el.classList.add('a4');
+    if(!el.parentElement.classList.contains('cert-a4')){ const w=document.createElement('div'); w.className='cert-a4'; el.parentNode.insertBefore(w,el); w.appendChild(el); }
+    const nm=el.querySelector('.cert-name'); if(nm) nm.insertAdjacentHTML('beforebegin','<div class="cert-intro">Hiermit wird bestätigt, dass</div>');
+    const bd=el.querySelector('.cert-body'); if(bd) bd.textContent=`die ${certTotal()} Grundlagen-Module der OrKan Cloud Onboarding-Plattform erfolgreich abgeschlossen hat.`;
+    el.insertAdjacentHTML('afterbegin',`<div class="cert-frame"></div><div class="cert-frame2"></div><div class="cert-corner tl" style="background-image:url(${img})"></div><div class="cert-corner br" style="background-image:url(${img})"></div>`);
     const date=[...el.children].find(c=>/Ausgestellt am/.test(c.textContent));
     if(date){ const d=date.textContent.replace('Ausgestellt am','').trim();
       date.outerHTML=`<div class="cert-foot"><div class="cert-foot-col"><div class="cert-foot-val">${d}</div><div class="cert-foot-line">Ausgestellt am</div></div>${CERT_SEAL}<div class="cert-foot-col"><div class="cert-foot-val">OrKan System</div><div class="cert-foot-line">Schulung &amp; Onboarding</div></div></div>`; }
@@ -4085,13 +4112,13 @@ async function downloadCertPdf(){
     if(btn){ btn.disabled=true; btn.textContent='PDF wird erstellt …'; }
     await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
     await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-    const el=document.getElementById('certPrint');
-    const canvas=await html2canvas(el,{scale:2,backgroundColor:'#ffffff'});
+    const src=document.getElementById('certPrint');
+    const box=document.createElement('div'); box.style.cssText='position:fixed;left:-20000px;top:0;width:1123px;height:794px;';
+    const el=src.cloneNode(true); el.removeAttribute('id'); el.style.zoom='1'; box.appendChild(el); document.body.appendChild(box);
+    let canvas; try{ canvas=await html2canvas(el,{scale:2.5,backgroundColor:'#ffffff',width:1123,height:794,windowWidth:1400}); } finally{ box.remove(); }
     const { jsPDF } = window.jspdf;
     const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
-    const pw=297, ph=210, m=12; const r=Math.min((pw-2*m)/canvas.width,(ph-2*m)/canvas.height);
-    const w=canvas.width*r, h=canvas.height*r;
-    pdf.addImage(canvas.toDataURL('image/png'),'PNG',(pw-w)/2,(ph-h)/2,w,h);
+    pdf.addImage(canvas.toDataURL('image/jpeg',0.95),'JPEG',0,0,297,210);
     const filename='OrKan-Zertifikat-'+(state.name||'Teilnehmer').replace(/[^A-Za-z0-9ÄÖÜäöüß_-]+/g,'_')+'.pdf';
     let dl=null; try{ if(window.claude&&typeof claude.use==='function') dl=await claude.use('downloads'); }catch(e){}
     if(dl){ try{ await dl.save({filename,data:pdf.output('arraybuffer')}); showToast('Zertifikat gespeichert.'); }catch(e){ if(!e||e.code!=='declined') showToast('Speichern ist in dieser Ansicht leider nicht möglich.'); } }
